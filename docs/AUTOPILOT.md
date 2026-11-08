@@ -9,8 +9,8 @@
                                 │ read/write            │ read/write       │ read
  DAILY  03:40 CT  Claude Code scheduled session = SHOWRUNNER
    for each channel ─► writer agent ─► director agent ─► render ─► qa agent ─(fail: fix x2, then sketch fallback)
-                     ─► gh release "daily-<date>" with MP4s + meta.json
- DAILY  on release  GitHub Action = PUBLISHER (holds all secrets, no AI)
+                     ─► branch media/<date> with MP4s + meta.json
+ DAILY  on push    GitHub Action = PUBLISHER (holds all secrets, no AI)
                      ─► YouTube upload, scheduled to the channel's best hour
                      ─► TikTok upload (draft until audited, then direct)
                      ─► appends IDs to LEDGER.md
