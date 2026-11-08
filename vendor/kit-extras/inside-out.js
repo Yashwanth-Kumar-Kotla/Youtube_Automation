@@ -19,6 +19,9 @@
     }
   }
 */
+// 1b) PATCH for redX in kit.js: optional 5th arg `thin` (stroke width multiplier) so the object under the X stays readable:
+//   export function redX(x, y, s, a = 1, thin = 1) { ... [[96 * thin, C.ink], [72 * thin, C.red]] ... }
+//
 // 2) Components (append to the end of kit.js). First used in 2026-11-08 body "11 days without sleep".
 // heroHead · bed · zzz · nightRoom · brain · fuelGauge · fumes · battery · ghost · bubble · tangle · magnet · filesBadge · followPill
 
