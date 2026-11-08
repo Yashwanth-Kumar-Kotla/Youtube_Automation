@@ -45,6 +45,14 @@ def cleanup(keep_days: int = 7) -> None:
             subprocess.run(["git", "push", "-q", "origin", "--delete", "media/" + t[6:]], cwd=ROOT)
 
 
+def tiktok_hour_reached(ttc: dict, cfg: dict) -> bool:
+    """TikTok's API has no scheduling, so the hourly publisher holds each post until the channel's best hour."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    h = ttc.get("post_hour_local")
+    return h is None or datetime.now(ZoneInfo(cfg.get("timezone", "America/Chicago"))).hour >= int(h)
+
+
 def ledger_row(ch: str, row: list[str]) -> None:
     p = os.path.join(ROOT, "memory", "channels", ch, "LEDGER.md")
     if not os.path.exists(p):
@@ -95,7 +103,9 @@ def publish_tag(tag: str, cfg: dict, done: dict) -> int:
                     print(f"::warning::[{ch}] YouTube enabled but YT_{ch.upper()}_REFRESH_TOKEN missing")
 
             ttc = chc.get("tiktok", {})
-            if ttc.get("enabled") and not tt_id:
+            if ttc.get("enabled") and not tt_id and not tiktok_hour_reached(ttc, cfg):
+                print(f"[{ch}] TikTok waits for {ttc.get('post_hour_local')}:00 local (TikTok can't schedule via API)")
+            elif ttc.get("enabled") and not tt_id:
                 from . import tiktok
                 if os.environ.get(f"TIKTOK_{ch.upper()}_REFRESH_TOKEN") and os.environ.get("TIKTOK_CLIENT_KEY"):
                     try:

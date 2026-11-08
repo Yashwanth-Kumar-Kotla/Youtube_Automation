@@ -28,6 +28,7 @@ channels:
     tiktok:
       enabled: true
       mode: draft              # draft until the TikTok app passes review, then: direct
+      post_hour_local: 19     # TikTok post hour (the analyst tunes this from data)
     scout_queries: ["what happens if body", "what happens to your body", "human body facts shorts"]
     reddit_subs: [todayilearned, askscience, NoStupidQuestions, AskDocs]
     # sketch fallback (run.py) settings
@@ -57,6 +58,7 @@ channels:
     tiktok:
       enabled: false
       mode: draft
+      post_hour_local: 12     # TikTok post hour (the analyst tunes this from data)
     scout_queries: ["what happens to your body after 40", "health after 50 shorts", "habits after 40"]
     reddit_subs: [AskDocs, Fitness30plus, nutrition, longevity]
     niche: "Health, aging and longevity for people over 40"
@@ -86,6 +88,7 @@ channels:
     tiktok:
       enabled: false
       mode: draft
+      post_hour_local: 20     # TikTok post hour (the analyst tunes this from data)
     scout_queries: ["what to do if survival", "how to survive shorts", "would you survive"]
     reddit_subs: [Survival, preppers, LifeProTips, interestingasfuck]
     niche: "What to do if you face a deadly situation: survival steps and myths"
