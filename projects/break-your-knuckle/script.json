@@ -1,0 +1,26 @@
+{
+  "title": "What Happens If You Break Your Knuckle?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Boxer's Fracture' (break of the fifth metacarpal neck, usually from punching a hard object; swelling, bruising, a sunken or missing knuckle; treated with a splint or cast, sometimes surgery; heals in about 6 weeks)",
+    "AAOS OrthoInfo, 'Hand Fractures' (knuckles are the heads of the metacarpal bones; diagnosed with X-ray; bone heals by forming new bone (callus) across the break)"
+  ],
+  "lines": [
+    { "text": "What happens if you break your knuckle?", "caps": "WHAT *HAPPENS | IF YOU *BREAK | YOUR *KNUCKLE?" },
+    { "text": "Well, it usually happens when you punch something hard,", "caps": "WELL, IT *USUALLY | WHEN YOU *PUNCH | SOMETHING *HARD" },
+    { "text": "like a wall, and the wall always wins.", "caps": "LIKE A *WALL | AND THE *WALL | ALWAYS *WINS" },
+    { "text": "Your knuckles are the ends of the long bones in your hand,", "caps": "YOUR *KNUCKLES | ARE THE *ENDS | OF LONG *BONES" },
+    { "text": "and the pinky one cracks so often that doctors call it a boxer's fracture.", "caps": "AND THE *PINKY | CRACKS SO *OFTEN | *BOXER'S FRACTURE" },
+    { "text": "Within minutes, your hand swells up like a balloon,", "caps": "WITHIN *MINUTES | YOUR HAND *SWELLS | LIKE A *BALLOON" },
+    { "text": "and that knuckle can actually sink in and disappear.", "caps": "AND THAT *KNUCKLE | CAN *SINK IN | AND *DISAPPEAR" },
+    { "text": "A doctor's X-ray shows the crack,", "caps": "A DOCTOR'S *X-RAY | SHOWS THE *CRACK" },
+    { "text": "then a splint holds the bone still for about six weeks,", "caps": "THEN A *SPLINT | HOLDS IT *STILL | ABOUT 6 *WEEKS" },
+    { "text": "while your body builds brand new bone right over the break.", "caps": "WHILE YOUR *BODY | BUILDS NEW *BONE | OVER THE *BREAK" },
+    { "text": "So next time you want to punch a wall, maybe don't.", "caps": "SO NEXT *TIME | PUNCH A *WALL? | MAYBE *DON'T" }
+  ]
+}

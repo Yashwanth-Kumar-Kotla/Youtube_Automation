@@ -1,0 +1,166 @@
+{
+ "duration": 34.495,
+ "cues": [
+  {
+   "t": 0.2,
+   "type": "whoosh",
+   "gain": 0.5
+  },
+  {
+   "t": 1.38,
+   "type": "slam",
+   "gain": 0.8
+  },
+  {
+   "t": 1.78,
+   "type": "boing",
+   "gain": 0.5
+  },
+  {
+   "t": 2.318,
+   "type": "whoosh"
+  },
+  {
+   "t": 3.82,
+   "type": "zip",
+   "gain": 0.6
+  },
+  {
+   "t": 4.02,
+   "type": "thud"
+  },
+  {
+   "t": 5.088,
+   "type": "whoosh"
+  },
+  {
+   "t": 5.43,
+   "type": "slam"
+  },
+  {
+   "t": 7.24,
+   "type": "pop",
+   "gain": 0.6
+  },
+  {
+   "t": 7.962,
+   "type": "whoosh"
+  },
+  {
+   "t": 8.2,
+   "type": "sparkle",
+   "dur": 0.6,
+   "gain": 0.6
+  },
+  {
+   "t": 9.78,
+   "type": "pop"
+  },
+  {
+   "t": 11.172,
+   "type": "whoosh"
+  },
+  {
+   "t": 11.98,
+   "type": "slam",
+   "gain": 0.7
+  },
+  {
+   "t": 12.08,
+   "type": "alarm",
+   "dur": 1,
+   "gain": 0.4
+  },
+  {
+   "t": 13.38,
+   "type": "whoosh"
+  },
+  {
+   "t": 14.48,
+   "type": "thud"
+  },
+  {
+   "t": 15.551,
+   "type": "whoosh"
+  },
+  {
+   "t": 16.98,
+   "type": "slide",
+   "dur": 0.9600000000000009,
+   "gain": 0.5
+  },
+  {
+   "t": 17.94,
+   "type": "boing"
+  },
+  {
+   "t": 18.691,
+   "type": "whoosh"
+  },
+  {
+   "t": 20.02,
+   "type": "slide",
+   "dur": 0.7,
+   "gain": 0.5
+  },
+  {
+   "t": 20.88,
+   "type": "pop"
+  },
+  {
+   "t": 21.59,
+   "type": "whoosh"
+  },
+  {
+   "t": 21.74,
+   "type": "tock"
+  },
+  {
+   "t": 23.3,
+   "type": "alarm",
+   "dur": 0.8,
+   "gain": 0.4
+  },
+  {
+   "t": 24,
+   "type": "whoosh"
+  },
+  {
+   "t": 24.34,
+   "type": "slide",
+   "dur": 0.45
+  },
+  {
+   "t": 24.79,
+   "type": "thud",
+   "gain": 0.6
+  },
+  {
+   "t": 26.52,
+   "type": "thud"
+  },
+  {
+   "t": 26.8,
+   "type": "whoosh"
+  },
+  {
+   "t": 27.96,
+   "type": "sparkle",
+   "dur": 2.4199999999999973
+  },
+  {
+   "t": 30.528,
+   "type": "whoosh"
+  },
+  {
+   "t": 32.14,
+   "type": "pop",
+   "gain": 0.5
+  },
+  {
+   "t": 32.94,
+   "type": "boing",
+   "gain": 0.6
+  }
+ ]
+}

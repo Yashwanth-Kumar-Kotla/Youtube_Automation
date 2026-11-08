@@ -1,0 +1,73 @@
+{
+ "duration": 34.495,
+ "voice": "am_michael",
+ "speed": 1.15,
+ "lines": [
+  {
+   "i": 0,
+   "text": "What happens if you break your knuckle?",
+   "start": 0.4,
+   "end": 2.159
+  },
+  {
+   "i": 1,
+   "text": "Well, it usually happens when you punch something hard,",
+   "start": 2.398,
+   "end": 4.909
+  },
+  {
+   "i": 2,
+   "text": "like a wall, and the wall always wins.",
+   "start": 5.168,
+   "end": 7.802
+  },
+  {
+   "i": 3,
+   "text": "Your knuckles are the ends of the long bones in your hand,",
+   "start": 8.042,
+   "end": 10.672
+  },
+  {
+   "i": 4,
+   "text": "and the pinky one cracks so often that doctors call it a boxer's fracture.",
+   "start": 11.252,
+   "end": 15.391
+  },
+  {
+   "i": 5,
+   "text": "Within minutes, your hand swells up like a balloon,",
+   "start": 15.631,
+   "end": 18.281
+  },
+  {
+   "i": 6,
+   "text": "and that knuckle can actually sink in and disappear.",
+   "start": 18.771,
+   "end": 21.43
+  },
+  {
+   "i": 7,
+   "text": "A doctor's X-ray shows the crack,",
+   "start": 21.67,
+   "end": 23.54
+  },
+  {
+   "i": 8,
+   "text": "then a splint holds the bone still for about six weeks,",
+   "start": 24.08,
+   "end": 26.77
+  },
+  {
+   "i": 9,
+   "text": "while your body builds brand new bone right over the break.",
+   "start": 26.88,
+   "end": 30.368
+  },
+  {
+   "i": 10,
+   "text": "So next time you want to punch a wall, maybe don't.",
+   "start": 30.608,
+   "end": 33.355
+  }
+ ]
+}
