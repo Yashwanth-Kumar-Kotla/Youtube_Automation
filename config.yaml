@@ -44,7 +44,7 @@ channels:
     seed_topics: []
 
   mature:
-    enabled: true
+    enabled: false           # turn on once the channel exists (its YouTube token is saved)
     series: "After 40"
     style: inside-out
     kokoro_voice: am_michael
@@ -73,7 +73,7 @@ channels:
     seed_topics: []
 
   survival:
-    enabled: true
+    enabled: false           # turn on once the channel exists (its YouTube token is saved)
     series: "Would You Survive?"
     style: stick-story
     kokoro_voice: am_puck
