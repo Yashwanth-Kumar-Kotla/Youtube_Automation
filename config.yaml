@@ -19,8 +19,8 @@ channels:
     niche: "Body science for curious kids aged 7-12: what happens inside your body when something goes wrong or weird"
     audience: "kids 7-12 and their parents"
     tone: "warm, playful, amazed, simple words a 9-year-old understands, zero gore, never scary"
-    voice: en-US-AnaNeural       # child-friendly; alt: en-US-JennyNeural
-    rate: "+0%"
+    voice: en-US-BrianNeural     # adult, warm, upbeat (was a child-like voice)
+    rate: "+12%"
     pitch: "+0Hz"
     scenes: [6, 8]
     target_seconds: [40, 55]
@@ -61,7 +61,7 @@ channels:
     audience: "adults 40-70, health-conscious, US/UK/CA/AU"
     tone: "calm, trustworthy, clear, a doctor-friend explaining things, practical takeaway at the end"
     voice: en-US-AndrewNeural    # warm mature male; alt: en-US-AvaNeural
-    rate: "-4%"
+    rate: "+6%"
     pitch: "-2Hz"
     scenes: [6, 9]
     target_seconds: [45, 58]
@@ -99,7 +99,7 @@ channels:
     audience: "13-34, US, scrolling Shorts/TikTok"
     tone: "fast, punchy, escalating stakes, every sentence raises a new question, twist at the end"
     voice: en-US-ChristopherNeural   # alt: en-US-BrianNeural
-    rate: "+8%"
+    rate: "+15%"
     pitch: "+0Hz"
     scenes: [7, 9]
     target_seconds: [35, 50]
