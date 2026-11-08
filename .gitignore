@@ -1,5 +1,8 @@
 out/
+work/
 __pycache__/
 *.pyc
 client_secret*.json
 .env
+**/renders/
+**/review/

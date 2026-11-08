@@ -1,131 +1,101 @@
 # ---------------------------------------------------------------------------
-# AutoShorts config. One block per channel. Every channel runs daily.
-# Secrets are NEVER stored here. They come from env vars / GitHub Secrets.
+# AutoShorts config. One block per channel. Secrets NEVER go here (GitHub Secrets only).
+# A channel's creative rules live in memory/channels/<name>/BIBLE.md. This file is the machine settings.
 # ---------------------------------------------------------------------------
-timezone: America/Chicago     # used for YouTube publish times
+timezone: America/Chicago
+videos_per_day: 1            # per channel. Max 2 (YouTube "mass-produced" risk)
 
-llm:
-  model: claude-opus-5-5        # script quality drives views. ~$0.10-0.15 per script
+llm:                         # only used by the sketch fallback renderer (run.py)
+  model: claude-opus-5-5
   effort: medium
 
 render:
   fps: 30
-  # shorts = 1080x1920 (Shorts/TikTok/Reels); long = 1920x1080 (long-form YouTube, 10x the RPM)
   format: shorts
 
 channels:
-  kids:
+  body:
     enabled: true
-    niche: "Body science for curious kids aged 7-12: what happens inside your body when something goes wrong or weird"
-    audience: "kids 7-12 and their parents"
-    tone: "warm, playful, amazed, simple words a 9-year-old understands, zero gore, never scary"
-    voice: en-US-BrianNeural     # adult, warm, upbeat (was a child-like voice)
+    series: "Body Files"
+    style: inside-out          # faceless-shorts style; studio/body holds its growing kit
+    kokoro_voice: am_michael
+    kokoro_speed: 1.15
+    youtube:
+      enabled: true
+      made_for_kids: false     # general audience by design (see BIBLE)
+      category_id: "27"        # Education
+      publish_hour_local: 17
+    tiktok:
+      enabled: true
+      mode: draft              # draft until the TikTok app passes review, then: direct
+    scout_queries: ["what happens if body", "what happens to your body", "human body facts shorts"]
+    reddit_subs: [todayilearned, askscience, NoStupidQuestions, AskDocs]
+    # sketch fallback (run.py) settings
+    niche: "What-happens-if body and science explainers for a general audience"
+    audience: "13-35, curious, US/UK/CA/AU"
+    tone: "curious friend, matter-of-fact, a little dark humor, never gory"
+    voice: en-US-BrianNeural
     rate: "+12%"
     pitch: "+0Hz"
     scenes: [6, 8]
-    target_seconds: [40, 55]
+    target_seconds: [30, 45]
     accent: "#FF6B35"
-    youtube:
-      enabled: true
-      made_for_kids: true        # LEGALLY REQUIRED (COPPA) if the content is directed at children
-      category_id: "27"          # Education
-      publish_hour_local: 16     # after-school slot
-    tiktok:
-      enabled: false             # TikTok users must be 13+; kid-directed content does not belong there
     fact_check: true
-    seed_topics:
-      - What happens if you break your knuckle?
-      - What happens when you crack your knuckles?
-      - Why do you get goosebumps?
-      - What happens if you swallow gum?
-      - Why does your foot fall asleep?
-      - What happens when you get a brain freeze?
-      - Why do your fingers get wrinkly in the bath?
-      - What happens inside a scab?
-      - What happens when you sneeze?
-      - Why do you get hiccups?
-      - What happens when you lose a baby tooth?
-      - What happens if you don't brush your teeth for a month?
-      - Why does your tummy growl?
-      - What happens when you get a bruise?
-      - What happens when you break your arm and it heals?
-      - Why do you yawn when someone else yawns?
-      - What happens to your body when you are scared?
-      - Why do onions make you cry?
-      - What happens if you stay awake all night?
-      - What happens when a bee stings you?
+    seed_topics: []
 
   mature:
     enabled: true
-    niche: "Health, aging and longevity for people over 40: what happens to your body when you do (or stop doing) something every day"
-    audience: "adults 40-70, health-conscious, US/UK/CA/AU"
-    tone: "calm, trustworthy, clear, a doctor-friend explaining things, practical takeaway at the end"
-    voice: en-US-AndrewNeural    # warm mature male; alt: en-US-AvaNeural
-    rate: "+6%"
-    pitch: "-2Hz"
-    scenes: [6, 9]
-    target_seconds: [45, 58]
-    accent: "#2E86AB"
-    caption_scale: 1.15          # bigger captions for older eyes
+    series: "After 40"
+    style: inside-out
+    kokoro_voice: am_michael
+    kokoro_speed: 1.08
     youtube:
-      enabled: true
+      enabled: false           # flip to true once this channel exists and its token is saved
       made_for_kids: false
-      category_id: "26"          # Howto & Style (27 Education also works)
-      publish_hour_local: 7      # 40+ audience watches early morning
+      category_id: "26"
+      publish_hour_local: 7
     tiktok:
-      enabled: true
-      mode: draft                # draft = lands in TikTok inbox to add trending sound + post (works before audit)
+      enabled: false
+      mode: draft
+    scout_queries: ["what happens to your body after 40", "health after 50 shorts", "habits after 40"]
+    reddit_subs: [AskDocs, Fitness30plus, nutrition, longevity]
+    niche: "Health, aging and longevity for people over 40"
+    audience: "adults 40-70, US/UK/CA/AU"
+    tone: "calm, trustworthy doctor-friend, one practical takeaway"
+    voice: en-US-AndrewNeural
+    rate: "+6%"
+    pitch: "+0Hz"
+    scenes: [6, 9]
+    target_seconds: [35, 50]
+    accent: "#2E86AB"
+    caption_scale: 1.15
     fact_check: true
-    seed_topics:
-      - What happens to your body if you walk 30 minutes every day after 40?
-      - What happens to your body when you stop eating sugar for 14 days?
-      - What happens if you sleep less than 6 hours after 40?
-      - What happens to your muscles after 40 if you don't lift weights?
-      - What happens to your body when you drink water first thing in the morning?
-      - What happens to your blood pressure when you cut salt?
-      - What happens to your brain when you stop drinking alcohol for 30 days?
-      - What happens to your knees when you lose 10 pounds?
-      - What happens to your body when you eat 2 eggs every day?
-      - What happens if you sit for 8 hours a day?
-      - What happens to your bones after 50?
-      - What happens to your body when you quit smoking, hour by hour?
-      - What happens to your gut when you eat fermented food daily?
-      - What happens to your heart when you take the stairs every day?
-      - What happens to your body when you stop eating after 7 PM?
+    seed_topics: []
 
-  viral:
+  survival:
     enabled: true
-    niche: "Extreme 'what happens if' hypotheticals and body/science oddities with a shocking but true payoff"
-    audience: "13-34, US, scrolling Shorts/TikTok"
-    tone: "fast, punchy, escalating stakes, every sentence raises a new question, twist at the end"
-    voice: en-US-ChristopherNeural   # alt: en-US-BrianNeural
+    series: "Would You Survive?"
+    style: stick-story
+    kokoro_voice: am_puck
+    kokoro_speed: 1.15
+    youtube:
+      enabled: false
+      made_for_kids: false
+      category_id: "24"        # Entertainment
+      publish_hour_local: 18
+    tiktok:
+      enabled: false
+      mode: draft
+    scout_queries: ["what to do if survival", "how to survive shorts", "would you survive"]
+    reddit_subs: [Survival, preppers, LifeProTips, interestingasfuck]
+    niche: "What to do if you face a deadly situation: survival steps and myths"
+    audience: "13-30, US"
+    tone: "urgent, second person, lively"
+    voice: en-US-ChristopherNeural
     rate: "+15%"
     pitch: "+0Hz"
     scenes: [7, 9]
-    target_seconds: [35, 50]
+    target_seconds: [30, 45]
     accent: "#E63946"
-    youtube:
-      enabled: true
-      made_for_kids: false
-      category_id: "28"          # Science & Technology
-      publish_hour_local: 19
-    tiktok:
-      enabled: true
-      mode: draft
     fact_check: true
-    seed_topics:
-      - What happens if you don't sleep for 11 days?
-      - What happens if you fall into a black hole?
-      - What happens if you drink too much water?
-      - What happens to your body in space without a suit?
-      - What happens if you get struck by lightning?
-      - What happens if you stop eating for 30 days?
-      - What happens if you swallow a magnet?
-      - What happens if you stay underwater too long?
-      - What happens if you get bitten by a box jellyfish?
-      - What happens if you sit in a hot car for an hour?
-      - What happens if you fall from a plane without a parachute?
-      - What happens if the Sun disappeared for 1 minute?
-      - What happens if you eat only fast food for 30 days?
-      - What happens to your body at the top of Mount Everest?
-      - What happens if you get hit by a meteorite?
+    seed_topics: []
