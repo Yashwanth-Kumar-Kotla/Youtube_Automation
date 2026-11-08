@@ -1,0 +1,30 @@
+{
+  "title": "What Happens If You Skip Sleep for 11 Days?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NPR, 'Lessons from sleeplessness: The 60th anniversary of Randy Gardner's world record' (2024-01-28) https://www.npr.org/2024/01/28/1227217274/sleep-deprivation-record (17-year-old Randy Gardner stayed awake 11 consecutive days, 264 hours, in January 1964; trouble repeating simple tongue twisters within the first days; marked cognitive impairment by days nine and ten; movement skills largely unaffected)",
+    "NPR, 'Eleven Days Without Sleep: The Haunting Effects Of A Record-Breaking Stunt' (transcript) https://www.npr.org/transcripts/562305141 and 'The Haunting Effects Of Going Days Without Sleep' (2017) https://www.npr.org/2017/12/27/573739653/the-haunting-effects-of-going-days-without-sleep (slept about 14 hours 43 minutes afterwards; felt 'groggy, but not any groggier than a normal person'; later developed insomnia he attributes to the stunt)",
+    "NPR book excerpt, 'Dreamland: Adventures in the Strange Science of Sleep' (2012) https://www.npr.org/2012/08/03/158087291/excerpt-dreamland-adventures-in-the-strange-science-of-sleep (memory loss and minor hallucinations by day four or five)",
+    "Scientific American, 'How Long Can Humans Stay Awake?' https://www.scientificamerican.com/article/how-long-can-humans-stay/ (Gardner was 'awake' but basically cognitively dysfunctional by the end)",
+    "Cleveland Clinic, 'Sleep Deprivation' https://my.clevelandclinic.org/health/diseases/23970-sleep-deprivation (microsleeps = briefly falling asleep for only seconds before waking back up; trouble thinking, focusing and remembering; visual and tactile hallucinations in severe stages)"
+  ],
+  "lines": [
+    { "text": "Eleven days without sleep. What happens?", "caps": "ELEVEN *DAYS | WITHOUT *SLEEP | WHAT *HAPPENS?" },
+    { "text": "In nineteen sixty-four, a seventeen-year-old named Randy actually tried it,", "caps": "IN *1964 | A *17-YEAR-OLD | NAMED *RANDY" },
+    { "text": "but the weirdest part is how fast he bounced back.", "caps": "BUT THE *WEIRDEST | IS HOW *FAST | HE BOUNCED *BACK" },
+    { "text": "By day two, he couldn't say simple tongue twisters,", "caps": "BY DAY *2 | HE *COULDN'T SAY | TONGUE *TWISTERS" },
+    { "text": "and that's when microsleeps kick in, tiny naps lasting just seconds.", "caps": "AND THAT'S *WHEN | *MICROSLEEPS | TINY *NAPS | LASTING *SECONDS" },
+    { "text": "By day five, he was seeing things that weren't there,", "caps": "BY DAY *5 | HE WAS *SEEING | THINGS NOT *THERE" },
+    { "text": "and by the end, his brain was basically running on fumes.", "caps": "BY THE *END | HIS *BRAIN | RUNNING ON *FUMES" },
+    { "text": "Then he finally slept for about fourteen hours,", "caps": "THEN HE *FINALLY | *SLEPT | ABOUT 14 *HOURS" },
+    { "text": "and woke up, in his words, no groggier than normal.", "caps": "AND WOKE *UP | IN HIS *WORDS | NO *GROGGIER | THAN *NORMAL" },
+    { "text": "But years later, he got serious insomnia and blamed the stunt.", "caps": "BUT YEARS *LATER | HE GOT *INSOMNIA | AND *BLAMED | THE *STUNT" },
+    { "text": "So eleven days awake? Hard pass.", "caps": "SO ELEVEN *DAYS? | HARD *PASS" },
+    { "text": "Next Body File: what happens if you swallow a magnet.", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOU *SWALLOW | A *MAGNET" }
+  ]
+}
