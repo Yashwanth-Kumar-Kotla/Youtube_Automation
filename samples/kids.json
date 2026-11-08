@@ -1,0 +1,1383 @@
+{
+ "topic": "What happens if you break your knuckle?",
+ "hook_title": "What happens if you break your knuckle?",
+ "youtube_title": "What Happens If You Break Your Knuckle? (Explained for Kids)",
+ "description": "Ever wondered what happens inside your hand when you break a knuckle? Here's the whole story, from crack to healing! Subscribe for a new body science video every day.",
+ "hashtags": [
+  "bodyscience",
+  "kidslearning",
+  "science",
+  "humanbody",
+  "funfacts",
+  "shorts"
+ ],
+ "scenes": [
+  {
+   "narration": "What actually happens when you break your knuckle? It's not the bone you think, and the healing part is super weird.",
+   "on_screen_title": "OUCH!",
+   "strokes": [
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 330,
+       "y": 396
+      },
+      {
+       "x": 660,
+       "y": 616
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "bold"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 330,
+       "y": 330
+      },
+      {
+       "x": 412,
+       "y": 429
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 412,
+       "y": 330
+      },
+      {
+       "x": 495,
+       "y": 429
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 495,
+       "y": 330
+      },
+      {
+       "x": 577,
+       "y": 429
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 577,
+       "y": 330
+      },
+      {
+       "x": 660,
+       "y": 429
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "curve",
+     "points": [
+      {
+       "x": 330,
+       "y": 495
+      },
+      {
+       "x": 286,
+       "y": 550
+      },
+      {
+       "x": 374,
+       "y": 594
+      },
+      {
+       "x": 528,
+       "y": 583
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 700,
+       "y": 260
+      },
+      {
+       "x": 760,
+       "y": 200
+      }
+     ],
+     "text": "",
+     "color": "red",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 720,
+       "y": 320
+      },
+      {
+       "x": 810,
+       "y": 300
+      }
+     ],
+     "text": "",
+     "color": "red",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 640,
+       "y": 230
+      },
+      {
+       "x": 650,
+       "y": 150
+      }
+     ],
+     "text": "",
+     "color": "red",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 500,
+       "y": 760
+      }
+     ],
+     "text": "KNUCKLE?",
+     "color": "red",
+     "fill": "none",
+     "width": "normal"
+    }
+   ]
+  },
+  {
+   "narration": "Your knuckles are joints, the bendy spots where your finger bones meet the long bones in your hand.",
+   "on_screen_title": "INSIDE YOUR HAND",
+   "strokes": [
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 440,
+       "y": 120
+      },
+      {
+       "x": 560,
+       "y": 260
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "normal"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 440,
+       "y": 290
+      },
+      {
+       "x": 560,
+       "y": 440
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "normal"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 430,
+       "y": 520
+      },
+      {
+       "x": 570,
+       "y": 860
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 478,
+       "y": 253
+      },
+      {
+       "x": 522,
+       "y": 297
+      }
+     ],
+     "text": "",
+     "color": "blue",
+     "fill": "blue",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 466,
+       "y": 446
+      },
+      {
+       "x": 534,
+       "y": 514
+      }
+     ],
+     "text": "",
+     "color": "blue",
+     "fill": "blue",
+     "width": "normal"
+    },
+    {
+     "kind": "arrow",
+     "points": [
+      {
+       "x": 200,
+       "y": 600
+      },
+      {
+       "x": 300,
+       "y": 530
+      },
+      {
+       "x": 450,
+       "y": 485
+      }
+     ],
+     "text": "",
+     "color": "red",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 200,
+       "y": 660
+      }
+     ],
+     "text": "KNUCKLE",
+     "color": "red",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 790,
+       "y": 700
+      }
+     ],
+     "text": "HAND BONE",
+     "color": "blue",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "arrow",
+     "points": [
+      {
+       "x": 780,
+       "y": 650
+      },
+      {
+       "x": 590,
+       "y": 690
+      }
+     ],
+     "text": "",
+     "color": "blue",
+     "fill": "none",
+     "width": "normal"
+    }
+   ]
+  },
+  {
+   "narration": "Most broken knuckles happen from punching something hard, like a wall. Doctors even call it a boxer's fracture.",
+   "on_screen_title": "BOXER'S FRACTURE",
+   "strokes": [
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 700,
+       "y": 120
+      },
+      {
+       "x": 900,
+       "y": 880
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "orange",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 700,
+       "y": 320
+      },
+      {
+       "x": 900,
+       "y": 320
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 700,
+       "y": 520
+      },
+      {
+       "x": 900,
+       "y": 520
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 700,
+       "y": 720
+      },
+      {
+       "x": 900,
+       "y": 720
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 800,
+       "y": 120
+      },
+      {
+       "x": 800,
+       "y": 320
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 780,
+       "y": 520
+      },
+      {
+       "x": 780,
+       "y": 720
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 260,
+       "y": 452
+      },
+      {
+       "x": 620,
+       "y": 692
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "bold"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 260,
+       "y": 380
+      },
+      {
+       "x": 350,
+       "y": 488
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 350,
+       "y": 380
+      },
+      {
+       "x": 440,
+       "y": 488
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 440,
+       "y": 380
+      },
+      {
+       "x": 530,
+       "y": 488
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 530,
+       "y": 380
+      },
+      {
+       "x": 620,
+       "y": 488
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "curve",
+     "points": [
+      {
+       "x": 260,
+       "y": 560
+      },
+      {
+       "x": 212,
+       "y": 620
+      },
+      {
+       "x": 308,
+       "y": 668
+      },
+      {
+       "x": 476,
+       "y": 656
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 120,
+       "y": 470
+      },
+      {
+       "x": 40,
+       "y": 470
+      }
+     ],
+     "text": "",
+     "color": "gray",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 140,
+       "y": 560
+      },
+      {
+       "x": 60,
+       "y": 560
+      }
+     ],
+     "text": "",
+     "color": "gray",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 670,
+       "y": 400
+      },
+      {
+       "x": 630,
+       "y": 450
+      },
+      {
+       "x": 660,
+       "y": 500
+      },
+      {
+       "x": 620,
+       "y": 560
+      }
+     ],
+     "text": "",
+     "color": "red",
+     "fill": "none",
+     "width": "bold"
+    }
+   ]
+  },
+  {
+   "narration": "Then your hand swells up like a balloon, it turns purple, and making a fist really, really hurts.",
+   "on_screen_title": "SWELLING",
+   "strokes": [
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 120,
+       "y": 160
+      },
+      {
+       "x": 400,
+       "y": 440
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 198,
+       "y": 266
+      },
+      {
+       "x": 223,
+       "y": 291
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 296,
+       "y": 266
+      },
+      {
+       "x": 321,
+       "y": 291
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 239,
+       "y": 335
+      },
+      {
+       "x": 281,
+       "y": 377
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "red",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 480,
+       "y": 420
+      },
+      {
+       "x": 900,
+       "y": 800
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "purple",
+     "width": "bold"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 540,
+       "y": 340
+      },
+      {
+       "x": 620,
+       "y": 470
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "purple",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 620,
+       "y": 330
+      },
+      {
+       "x": 700,
+       "y": 460
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "purple",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 700,
+       "y": 340
+      },
+      {
+       "x": 780,
+       "y": 470
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "purple",
+     "width": "normal"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 780,
+       "y": 360
+      },
+      {
+       "x": 860,
+       "y": 480
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "purple",
+     "width": "normal"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 690,
+       "y": 880
+      }
+     ],
+     "text": "PUFFY!",
+     "color": "purple",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 160,
+       "y": 560
+      },
+      {
+       "x": 120,
+       "y": 640
+      }
+     ],
+     "text": "",
+     "color": "blue",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 340,
+       "y": 560
+      },
+      {
+       "x": 380,
+       "y": 640
+      }
+     ],
+     "text": "",
+     "color": "blue",
+     "fill": "none",
+     "width": "normal"
+    }
+   ]
+  },
+  {
+   "narration": "So a grown-up takes you to a doctor, who uses an X-ray to see the crack inside the bone.",
+   "on_screen_title": "X-RAY TIME",
+   "strokes": [
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 380,
+       "y": 160
+      },
+      {
+       "x": 900,
+       "y": 760
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "blue",
+     "width": "bold"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 600,
+       "y": 220
+      },
+      {
+       "x": 680,
+       "y": 420
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "normal"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 590,
+       "y": 460
+      },
+      {
+       "x": 690,
+       "y": 720
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 600,
+       "y": 540
+      },
+      {
+       "x": 640,
+       "y": 570
+      },
+      {
+       "x": 620,
+       "y": 600
+      },
+      {
+       "x": 690,
+       "y": 630
+      }
+     ],
+     "text": "",
+     "color": "red",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 100,
+       "y": 200
+      },
+      {
+       "x": 300,
+       "y": 400
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 156,
+       "y": 276
+      },
+      {
+       "x": 174,
+       "y": 294
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 226,
+       "y": 276
+      },
+      {
+       "x": 244,
+       "y": 294
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "curve",
+     "points": [
+      {
+       "x": 160,
+       "y": 330
+      },
+      {
+       "x": 200,
+       "y": 355
+      },
+      {
+       "x": 240,
+       "y": 330
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 200,
+       "y": 400
+      },
+      {
+       "x": 200,
+       "y": 700
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 200,
+       "y": 480
+      },
+      {
+       "x": 380,
+       "y": 420
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 200,
+       "y": 700
+      },
+      {
+       "x": 130,
+       "y": 860
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "line",
+     "points": [
+      {
+       "x": 200,
+       "y": 700
+      },
+      {
+       "x": 270,
+       "y": 860
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 640,
+       "y": 830
+      }
+     ],
+     "text": "CRACK!",
+     "color": "red",
+     "fill": "none",
+     "width": "normal"
+    }
+   ]
+  },
+  {
+   "narration": "But here's the weird part. Your body glues the bone back together with brand new bone, and in about six weeks, it's strong again.",
+   "on_screen_title": "SELF-HEALING",
+   "strokes": [
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 150,
+       "y": 420
+      },
+      {
+       "x": 430,
+       "y": 520
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "bold"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 470,
+       "y": 420
+      },
+      {
+       "x": 750,
+       "y": 520
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "white",
+     "width": "bold"
+    },
+    {
+     "kind": "ellipse",
+     "points": [
+      {
+       "x": 400,
+       "y": 380
+      },
+      {
+       "x": 500,
+       "y": 560
+      }
+     ],
+     "text": "",
+     "color": "green",
+     "fill": "green",
+     "width": "bold"
+    },
+    {
+     "kind": "arrow",
+     "points": [
+      {
+       "x": 450,
+       "y": 700
+      },
+      {
+       "x": 450,
+       "y": 580
+      }
+     ],
+     "text": "",
+     "color": "green",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 450,
+       "y": 760
+      }
+     ],
+     "text": "NEW BONE",
+     "color": "green",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "rect",
+     "points": [
+      {
+       "x": 780,
+       "y": 150
+      },
+      {
+       "x": 950,
+       "y": 330
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "yellow",
+     "width": "normal"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 865,
+       "y": 240
+      }
+     ],
+     "text": "6 WKS",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 80,
+       "y": 140
+      },
+      {
+       "x": 240,
+       "y": 300
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 124,
+       "y": 200
+      },
+      {
+       "x": 139,
+       "y": 215
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 180,
+       "y": 200
+      },
+      {
+       "x": 195,
+       "y": 215
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "curve",
+     "points": [
+      {
+       "x": 128,
+       "y": 244
+      },
+      {
+       "x": 160,
+       "y": 264
+      },
+      {
+       "x": 192,
+       "y": 244
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    }
+   ]
+  },
+  {
+   "narration": "So next time you feel like punching a wall, remember your knuckle would lose. And now you know why.",
+   "on_screen_title": "",
+   "strokes": [
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 310,
+       "y": 190
+      },
+      {
+       "x": 690,
+       "y": 570
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "skin",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 416,
+       "y": 334
+      },
+      {
+       "x": 450,
+       "y": 368
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "circle",
+     "points": [
+      {
+       "x": 549,
+       "y": 334
+      },
+      {
+       "x": 583,
+       "y": 368
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "gray",
+     "width": "normal"
+    },
+    {
+     "kind": "curve",
+     "points": [
+      {
+       "x": 424,
+       "y": 437
+      },
+      {
+       "x": 500,
+       "y": 484
+      },
+      {
+       "x": 576,
+       "y": 437
+      }
+     ],
+     "text": "",
+     "color": "ink",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "curve",
+     "points": [
+      {
+       "x": 330,
+       "y": 650
+      },
+      {
+       "x": 500,
+       "y": 600
+      },
+      {
+       "x": 670,
+       "y": 650
+      }
+     ],
+     "text": "",
+     "color": "green",
+     "fill": "none",
+     "width": "bold"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 500,
+       "y": 760
+      }
+     ],
+     "text": "PROTECT YOUR",
+     "color": "blue",
+     "fill": "none",
+     "width": "normal"
+    },
+    {
+     "kind": "text",
+     "points": [
+      {
+       "x": 500,
+       "y": 840
+      }
+     ],
+     "text": "KNUCKLES!",
+     "color": "blue",
+     "fill": "none",
+     "width": "normal"
+    }
+   ]
+  }
+ ]
+}
