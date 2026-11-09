@@ -1,6 +1,9 @@
 name: publish
 on:
   schedule: [{ cron: "23 * * * *" }]     # hourly: fill today's slots from stock (YouTube ahead of time, TikTok in its hour)
+  push:                                  # safety net while GitHub's scheduler warms up: also run when stock changes
+    branches: [main]
+    paths: ["state/stock/**", ".github/publish-request"]
   workflow_dispatch:
 permissions: { contents: write }
 concurrency: publish
