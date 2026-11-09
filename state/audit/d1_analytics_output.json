@@ -1,0 +1,36 @@
+{
+ "call": "youtubeAnalytics.reports.query",
+ "params": {
+  "ids": "channel==MINE",
+  "startDate": "2026-01-01",
+  "endDate": "2026-11-09",
+  "metrics": "views,averageViewPercentage,subscribersGained"
+ },
+ "response": {
+  "kind": "youtubeAnalytics#resultTable",
+  "columnHeaders": [
+   {
+    "name": "views",
+    "columnType": "METRIC",
+    "dataType": "INTEGER"
+   },
+   {
+    "name": "averageViewPercentage",
+    "columnType": "METRIC",
+    "dataType": "FLOAT"
+   },
+   {
+    "name": "subscribersGained",
+    "columnType": "METRIC",
+    "dataType": "INTEGER"
+   }
+  ],
+  "rows": [
+   [
+    0,
+    0,
+    0
+   ]
+  ]
+ }
+}

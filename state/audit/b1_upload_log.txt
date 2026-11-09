@@ -1,0 +1,11 @@
+$ python -m pipeline.publish --tag daily-2026-11-08   (2026-11-09T00:47:22Z)
+== daily-2026-11-08
+videos.insert part=snippet,status file=body.mp4 (8.5 MB)
+  snippet.title='What Happens If You Skip Sleep for 11 Days? | Body Files #1' categoryId=27 tags=6
+  status.privacyStatus=private publishAt=2026-11-09T17:00:00-06:00 selfDeclaredMadeForKids=False
+  -> 200 OK video id=bDqwxXxyJOI uploadStatus=uploaded privacyStatus=private
+[body] YouTube bDqwxXxyJOI scheduled 2026-11-09T17:00:00-06:00
+commentThreads.insert part=snippet videoId=bDqwxXxyJOI text="What's the longest you've ever stayed awake? And what was the weirdest thing you"
+[body] comment failed (non-fatal): <HttpError 403 when requesting https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&alt=json returned "The comment thread could not be created due to insufficient permissions. The request might not be properly authorized.". Details: "[{'message': 'The comment thread could not be created due to insufficient permissions. The request might not be properly authorized.', 'domain': 'youtube.commentThread', 'reason': 'forbidden', 'location': 'body', 'locationType': 'other'}]">
+[body] TikTok waits for 19:00 local (TikTok can't schedule via API)
+exit code 0

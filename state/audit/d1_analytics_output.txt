@@ -1,0 +1,5 @@
+$ youtubeAnalytics.reports.query(ids='channel==MINE', startDate='2026-01-01', endDate='2026-11-09', metrics='views,averageViewPercentage,subscribersGained')
+-> 200 OK
+
+                   views     averageViewPercentage         subscribersGained
+                       0                         0                         0
