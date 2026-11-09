@@ -184,7 +184,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
-    sys.exit(1 if run(a.dry_run) else 0)
+    fails = run(a.dry_run)
+    if not a.dry_run:
+        stock.sweep()
+    sys.exit(1 if fails else 0)
 
 
 if __name__ == "__main__":

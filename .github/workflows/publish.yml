@@ -1,9 +1,7 @@
 name: publish
 on:
-  push: { branches: ["media/**"] }
-  schedule: [{ cron: "23 * * * *" }]     # hourly safety net: posts any media/* branch not yet posted
+  schedule: [{ cron: "23 * * * *" }]     # hourly: fill today's slots from stock (YouTube ahead of time, TikTok in its hour)
   workflow_dispatch:
-    inputs: { tag: { description: "daily-YYYY-MM-DD (blank = all pending)", default: "" } }
 permissions: { contents: write }
 concurrency: publish
 jobs:
@@ -32,7 +30,7 @@ jobs:
           TIKTOK_SURVIVAL_REFRESH_TOKEN: ${{ secrets.TIKTOK_SURVIVAL_REFRESH_TOKEN }}
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
-        run: python -m pipeline.publish ${{ inputs.tag && format('--tag {0}', inputs.tag) || '--pending' }}
+        run: python -m pipeline.publish
       - name: Save results
         if: always()
         run: |

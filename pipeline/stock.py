@@ -106,8 +106,23 @@ def push_branch(branch: str, files: list[str]) -> None:
         shutil.rmtree(t, ignore_errors=True)
 
 
-def delete_branch(branch: str) -> None:
-    subprocess.run(["git", "-C", ROOT, "push", "-q", "origin", "--delete", branch], capture_output=True)
+def delete_branch(branch: str) -> bool:
+    """Works in GitHub Actions. Claude sessions can't delete branches, so the hourly publisher sweeps leftovers (sweep())."""
+    return subprocess.run(["git", "-C", ROOT, "push", "-q", "origin", "--delete", branch], capture_output=True).returncode == 0
+
+
+def sweep() -> None:
+    """Delete branches of posted/retired videos (and legacy media/* branches) that are still on the remote."""
+    out = subprocess.run(["git", "-C", ROOT, "ls-remote", "--heads", "origin"], capture_output=True, text=True).stdout
+    heads = {l.split("refs/heads/")[1] for l in out.splitlines() if "refs/heads/" in l}
+    keep = set()
+    for ch in CFG["channels"]:
+        for v in load(ch)["videos"].values():
+            if v["status"] in ("ready", "rework", "scheduled"):
+                keep.add(v["branch"])
+    for h in sorted(heads):
+        if (h.startswith("stock/") and h not in keep) or h.startswith("media/"):
+            print(f"sweep: deleting {h}", "ok" if delete_branch(h) else "FAILED")
 
 
 def room(ch: str, cluster: str | None = None) -> tuple[int, str]:
