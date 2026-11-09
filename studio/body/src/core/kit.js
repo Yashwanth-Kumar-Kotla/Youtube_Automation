@@ -1148,3 +1148,220 @@ export function waterJug(x, y, s, fill = 0.8, t = 0) {
   ctx.restore();
   ctx.restore();
 }
+
+// ═════════════════════════ WATER SET (2026-11-09 "drink too much water") ═════════════════════════
+const BLOOD = '#B83A55', BLOOD_D = '#A3304A', RBC = '#D62839', RBC_D = '#A81E2D', WATER_D = '#7EC3E0', BONE = '#F7F4EE', BONE_D = '#DCD3C3';
+
+/** plain drinking glass (tumbler, no text), pale blue water up to fill 0..1. Origin = glass centre, ~170x230 px at s = 1.
+ *  rot tilts it (drinking). Safe to put in the hero's hand with man({ holding }) */
+export function glass(x, y, s, fill = 0.7, t = 0, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const body = () => { ctx.beginPath(); ctx.moveTo(-85, -115); ctx.lineTo(85, -115); ctx.lineTo(68, 105); ctx.quadraticCurveTo(66, 118, 52, 118); ctx.lineTo(-52, 118); ctx.quadraticCurveTo(-66, 118, -68, 105); ctx.closePath(); };
+  body(); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.save(); ctx.scale(0.88, 0.92); body(); ctx.fillStyle = GLASS; ctx.fill(); body(); ctx.clip();
+  if (fill > 0) {
+    ctx.rotate(-rot);                                        // the water surface stays level when the glass tips
+    const lv = lerp(130, -110, clamp(fill));
+    ctx.beginPath(); ctx.moveTo(-200, 260); for (let xx = -200; xx <= 200; xx += 16) ctx.lineTo(xx, lv + Math.sin(xx * 0.05 + t * 4) * 5); ctx.lineTo(200, 260); ctx.closePath();
+    ctx.fillStyle = C.sky; ctx.fill();
+    ctx.rotate(rot);
+  }
+  rr(-58, -90, 18, 180, 9); ctx.fillStyle = C.white; ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  ctx.restore();
+}
+
+/** salt shaker (white body, grey shade, silver cap with holes). Origin = body centre, ~200x330 px at s = 1. rot tilts it.
+ *  sil = a colour draws it as a flat silhouette instead (mystery beat before the reveal) */
+export function saltShaker(x, y, s, rot = 0, sil = null) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  if (sil) {                                                 // flat one-colour silhouette (the "what is it?" beat)
+    rr(-90, -90, 180, 250, 50); ctx.fillStyle = sil; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-80, -90); ctx.quadraticCurveTo(-80, -170, 0, -170); ctx.quadraticCurveTo(80, -170, 80, -90); ctx.closePath(); ctx.fill();
+    rr(-90, -100, 180, 26, 12); ctx.fill(); ctx.restore(); return;
+  }
+  rr(-90, -90, 180, 250, 50); ctx.fillStyle = BONE_D; ctx.fill(); rr(-90, -90, 160, 250, 50); ctx.fillStyle = C.white; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-80, -90); ctx.quadraticCurveTo(-80, -170, 0, -170); ctx.quadraticCurveTo(80, -170, 80, -90); ctx.closePath(); ctx.fillStyle = C.gumEdge; ctx.fill();
+  rr(-90, -100, 180, 26, 12); ctx.fillStyle = '#B3AA9A'; ctx.fill();
+  for (const [hx, hy] of [[-30, -135], [0, -148], [30, -135], [-14, -118], [16, -118]]) circle(hx, hy, 7, C.ink);
+  ell(-52, -20, 12, 40, C.gum, 0); ctx.restore();
+}
+
+/** one salt (sodium) grain: little white cube with a shaded side. ~30 px at s = 1. a = alpha */
+export function saltGrain(x, y, s = 1, rot = 0, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  rr(-15, -15, 30, 30, 6); ctx.fillStyle = BONE_D; ctx.fill(); rr(-15, -15, 24, 24, 6); ctx.fillStyle = C.white; ctx.fill();
+  ctx.restore();
+}
+
+/** water drop (pale blue teardrop, darker edge, white glint). ~50x70 px at s = 1, tip points along rot (0 = up) */
+export function drop(x, y, s = 1, rot = 0, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const p = (k) => { ctx.beginPath(); ctx.moveTo(0, -40 * k); ctx.bezierCurveTo(14 * k, -18 * k, 26 * k, 0, 26 * k, 14 * k); ctx.arc(0, 14 * k, 26 * k, 0, Math.PI); ctx.bezierCurveTo(-26 * k, 0, -14 * k, -18 * k, 0, -40 * k); };
+  p(1.12); ctx.fillStyle = WATER_D; ctx.fill(); p(1); ctx.fillStyle = C.sky; ctx.fill();
+  ell(-9, 12, 6, 10, C.white, 0.3);
+  ctx.restore();
+}
+
+/** slim flat arrow in any colour (water flow = C.sky, pressure = C.red). len px, w = shaft width */
+export function flowArrow(x, y, len, ang = 0, a = 1, col = C.sky, w = 22) {
+  if (a <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.globalAlpha = clamp(a);
+  const hl = w * 2.2, hw = w * 1.7;
+  const p = () => { ctx.beginPath(); ctx.moveTo(-len / 2, -w / 2); ctx.lineTo(len / 2 - hl, -w / 2); ctx.lineTo(len / 2 - hl, -hw); ctx.lineTo(len / 2, 0); ctx.lineTo(len / 2 - hl, hw); ctx.lineTo(len / 2 - hl, w / 2); ctx.lineTo(-len / 2, w / 2); ctx.closePath(); };
+  ctx.lineJoin = 'round'; p(); ctx.lineWidth = 10; ctx.strokeStyle = col === C.sky ? WATER_D : RBC_D; ctx.stroke(); ctx.fillStyle = col; ctx.fill();
+  ctx.restore();
+}
+
+/** (F) inside a blood vessel, macro: deep pink-red with soft darker blobs and drifting red blood cells. t = film time */
+export function insideBlood(t) {
+  fillAll(BLOOD);
+  for (let i = 0; i < 7; i++) circle(rnd(i + 40) * W + Math.sin(t * 0.7 + i) * 24, rnd(i + 50) * H + Math.cos(t * 0.6 + i) * 24, 130 + rnd(i + 60) * 120, BLOOD_D);
+  for (let i = 0; i < 9; i++) {
+    const x = ((rnd(i + 70) * (W + 300) + t * (30 + rnd(i) * 30)) % (W + 300)) - 150, y = rnd(i + 80) * H;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rnd(i + 90) * 3); ctx.globalAlpha = 0.55;
+    ell(0, 0, 54, 40, RBC); ell(0, 0, 26, 18, RBC_D); ctx.restore();
+  }
+}
+
+/** a round body cell (soft pink, light rim, nucleus, glint). r = radius px. swell 0..1 puffs it up (+45%), stretches the
+ *  rim and shows blue water inside. Returns the drawn radius */
+export function cell(x, y, r, { swell = 0, t = 0, wob = 0 } = {}) {
+  const R = r * (1 + 0.45 * clamp(swell)), j = Math.sin(t * 12) * 0.03 * wob;
+  ctx.save(); ctx.translate(x, y); ctx.scale(1 + j, 1 - j);
+  circle(0, 0, R + 16, C.gum); circle(0, 0, R, C.pinkLight);
+  if (swell > 0) { ctx.save(); ctx.globalAlpha = 0.55 * clamp(swell); circle(0, R * 0.12, R * 0.82, C.sky); ctx.restore(); }
+  circle(R * 0.12, R * 0.1, r * 0.3 + 10, C.pinkDark); circle(R * 0.12, R * 0.1, r * 0.3, C.pink);
+  ell(-R * 0.45, -R * 0.5, R * 0.2, R * 0.09, C.white, -0.7);
+  if (swell > 0.6) { ctx.save(); ctx.globalAlpha = (swell - 0.6) / 0.4; ctx.strokeStyle = C.white; ctx.lineWidth = 8; ctx.lineCap = 'round';
+    for (const an of [0.3, 1.9, 3.6, 5.0]) { ctx.beginPath(); ctx.arc(0, 0, R + 34, an, an + 0.35); ctx.stroke(); } ctx.restore(); }
+  ctx.restore();
+  return R;
+}
+
+/** balance scale (ink graphic): post, beam, two pans. Left pan holds salt grains, right pan a water drop.
+ *  tilt in rad (+ = right side down). ~520x420 px at s = 1, origin = beam pivot */
+export function balance(x, y, s, tilt = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  rr(-14, 0, 28, 300, 10); ctx.fillStyle = C.ink; ctx.fill(); rr(-110, 290, 220, 34, 16); ctx.fill();
+  ctx.save(); ctx.rotate(tilt); line([[-230, 0], [230, 0]], C.ink, 18); ctx.restore();
+  circle(0, 0, 24, C.yellow);
+  for (const sd of [-1, 1]) {
+    const px = Math.cos(tilt) * 230 * sd, py = Math.sin(tilt) * 230 * sd;
+    line([[px, py], [px - 80, py + 140]], C.ink, 6); line([[px, py], [px + 80, py + 140]], C.ink, 6);
+    ctx.beginPath(); ctx.moveTo(px - 110, py + 140); ctx.quadraticCurveTo(px, py + 210, px + 110, py + 140); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+    if (sd < 0) { for (const [gx, gy] of [[-40, 118], [0, 112], [40, 118], [-20, 92], [20, 92], [0, 70]]) saltGrain(px + gx, py + gy, 1.1, gx * 0.01); }
+    else drop(px, py + 90, 1.2);
+  }
+  ctx.restore();
+}
+
+/** kidney (deep red bean, darker rim, pink highlight, ureter leaving the inner notch). flip = mirror (notch on the left).
+ *  ~260x380 px at s = 1. kidneyHilum gives the notch point in canvas coords */
+export function kidney(x, y, s, flip = false) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(flip ? -s : s, s);
+  const B = () => { ctx.beginPath(); ctx.moveTo(60, -40); ctx.bezierCurveTo(130, -100, 120, -200, 10, -190); ctx.bezierCurveTo(-140, -180, -150, 180, 10, 190);
+    ctx.bezierCurveTo(120, 200, 130, 100, 60, 40); ctx.quadraticCurveTo(40, 0, 60, -40); ctx.closePath(); };
+  B(); ctx.lineWidth = 22; ctx.strokeStyle = RBC_D; ctx.lineJoin = 'round'; ctx.stroke(); ctx.fillStyle = BLOOD; ctx.fill();
+  ctx.save(); ctx.translate(-10, -8); ctx.scale(0.86, 0.88); ctx.globalAlpha = 0.6; B(); ctx.fillStyle = C.pinkDark; ctx.fill(); ctx.restore();
+  ell(-50, -110, 34, 16, C.pinkLight, -0.9);
+  ctx.restore();
+}
+export const kidneyHilum = (x, y, s, flip = false) => [x + (flip ? -1 : 1) * 52 * s, y];
+
+/** speed gauge (graphic, no numbers): ink dial, green → yellow → red arc, red needle. level 0..1 (1 = red end). */
+export function speedGauge(x, y, s, level = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  ctx.beginPath(); ctx.arc(0, 0, 180, Math.PI, TAU); ctx.lineTo(180, 50); ctx.lineTo(-180, 50); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 154, Math.PI, TAU); ctx.lineTo(154, 30); ctx.lineTo(-154, 30); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  const band = (a0, a1, col) => { ctx.beginPath(); ctx.arc(0, 0, 122, Math.PI + a0 * Math.PI, Math.PI + a1 * Math.PI); ctx.strokeStyle = col; ctx.lineWidth = 30; ctx.lineCap = 'butt'; ctx.stroke(); };
+  band(0, 0.5, C.leaf); band(0.5, 0.75, C.yellow); band(0.75, 1, C.red);
+  ctx.save(); ctx.rotate(Math.PI + clamp(level) * Math.PI); rr(-10, -11, 135, 22, 11); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
+  circle(0, 0, 24, C.ink);
+  ctx.restore();
+}
+
+/** side-view skull outline for the x-ray film (cyan outline on dark film, face on the LEFT to match brain()).
+ *  Holds brain(x, y, s * 0.92) with room to swell. ~760x700 px at s = 1 */
+export function skull(x, y, s) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const P = () => { ctx.beginPath(); ctx.moveTo(-300, 140);
+    ctx.bezierCurveTo(-400, -60, -280, -330, 0, -330); ctx.bezierCurveTo(260, -330, 380, -160, 360, 40);
+    ctx.bezierCurveTo(350, 170, 300, 240, 200, 270); ctx.lineTo(120, 280); ctx.lineTo(80, 380); ctx.lineTo(-220, 380);
+    ctx.quadraticCurveTo(-270, 380, -280, 340); ctx.lineTo(-330, 300); ctx.lineTo(-320, 250); ctx.lineTo(-360, 230); ctx.quadraticCurveTo(-340, 180, -300, 140); ctx.closePath(); };
+  P(); ctx.fillStyle = C.xnavy; ctx.fill();
+  P(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 26; ctx.stroke();
+  ctx.save(); ctx.globalAlpha = 0.45; ctx.beginPath(); ctx.ellipse(-250, 140, 52, 46, 0, 0, TAU); ctx.strokeStyle = C.cyan; ctx.lineWidth = 12; ctx.stroke();
+  for (let i = 0; i < 6; i++) rr(-250 + i * 34, 330, 22, 40, 8), ctx.fillStyle = C.cyan, ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+
+/** red pressure arrows pushing OUT from inside an ellipse (rx, ry) toward its rim. p 0..1 = strength (alpha + push), t pulses */
+export function pressureArrows(x, y, rx, ry, p, t = 0, angs = [-2.6, -1.57, -0.55, 0.25, -3.4]) {
+  if (p <= 0) return;
+  const k = 0.5 + 0.5 * Math.sin(t * 10);
+  for (const an of angs) {
+    const d = 0.62 + 0.1 * p * k;
+    flowArrow(x + Math.cos(an) * rx * d, y + Math.sin(an) * ry * d, 120, an, clamp(p * 1.4), C.red, 20);
+  }
+}
+
+/** symptom badge: white disc with an ink ring and a simple icon. kind 'head' (red ache zigzags) | 'sick' (green queasy face)
+ *  | 'confused' (swirl + ?) | 'seizure' (brain with yellow spark lines). ~300 px wide at s = 1. sc = pop-in */
+export function symptom(kind, x, y, s, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const face = (col, eyes = 'n') => { circle(0, 6, 82, col); if (eyes === 'n') { ell(-28, -4, 9, 12, C.ink); ell(28, -4, 9, 12, C.ink); } };
+  if (kind === 'head') {
+    face(C.skin); line([[-26, 40], [26, 40]], C.mouth, 8);
+    line([[-24, -34], [-6, -26]], C.hair, 8); line([[24, -34], [6, -26]], C.hair, 8);
+    for (const sd of [-1, 1]) { const w = Math.sin(t * 14) * 4; line([[sd * 60, -88 + w], [sd * 78, -104], [sd * 70, -118], [sd * 92, -130 + w]], C.red, 10); }
+  } else if (kind === 'sick') {
+    face('#A8D8A0'); ctx.beginPath(); for (let i = 0; i <= 8; i++) ctx.lineTo(-30 + i * 7.5, 42 + (i % 2 ? -7 : 7)); ctx.strokeStyle = '#2F6B3A'; ctx.lineWidth = 7; ctx.stroke();
+    ell(-30, 34, 12, 7, C.leaf); ell(30, 34, 12, 7, C.leaf);
+  } else if (kind === 'confused') {
+    face(C.skin, 'x');
+    for (const sd of [-1, 1]) { ctx.beginPath(); for (let i = 0; i <= 24; i++) { const an = i / 24 * TAU * 1.5 + t * 6 * sd, r = 2 + i * 0.6; ctx.lineTo(sd * 30 + Math.cos(an) * r, -4 + Math.sin(an) * r); } ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.stroke(); }
+    ctx.beginPath(); ctx.moveTo(-20, 44); ctx.quadraticCurveTo(0, 34, 20, 46); ctx.strokeStyle = C.mouth; ctx.lineWidth = 7; ctx.stroke();
+    ctx.font = '900 70px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 12; ctx.strokeStyle = C.ink; ctx.strokeText('?', 78, -84); ctx.fillStyle = C.yellow; ctx.fillText('?', 78, -84);
+  } else if (kind === 'seizure') {
+    brain(0, 14, 0.36, { t, wob: 1 });
+    for (const [dx, dy, r] of [[-96, -70, -0.6], [96, -70, 0.6], [0, -112, 0]]) { ctx.save(); ctx.translate(dx, dy); ctx.rotate(r); line([[-8, 18], [8, 2], [-6, -6], [8, -22]], C.yellow, 9); ctx.restore(); }
+  }
+  ctx.restore();
+}
+
+/** endurance athlete icon: personIcon with a red headband and a white race bib (no number). sc = pop-in */
+export function athleteIcon(x, y, s, sc = 1, col = C.shirt) {
+  if (sc <= 0) return;
+  personIcon(x, y, s, col, sc);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-48, -104, 96, 18, 9); ctx.fillStyle = C.red; ctx.fill();
+  rr(-36, 14, 72, 58, 10); ctx.fillStyle = C.white; ctx.fill(); rr(-26, 30, 52, 10, 5); ctx.fillStyle = C.red; ctx.fill(); rr(-26, 48, 34, 8, 4); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.restore();
+}
+
+/** knuckle joint magnifier (graphic): ink lens ring + handle, inside two rounded bone ends with a pale fluid gap and a gas
+ *  bubble forming. bubble 0..1 grows it, pop 0..1 bursts it. r = lens radius. sc = pop-in */
+export function jointLens(x, y, r, { bubble = 0, pop = 0, t = 0 } = {}, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  ctx.save(); ctx.rotate(0.75); rr(r - 10, -26, r * 0.75, 52, 24); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore();
+  circle(0, 0, r + 22, C.ink); circle(0, 0, r, C.pinkLight);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  ell(0, 0, r * 0.95, r * 0.36, '#F7E7A8');                               // joint fluid
+  rr(-r * 0.5, -r * 1.3, r, r * 1.05, r * 0.5); ctx.fillStyle = BONE_D; ctx.fill(); rr(-r * 0.5, -r * 1.3, r * 0.86, r * 1.03, r * 0.45); ctx.fillStyle = BONE; ctx.fill();
+  rr(-r * 0.5, r * 0.25, r, r * 1.05, r * 0.5); ctx.fillStyle = BONE_D; ctx.fill(); rr(-r * 0.5, r * 0.25, r * 0.86, r * 1.03, r * 0.45); ctx.fillStyle = BONE; ctx.fill();
+  if (bubble > 0 && pop < 1) {
+    const br = Math.max(0, r * 0.2 * clamp(bubble) * (1 + pop * 0.6) + Math.sin(t * 8) * 2);
+    if (br > 0.5) { ctx.save(); ctx.globalAlpha = 1 - pop; circle(r * 0.12, 0, br + 6, WATER_D); circle(r * 0.12, 0, br, C.white); ell(r * 0.12 - br * 0.35, -br * 0.35, br * 0.25, br * 0.15, C.sky, -0.6); ctx.restore(); }
+  }
+  ctx.restore();
+  ell(-r * 0.5, -r * 0.55, r * 0.18, r * 0.08, C.white + '88', -0.7);
+  ctx.restore();
+}

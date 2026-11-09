@@ -1,0 +1,32 @@
+{
+  "title": "What Happens If You Drink Too Much Water?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Water Intoxication' (more water in your body than you need; in some people symptoms can develop after drinking about a gallon (3 to 4 liters) of water over an hour or two; more than 32 ounces (about a liter) per hour is probably too much; too much water in brain cells increases pressure on your brain; early symptoms nausea, vomiting, headache; severe symptoms confusion, seizure, coma; water intoxication death is rare; risk rises with sports that make you sweat a lot over a long period; drink water when you're thirsty): https://my.clevelandclinic.org/health/diseases/water-intoxication",
+    "Mayo Clinic, 'Hyponatremia' (sodium helps regulate the amount of water in and around your cells; drinking excessive amounts of water can cause low sodium by overwhelming the kidneys' ability to excrete water; water levels rise and cells begin to swell; risk from drinking too much water during endurance activities such as marathons and triathlons; drinking water is vital for your health): https://www.mayoclinic.org/diseases-conditions/hyponatremia/symptoms-causes/syc-20373711",
+    "MedlinePlus (NIH NLM), 'Low blood sodium' (when sodium outside cells drops below normal, water moves into the cells and they swell; brain cells are especially sensitive to swelling): https://medlineplus.gov/ency/article/000394.htm",
+    "Cleveland Clinic, 'Hyponatremia' (severe hyponatremia can cause swelling in your tissues, including your brain; symptoms headache, nausea, confusion, seizures; use thirst as your guide for how much water to drink unless your provider tells you otherwise): https://my.clevelandclinic.org/health/diseases/17762-hyponatremia",
+    "Tease (next video): Cleveland Clinic, 'Is Cracking Your Knuckles Bad for You?' (the pop involves gas in the synovial fluid that lubricates finger joints; knuckle cracking won't cause arthritis): https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you"
+  ],
+  "lines": [
+    { "text": "What happens if you drink too much water?", "caps": "WHAT *HAPPENS | IF YOU *DRINK | TOO MUCH *WATER?" },
+    { "text": "Chug about a gallon in an hour or two,", "caps": "*CHUG | ABOUT A *GALLON | IN AN *HOUR | OR *TWO" },
+    { "text": "and your brain can actually swell.", "caps": "AND YOUR *BRAIN | CAN ACTUALLY *SWELL" },
+    { "text": "The secret is salt.", "caps": "THE *SECRET | IS *SALT" },
+    { "text": "Sodium in your blood balances water in and around your cells.", "caps": "*SODIUM | IN YOUR *BLOOD | *BALANCES WATER | IN AND *AROUND | YOUR *CELLS" },
+    { "text": "Your kidneys flush the extra, but only so fast.", "caps": "YOUR *KIDNEYS | FLUSH THE *EXTRA | BUT *ONLY | SO *FAST" },
+    { "text": "Outrun them, and the water dilutes your sodium,", "caps": "*OUTRUN THEM | AND THE *WATER | *DILUTES | YOUR *SODIUM" },
+    { "text": "so water floods into your cells, and they swell.", "caps": "SO WATER *FLOODS | INTO YOUR *CELLS | AND THEY *SWELL" },
+    { "text": "In your brain, that swelling builds pressure.", "caps": "IN YOUR *BRAIN | THAT *SWELLING | BUILDS *PRESSURE" },
+    { "text": "That means headaches, nausea, even confusion or seizures.", "caps": "THAT *MEANS | *HEADACHES | *NAUSEA | EVEN *CONFUSION | OR *SEIZURES" },
+    { "text": "It's rare, but endurance athletes who overdo it are at risk.", "caps": "IT'S *RARE | BUT *ENDURANCE | *ATHLETES | WHO *OVERDO IT | ARE AT *RISK" },
+    { "text": "So don't fear water. Just drink when you're thirsty.", "caps": "SO DON'T *FEAR | *WATER | JUST *DRINK | WHEN YOU'RE *THIRSTY" },
+    { "text": "Next Body File: what happens if you crack your knuckles every day,", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOU *CRACK | YOUR *KNUCKLES | EVERY *DAY" },
+    { "text": "and what's really making that pop.", "caps": "AND WHAT'S *REALLY | MAKING THAT *POP" }
+  ]
+}
