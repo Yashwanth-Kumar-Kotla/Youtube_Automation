@@ -233,7 +233,15 @@ def pick(ch: str) -> dict | None:
     cutoff = now() - timedelta(days=S["max_age_days"])
     c = [v for v in live(data, ("ready",)).values()
          if v["confidence"] >= S["threshold"] and datetime.fromisoformat(v["made_at"]) > cutoff]
+    if S.get("order", "best") == "fifo":   # next-episode teases only work if videos post in the order they were made
+        return sorted(c, key=lambda v: v["id"])[0] if c else None
     return sorted(c, key=lambda v: (-v["confidence"], v["made_at"]))[0] if c else None
+
+
+def chain_next(ch: str) -> str | None:
+    """The topic the newest stocked (or last posted) video promised. The next video made must be this topic."""
+    vs = sorted(load(ch)["videos"].values(), key=lambda v: v["id"])
+    return vs[-1].get("teases") if vs else None
 
 
 def mark_posted(ch: str, vid: str, info: dict) -> None:
@@ -285,8 +293,11 @@ def status(ch: str) -> None:
     for v in ready.values():
         clusters[v.get("topic_cluster", "?")] = clusters.get(v.get("topic_cluster", "?"), 0) + 1
     full = [k for k, n in clusters.items() if n >= S["max_per_cluster"]]
+    ending = CFG["channels"][ch].get("ending", "series_cta")
+    must = chain_next(ch) or (CFG["channels"][ch].get("chain_start") if ending == "tease_next" else None)
     print(json.dumps({"channel": ch, "ready": len(ready), "cap": S["cap"], "room_left": left, "room_reason": why,
-                      "rework": sorted(rework), "full_clusters": full,
+                      "rework": sorted(rework), "full_clusters": full, "order": S.get("order", "best"), "ending": ending,
+                      "next_topic_must_be": must if ending == "tease_next" else None,
                       "next_to_post": (pick(ch) or {}).get("id")}, indent=1))
 
 

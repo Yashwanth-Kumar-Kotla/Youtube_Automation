@@ -14,6 +14,7 @@ stock:
   threshold: 0.4             # below this a video is never posted; it goes to rework
   start_confidence: 0.7
   max_age_days: 42           # older stock is retired automatically
+  order: fifo                # fifo = post in the order made (needed for next-episode teases); best = highest confidence first
 
 llm:                         # only used by the sketch fallback renderer (run.py)
   model: claude-opus-5-5
@@ -30,6 +31,8 @@ channels:
     style: inside-out          # faceless-shorts style; studio/body holds its growing kit
     kokoro_voice: am_michael
     kokoro_speed: 1.15
+    ending: tease_next         # tease_next = each video names the next one (chain); series_cta = generic follow line
+    chain_start: "What happens if you swallow a magnet?"   # promised by the live Body Files #1
     slots:                     # posts per day = number of slots (max 3; stay at 1-2 until the API audit passes)
       - {youtube: 17, tiktok: 19}   # local hours: YouTube goes public / TikTok is sent
     youtube:
@@ -62,6 +65,7 @@ channels:
     style: inside-out
     kokoro_voice: am_michael
     kokoro_speed: 1.08
+    ending: tease_next         # tease_next = each video names the next one (chain); series_cta = generic follow line
     slots:                     # posts per day = number of slots (max 3; stay at 1-2 until the API audit passes)
       - {youtube: 7, tiktok: 12}   # local hours: YouTube goes public / TikTok is sent
     youtube:
@@ -94,6 +98,7 @@ channels:
     style: stick-story
     kokoro_voice: am_puck
     kokoro_speed: 1.15
+    ending: tease_next         # tease_next = each video names the next one (chain); series_cta = generic follow line
     slots:                     # posts per day = number of slots (max 3; stay at 1-2 until the API audit passes)
       - {youtube: 18, tiktok: 20}   # local hours: YouTube goes public / TikTok is sent
     youtube:

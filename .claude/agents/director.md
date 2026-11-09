@@ -11,4 +11,5 @@ in the style's look (bin/episode.sh finish copies kit.js back to studio/<channel
 Run `node tools/capture.mjs check` until CHECK OK, then `node tools/capture.mjs cues`, then `../../vendor/faceless-shorts/scripts/py tools/mix.py .` (path relative to work/<dir>). Do not render the final video; hand back to qa.
 
 End card: the series badge shows the series name only (e.g. "BODY FILES"), never an episode number, plus the FOLLOW pill.
-Videos are posted out of order, so nothing on screen may refer to "next" or "#N".
+If meta.json has "teases", the last shot shows the teased topic (its key object + a "NEXT" pill) like Body Files #1's magnet ending;
+the hero never acts out anything dangerous (no object near the mouth, no copying the stunt). Without "teases", show no "next".

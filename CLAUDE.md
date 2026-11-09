@@ -15,11 +15,14 @@ Videos go into a per-channel **stock**, not straight to posting. The hourly `pub
    pick the enabled channel with the fewest ready videos that still has room (`bin/episode.sh room <ch>`), then
    a. `d=$(bin/episode.sh new <ch>)`
    b. **writer** agent (channel + $d) → `$d/script.json` + `$d/meta.json` (with stock tags), topic marked used in BACKLOG.
+      If `room` shows `next_topic_must_be`, tell the writer: that topic is mandatory (a posted or stocked video promised it).
       Set script.json "voice"/"speed" from config `kokoro_voice`/`kokoro_speed`.
    c. `bin/episode.sh voice $d`
    d. **director** agent → `$d/src/shots.js` (+ kit components) until `node tools/capture.mjs check` says CHECK OK; then cues + mix.
-   e. **qa** agent → `$d/qa.md`. On FAIL: director fixes, qa again (max 2 rounds). Still failing → skip this topic (put it back in
-      BACKLOG "Up next" with a note) and move on. Never stock a video that didn't PASS.
+   e. **qa** agent → `$d/qa.md`. On FAIL: director fixes, qa again (max 2 rounds). Never stock a video that didn't PASS.
+      Still failing: in `tease_next` mode the promised topic can't be skipped, so start it over once from scratch with a simpler
+      visual approach; if that fails too, stop the run and add an OWNER_TODO line (the chain is blocked). Otherwise skip the topic
+      (put it back in BACKLOG "Up next" with a note) and move on.
    f. `bin/episode.sh finish <ch> $d` (exit 4 = stock or topic cluster full → pick another topic/channel).
    g. **Commit and push after every video** (`state/ memory/ studio/ archive/`), so nothing is lost if the run stops early.
 3. If every enabled channel is full, add a dated line to memory/OWNER_TODO.md suggesting a new channel (it needs the owner to create it).

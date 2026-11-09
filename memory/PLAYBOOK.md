@@ -15,8 +15,10 @@ _Last updated: 2026-11-08 (initial version, from known best practice; no own dat
 
 ## Subscribe beat
 - The series name is on the end card and in the title (the publisher appends "| Body Files #N" when it posts).
-- Videos post out of order from stock, so the final line is a series CTA ("Follow for a new Body File every day"), never a
-  specific next topic and never an episode number in the video itself. Still never a generic "like and subscribe".
+- Ending hook (config `ending`): `tease_next` = the final line teases the NEXT video with one vivid detail ("Next Body File: what
+  happens if you swallow a magnet") and stock posts in order (`stock.order: fifo`), so every tease comes true the next day.
+  `series_cta` = "Follow for a new Body File every day". Never an episode number in the video. Never a generic "like and subscribe".
+- Week of 2026-11-09: every channel uses `tease_next` (experiment E4). The review decides whether to keep it.
 - A follow pill animates in during the payoff, never in the first 70% of the video.
 - Pinned comment = a question viewers want to answer ("Have you ever broken a bone? Which one?").
 

@@ -1,6 +1,6 @@
 # BACKLOG: body (ranked; the scout and analyst re-rank weekly)
 ## Up next
-1. What happens if you swallow a magnet?
+1. What happens if you swallow a magnet? (promised by Body Files #1: make this first)
 2. What happens if you hold your pee too long?
 3. What happens if you get struck by lightning?
 4. What happens if you drink too much water?
