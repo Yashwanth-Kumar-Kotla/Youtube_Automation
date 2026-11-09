@@ -3,7 +3,13 @@
 # A channel's creative rules live in memory/channels/<name>/BIBLE.md. This file is the machine settings.
 # ---------------------------------------------------------------------------
 timezone: America/Chicago
-videos_per_day: 1            # per channel. Max 2 (YouTube "mass-produced" risk)
+# Stock: videos are made ahead, scored, and posted best-first (docs/AUTOPILOT.md, "Stock").
+stock:
+  cap: 30                    # max ready videos per channel; past this, spare capacity goes to new channels / hook tests
+  max_per_cluster: 2         # max ready videos per topic cluster (keeps variety, protects the backlog)
+  threshold: 0.4             # below this a video is never posted; it goes to rework
+  start_confidence: 0.7
+  max_age_days: 42           # older stock is retired automatically
 
 llm:                         # only used by the sketch fallback renderer (run.py)
   model: claude-opus-5-5
@@ -20,6 +26,8 @@ channels:
     style: inside-out          # faceless-shorts style; studio/body holds its growing kit
     kokoro_voice: am_michael
     kokoro_speed: 1.15
+    slots:                     # posts per day = number of slots (max 3; stay at 1-2 until the API audit passes)
+      - {youtube: 17, tiktok: 19}   # local hours: YouTube goes public / TikTok is sent
     youtube:
       enabled: true
       made_for_kids: false     # general audience by design (see BIBLE)
@@ -50,6 +58,8 @@ channels:
     style: inside-out
     kokoro_voice: am_michael
     kokoro_speed: 1.08
+    slots:                     # posts per day = number of slots (max 3; stay at 1-2 until the API audit passes)
+      - {youtube: 7, tiktok: 12}   # local hours: YouTube goes public / TikTok is sent
     youtube:
       enabled: false           # flip to true once this channel exists and its token is saved
       made_for_kids: false
@@ -80,6 +90,8 @@ channels:
     style: stick-story
     kokoro_voice: am_puck
     kokoro_speed: 1.15
+    slots:                     # posts per day = number of slots (max 3; stay at 1-2 until the API audit passes)
+      - {youtube: 18, tiktok: 20}   # local hours: YouTube goes public / TikTok is sent
     youtube:
       enabled: false
       made_for_kids: false
