@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-11-09T00:13:27+00:00",
+  "channels": {
+    "body": {
+      "scopes": [
+        "youtube.force-ssl",
+        "youtube.readonly",
+        "youtube.upload",
+        "yt-analytics.readonly"
+      ],
+      "channel_title": "whif",
+      "channel_id": "UCGlXMTRZY_iJk6DxGXzs6bg",
+      "subscribers": "0",
+      "videos": "0",
+      "long_uploads_status": "eligible",
+      "analytics": "ok",
+      "missing_scopes": []
+    }
+  },
+  "secrets_present": {
+    "YT_CLIENT_ID": true,
+    "YT_CLIENT_SECRET": true,
+    "YT_API_KEY": true,
+    "YT_BODY_REFRESH_TOKEN": true,
+    "YT_MATURE_REFRESH_TOKEN": false,
+    "YT_SURVIVAL_REFRESH_TOKEN": false,
+    "TIKTOK_CLIENT_KEY": false,
+    "TIKTOK_CLIENT_SECRET": false
+  },
+  "api_key": "ok"
+}
