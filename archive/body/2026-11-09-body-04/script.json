@@ -1,0 +1,33 @@
+{
+  "title": "What Happens If You Crack Your Knuckles Every Day?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Is Cracking Your Knuckles Bad for You?' (the pop involves gas in the synovial fluid that lubricates your finger joints; long-held view: the gas bubbles and bursts; a 2015 study suggests a gas-filled cavity forming; Dr. Baker compares it to uncorking a wine bottle; popping your knuckles won't cause arthritis, several studies failed to show an association; as long as you're not feeling pain or having swelling it's probably OK; cracking shouldn't cause pain; if you notice swelling see a healthcare provider): https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you",
+    "Harvard Health Publishing, 'Knuckle cracking: Annoying and harmful, or just annoying?' (increasing the space between finger joints causes gas bubbles in the joint fluid to collapse or burst; you can't crack the same knuckle again right away because it takes time for the gas bubbles to accumulate again; a California doctor cracked the knuckles of only one hand and after decades x-rays showed no difference in arthritis between his hands; a 1990 study of 74 crackers and 226 non-crackers found the same incidence of arthritis, and a larger study reached a similar conclusion): https://www.health.harvard.edu/blog/knuckle-cracking-annoying-and-harmful-or-just-annoying-2018051413797",
+    "Scientific American, 'Crack Research: Good news about knuckle cracking' (Dr. Donald Unger cracked the knuckles of his left hand at least twice a day for about 50 years, leaving the right hand as a control; 'no arthritis in either hand, and no apparent differences between the two hands'; Ig Nobel Prize in Medicine 2009; original letter: Unger DL, Arthritis Rheum 1998;41(5):949-50): https://www.scientificamerican.com/article/crack-research/",
+    "Tease (next video, a question only, no claim made here): what happens if you sneeze with your eyes open; facts to be sourced in that video"
+  ],
+  "lines": [
+    { "text": "What happens if you crack your knuckles every day?", "caps": "WHAT *HAPPENS | IF YOU *CRACK | YOUR *KNUCKLES | EVERY *DAY?" },
+    { "text": "Everyone warns you about arthritis,", "caps": "EVERYONE *WARNS | YOU ABOUT *ARTHRITIS" },
+    { "text": "but first, what's actually making that pop?", "caps": "BUT FIRST, *WHAT'S | *ACTUALLY | MAKING THAT *POP?" },
+    { "text": "Your knuckles sit in slippery joint fluid,", "caps": "YOUR *KNUCKLES | SIT IN *SLIPPERY | JOINT *FLUID" },
+    { "text": "and that fluid holds gas.", "caps": "AND THAT *FLUID | HOLDS *GAS" },
+    { "text": "Pull the joint apart, the space widens,", "caps": "*PULL THE JOINT | *APART | THE SPACE *WIDENS" },
+    { "text": "and the gas goes pop, like uncorking a bottle.", "caps": "AND THE *GAS | GOES *POP | LIKE *UNCORKING | A *BOTTLE" },
+    { "text": "That gas needs time to build back up,", "caps": "THAT *GAS | NEEDS *TIME | TO *BUILD | BACK *UP" },
+    { "text": "so you can't crack it again right away.", "caps": "SO YOU *CAN'T | CRACK IT *AGAIN | RIGHT *AWAY" },
+    { "text": "So, arthritis? One doctor tested it on himself.", "caps": "SO, *ARTHRITIS? | ONE *DOCTOR | *TESTED IT | ON *HIMSELF" },
+    { "text": "For fifty years, he cracked his left hand", "caps": "FOR *50 YEARS | HE *CRACKED | HIS *LEFT HAND" },
+    { "text": "at least twice a day, and never his right.", "caps": "AT LEAST *TWICE | A *DAY | AND *NEVER | HIS *RIGHT" },
+    { "text": "Result? No arthritis in either hand, and bigger studies agree.", "caps": "*RESULT? | NO *ARTHRITIS | IN EITHER *HAND | AND BIGGER *STUDIES | *AGREE" },
+    { "text": "If it hurts or swells, see a doctor.", "caps": "IF IT *HURTS | OR *SWELLS | SEE A *DOCTOR" },
+    { "text": "Next Body File: what happens if you sneeze with your eyes open,", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOU *SNEEZE | WITH YOUR *EYES | *OPEN" },
+    { "text": "and could your eyeballs really pop out?", "caps": "AND *COULD | YOUR *EYEBALLS | REALLY *POP OUT?" }
+  ]
+}

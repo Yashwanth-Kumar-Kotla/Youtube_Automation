@@ -248,7 +248,8 @@ function arm(side, pose, finger, xr) {
     return;
   }
   line([sh, e], C.skin, 50); line([e, h], C.skin, 44);
-  line([sh, [lerp(sh[0], e[0], 0.55), lerp(sh[1], e[1], 0.55)]], C.shirt, 72);       // short sleeve
+  if (_coat) { const wr = [lerp(e[0], h[0], 0.7), lerp(e[1], h[1], 0.7)]; line([sh, e, wr], COAT_D, 70); line([sh, e, wr], C.white, 60); }   // long lab-coat sleeve
+  else line([sh, [lerp(sh[0], e[0], 0.55), lerp(sh[1], e[1], 0.55)]], C.shirt, 72);       // short sleeve
   if (finger != null) { ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(finger); rr(-11, -86, 22, 80, 11); ctx.fillStyle = C.skin; ctx.fill(); ctx.restore(); }
   ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(ang); ell(6, 0, 34, 28, C.skin); ell(-2, -sx * 22, 15, 10, C.skin, -0.5 * sx); ctx.restore();
 }
@@ -274,17 +275,18 @@ function skeletonTorso(pulse) {
 }
 function head(o) {
   ctx.save(); ctx.translate(0, -350);
-  ell(0, -34, 116, 94, C.hair);
+  const HC = o.hairCol || C.hair;
+  ell(0, -34, 116, 94, HC);
   for (const sd of [-1, 1]) { ell(sd * 104, 14, 22, 28, C.skin); ell(sd * 106, 14, 10, 15, C.skinShade); }
   ell(0, 12, 102, 112, C.skin);
   // fringe with side part
   ctx.beginPath(); ctx.moveTo(-104, -6); ctx.quadraticCurveTo(-118, -112, -14, -124); ctx.quadraticCurveTo(96, -132, 112, -26);
   ctx.quadraticCurveTo(92, -70, 40, -74); ctx.quadraticCurveTo(-20, -76, -58, -50); ctx.quadraticCurveTo(-86, -34, -104, -6); ctx.closePath();
-  ctx.fillStyle = C.hair; ctx.fill(); rr(-106, -40, 18, 46, 8); ctx.fill(); rr(88, -40, 18, 46, 8); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(-60, -98); ctx.quadraticCurveTo(0, -118, 62, -96); ctx.strokeStyle = C.hairHi; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.stroke();
+  ctx.fillStyle = HC; ctx.fill(); rr(-106, -40, 18, 46, 8); ctx.fill(); rr(88, -40, 18, 46, 8); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-60, -98); ctx.quadraticCurveTo(0, -118, 62, -96); ctx.strokeStyle = o.hairCol ? C.white + '88' : C.hairHi; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.stroke();
   // brows: brow 0..1 raises them; smirk tilts
   const br = (o.brow || 0) * 16, tl = o.smirk ? 1 : 0, fr = o.frown ? 1 : 0;
-  ctx.strokeStyle = C.hair; ctx.lineWidth = 12;
+  ctx.strokeStyle = o.hairCol ? '#8E877B' : C.hair; ctx.lineWidth = 12;
   ctx.beginPath(); ctx.moveTo(-66, -26 - br - fr * 6); ctx.quadraticCurveTo(-44, -40 - br - tl * 4, -20, -32 - br + tl * 6 + fr * 12); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(20, -32 - br - tl * 8 + fr * 12); ctx.quadraticCurveTo(44, -42 - br - tl * 10, 66, -28 - br - tl * 6 - fr * 6); ctx.stroke();
   // eyes: 'n' | 'wide' | 'closed'
@@ -311,6 +313,7 @@ function head(o) {
       }
     }
   }
+  if (o.glasses) { ctx.strokeStyle = C.ink; ctx.lineWidth = 6; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 6, 28, 0, TAU); ctx.stroke(); } line([[-12, 2], [12, 2]], C.ink, 6); }
   ctx.beginPath(); ctx.moveTo(4, 26); ctx.quadraticCurveTo(16, 44, 0, 48); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.stroke();
   ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 62, 46, 20, 12, C.pink); ctx.globalAlpha = 1;
   // mouth: 'smile' | 'smirk' | 'chew' | 'o' | 'flat' | 'grin'
@@ -328,8 +331,10 @@ function head(o) {
  *   xray (bool: whole body becomes x-ray, head stays normal), pulse (stomach swell 0..1),
  *   holding: [drawFn(x, y)] drawn at the right hand, inside: [x, y, rot] a gum drawn inside the body (local coords) }
  */
+let _coat = false;
+const COAT_D = '#DCD6CB';
 export function man(o) {
-  const s = o.s || 1, XR = !!o.xray;
+  const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR;
   ctx.save(); ctx.translate(o.x, o.y); ctx.scale(s, s);
   if (XR) {
     for (const x of [-128, 6]) {
@@ -349,14 +354,33 @@ export function man(o) {
     torsoPath(); ctx.fillStyle = C.shirt; ctx.fill();
     ctx.save(); torsoPath(); ctx.clip(); ctx.beginPath(); ctx.moveTo(95, -220); ctx.quadraticCurveTo(70, 0, 100, 220); ctx.lineTo(200, 220); ctx.lineTo(200, -220); ctx.closePath(); ctx.fillStyle = C.shirtShade; ctx.fill(); ctx.restore();
     ctx.beginPath(); ctx.ellipse(0, -214, 46, 26, 0, 0, Math.PI); ctx.fillStyle = C.skin; ctx.fill(); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 12; ctx.stroke();
+    if (_coat) labCoat();
   }
   head(o);
   const ra = o.arm || ARM.down;
   arm(1, ra, o.finger ?? null, XR);
   if (o.holding) o.holding(ra.h[0] - 34, ra.h[1] - 14);
   if (o.inside) gum(o.inside[0], o.inside[1], 0.5, o.inside[2] || 0);
-  ctx.restore();
+  ctx.restore(); _coat = false;
 }
+/** white lab coat over the torso (open V showing the blue tee), lapels, pocket + pen, ink stethoscope */
+function labCoat() {
+  ctx.save(); torsoPath(); ctx.clip();
+  torsoPath(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(105, -220); ctx.quadraticCurveTo(80, 0, 110, 220); ctx.lineTo(200, 220); ctx.lineTo(200, -220); ctx.closePath(); ctx.fillStyle = COAT_D; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-58, -220); ctx.lineTo(0, -40); ctx.lineTo(58, -220); ctx.closePath(); ctx.fillStyle = C.shirt; ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.ellipse(0, -214, 46, 26, 0, 0, Math.PI); ctx.fillStyle = C.skin; ctx.fill();
+  line([[-58, -214], [-8, -50], [-14, 210]], COAT_D, 9); line([[58, -214], [8, -50]], COAT_D, 9);
+  for (const by of [-10, 70, 150]) circle(14, by, 8, COAT_D);
+  rr(-130, -90, 74, 16, 6); ctx.fillStyle = COAT_D; ctx.fill(); rr(-112, -126, 12, 44, 6); ctx.fillStyle = C.red; ctx.fill();
+  ctx.lineCap = 'round'; ctx.strokeStyle = C.ink; ctx.lineWidth = 9;
+  ctx.beginPath(); ctx.moveTo(-50, -205); ctx.quadraticCurveTo(-78, -90, -38, -60); ctx.moveTo(50, -205); ctx.quadraticCurveTo(78, -90, 38, -60); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-38, -60); ctx.quadraticCurveTo(0, -30, 38, -60); ctx.moveTo(38, -60); ctx.quadraticCurveTo(60, 10, 40, 50); ctx.stroke();
+  circle(40, 62, 20, C.ink); circle(40, 62, 13, C.gumEdge);
+}
+/** the doctor of the knuckle story: a man() in a white lab coat with grey hair + round glasses (not the hero) */
+export function doctor(o) { man({ hairCol: '#B9B2A6', glasses: true, ...o, coat: true }); }
 /** follow FOOD_PATH: u 0..1 → [x, y] in the man's local coords */
 export function foodAt(u) {
   const P = FOOD_PATH, n = P.length - 1, k = clamp(u) * n, i = Math.min(n - 1, Math.floor(k)), f = k - i;
@@ -373,13 +397,14 @@ const fingerPts = (f) => { const [kx, ky, len] = f; return [[kx, ky], [kx * 1.06
 export const knuckleAt = (i) => [FINGERS[i][0], FINGERS[i][1]];
 
 /** flat skin hand. puff 0..1 swells it (balloon), bruise 0..1 reddens it, splint 0..1 slides a splint on (pinky side) */
-export function handSkin(x, y, s, { puff = 0, bruise = 0, splint = 0, rot = 0 } = {}) {
+export function handSkin(x, y, s, { puff = 0, bruise = 0, splint = 0, rot = 0, sleeve = C.shirt } = {}) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * (1 + puff * 0.18), s * (1 + puff * 0.08));
   const fw = 64 + puff * 26;
   const tone = bruise > 0 ? C.pinkLight : C.skin;
   ctx.lineCap = 'round';
   // wrist + sleeve
-  line([[0, 160], [0, 420]], C.skin, 210); rr(-125, 330, 250, 200, 30); ctx.fillStyle = C.shirt; ctx.fill();
+  line([[0, 160], [0, 420]], C.skin, 210); rr(-125, 330, 250, 200, 30); ctx.fillStyle = sleeve; ctx.fill();
+  if (sleeve !== C.shirt) { rr(75, 330, 50, 200, [0, 30, 30, 0]); ctx.fillStyle = sleeve === C.white ? COAT_D : C.shirtShade; ctx.fill(); }
   // thumb
   line([[-120, 150], [-205, 30], [-245, -60]], C.skin, fw + 8);
   // palm
@@ -1206,12 +1231,12 @@ export function drop(x, y, s = 1, rot = 0, a = 1) {
 }
 
 /** slim flat arrow in any colour (water flow = C.sky, pressure = C.red). len px, w = shaft width */
-export function flowArrow(x, y, len, ang = 0, a = 1, col = C.sky, w = 22) {
+export function flowArrow(x, y, len, ang = 0, a = 1, col = C.sky, w = 22, edge = null) {
   if (a <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.globalAlpha = clamp(a);
   const hl = w * 2.2, hw = w * 1.7;
   const p = () => { ctx.beginPath(); ctx.moveTo(-len / 2, -w / 2); ctx.lineTo(len / 2 - hl, -w / 2); ctx.lineTo(len / 2 - hl, -hw); ctx.lineTo(len / 2, 0); ctx.lineTo(len / 2 - hl, hw); ctx.lineTo(len / 2 - hl, w / 2); ctx.lineTo(-len / 2, w / 2); ctx.closePath(); };
-  ctx.lineJoin = 'round'; p(); ctx.lineWidth = 10; ctx.strokeStyle = col === C.sky ? WATER_D : RBC_D; ctx.stroke(); ctx.fillStyle = col; ctx.fill();
+  ctx.lineJoin = 'round'; p(); ctx.lineWidth = 10; ctx.strokeStyle = edge || (col === C.sky ? WATER_D : RBC_D); ctx.stroke(); ctx.fillStyle = col; ctx.fill();
   ctx.restore();
 }
 
@@ -1363,5 +1388,155 @@ export function jointLens(x, y, r, { bubble = 0, pop = 0, t = 0 } = {}, sc = 1) 
   }
   ctx.restore();
   ell(-r * 0.5, -r * 0.55, r * 0.18, r * 0.08, C.white + '88', -0.7);
+  ctx.restore();
+}
+
+// ═════════════════════════ KNUCKLE SET (2026-11-09 "crack your knuckles every day") ═════════════════════════
+const FLUID = '#F7E7A8', FLUID_D = '#E9D488', CYAN_D = '#3BB2CA', GLASS_G = '#5BAE6A', GLASS_GD = '#468F55', CORK = '#C8734A', CORK_D = '#A85E3A';
+
+/** clean knuckle-joint cutaway for the x-ray film, lying SIDEWAYS: hand bone (round head) from the left, finger bone
+ *  (shallow cup) from the right, white cartilage caps, a pink capsule full of pale joint fluid.
+ *  gap 0..1 pulls the bones apart (0 → 130 px at s = 1), gas 0..1 shows tiny dissolved gas dots in the fluid,
+ *  gather 0..1 drifts those dots into the gap, bubble 0..1 grows one gas cavity in the gap, pop 0..1 bursts it,
+ *  shine 0..1 slides white "slippery" glints through the fluid. Width ~890 px at gap 1, height ~470 px. Origin = joint centre */
+export function jointCutaway(x, y, s, { gap = 0, gas = 0, gather = 0, bubble = 0, pop = 0, shine = 0, t = 0 } = {}) {
+  const g = 130 * clamp(gap), hg = g / 2, LEN = 330;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // capsule + fluid
+  const cap = () => rr(-hg - 215, -230, 430 + g, 460, 150);
+  cap(); ctx.fillStyle = C.pinkDark; ctx.fill();
+  ctx.save(); ctx.translate(0, 0); rr(-hg - 199, -214, 398 + g, 428, 136); ctx.fillStyle = C.pink; ctx.fill(); ctx.restore();
+  rr(-hg - 181, -196, 362 + g, 392, 120); ctx.fillStyle = FLUID; ctx.fill();
+  ctx.save(); ctx.globalAlpha = 0.5; ell(0, 150, 150 + hg, 26, FLUID_D); ctx.restore();
+  if (shine > 0) {
+    ctx.save(); ctx.globalAlpha = 0.85 * clamp(shine); ctx.strokeStyle = C.white; ctx.lineWidth = 10;
+    for (const [yy, k] of [[-160, 0], [165, 0.5]]) { const sx = lerp(-150, 150, (t * 0.7 + k) % 1); ctx.beginPath(); ctx.moveTo(sx - 40, yy + 4); ctx.quadraticCurveTo(sx, yy - 6, sx + 40, yy + 4); ctx.stroke(); }
+    ctx.restore();
+  }
+  // bones: the hand bone (left, round head) and the finger bone (right, cup)
+  const boneL = () => { ctx.beginPath(); ctx.moveTo(-hg - LEN - 40, -70); ctx.lineTo(-hg - 120, -78); ctx.bezierCurveTo(-hg - 60, -140, -hg + 4, -90, -hg + 4, 0);
+    ctx.bezierCurveTo(-hg + 4, 90, -hg - 60, 140, -hg - 120, 78); ctx.lineTo(-hg - LEN - 40, 70); ctx.closePath(); };
+  const boneR = () => { ctx.beginPath(); ctx.moveTo(hg + 8, -112); ctx.quadraticCurveTo(hg + 56, 0, hg + 8, 112); ctx.lineTo(hg + 70, 104); ctx.lineTo(hg + 140, 66);
+    ctx.lineTo(hg + LEN + 40, 60); ctx.lineTo(hg + LEN + 40, -60); ctx.lineTo(hg + 140, -66); ctx.lineTo(hg + 70, -104); ctx.closePath(); };
+  for (const [B, kx] of [[boneL, -1], [boneR, 1]]) {
+    B(); ctx.fillStyle = CYAN_D; ctx.fill();
+    ctx.save(); ctx.translate(0, -8); B(); ctx.fillStyle = C.cyan; ctx.fill(); ctx.restore();
+    const ex = kx * (hg + LEN + 40);                                       // the far end: a rounded knob
+    ell(ex, 0, 64, 92, CYAN_D); ell(ex, -6, 60, 86, C.cyan);
+    ell(kx * (hg + LEN * 0.55), -40, 80, 10, C.white + '77');
+  }
+  // cartilage caps (white) on the two joint faces
+  ctx.strokeStyle = C.white; ctx.lineWidth = 14;
+  ctx.beginPath(); ctx.moveTo(-hg - 44, -110); ctx.bezierCurveTo(-hg - 6, -84, -hg - 6, 84, -hg - 44, 110); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(hg + 16, -100); ctx.quadraticCurveTo(hg + 62, 0, hg + 16, 100); ctx.stroke();
+  // dissolved gas dots: in the fluid pockets above/below the bones, drifting to the gap with gather
+  const GD = [[-120, -165, 9], [-40, -175, 7], [60, -168, 10], [140, -160, 7], [-90, 168, 8], [10, 175, 10], [110, 165, 8], [-160, 150, 6], [170, -140, 6], [180, 150, 7]];
+  if (gas > 0) {
+    GD.forEach(([gx, gy, r], i) => {
+      const k = eioK(clamp(gather * 1.2 - i * 0.02)), px = lerp(gx + Math.sin(t * 2 + i) * 6, 0, k), py = lerp(gy + Math.cos(t * 1.7 + i) * 4, 0, k);
+      ctx.save(); ctx.globalAlpha = clamp(gas) * (1 - k * 0.9); circle(px, py, r + 3, WATER_D_K); circle(px, py, r, C.white); ctx.restore();
+    });
+  }
+  // the gas cavity in the gap, and its burst
+  if (bubble > 0 && pop < 1) {
+    const br = Math.max(0, 52 * clamp(bubble) * (1 + 0.5 * clamp(pop)) + Math.sin(t * 7) * 2);
+    if (br > 0.5) { ctx.save(); ctx.globalAlpha = 1 - clamp(pop); ell(0, 0, br * 1.25 + 6, br + 6, WATER_D_K); ell(0, 0, br * 1.25, br, C.white); ell(-br * 0.4, -br * 0.4, br * 0.3, br * 0.16, C.sky, -0.5); ctx.restore(); }
+  }
+  if (pop > 0 && pop < 1) {
+    ctx.save(); ctx.globalAlpha = 1 - pop; ctx.strokeStyle = C.white; ctx.lineWidth = 10;
+    ctx.beginPath(); ctx.ellipse(0, 0, Math.max(0, 70 + pop * 120), Math.max(0, 56 + pop * 100), 0, 0, TAU); ctx.stroke();
+    for (let i = 0; i < 6; i++) { const an = i * TAU / 6 + 0.3, d = 60 + pop * 140; circle(Math.cos(an) * d, Math.sin(an) * d * 0.8, Math.max(0, 9 * (1 - pop)), C.white); }
+    ctx.restore();
+  }
+  ctx.restore();
+}
+const WATER_D_K = '#7EC3E0';
+const eioK = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+/** canvas half-width of the jointCutaway at (s, gap): handy to keep the bone ends inside the frame */
+export const jointHalfW = (s, gap = 0) => (65 * clamp(gap) + 330 + 40 + 64) * s;
+
+/** green bottle with a cork (flat, darker shade, white glint). pop 0..1 shoots the cork up-right, spinning.
+ *  corkA 0..1 = cork alpha (fade it out while it is still flying so it never hangs mid-air).
+ *  Origin = body centre; ~150x520 px at s = 1 (cork top at -370) */
+export function bottle(x, y, s, pop = 0, corkA = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const body = () => { ctx.beginPath(); ctx.moveTo(-34, -300); ctx.lineTo(34, -300); ctx.lineTo(34, -190); ctx.bezierCurveTo(34, -150, 95, -150, 95, -90);
+    ctx.lineTo(95, 150); ctx.quadraticCurveTo(95, 170, 75, 170); ctx.lineTo(-75, 170); ctx.quadraticCurveTo(-95, 170, -95, 150); ctx.lineTo(-95, -90); ctx.bezierCurveTo(-95, -150, -34, -150, -34, -190); ctx.closePath(); };
+  body(); ctx.fillStyle = GLASS_GD; ctx.fill();
+  ctx.save(); ctx.translate(-8, 0); ctx.scale(0.9, 1); body(); ctx.fillStyle = GLASS_G; ctx.fill(); ctx.restore();
+  rr(-95, -40, 190, 120, 6); ctx.fillStyle = C.white; ctx.fill(); rr(-95, -40, 190, 18, 4); ctx.fillStyle = C.gumEdge; ctx.fill();
+  rr(-64, -110, 16, 60, 8); ctx.fillStyle = C.white + '99'; ctx.fill();
+  rr(-40, -312, 80, 22, 10); ctx.fillStyle = GLASS_GD; ctx.fill();
+  const p = clamp(pop);
+  ctx.save(); ctx.globalAlpha = clamp(corkA); ctx.translate(p * 260, -330 - p * 300 + p * p * 120); ctx.rotate(p * 4.2);
+  rr(-30, -40, 60, 80, 12); ctx.fillStyle = CORK_D; ctx.fill(); rr(-30, -40, 48, 80, [12, 0, 0, 12]); ctx.fillStyle = CORK; ctx.fill();
+  circle(-10, -14, 5, CORK_D); circle(6, 14, 4, CORK_D);
+  ctx.restore();
+  if (p > 0 && p < 1) { ctx.save(); ctx.globalAlpha = 1 - p; for (let i = 0; i < 5; i++) circle(-30 + i * 15 + Math.sin(i * 2) * 10, -330 - p * 90 - (i % 2) * 24, Math.max(0, 14 + p * 16 - i * 2), C.white); ctx.restore(); }
+  ctx.restore();
+}
+/** where the cork is (canvas) for bottle(x, y, s, pop) */
+export const corkAt = (x, y, s, pop = 0) => { const p = clamp(pop); return [x + p * 260 * s, y + (-330 - p * 300 + p * p * 120) * s]; };
+
+/** green check badge (ink ring, green disc, white tick). sc = pop-in. ~120 px wide at s = 1 */
+export function checkMark(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 60, C.ink); circle(0, 0, 50, GLASS_G); ell(-18, -24, 16, 8, C.white + '66', -0.6);
+  line([[-24, 2], [-6, 22], [26, -18]], C.white, 14);
+  ctx.restore();
+}
+
+/** a stack of three fanned study clipboards (bigger studies). p 0..1 deals them in one by one */
+export function studyStack(x, y, s, p = 1) {
+  [[-0.16, -70, 20], [0.12, 70, 10], [0, 0, 0]].forEach(([rot, dx, dy], i) => {
+    const k = clamp(p * 3 - i); if (k <= 0) return;
+    clipboard(x + dx * s, y + dy * s + (1 - eoK(k)) * -260 * s, s, 1, rot);
+  });
+}
+const eoK = (t) => 1 - Math.pow(1 - t, 3);
+
+/** "see a doctor" badge: white disc, ink ring, a person icon with a white coat collar and a red cross. sc = pop-in */
+export function doctorBadge(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  personIcon(0, 30, 0.9, C.shirt);
+  ctx.beginPath(); ctx.moveTo(-52, 20); ctx.lineTo(0, 70); ctx.lineTo(52, 20); ctx.lineTo(52, 100); ctx.lineTo(-52, 100); ctx.closePath(); ctx.fillStyle = C.white; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1;
+  rr(-10, 46, 20, 50, 4); ctx.fillStyle = C.red; ctx.fill(); rr(-25, 61, 50, 20, 4); ctx.fill();
+  ctx.restore();
+}
+
+/** next-episode tease: a cartoon face mid-sneeze in a white badge. Eyes stay squeezed SHUT (the reflex).
+ *  p 0..1: 0 = "ah-" (head back, mouth open), 1 = "-choo" (head forward, soft white puffs out to the right). sc = pop-in */
+export function sneezeBadge(x, y, s = 1, p = 0, t = 0, sc = 1) {
+  if (sc <= 0) return;
+  const k = clamp(p);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip();
+  ctx.save(); ctx.translate(-14, 10); ctx.rotate(lerp(-0.18, 0.14, k));
+  ell(0, -46, 92, 66, C.hair); ell(0, 6, 84, 92, C.skin); ell(-86, 8, 16, 22, C.skin);
+  ctx.beginPath(); ctx.moveTo(-84, -20); ctx.quadraticCurveTo(-70, -96, 10, -96); ctx.quadraticCurveTo(80, -98, 90, -30); ctx.quadraticCurveTo(50, -64, -10, -58); ctx.quadraticCurveTo(-56, -50, -84, -20); ctx.closePath(); ctx.fillStyle = C.hair; ctx.fill();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 30 - 16, -18); ctx.lineTo(sd * 30 + sd * 6, -8); ctx.lineTo(sd * 30 - 16, 2); ctx.stroke(); }   // > < squeezed shut
+  ctx.strokeStyle = C.hair; ctx.lineWidth = 8;
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 48, -40); ctx.quadraticCurveTo(sd * 30, -48 + k * 6, sd * 12, -36 + k * 6); ctx.stroke(); }
+  ctx.strokeStyle = C.skinShade; ctx.lineWidth = 5; for (const dy of [-2, 8]) { ctx.beginPath(); ctx.moveTo(-6, dy); ctx.lineTo(6, dy); ctx.stroke(); }   // scrunched nose
+  ell(0, 20, 12, 10, C.skinShade);
+  ell(0, 58, lerp(18, 28, k), lerp(20, 14, k), C.mouth);
+  ctx.globalAlpha = 0.35; for (const sd of [-1, 1]) ell(sd * 56, 34, 16, 10, C.pink); ctx.globalAlpha = 1;
+  ctx.restore();
+  ctx.restore();
+  if (k > 0) {
+    for (let i = 0; i < 5; i++) {
+      const ph = clamp(k * 1.6 - i * 0.12), an = -0.5 + i * 0.25, d = 80 + ph * 110;
+      if (ph <= 0) continue;
+      ctx.save(); ctx.globalAlpha = 0.9 * (1 - ph * 0.5); circle(30 + Math.cos(an) * d, 64 + Math.sin(an) * d * 0.6, Math.max(0, 16 - i * 2), C.sky); ctx.restore();
+    }
+    ctx.save(); ctx.globalAlpha = clamp(k * 2); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round';
+    for (const an of [-0.5, 0, 0.5]) line([[150 * Math.cos(an) + 14, 60 + 120 * Math.sin(an)], [190 * Math.cos(an) + 14, 60 + 150 * Math.sin(an)]], C.ink, 8);
+    ctx.restore();
+  }
   ctx.restore();
 }

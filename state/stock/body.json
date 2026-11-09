@@ -134,6 +134,39 @@
    "branch": "stock/body/2026-11-09-body-03",
    "history": [],
    "description": "Drinking about a gallon of water in an hour or two can dilute your blood sodium, so water moves into your cells and they swell, including in your brain. It's rare, and drinking water is vital: drink when you're thirsty.\nNext Body File: what happens if you crack your knuckles every day, and what's really making that pop.\nFollow Body Files for a new one every day.\n#bodyfiles #water #hydration #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/water-intoxication\nMayo Clinic: https://www.mayoclinic.org/diseases-conditions/hyponatremia/symptoms-causes/syc-20373711\nMedlinePlus (NIH): https://medlineplus.gov/ency/article/000394.htm\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia\nCleveland Clinic: https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you"
+  },
+  "2026-11-09-body-04": {
+   "title": "What Happens If You Crack Your Knuckles Every Day?",
+   "hashtags": [
+    "#bodyfiles",
+    "#knuckles",
+    "#arthritis",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts"
+   ],
+   "pinned_comment": "Be honest: how many times a day do you crack your knuckles?",
+   "series": "Body Files",
+   "topic": "What happens if you crack your knuckles every day?",
+   "experiment_arm": "E1-B (hook without a number: lines 1-2 have no number; 'fifty years' only appears later in line 11); E4 tease_next",
+   "teases": "What happens if you sneeze with your eyes open?",
+   "topic_cluster": "joints",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the water video (2026-11-09-body-3) with the 'what's really making that pop' tease (paid off in lines 3-7)",
+   "hook_pattern": "question+myth-loop",
+   "format": "myth-bust",
+   "id": "2026-11-09-body-04",
+   "channel": "body",
+   "made_at": "2026-11-09T15:53-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 43.0,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-09-body-04",
+   "history": [],
+   "description": "The pop is gas in the fluid that lubricates your finger joints, and it needs time to build back up before that knuckle cracks again. Studies, including one doctor who cracked only his left hand for about 50 years, found no link to arthritis. If it hurts or swells, see a doctor.\nNext Body File: what happens if you sneeze with your eyes open, and could your eyeballs really pop out?\nFollow Body Files for a new one every day.\n#bodyfiles #knuckles #arthritis #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you\nHarvard Health: https://www.health.harvard.edu/blog/knuckle-cracking-annoying-and-harmful-or-just-annoying-2018051413797\nScientific American: https://www.scientificamerican.com/article/crack-research/"
   }
  }
 }
