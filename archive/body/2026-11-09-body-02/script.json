@@ -1,0 +1,33 @@
+{
+  "title": "What Happens If You Get Struck by Lightning?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NWS (NOAA), 'How Hot Is Lightning?' (lightning can heat the air it passes through to 50,000 degrees Fahrenheit, 5 times hotter than the surface of the sun): https://www.weather.gov/safety/lightning-temperature",
+    "NWS (NOAA), 'How Dangerous is Lightning?' (only about 10% of people who are struck by lightning are killed, leaving 90% with various degrees of disability): https://www.weather.gov/safety/lightning-odds",
+    "Tadler M et al., 'Multi-organ injuries due to a lightning strike', Case Reports in Plastic Surgery & Hand Surgery 2017, NIH PMC (flashover: the lightning current does not break the skin resistance and passes over the skin surface into the ground; cardiac arrest and ventricular fibrillation are the most serious cardiac complications, usually fatal unless resuscitation starts immediately; Lichtenberg figures are a transient reddish ferning pattern on the skin): https://pmc.ncbi.nlm.nih.gov/articles/PMC5253516/",
+    "NWS (NOAA), 'Medical Aspects of Lightning' (lightning is primarily an injury to the nervous system; people who do not suffer cardiac arrest at the time may have lesser symptoms; serious burns seldom occur): https://www.weather.gov/safety/lightning-medical",
+    "Byard RW, 'Lichtenberg figures: morphological findings', Forensic Sci Med Pathol 2023, NIH PMC (transient lines of erythema with a fern-like pattern; appear approximately 1 h after a strike; they are not burns; fade within hours in survivors; seen in only 17-33% of lightning cases): https://pmc.ncbi.nlm.nih.gov/articles/PMC10329080/",
+    "NWS (NOAA), 'Dr. Lightning' victims guide (lightning victims do not carry an electrical charge, are safe to touch and may need urgent medical attention; call 9-1-1, begin CPR and use an AED if available): https://www.weather.gov/media/safety/Dr_Lightning_Guide-Victims.pdf",
+    "NWS (NOAA), 'Lightning Safety' ('When Thunder Roars, Go Indoors'; the only completely safe action is to get inside a safe building or vehicle): https://www.weather.gov/safety/lightning",
+    "Tease (next video): Cleveland Clinic, 'Hyponatremia' (too much water dilutes blood sodium; severe cases can cause swelling in tissues, including the brain): https://my.clevelandclinic.org/health/diseases/17762-hyponatremia"
+  ],
+  "lines": [
+    { "text": "What happens if you get struck by lightning?", "caps": "WHAT *HAPPENS | IF YOU *GET | *STRUCK | BY *LIGHTNING?" },
+    { "text": "Most people actually survive, but some get a weird souvenir.", "caps": "MOST *PEOPLE | ACTUALLY *SURVIVE | BUT *SOME GET | A WEIRD *SOUVENIR" },
+    { "text": "The bolt heats the air around it five times hotter than the sun's surface,", "caps": "THE *BOLT | HEATS THE *AIR | 5 TIMES *HOTTER | THAN THE *SUN" },
+    { "text": "but the current can skim over your skin instead of going through you.", "caps": "BUT THE *CURRENT | CAN *SKIM | OVER YOUR *SKIN | INSTEAD OF *GOING | *THROUGH YOU" },
+    { "text": "In fact, about nine in ten people who get struck survive.", "caps": "IN *FACT | ABOUT *9 | IN *10 | WHO GET *STRUCK | *SURVIVE" },
+    { "text": "The real danger? Your heart can suddenly stop.", "caps": "THE REAL *DANGER? | YOUR *HEART | CAN SUDDENLY *STOP" },
+    { "text": "The souvenir? About an hour later, a red fern can spread across your skin.", "caps": "THE *SOUVENIR? | ABOUT AN *HOUR | A RED *FERN | ACROSS YOUR *SKIN" },
+    { "text": "It's called a Lichtenberg figure. Not a burn, and it fades within hours.", "caps": "IT'S *CALLED | A *LICHTENBERG | *FIGURE | NOT A *BURN | IT *FADES" },
+    { "text": "If someone gets struck, they're safe to touch, so call nine-one-one and start CPR.", "caps": "IF *SOMEONE | GETS *STRUCK | THEY'RE *SAFE | TO *TOUCH | CALL *911 | START *CPR" },
+    { "text": "So when thunder roars, go indoors.", "caps": "SO WHEN *THUNDER | *ROARS | GO *INDOORS" },
+    { "text": "Next Body File: what happens if you drink too much water,", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOU *DRINK | TOO MUCH *WATER" },
+    { "text": "and why it can make your brain swell.", "caps": "AND *WHY | IT CAN *MAKE | YOUR *BRAIN | *SWELL" }
+  ]
+}

@@ -927,3 +927,224 @@ export function fernPatch(x, y, r, p = 1) {
   ctx.beginPath(); ctx.arc(0, 0, r - 14, Math.PI * 1.1, Math.PI * 1.45); ctx.strokeStyle = C.white; ctx.globalAlpha = 0.6; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke(); ctx.globalAlpha = 1;
   ctx.restore();
 }
+
+// ═════════════════════════ LIGHTNING SET (2026-11-09 "struck by lightning") ═════════════════════════
+const SKY = '#34405A', SKY_D = '#26314A', SLATE = '#2B3A55', SLATE_L = '#3D4F6E', SUN_D = '#F2B807', GLASS = '#DCEFF7';
+
+/** THE room for every real-world shot of the channel: room() with the plant and the picture painted out (they sat
+ *  behind the hero). Window stays at x 600-960, y 230-670. Add stormWindow(t, ...) after it for bad weather */
+export function home() {
+  room(); ctx.fillStyle = C.bg; ctx.fillRect(80, 1040, 200, 320); ctx.fillRect(90, 310, 240, 190);
+}
+
+/** (E) outdoor storm: slate sky, darker ground from y = ground. flash 0..1 lightens it (the strike) */
+export function skyBg(t, flash = 0, ground = 1160) {
+  fillAll(SKY);
+  ctx.fillStyle = SKY_D; ctx.beginPath(); ctx.moveTo(-300, H + 300); ctx.lineTo(-300, ground + 30);
+  ctx.quadraticCurveTo(540, ground - 50, W + 300, ground + 30); ctx.lineTo(W + 300, H + 300); ctx.closePath(); ctx.fill();
+  if (flash > 0) { ctx.save(); ctx.globalAlpha = 0.45 * clamp(flash); fillAll(C.white); ctx.restore(); }
+}
+
+/** wavy heat rings around a point (the air heating up). p 0..1 = how far they spread, t = film time */
+export function heatRings(x, y, p, t, a = 1) {
+  if (p <= 0 || a <= 0) return;
+  ctx.save(); ctx.lineCap = 'round';
+  for (let i = 0; i < 3; i++) {
+    const k = clamp(p * 1.4 - i * 0.2), r = 90 + k * (150 + i * 90);
+    if (k <= 0) continue;
+    ctx.globalAlpha = a * (0.95 - i * 0.22); ctx.beginPath();
+    for (let an = 0; an <= TAU + 0.01; an += 0.08) { const rr2 = r + Math.sin(an * 9 + t * 8 + i) * 10; const px = x + Math.cos(an) * rr2 * 0.8, py = y + Math.sin(an) * rr2 * 1.25; an ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.closePath(); ctx.strokeStyle = i === 1 ? C.red : C.yellow; ctx.lineWidth = 12; ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/** flat sun (yellow disc, darker ring, rotating rays). ~300 px wide at s = 1 */
+export function sun(x, y, s, t = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(t * 0.6);
+  for (let i = 0; i < 10; i++) { ctx.save(); ctx.rotate(i * TAU / 10); ctx.beginPath(); ctx.moveTo(-22, -120); ctx.lineTo(0, -160); ctx.lineTo(22, -120); ctx.closePath(); ctx.fillStyle = SUN_D; ctx.fill(); ctx.restore(); }
+  ctx.rotate(-t * 0.6);
+  circle(0, 0, 110, SUN_D); circle(-4, -4, 98, C.yellow); ell(-40, -44, 30, 14, C.white + '99', -0.6);
+  ctx.restore();
+}
+
+/** big thermometer (graphic: white tube, ink outline, red bulb + mercury). level 0..1. ~880 px tall at s = 1 */
+export function thermometer(x, y, s, level = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  circle(0, 400, 102, C.ink); rr(-62, -432, 124, 800, 62); ctx.fill();
+  rr(-50, -420, 100, 780, 50); ctx.fillStyle = C.white; ctx.fill(); circle(0, 400, 90, C.red);
+  const top = lerp(340, -400, clamp(level));
+  rr(-26, top, 52, 400 - top, 26); ctx.fillStyle = C.red; ctx.fill();
+  for (let i = 0; i < 9; i++) line([[60, 300 - i * 80], [i % 2 ? 90 : 110, 300 - i * 80]], C.ink, 8);
+  ell(-24, 370, 22, 30, C.pinkLight, -0.4); rr(-36, -390, 14, 200, 7); ctx.fillStyle = C.gum; ctx.fill();
+  ctx.restore();
+}
+/** canvas y of a thermometer level, for a thermometer drawn at (y, s) */
+export const thermoY = (y, s, level) => y + lerp(340, -400, clamp(level)) * s;
+
+/** gift box (blue, yellow ribbon + bow). open 0..1 lifts and tips the lid off. ~340x330 px at s = 1. wob jiggles */
+export function giftBox(x, y, s, open = 0, t = 0, wob = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(Math.sin(t * 22) * 0.06 * wob);
+  rr(-150, -40, 300, 220, 18); ctx.fillStyle = C.shirtShade; ctx.fill(); rr(-150, -40, 250, 220, [18, 0, 0, 18]); ctx.fillStyle = C.shirt; ctx.fill();
+  rr(-24, -40, 48, 220, 4); ctx.fillStyle = C.yellow; ctx.fill(); rr(10, -40, 14, 220, 4); ctx.fillStyle = SUN_D; ctx.fill();
+  ctx.save(); const o = clamp(open); ctx.translate(-170 * o * 0.4, -o * 150); ctx.rotate(-o * 0.55);
+  rr(-170, -110, 340, 80, 16); ctx.fillStyle = C.shirtShade; ctx.fill(); rr(-170, -110, 340, 64, 16); ctx.fillStyle = C.shirt; ctx.fill();
+  rr(-24, -110, 48, 80, 4); ctx.fillStyle = C.yellow; ctx.fill();
+  for (const sd of [-1, 1]) { ell(sd * 52, -140, 56, 34, SUN_D, sd * 0.5); ell(sd * 50, -144, 44, 24, C.yellow, sd * 0.5); }
+  circle(0, -130, 24, SUN_D);
+  ctx.restore();
+  ctx.restore();
+}
+
+/** simple person icon (head + rounded body), ~110x240 px at s = 1. col = body/head fill */
+export function personIcon(x, y, s, col = C.shirt, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, -80, 46, col); rr(-58, -20, 116, 140, [52, 52, 14, 14]); ctx.fillStyle = col; ctx.fill();
+  ell(-16, -98, 14, 8, C.white + '55', -0.5);
+  ctx.restore();
+}
+
+/** heartbeat trace across width w centred at (x, y). flat 0..1 flattens it; col = line colour; t = film time */
+export function ecg(x, y, w, t, flat = 0, col = C.cyan) {
+  const pts = [], amp = 1 - clamp(flat), per = 300;
+  for (let i = 0; i <= w; i += 6) {
+    const ph = ((i + t * 360) % per) / per;
+    let v = 0;
+    if (ph > 0.40 && ph < 0.46) v = -lerp(0, 1, (ph - 0.40) / 0.06);
+    else if (ph >= 0.46 && ph < 0.52) v = lerp(-1, 0.55, (ph - 0.46) / 0.06);
+    else if (ph >= 0.52 && ph < 0.56) v = lerp(0.55, 0, (ph - 0.52) / 0.04);
+    else if (ph > 0.7 && ph < 0.82) v = -0.18 * Math.sin((ph - 0.7) / 0.12 * Math.PI);
+    pts.push([x - w / 2 + i, y + v * 120 * amp]);
+  }
+  line(pts, C.ink, 22); line(pts, col, 12);
+}
+
+// flat person SILHOUETTE (a generic "someone", not the hero), A-pose. Origin = chest centre; head top -470, feet +640.
+// right-side SKIN contour, ~10 px outside the shape: head arc → neck → shoulder → outside of the arm → round the hand →
+// inside of the arm → armpit → hip → outside of the leg → foot (mirrored for the left side)
+const SIL_L = (() => { const P = []; for (let a = -90; a <= 55; a += 12) P.push([108 * Math.cos(a * Math.PI / 180), -380 + 102 * Math.sin(a * Math.PI / 180)]);
+  P.push([50, -262], [110, -250], [179, -224], [254, -14], [277, 144]);
+  for (let a = 10; a <= 190; a += 30) P.push([238 + 46 * Math.cos(a * Math.PI / 180), 165 + 46 * Math.sin(a * Math.PI / 180)]);
+  P.push([195, 156], [176, 14], [160, -30], [160, 190], [138, 215], [138, 612], [124, 648], [100, 650]); return P; })();
+/** silhouette. trace 0..1 runs a glowing current over the SKIN outline from the head to the feet (both sides),
+ *  glow 0..1 keeps the whole outline lit. Shoulder point for a helping hand: silShoulder() */
+export function silhouette(x, y, s, { trace = 0, glow = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  for (const sd of [-1, 1]) { line([[sd * 140, -210], [sd * 215, 0], [sd * 236, 150]], SLATE, 62); circle(sd * 238, 165, 36, SLATE); }
+  rr(-128, 170, 116, 470, 40); ctx.fillStyle = SLATE; ctx.fill(); rr(12, 170, 116, 470, 40); ctx.fill();
+  rr(-150, -240, 300, 440, [90, 90, 30, 30]); ctx.fill();
+  rr(-40, -320, 80, 100, 20); ctx.fill(); ell(0, -380, 98, 92, SLATE);
+  ell(-36, -420, 30, 16, SLATE_L, -0.5); rr(-120, -200, 40, 160, 20); ctx.fillStyle = SLATE_L; ctx.fill();
+  const k = Math.max(clamp(trace), clamp(glow));
+  if (k > 0) {
+    const cum = [0]; for (let i = 1; i < SIL_L.length; i++) cum.push(cum[i - 1] + Math.hypot(SIL_L[i][0] - SIL_L[i - 1][0], SIL_L[i][1] - SIL_L[i - 1][1]));
+    const len = cum[cum.length - 1], dd = k * len, part = [SIL_L[0]];
+    for (let i = 1; i < SIL_L.length; i++) { if (cum[i] <= dd) part.push(SIL_L[i]); else { const f = (dd - cum[i - 1]) / (cum[i] - cum[i - 1]); part.push([lerp(SIL_L[i - 1][0], SIL_L[i][0], f), lerp(SIL_L[i - 1][1], SIL_L[i][1], f)]); break; } }
+    for (const sd of [-1, 1]) {
+      const P = part.map(([px, py]) => [px * sd, py]);
+      line(P, C.ink, 30); line(P, C.yellow, 18); line(P, C.white, 6);
+      if (trace > 0 && trace < 1) { const [hx, hy] = P[P.length - 1]; circle(hx, hy, 30 + Math.sin(t * 40) * 6, C.ink); circle(hx, hy, 23, C.yellow); circle(hx, hy, 10, C.white); }
+    }
+  }
+  ctx.restore();
+}
+/** canvas point of the silhouette's right shoulder (screen right), for silhouette(x, y, s) */
+export const silShoulder = (x, y, s) => [x + 150 * s, y - 225 * s];
+
+/** a fern-like Lichtenberg branch pattern (soft red lines, NOT a burn) from (x0, y0) along ang, len px. p 0..1 grows */
+export function fernTree(x0, y0, ang, len, w, p = 1, seed = 1) {
+  ctx.save(); ctx.lineCap = 'round';
+  const br = (bx, by, a, l, ww, depth, sd0, t0) => {
+    const k = clamp((p - t0) / 0.3); if (k <= 0 || depth > 3 || l < 8) return;
+    const ex = bx + Math.cos(a) * l * k, ey = by + Math.sin(a) * l * k;
+    line([[bx, by], [ex, ey]], C.pinkDark, ww); if (ww > 6) line([[bx, by], [ex, ey]], C.red, ww * 0.45);
+    if (k < 1) return;
+    for (let i = 1; i <= 3; i++) {
+      const u = i / 4, px = bx + Math.cos(a) * l * u, py = by + Math.sin(a) * l * u;
+      for (const sd of [-1, 1]) br(px, py, a + sd * (0.75 + rnd(sd0 + i * 7 + sd) * 0.35), l * (0.42 - u * 0.12), ww * 0.6, depth + 1, sd0 * 3 + i * 11 + sd, t0 + 0.12);
+    }
+    br(ex, ey, a + (rnd(sd0) - 0.5) * 0.4, l * 0.55, ww * 0.75, depth + 1, sd0 + 5, t0 + 0.1);
+  };
+  br(x0, y0, ang, len, w, 0, seed, 0);
+  ctx.restore();
+}
+
+/** a bare forearm reaching right (sleeve at the left, hand at the right), skin with a soft underside shade.
+ *  fern 0..1 grows a red Lichtenberg fern on the skin, fade 0..1 fades it away. Hand fingertips at x + 600 s */
+export function forearm(x, y, s, { fern = 0, fade = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const arm = () => { ctx.beginPath(); ctx.moveTo(-700, -125); ctx.quadraticCurveTo(0, -140, 330, -85); ctx.lineTo(330, 85); ctx.quadraticCurveTo(0, 130, -700, 125); ctx.closePath(); };
+  arm(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.save(); arm(); ctx.clip(); ell(-180, 140, 620, 70, C.skinShade);
+  if (fern > 0 && fade < 1) { ctx.globalAlpha = 1 - clamp(fade); fernTree(-330, 50, -0.12, 370, 16, fern, 3); fernTree(-120, 70, -0.55, 200, 10, clamp(fern * 1.3 - 0.3), 9); }
+  ctx.restore();
+  for (const [fy, fl] of [[-62, 230], [-20, 260], [22, 250], [62, 210]]) line([[360, fy], [360 + fl, fy * 1.15]], C.skin, 46);
+  for (const [fy, fl] of [[-62, 230], [-20, 260], [22, 250], [62, 210]]) line([[360 + fl * 0.55, fy * 1.1 - 18], [360 + fl * 0.55, fy * 1.1 + 18]], C.skinShade, 5);
+  ell(390, 0, 130, 110, C.skin); line([[340, -80], [420, -150], [500, -160]], C.skin, 50);
+  ell(380, 70, 90, 30, C.skinShade);
+  rr(-760, -165, 220, 330, 30); ctx.fillStyle = C.shirt; ctx.fill(); rr(-560, -165, 20, 330, 10); ctx.fillStyle = C.shirtShade; ctx.fill();
+  ell(-200, -95, 160, 14, C.white + '55', -0.02);
+  ctx.restore();
+}
+
+/** a helping arm reaching in from (fromX, fromY) to the hand point (hx, hy): blue sleeve + skin forearm + hand */
+export function reachArm(fromX, fromY, hx, hy, s = 1) {
+  const mx = lerp(fromX, hx, 0.45), my = lerp(fromY, hy, 0.45);
+  line([[fromX, fromY], [hx, hy]], C.skin, 60 * s); line([[fromX, fromY], [mx, my]], C.shirt, 84 * s);
+  ell(hx, hy, 46 * s, 34 * s, C.skin, Math.atan2(hy - fromY, hx - fromX)); ell(hx + 6 * s, hy + 16 * s, 26 * s, 10 * s, C.skinShade, 0.2);
+}
+
+/** smartphone (ink body, white screen, big number, green call button). text = shown digits, ring 0..1 wiggles + rings */
+export function phone(x, y, s, text = '911', ring = 0, t = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 38) * 0.07 * ring); ctx.scale(s, s);
+  rr(-150, -280, 300, 560, 48); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-126, -240, 252, 460, 26); ctx.fillStyle = C.white; ctx.fill(); rr(-40, -262, 80, 12, 6); ctx.fillStyle = '#3A3A42'; ctx.fill();
+  ctx.fillStyle = C.ink; ctx.font = '900 112px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 0, -80);
+  circle(0, 110, 62, C.leaf);
+  ctx.save(); ctx.translate(0, 110); ctx.rotate(-0.7); rr(-32, -11, 64, 22, 11); ctx.fillStyle = C.white; ctx.fill(); rr(-36, -11, 18, 34, 8); ctx.fill(); rr(18, -11, 18, 34, 8); ctx.fill(); ctx.restore();
+  ctx.restore();
+  if (ring > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(ring); ctx.strokeStyle = C.ink; ctx.lineWidth = 12; ctx.lineCap = 'round';
+    for (const sd of [-1, 1]) for (const r of [200, 250]) { ctx.beginPath(); ctx.arc(x, y - 120 * s, r * s, sd < 0 ? Math.PI * 1.05 : -Math.PI * 0.35, sd < 0 ? Math.PI * 1.35 : -Math.PI * 0.05); ctx.stroke(); }
+    ctx.restore();
+  }
+}
+
+/** CPR icon: a heart with two stacked hands pressing on it. press 0..1 pushes the hands down and squashes the heart */
+export function cprIcon(x, y, s, press = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const p = clamp(press);
+  ctx.save(); ctx.translate(0, 60); ctx.scale(1 + p * 0.08, 1 - p * 0.12); heart(0, 0, 1.25); ctx.restore();
+  const dy = p * 26;
+  for (const sd of [-1, 1]) { line([[sd * 230, -330 + dy], [sd * 40, -80 + dy]], C.skin, 56); line([[sd * 300, -420 + dy], [sd * 190, -276 + dy]], C.shirt, 80); }
+  ell(0, -40 + dy, 110, 44, C.skinShade); ell(0, -50 + dy, 104, 40, C.skin);
+  ell(0, -96 + dy, 96, 40, C.skinShade); ell(0, -104 + dy, 92, 36, C.skin);
+  line([[-60, -104 + dy], [60, -104 + dy]], C.skinShade, 6);
+  for (const sd of [-1, 1]) K_arrowDown(sd * 190, -40 + dy * 0.5, p);
+  ctx.restore();
+}
+function K_arrowDown(x, y, a) {
+  ctx.save(); ctx.globalAlpha = 0.35 + 0.65 * a; ctx.translate(x, y);
+  ctx.beginPath(); ctx.moveTo(-18, -60); ctx.lineTo(18, -60); ctx.lineTo(18, 0); ctx.lineTo(42, 0); ctx.lineTo(0, 50); ctx.lineTo(-42, 0); ctx.lineTo(-18, 0); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill();
+  ctx.restore();
+}
+
+/** tall glass water jug / pitcher (handle right, spout top-left), pale blue water up to fill 0..1. ~330x400 px at s = 1.
+ *  Origin = jug centre. Next-episode tease prop: nobody drinks from it on screen */
+export function waterJug(x, y, s, fill = 0.8, t = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(110, -130); ctx.bezierCurveTo(230, -130, 230, 90, 110, 100); ctx.strokeStyle = C.gumEdge; ctx.lineWidth = 36; ctx.stroke();
+  const body = () => { ctx.beginPath(); ctx.moveTo(-170, -200); ctx.lineTo(-120, -175); ctx.lineTo(120, -175); ctx.quadraticCurveTo(140, -120, 135, 160); ctx.quadraticCurveTo(132, 200, 95, 200); ctx.lineTo(-95, 200); ctx.quadraticCurveTo(-132, 200, -135, 160); ctx.quadraticCurveTo(-140, -80, -128, -150); ctx.closePath(); };
+  body(); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.save(); ctx.scale(0.92, 0.94); body(); ctx.fillStyle = GLASS; ctx.fill(); body(); ctx.clip();
+  if (fill > 0) {
+    const lv = lerp(210, -150, clamp(fill));
+    ctx.beginPath(); ctx.moveTo(-200, 260); for (let xx = -200; xx <= 160; xx += 15) ctx.lineTo(xx, lv + Math.sin(xx * 0.04 + t * 4) * 7); ctx.lineTo(160, 260); ctx.closePath();
+    ctx.fillStyle = C.sky; ctx.fill();
+    ctx.beginPath(); for (let xx = -200; xx <= 160; xx += 15) ctx.lineTo(xx, lv + 10 + Math.sin(xx * 0.04 + t * 4) * 7); ctx.strokeStyle = C.white; ctx.globalAlpha = 0.6; ctx.lineWidth = 8; ctx.stroke(); ctx.globalAlpha = 1;
+  }
+  rr(-104, -120, 24, 270, 12); ctx.fillStyle = C.white; ctx.globalAlpha = 0.85; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  ctx.restore();
+}
