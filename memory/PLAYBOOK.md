@@ -14,8 +14,9 @@ _Last updated: 2026-11-08 (initial version, from known best practice; no own dat
 - Captions: 1-3 words, one highlighted keyword.
 
 ## Subscribe beat
-- The series name is in the title and the first caption of the end card ("Body Files #12").
-- The final line is a specific tease for the next episode, not "like and subscribe".
+- The series name is on the end card and in the title (the publisher appends "| Body Files #N" when it posts).
+- Videos post out of order from stock, so the final line is a series CTA ("Follow for a new Body File every day"), never a
+  specific next topic and never an episode number in the video itself. Still never a generic "like and subscribe".
 - A follow pill animates in during the payoff, never in the first 70% of the video.
 - Pinned comment = a question viewers want to answer ("Have you ever broken a bone? Which one?").
 

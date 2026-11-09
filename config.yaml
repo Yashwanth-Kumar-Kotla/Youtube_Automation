@@ -3,6 +3,10 @@
 # A channel's creative rules live in memory/channels/<name>/BIBLE.md. This file is the machine settings.
 # ---------------------------------------------------------------------------
 timezone: America/Chicago
+# Production: two scheduled runs a day (3:37 and 8:37 AM CT) fill the stock.
+production:
+  max_videos_per_run: 4      # protects your own Claude usage; raise it to make more per run
+
 # Stock: videos are made ahead, scored, and posted best-first (docs/AUTOPILOT.md, "Stock").
 stock:
   cap: 30                    # max ready videos per channel; past this, spare capacity goes to new channels / hook tests

@@ -9,3 +9,6 @@ The voice is already done (data/words.json). Rewrite src/shots.js with one shot 
 on spoken words with Wd(). Reuse src/core/kit.js. When a topic needs new things (an organ, a tool, a place), add them to kit.js
 in the style's look (bin/episode.sh finish copies kit.js back to studio/<channel> so later episodes get them).
 Run `node tools/capture.mjs check` until CHECK OK, then `node tools/capture.mjs cues`, then `../../vendor/faceless-shorts/scripts/py tools/mix.py .` (path relative to work/<dir>). Do not render the final video; hand back to qa.
+
+End card: the series badge shows the series name only (e.g. "BODY FILES"), never an episode number, plus the FOLLOW pill.
+Videos are posted out of order, so nothing on screen may refer to "next" or "#N".

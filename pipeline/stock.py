@@ -189,6 +189,9 @@ def set_status(ch: str, vid: str, status: str, reason: str) -> None:
 
 def ready_again(ch: str, vid: str, d: str, what: str) -> None:
     """After a rework: re-render from project dir d, replace the branch files, refresh tags, confidence back to start."""
+    if not open(os.path.join(d, "qa.md")).read().startswith("PASS"):
+        print("NOT READY: qa.md is not PASS")
+        sys.exit(3)
     data = load(ch)
     v = data["videos"][vid]
     meta = json.load(open(os.path.join(d, "meta.json")))

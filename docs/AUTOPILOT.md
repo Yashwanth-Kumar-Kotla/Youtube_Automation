@@ -118,3 +118,19 @@ Everything else (topics, scripts, visuals, QA, posting times, weekly strategy ch
 - **Kid-directed content** without Made for Kids → FTC/COPPA risk. Channels are general-audience by design.
 - Bought views/subs, follow-for-follow, engagement pods → shadow-bans. Never.
 - **AI labels:** TikTok's AI-generated toggle is always on (`is_aigc`).
+
+## Stock: make ahead, post best-first (added 2026-11-08)
+- **Two production runs a day** (3:37 and 8:37 AM CT, Claude scheduled tasks), up to `production.max_videos_per_run` videos each,
+  rework items first. Every finished video goes into its channel's stock: branch `stock/<ch>/<id>` + `state/stock/<ch>.json`,
+  shown in `memory/channels/<ch>/STOCK.md`.
+- **Every video records what it was built on:** made_week, playbook_version (hash of PLAYBOOK.md), research_file, topic_source,
+  topic_cluster, hook_pattern, format, length, experiment_arm, confidence (starts 0.7).
+- **The weekly analyst re-scores the stock** against new findings: a contradicted minor choice costs 0.05-0.1, a contradicted core choice
+  0.2-0.3, matching what's winning adds 0.05-0.15. Below 0.4 a video moves to rework (new hook, re-voiced, re-timed; the shots are
+  reused) or is retired. Every change is logged in `STOCK_LOG.md` with its reason.
+- **The publisher** (hourly) fills each channel's `slots` (max 3/day) with the highest-confidence fresh video, never one below 0.4,
+  and appends "| <series> #N" to the title. Stock older than 42 days is retired automatically.
+- **Guardrails:** stock cap 30 per channel, max 2 videos per topic cluster in stock. When a channel stays full, the review recommends
+  spending capacity on a new channel or hook tests instead.
+- **Strategy tracking:** each LEDGER row carries the stock id, playbook version and hook pattern, so the review can see which version
+  of the strategy actually worked.
