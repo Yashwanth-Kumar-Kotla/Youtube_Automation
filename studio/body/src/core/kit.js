@@ -194,9 +194,13 @@ export function makeGut({ L = 210, R = 870, r = 100, y0 = 320, rows = 5 } = {}) 
   const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
   const len = cum[cum.length - 1];
   const at = (u) => { const d = clamp(u) * len; let i = 1; while (i < cum.length - 1 && cum[i] < d) i++; const a = pts[i - 1], b = pts[i], k = (d - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1); return [lerp(a[0], b[0], k), lerp(a[1], b[1], k), Math.atan2(b[1] - a[1], b[0] - a[0])]; };
-  const draw = () => {
+  const draw = ({ ghost = 0 } = {}) => {
     const path = () => { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (const q of pts) ctx.lineTo(q[0], q[1]); };
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    if (ghost > 0) {      // x-ray film version: faint cyan tube only (soft tissue on a film)
+      ctx.save(); ctx.globalAlpha = 0.22 * ghost; path(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 92; ctx.stroke();
+      ctx.globalAlpha = 0.5 * ghost; path(); ctx.strokeStyle = C.xnavy; ctx.lineWidth = 60; ctx.stroke(); ctx.restore(); return;
+    }
     path(); ctx.strokeStyle = C.cyan; ctx.globalAlpha = 0.25; ctx.lineWidth = 112; ctx.stroke(); ctx.globalAlpha = 1;
     path(); ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 92; ctx.stroke();
     path(); ctx.strokeStyle = C.pink; ctx.lineWidth = 76; ctx.stroke();
@@ -617,7 +621,7 @@ export function magnet(x, y, s, rot = 0) {
   ctx.restore();
 }
 
-/** series end-card badge: ink pill with a yellow folder icon + text ("BODY FILES #2") */
+/** series end-card badge: ink pill with a yellow folder icon + text (series name only: "BODY FILES") */
 export function filesBadge(text, x, y, size, sc = 1) {
   if (sc <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
@@ -634,4 +638,107 @@ export function filesBadge(text, x, y, size, sc = 1) {
 export function followPill(x, y, sc, t, size = 46) {
   if (sc <= 0) return;
   pill('+ FOLLOW', x, y, size, C.red, C.white, sc * (1 + 0.06 * Math.max(0, Math.sin(t * 7))));
+}
+
+// ═════════════════════════ MAGNET SET (2026-11-08 "swallow a magnet") ═════════════════════════
+/** hand on the belly (rubbing a sore tummy), for the RIGHT arm */
+ARM.belly = { e: [205, 30], h: [70, 95] };
+
+/** small bar magnet: red N half + silver S half, ink-free flat look. ~140x60 px at s = 1.
+ *  face: { look (-1..1), mad (bool) } adds dot eyes on the red half (the "hunting" magnets). xr = x-ray film look (white).
+ *  flip: S|N instead of N|S (letters stay upright). Stack a flipped one under a normal one so opposite poles touch. */
+export function barMagnet(x, y, s, rot = 0, { face = null, xr = false, flip = false } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  if (flip) ctx.scale(-1, 1);
+  if (xr) { ctx.globalAlpha = 0.35; rr(-80, -40, 160, 80, 26); ctx.fillStyle = C.cyan; ctx.fill(); ctx.globalAlpha = 1; rr(-70, -30, 140, 60, 18); ctx.fillStyle = C.white; ctx.fill(); ctx.restore(); return; }
+  rr(-70, -30, 140, 60, 18); ctx.fillStyle = '#A81E2D'; ctx.fill();
+  rr(-70, -30, 70, 54, [18, 0, 0, 18]); ctx.fillStyle = C.red; ctx.fill();
+  rr(0, -30, 70, 60, [0, 18, 18, 0]); ctx.fillStyle = C.gumEdge; ctx.fill();
+  rr(0, -30, 70, 52, [0, 18, 18, 0]); ctx.fillStyle = C.gum; ctx.fill();
+  ell(-40, -16, 18, 6, C.pinkLight, -0.15); ell(30, -16, 18, 6, C.white, -0.15);
+  if (face) {
+    const lk = (face.look || 0) * 4;
+    for (const ex of [-52, -22]) { circle(ex, -2, 10, C.white); circle(ex + lk, -1, 6, C.ink); }
+    if (face.mad) { ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-62, -20); ctx.lineTo(-44, -14); ctx.moveTo(-12, -20); ctx.lineTo(-30, -14); ctx.stroke(); }
+  } else {
+    if (flip) ctx.scale(-1, 1);     // letters stay readable; positions mirror with the halves
+    const k = flip ? -1 : 1;
+    ctx.fillStyle = C.white; ctx.font = '900 34px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('N', -35 * k, 0);
+    ctx.fillStyle = C.gumEdge; ctx.fillText('S', 35 * k, 0);
+  }
+  ctx.restore();
+}
+
+/** close-up of two neighbouring gut loops (horizontal tubes at yA, yB, width w). pull 0..1 drags both walls toward
+ *  each other around x = cx until they touch in the middle (the magnet pinch). Returns { a(x), b(x) } = tube centre ys. */
+export function gutPair(yA, yB, t, pull = 0, { cx = 540, w = 250 } = {}) {
+  const meet = (yA + yB) / 2, need = (yB - yA) / 2 - w / 2 - 15;
+  const off = (x) => pull * need * Math.exp(-Math.pow((x - cx) / 190, 2));
+  const a = (x) => yA + Math.sin(x * 0.006 + t * 0.5) * 14 * (1 - pull) + off(x);
+  const b = (x) => yB + Math.sin(x * 0.006 + t * 0.5 + 2) * 14 * (1 - pull) - off(x);
+  for (const f of [a, b]) {
+    const tube = () => { ctx.beginPath(); for (let x = -200; x <= 1280; x += 16) x === -200 ? ctx.moveTo(x, f(x)) : ctx.lineTo(x, f(x)); };
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    tube(); ctx.strokeStyle = C.pinkDark; ctx.lineWidth = w + 30; ctx.stroke();
+    tube(); ctx.strokeStyle = C.pink; ctx.lineWidth = w; ctx.stroke();
+    ctx.save(); ctx.translate(0, -w * 0.22); tube(); ctx.strokeStyle = C.pinkLight; ctx.globalAlpha = 0.5; ctx.lineWidth = w * 0.16; ctx.stroke(); ctx.restore();
+  }
+  return { a, b, meet };
+}
+
+/** red "pinch" ring at a point (flat outline, pulses with p 0..1). Danger marker, no gore */
+export function pinchRing(x, y, rx, ry, p, a = 1) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a; ctx.beginPath(); ctx.ellipse(x, y, rx * (1 + p * 0.1), ry * (1 + p * 0.1), 0, 0, TAU);
+  ctx.setLineDash([34, 20]); ctx.lineDashOffset = -p * 60; ctx.strokeStyle = C.red; ctx.lineWidth = 14; ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+}
+
+/** belly-ache swirls (three little ink spirals around a point). a = alpha, t = film time */
+export function ache(x, y, t, a = 1) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = C.ink; ctx.lineWidth = 9; ctx.lineCap = 'round';
+  for (const [dx, dy, k] of [[-150, -40, 0], [150, -70, 1], [130, 90, 2]]) {
+    ctx.beginPath();
+    for (let i = 0; i <= 30; i++) { const an = i / 30 * TAU * 1.6 + t * 5 + k, r = 4 + i * 1.2; const px = x + dx + Math.cos(an) * r, py = y + dy + Math.sin(an) * r; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/** doctor's clipboard with a red medical cross. Board ~420x560 at s = 1. p 0..1 writes the lines */
+export function clipboard(x, y, s, p = 1, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  rr(-210, -280, 420, 560, 30); ctx.fillStyle = '#9A5333'; ctx.fill(); rr(-210, -280, 404, 552, 30); ctx.fillStyle = '#B5653F'; ctx.fill();
+  rr(-170, -220, 340, 460, 14); ctx.fillStyle = C.white; ctx.fill();
+  rr(-80, -310, 160, 70, 18); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-80, -310, 160, 26, [18, 18, 0, 0]); ctx.fillStyle = C.gum; ctx.fill();
+  rr(-30, -170, 60, 150, 10); ctx.fillStyle = C.red; ctx.fill(); rr(-75, -125, 150, 60, 10); ctx.fill();
+  for (let i = 0; i < 4; i++) { const f = clamp(p * 4 - i); if (f > 0) { rr(-120, 30 + i * 52, 240 * f * (i === 3 ? 0.6 : 1), 16, 8); ctx.fillStyle = C.gumEdge; ctx.fill(); } }
+  ctx.restore();
+}
+
+/** lightbox with an x-ray film: ink frame, navy film clipped inside; inner(t) draws the film contents */
+export function lightbox(x, y, w, h, t, inner) {
+  rr(x, y, w, h, 40); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); rr(x + 28, y + 28, w - 56, h - 56, 24); ctx.clip(); xray(t); if (inner) inner(); ctx.restore();
+}
+
+/** cartoon bladder balloon: pink balloon with two thin tubes (ureters) on top, a short neck below, yellow fill inside.
+ *  fill 0..1 = how full (it also grows), wob = jiggle 0..1, t = film time. ~360 px tall at fill 0.5, s = 1 */
+export function bladder(x, y, s, fill = 0.5, { t = 0, wob = 0 } = {}) {
+  const g = lerp(0.7, 1.25, clamp(fill)), j = Math.sin(t * 14) * 0.04 * wob;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.lineCap = 'round';
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 70 * g, -120 * g); ctx.bezierCurveTo(sd * 120 * g, -220 * g, sd * 200, -260, sd * 220, -360); ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 34; ctx.stroke(); ctx.strokeStyle = C.pink; ctx.lineWidth = 22; ctx.stroke(); }
+  ctx.save(); ctx.scale(g * (1 + j), g * (1 - j));
+  const B = () => { ctx.beginPath(); ctx.moveTo(0, 170); ctx.bezierCurveTo(-60, 150, -190, 90, -180, -30); ctx.bezierCurveTo(-170, -150, -60, -180, 0, -175); ctx.bezierCurveTo(60, -180, 170, -150, 180, -30); ctx.bezierCurveTo(190, 90, 60, 150, 0, 170); ctx.closePath(); };
+  rr(-30, 150, 60, 80, 20); ctx.fillStyle = C.pinkDark; ctx.fill();
+  B(); ctx.fillStyle = C.pinkDark; ctx.fill();
+  ctx.save(); ctx.scale(0.92, 0.92); ctx.translate(-4, -6); B(); ctx.fillStyle = C.pink; ctx.fill();
+  B(); ctx.clip(); const lv = lerp(150, -150, clamp(fill));
+  ctx.beginPath(); ctx.moveTo(-220, 220); for (let xx = -220; xx <= 220; xx += 20) ctx.lineTo(xx, lv + Math.sin(xx * 0.03 + t * 4) * 8); ctx.lineTo(220, 220); ctx.closePath();
+  ctx.globalAlpha = 0.75; ctx.fillStyle = C.yellow; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  ell(-90, -95, 44, 22, C.pinkLight, -0.6); ell(-128, -40, 12, 18, C.pinkLight, -0.3);
+  ctx.restore();
+  ctx.restore();
 }

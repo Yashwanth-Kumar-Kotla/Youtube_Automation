@@ -1,0 +1,36 @@
+{
+ "videos": {
+  "2026-11-08-body-01": {
+   "title": "What Happens If You Swallow a Magnet?",
+   "hashtags": [
+    "#bodyfiles",
+    "#magnets",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts"
+   ],
+   "pinned_comment": "Did you know two magnets could do this, or did you think swallowing one was the dangerous part?",
+   "series": "Body Files",
+   "topic": "What happens if you swallow a magnet?",
+   "experiment_arm": "E1-B (hook without a number); E4 tease_next",
+   "teases": "What happens if you hold your pee too long?",
+   "topic_cluster": "gut",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the live Body Files #1",
+   "hook_pattern": "plain-question",
+   "format": "explainer",
+   "id": "2026-11-08-body-01",
+   "channel": "body",
+   "made_at": "2026-11-08T23:17-06:00",
+   "made_week": "2026-W45",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 38.2,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-08-body-01",
+   "history": [],
+   "description": "One magnet usually passes, but two or more can pull together through your gut walls, and on an X-ray they can look like just one. If a magnet is swallowed, see a doctor right away (US Poison Control: 1-800-222-1222).\nNext Body File: what happens if you hold your pee until your bladder balloons.\nFollow Body Files for a new one every day.\n#bodyfiles #magnets #humanbody #science #shorts #healthfacts\n\nSources:\nCPSC (2021): https://www.cpsc.gov/Newsroom/News-Releases/2021/Ingestion-of-High-Powered-Magnetic-Balls-and-Magnetic-Cubes-Poses-Serious-Risk-of-Severe-Internal-Injury-or-Death-in-Children-and-Teens\nCPSC (2011): https://www.cpsc.gov/Newsroom/News-Releases/2012/cpsc-warns-high-powered-magnets-and-children-make-a-deadly-mix\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC4256656\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC6476807\nCincinnati Children's: https://blog.cincinnatichildrens.org/safety-and-prevention/tiny-magnets-what-parents-should-know/\nCleveland Clinic: https://my.clevelandclinic.org/health/body/22135-small-intestine"
+  }
+ }
+}

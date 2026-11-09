@@ -1,0 +1,30 @@
+{
+  "title": "What Happens If You Swallow a Magnet?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "US CPSC (2021), 'Ingestion of High-Powered Magnetic Balls and Magnetic Cubes Poses Serious Risk of Severe Internal Injury or Death in Children and Teens' (swallowed magnets can attract each other or other metal through the intestinal walls; perforations, twisting/blockage of the intestines, infection, blood poisoning, death; symptoms look like ordinary stomach trouble (pain, nausea, vomiting, diarrhea), so don't wait for symptoms; multiple magnets can look like a single object on an X-ray; seek immediate medical attention): https://www.cpsc.gov/Newsroom/News-Releases/2021/Ingestion-of-High-Powered-Magnetic-Balls-and-Magnetic-Cubes-Poses-Serious-Risk-of-Severe-Internal-Injury-or-Death-in-Children-and-Teens",
+    "US CPSC (2011), 'CPSC Warns High-Powered Magnets and Children Make a Deadly Mix' (two or more swallowed magnets can attract one another internally: small holes in the stomach and intestines, blockage, blood poisoning): https://www.cpsc.gov/Newsroom/News-Releases/2012/cpsc-warns-high-powered-magnets-and-children-make-a-deadly-mix",
+    "NIH / PubMed Central reviews of pediatric magnet ingestion, incl. the NASPGHAN/ESPGHAN management algorithm (a single magnet usually passes on its own and is watched with serial X-rays; multiple magnets on opposite sides of the bowel wall cause pressure necrosis, fistula, perforation, obstruction or volvulus; at least half of multiple-magnet patients need surgery): https://pmc.ncbi.nlm.nih.gov/articles/PMC4256656 , https://pmc.ncbi.nlm.nih.gov/articles/PMC6476807",
+    "Cincinnati Children's, 'Tiny Magnets: What Parents Should Know' (most single magnets pass on their own, sometimes monitored with repeat X-rays; there may be no early symptoms; call Poison Control 1-800-222-1222, don't wait): https://blog.cincinnatichildrens.org/safety-and-prevention/tiny-magnets-what-parents-should-know/",
+    "Cleveland Clinic, 'Small Intestine' (about 22 feet long, the longest part of the GI tract): https://my.clevelandclinic.org/health/body/22135-small-intestine"
+  ],
+  "lines": [
+    { "text": "What happens if you swallow a magnet?", "caps": "WHAT *HAPPENS | IF YOU *SWALLOW | A *MAGNET?" },
+    { "text": "Weirdly, one small magnet usually isn't the problem.", "caps": "*WEIRDLY | ONE SMALL *MAGNET | USUALLY *ISN'T | THE *PROBLEM" },
+    { "text": "It slides through more than twenty feet of folded intestine,", "caps": "IT *SLIDES THROUGH | MORE THAN *20 | FEET OF *FOLDED | *INTESTINE" },
+    { "text": "and most times it comes out the other end.", "caps": "AND MOST *TIMES | IT *COMES OUT | THE OTHER *END" },
+    { "text": "But swallow two, and they hunt each other down.", "caps": "BUT SWALLOW *TWO | AND THEY *HUNT | EACH OTHER *DOWN" },
+    { "text": "They can snap together through the walls of two gut loops,", "caps": "THEY CAN *SNAP | *TOGETHER THROUGH | THE *WALLS OF | TWO *GUT LOOPS" },
+    { "text": "pinching the tissue between them until holes and blockages form.", "caps": "*PINCHING THE | *TISSUE BETWEEN THEM | UNTIL *HOLES | AND *BLOCKAGES FORM" },
+    { "text": "It might feel like nothing, or a stomach bug,", "caps": "IT MIGHT *FEEL | LIKE *NOTHING | OR A *STOMACH | *BUG" },
+    { "text": "so see a doctor right away.", "caps": "SO *SEE | A *DOCTOR | RIGHT *AWAY" },
+    { "text": "An X-ray counts them, because two stuck together can look like one.", "caps": "AN *X-RAY | *COUNTS THEM | BECAUSE *TWO | STUCK *TOGETHER | CAN *LOOK | LIKE *ONE" },
+    { "text": "One magnet gets watched. Two can mean surgery.", "caps": "ONE *MAGNET | GETS *WATCHED | *TWO CAN | MEAN *SURGERY" },
+    { "text": "Next Body File: what happens if you hold your pee until your bladder balloons.", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOU *HOLD | YOUR *PEE | UNTIL YOUR *BLADDER | *BALLOONS" }
+  ]
+}
