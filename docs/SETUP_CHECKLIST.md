@@ -44,7 +44,7 @@ Also: **Settings → General → Danger zone** → make sure the repo is **Priva
 - **Week 2+ (optional automation):** developers.tiktok.com → Manage apps → Connect an app → products
   **Login Kit (Desktop), Content Posting API, Display API** → it asks for Terms + Privacy URLs: paste `docs/legal/terms.md`
   and `docs/legal/privacy.md` into two Notion pages → Share → **Publish to web** → use those links → submit for review.
-  Then tell Claude, and it walks you through the 2-minute connect step.
+  Then run scripts/tiktok_connect.py once (see the TikTok section Claude gave you) and save the 3 TikTok secrets.
 
 ## E. Tell Claude "connected"
 It then turns the channel on, runs one private test upload you can check in YouTube Studio, and starts the daily schedule.

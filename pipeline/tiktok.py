@@ -6,8 +6,7 @@ Modes:
   draft  -> /inbox/video/init/ : video lands in the creator's TikTok inbox; you tap it, add a TRENDING SOUND, post.
             Works before app audit and is the higher-reach option (trending audio is a big ranking signal).
   direct -> /video/init/      : posts automatically. Until TikTok audits your app, posts are forced to SELF_ONLY.
-TikTok rotates refresh tokens; the newest one is written to state/tiktok_tokens.json. Copy it to your secret
-if it changes (the workflow prints a warning when it does).
+Tokens live only in GitHub Secrets; nothing is written to disk.
 """
 from __future__ import annotations
 
@@ -22,8 +21,7 @@ API = "https://open.tiktokapis.com/v2"
 
 
 def _token(channel: str) -> str:
-    saved = state.load("tiktok_tokens.json", {})
-    rt = saved.get(channel) or os.environ.get(f"TIKTOK_{channel.upper()}_REFRESH_TOKEN")
+    rt = os.environ.get(f"TIKTOK_{channel.upper()}_REFRESH_TOKEN")
     if not rt:
         raise RuntimeError(f"Missing TikTok refresh token for '{channel}'")
     r = requests.post(f"{API}/oauth/token/", timeout=30, data={
@@ -33,10 +31,10 @@ def _token(channel: str) -> str:
     j = r.json()
     if "access_token" not in j:
         raise RuntimeError(f"TikTok token refresh failed: {j}")
+    # The token is never written to disk or git. TikTok refresh tokens last 365 days; if TikTok ever issues a new one,
+    # flag it so the owner re-runs the 2-minute connect step (the value itself is never printed).
     if j.get("refresh_token") and j["refresh_token"] != rt:
-        saved[channel] = j["refresh_token"]
-        state.save("tiktok_tokens.json", saved)
-        print(f"::warning::TikTok refresh token for {channel} rotated; update TIKTOK_{channel.upper()}_REFRESH_TOKEN")
+        print(f"::warning::TikTok issued a new refresh token for {channel}; re-run the TikTok connect step within 365 days")
     return j["access_token"]
 
 
