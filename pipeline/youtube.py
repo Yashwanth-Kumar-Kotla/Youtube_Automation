@@ -68,19 +68,27 @@ def upload(channel: str, mp4: str, title: str, description: str, tags: list[str]
             "embeddable": True,
         },
     }
+    print(f"videos.insert part=snippet,status file={os.path.basename(mp4)} ({os.path.getsize(mp4)/1e6:.1f} MB)")
+    print(f"  snippet.title={body['snippet']['title']!r} categoryId={body['snippet']['categoryId']} tags={len(tags)}")
+    print(f"  status.privacyStatus=private publishAt={body['status']['publishAt']} "
+          f"selfDeclaredMadeForKids={body['status']['selfDeclaredMadeForKids']}")
     req = yt.videos().insert(part="snippet,status", body=body,
                              media_body=MediaFileUpload(mp4, mimetype="video/mp4", chunksize=8 * 1024 * 1024,
                                                         resumable=True))
     resp = None
     while resp is None:
         _, resp = req.next_chunk()
+    st = resp.get("status", {})
+    print(f"  -> 200 OK video id={resp['id']} uploadStatus={st.get('uploadStatus')} privacyStatus={st.get('privacyStatus')}")
     return {"id": resp["id"], "publish_at": publish_at.isoformat()}
 
 
 def comment(channel: str, video_id: str, text: str) -> None:
     """Posts the creator comment. The API can't pin it; pin it in the YouTube app if you like (optional)."""
-    service(channel).commentThreads().insert(part="snippet", body={
+    print(f"commentThreads.insert part=snippet videoId={video_id} text={text[:80]!r}")
+    r = service(channel).commentThreads().insert(part="snippet", body={
         "snippet": {"videoId": video_id, "topLevelComment": {"snippet": {"textOriginal": text[:9000]}}}}).execute()
+    print(f"  -> 200 OK comment thread id={r.get('id')} author={r['snippet']['topLevelComment']['snippet'].get('authorDisplayName')}")
 
 
 def video_stats(channel: str, ids: list[str], start: str, end: str) -> dict:

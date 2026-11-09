@@ -6,3 +6,5 @@ client_secret*.json
 .env
 **/renders/
 **/review/
+evidence/
+*client_secret*.json
