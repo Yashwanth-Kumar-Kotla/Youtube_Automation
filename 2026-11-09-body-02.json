@@ -1,0 +1,32 @@
+{
+ "title": "What Happens If You Get Struck by Lightning?",
+ "description": "About 9 in 10 people struck by lightning survive, and the fern-like Lichtenberg figures some get are not burns: they fade within hours. If someone is struck, they're safe to touch, so call 911 and start CPR.\nNext Body File: what happens if you drink too much water, and why it can make your brain swell.\nFollow Body Files for a new one every day.\n#bodyfiles #lightning #humanbody #science #shorts #healthfacts\n\nSources:\nNWS (NOAA): https://www.weather.gov/safety/lightning-temperature\nNWS (NOAA): https://www.weather.gov/safety/lightning-odds\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC5253516/\nNWS (NOAA): https://www.weather.gov/safety/lightning-medical\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC10329080/\nNWS (NOAA): https://www.weather.gov/media/safety/Dr_Lightning_Guide-Victims.pdf\nNWS (NOAA): https://www.weather.gov/safety/lightning\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia",
+ "hashtags": [
+  "#bodyfiles",
+  "#lightning",
+  "#humanbody",
+  "#science",
+  "#shorts",
+  "#healthfacts"
+ ],
+ "pinned_comment": "Have you ever been close enough to a lightning strike to feel it? Where were you?",
+ "series": "Body Files",
+ "topic": "What happens if you get struck by lightning?",
+ "experiment_arm": "E1-B (hook without a number: no number in lines 1-2); E4 tease_next",
+ "teases": "What happens if you drink too much water?",
+ "topic_cluster": "lightning",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the hold-your-pee video (2026-11-09-body-1) with the fern-on-your-skin tease",
+ "hook_pattern": "question+mystery-souvenir",
+ "format": "explainer",
+ "id": "2026-11-09-body-02",
+ "channel": "body",
+ "made_at": "2026-11-09T15:13-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 43.5,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-09-body-02",
+ "history": []
+}
