@@ -37,6 +37,38 @@
     }
    ],
    "description": "One magnet usually passes, but two or more can pull together through your gut walls, and on an X-ray they can look like just one. If a magnet is swallowed, see a doctor right away (US Poison Control: 1-800-222-1222).\nNext Body File: what happens if you hold your pee until your bladder balloons.\nFollow Body Files for a new one every day.\n#bodyfiles #magnets #humanbody #science #shorts #healthfacts\n\nSources:\nCPSC (2021): https://www.cpsc.gov/Newsroom/News-Releases/2021/Ingestion-of-High-Powered-Magnetic-Balls-and-Magnetic-Cubes-Poses-Serious-Risk-of-Severe-Internal-Injury-or-Death-in-Children-and-Teens\nCPSC (2011): https://www.cpsc.gov/Newsroom/News-Releases/2012/cpsc-warns-high-powered-magnets-and-children-make-a-deadly-mix\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC4256656\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC6476807\nCincinnati Children's: https://blog.cincinnatichildrens.org/safety-and-prevention/tiny-magnets-what-parents-should-know/\nCleveland Clinic: https://my.clevelandclinic.org/health/body/22135-small-intestine"
+  },
+  "2026-11-09-body-01": {
+   "title": "What Happens If You Hold Your Pee Too Long?",
+   "hashtags": [
+    "#bodyfiles",
+    "#bladder",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts"
+   ],
+   "pinned_comment": "What's the longest you've ever had to hold it, and where were you stuck?",
+   "series": "Body Files",
+   "topic": "What happens if you hold your pee too long?",
+   "experiment_arm": "E1-A (hook with a number: 'two cups' in line 2); E4 tease_next",
+   "teases": "What happens if you get struck by lightning?",
+   "topic_cluster": "bladder",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the magnet video (2026-11-08-body-1)",
+   "hook_pattern": "question+number",
+   "format": "explainer",
+   "id": "2026-11-09-body-01",
+   "channel": "body",
+   "made_at": "2026-11-09T14:48-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 40.0,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-09-body-01",
+   "history": [],
+   "description": "Your bladder holds about two cups, and nerves in its wall start nagging your brain long before it's full. If you suddenly can't pee at all, see a doctor right away.\nNext Body File: what happens if you get struck by lightning, and why it can paint a fern on your skin.\nFollow Body Files for a new one every day.\n#bodyfiles #bladder #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/body/25010-bladder\nNIDDK (NIH): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/15427-urinary-retention\nColumbiaDoctors: https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine\nHarvard Health: https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long"
   }
  }
 }

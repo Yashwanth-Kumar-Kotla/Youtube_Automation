@@ -1,0 +1,32 @@
+{
+  "title": "What Happens If You Hold Your Pee Too Long?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Bladder' (holds 500-700 mL, about two cups; expands like a balloon; when it fills with 200-350 mL, nerves in the bladder tell your brain to use the toilet): https://my.clevelandclinic.org/health/body/25010-bladder",
+    "NIDDK (NIH), 'The Urinary Tract & How It Works' (bladder holds 1.5 to 2 cups; two sets of sphincter muscles keep urine in; holding urine too long can weaken bladder muscles and make it harder to empty completely; urine left in the bladder lets bacteria grow, raising the risk of a urinary tract infection): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works",
+    "Cleveland Clinic, 'Urinary Retention' (pee that stays in the bladder can overstretch and damage bladder muscles; if you can't pee at all, seek care right away): https://my.clevelandclinic.org/health/diseases/15427-urinary-retention",
+    "ColumbiaDoctors (Columbia University urology), 'Can Your Bladder Burst From Holding Your Urine?' (spontaneous bladder rupture is possible but rare and limited to case reports; the discomfort becomes intense enough that a person seeks out a restroom; habitual holding can overstretch the bladder): https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine",
+    "Harvard Health Publishing, 'Can your bladder burst from holding it too long?' (bladder is unlikely to rupture just because you held it; holding could let bacteria multiply and stretch the bladder): https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long",
+    "Tease (next video): NIH PMC review 'Lichtenberg figures: morphological findings' (fern-like skin patterns after lightning strikes, not burns, fade within hours in survivors): https://pmc.ncbi.nlm.nih.gov/articles/PMC10329080/"
+  ],
+  "lines": [
+    { "text": "What happens if you hold your pee too long?", "caps": "WHAT *HAPPENS | IF YOU *HOLD | YOUR *PEE | TOO *LONG?" },
+    { "text": "Your stretchy bladder holds about two cups.", "caps": "YOUR *STRETCHY | BLADDER *HOLDS | ABOUT 2 *CUPS" },
+    { "text": "But can it actually pop? Hold that thought.", "caps": "BUT *CAN IT | ACTUALLY *POP? | HOLD THAT *THOUGHT" },
+    { "text": "By one cup, nerves in the wall ping your brain,", "caps": "BY 1 *CUP | *NERVES | IN THE *WALL | PING YOUR *BRAIN" },
+    { "text": "while two ring muscles clamp the exit shut.", "caps": "WHILE 2 *RING | MUSCLES *CLAMP | THE EXIT *SHUT" },
+    { "text": "Hold it all the time, and bacteria can grow in the waiting pee,", "caps": "*HOLD IT | ALL THE *TIME | AND *BACTERIA | CAN *GROW | IN THE *WAITING PEE" },
+    { "text": "raising your risk of a urinary tract infection.", "caps": "RAISING YOUR *RISK | OF A *URINARY | TRACT *INFECTION" },
+    { "text": "Over time, the overstretched muscle can weaken and struggle to empty.", "caps": "OVER *TIME | THE *OVERSTRETCHED | MUSCLE CAN *WEAKEN | AND *STRUGGLE | TO *EMPTY" },
+    { "text": "So, can it pop? In a healthy bladder, it's incredibly rare.", "caps": "SO, CAN IT *POP? | IN A *HEALTHY | *BLADDER | IT'S *INCREDIBLY | *RARE" },
+    { "text": "The urge gets so intense you sprint for a toilet first.", "caps": "THE *URGE | GETS SO *INTENSE | YOU *SPRINT | FOR A *TOILET | *FIRST" },
+    { "text": "Can't pee at all? See a doctor fast.", "caps": "CAN'T *PEE | AT *ALL? | SEE A *DOCTOR | *FAST" },
+    { "text": "Next Body File: what happens if you get struck by lightning,", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOU *GET | *STRUCK | BY *LIGHTNING" },
+    { "text": "and why it can paint a fern on your skin.", "caps": "AND *WHY | IT CAN *PAINT | A *FERN | ON YOUR *SKIN" }
+  ]
+}

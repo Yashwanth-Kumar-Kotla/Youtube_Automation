@@ -742,3 +742,188 @@ export function bladder(x, y, s, fill = 0.5, { t = 0, wob = 0 } = {}) {
   ctx.restore();
   ctx.restore();
 }
+
+// ═════════════════════════ BLADDER SET (2026-11-09 "hold your pee too long") ═════════════════════════
+const MUSCLE_D = '#A8445A', GERM = C.leaf, GERM_D = '#468F55', GERM_L = '#8ED19A', STORM = '#6E7A86', STORM_D = '#5A6573';
+
+/** glass measuring cup (front view, handle on the right, pour spout top-left, red scale marks + "1 CUP" line).
+ *  Pale water inside up to fill 0..1 (liq = liquid colour). ~300x320 px at s = 1 */
+export function measuringCup(x, y, s, fill = 1, t = 0, liq = C.sky) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(112, -10, 72, -Math.PI / 2, Math.PI / 2); ctx.strokeStyle = C.gumEdge; ctx.lineWidth = 34; ctx.stroke();
+  const body = () => { ctx.beginPath(); ctx.moveTo(-160, -170); ctx.lineTo(-120, -150); ctx.lineTo(130, -150); ctx.lineTo(104, 140); ctx.quadraticCurveTo(102, 160, 82, 160); ctx.lineTo(-82, 160); ctx.quadraticCurveTo(-102, 160, -104, 140); ctx.lineTo(-124, -120); ctx.closePath(); };
+  body(); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.save(); ctx.scale(0.9, 0.92); body(); ctx.fillStyle = C.white; ctx.fill(); body(); ctx.clip();
+  if (fill > 0) {
+    const lv = lerp(170, -110, clamp(fill));
+    ctx.beginPath(); ctx.moveTo(-180, 200); for (let xx = -180; xx <= 150; xx += 15) ctx.lineTo(xx, lv + Math.sin(xx * 0.04 + t * 4) * 6); ctx.lineTo(150, 200); ctx.closePath();
+    ctx.fillStyle = liq; ctx.fill();
+  }
+  rr(-100, -110, 20, 220, 10); ctx.fillStyle = C.white; ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  for (let i = 0; i < 4; i++) line([[20, -100 + i * 60], [i % 2 ? 50 : 70, -100 + i * 60]], C.red, 8);
+  ctx.fillStyle = C.red; ctx.font = '900 40px Inter'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('1 CUP', -60, -100 + 40);
+  ctx.restore();
+}
+
+/** the room() window turned stormy: grey sky, a storm cloud and (bolt 0..1 alpha) a small lightning bolt, all OUTSIDE
+ *  behind the glass. Call right after room(). t = film time */
+export function stormWindow(t, bolt = 0, flash = 0) {
+  ctx.save(); rr(622, 252, 316, 396, 12); ctx.clip();
+  ctx.fillStyle = flash > 0 ? '#5A6678' : '#34405A'; ctx.fillRect(622, 252, 316, 396);
+  ctx.fillStyle = '#26314A'; ctx.fillRect(622, 570, 316, 78);
+  stormCloud(780, 330, 0.5, t);
+  lightningBolt(770, 370, 0.4, bolt);
+  ctx.restore();
+  ctx.fillStyle = C.white; ctx.fillRect(772, 252, 14, 396); ctx.fillRect(622, 442, 316, 14);
+}
+
+/** "pause" badge (white disc, ink ring, two ink bars). sc = pop-in */
+export function pauseIcon(x, y, s, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 130, C.ink); circle(0, 0, 112, C.white);
+  rr(-52, -60, 34, 120, 10); ctx.fillStyle = C.ink; ctx.fill(); rr(18, -60, 34, 120, 10); ctx.fill();
+  ctx.restore();
+}
+
+/** a nerve: pink cord along pts (canvas coords), with a yellow signal blip at p 0..1 (p outside 0..1 = no blip).
+ *  draw = how much of the cord is drawn 0..1 */
+export function nerve(pts, p = -1, drawn = 1) {
+  const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const len = cum[cum.length - 1];
+  const at = (u) => { const d = clamp(u) * len; let i = 1; while (i < cum.length - 1 && cum[i] < d) i++; const a = pts[i - 1], b = pts[i], k = (d - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1); return [lerp(a[0], b[0], k), lerp(a[1], b[1], k)]; };
+  if (drawn <= 0) return at;
+  const part = []; const n = 60; for (let i = 0; i <= n * clamp(drawn); i++) part.push(at(i / n));
+  if (part.length > 1) { line(part, C.pinkDark, 22); line(part, C.pinkLight, 9); }
+  if (p >= 0 && p <= 1) {
+    for (let k = 3; k >= 1; k--) { const q = at(clamp(p - k * 0.035)); ctx.save(); ctx.globalAlpha = 0.25 * (4 - k); circle(q[0], q[1], 14 + (3 - k) * 4, C.yellow); ctx.restore(); }
+    const q = at(p); circle(q[0], q[1], 30, C.ink); circle(q[0], q[1], 23, C.yellow);
+  }
+  return at;
+}
+
+/** bladder neck close-up: a pink tube going DOWN from (x, y), len px, with two sphincter ring muscles.
+ *  sq 0..1 = the rings clamp the tube shut; a = ring alpha (pop them in); flow 0..1 = yellow pee in the channel */
+export function sphincters(x, y, s, sq = 0, { a = 1, len = 600, flow = 1 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const RY = [len * 0.33, len * 0.66];
+  const half = (yy) => { let w = 78; for (const ry of RY) w -= 52 * sq * Math.exp(-Math.pow((yy - ry) / 60, 2)); return w; };
+  const tube = (k) => { ctx.beginPath(); for (let yy = 0; yy <= len; yy += 10) ctx.lineTo(-half(yy) * k, yy); for (let yy = len; yy >= 0; yy -= 10) ctx.lineTo(half(yy) * k, yy); ctx.closePath(); };
+  tube(1.25); ctx.fillStyle = C.pinkDark; ctx.fill(); tube(1.05); ctx.fillStyle = C.pink; ctx.fill();
+  if (flow > 0) {
+    ctx.save(); tube(0.42); ctx.clip(); const stop = lerp(len, RY[0] - 40, clamp(sq * 1.2));
+    ctx.fillStyle = C.yellow; ctx.globalAlpha = 0.8 * flow; ctx.fillRect(-100, -10, 200, stop + 10); ctx.restore();
+  }
+  ctx.beginPath(); for (let yy = 10; yy <= len - 10; yy += 10) ctx.lineTo(-half(yy) * 0.72, yy); ctx.strokeStyle = C.pinkLight; ctx.lineWidth = 10; ctx.lineCap = 'round'; ctx.stroke();
+  if (a > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(a);
+    for (const ry of RY) {
+      const hw = half(ry) * 1.25 + 40, sc = clamp(a) < 1 ? lerp(1.4, 1, clamp(a)) : 1;
+      ctx.save(); ctx.translate(0, ry); ctx.scale(sc, sc);
+      rr(-hw, -46, hw * 2, 92, 40); ctx.fillStyle = MUSCLE_D; ctx.fill();
+      rr(-hw + 6, -46, hw * 2 - 12, 80, 36); ctx.fillStyle = C.pinkDark; ctx.fill();
+      for (const k of [-18, 8]) line([[-hw + 26, k], [hw - 26, k]], MUSCLE_D, 7);
+      ell(-hw * 0.45, -30, hw * 0.3, 7, C.pinkLight);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  ctx.restore();
+}
+/** canvas y of sphincter ring i (0 upper, 1 lower) for sphincters drawn at (y, s, len) */
+export const sphincterY = (y, s, i, len = 600) => y + len * (i ? 0.66 : 0.33) * s;
+
+/** a friendly-mischievous bacterium: green capsule, wiggly tails, dot eyes, grin. ~130x60 px at s = 1 */
+export function bacterium(x, y, s, rot = 0, t = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  ctx.strokeStyle = GERM_D; ctx.lineWidth = 6; ctx.lineCap = 'round';
+  for (const k of [-16, 0, 16]) { ctx.beginPath(); for (let i = 0; i <= 12; i++) { const px = -64 - i * 6, py = k * (1 + i * 0.06) + Math.sin(i * 0.9 - t * 12 + k) * 7; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
+  rr(-66, -32, 132, 64, 32); ctx.fillStyle = GERM_D; ctx.fill();
+  rr(-62, -32, 124, 58, 29); ctx.fillStyle = GERM; ctx.fill();
+  ell(-30, -18, 22, 7, GERM_L, -0.1);
+  for (const ex of [18, 42]) { circle(ex, -4, 9, C.white); circle(ex + 2, -3, 5.5, C.ink); }
+  ctx.beginPath(); ctx.moveTo(18, 12); ctx.quadraticCurveTo(32, 22, 48, 10); ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.stroke();
+  ctx.restore();
+}
+
+/** (D) inside the bladder: deep pink, a wobbling lighter wall, soft wall folds, a yellow pee pool from y = level */
+export function insideBladder(t, level = 1100) {
+  fillAll(C.stomachBg);
+  for (let i = 0; i < 6; i++) circle(rnd(i + 40) * W, rnd(i + 50) * H, 120 + rnd(i + 60) * 140, C.stomachBgDark);
+  ctx.beginPath();
+  for (let a = 0; a <= TAU + 0.01; a += 0.05) {
+    const r = 1 + 0.03 * Math.sin(3 * a + t * 1.6) + 0.015 * Math.sin(6 * a - t * 2);
+    const x = 540 + 500 * r * Math.cos(a), y = 820 + 640 * r * Math.sin(a); a === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.closePath(); ctx.fillStyle = C.pink; ctx.fill();
+  ctx.save(); ctx.clip();
+  ctx.strokeStyle = C.stomachFold; ctx.lineWidth = 16; ctx.lineCap = 'round';
+  for (let i = 0; i < 4; i++) { const y0 = 330 + i * 150; ctx.beginPath(); for (let x = 100; x <= 980; x += 20) { const y = y0 + Math.sin(x * 0.01 + t * 1.2 + i * 2) * 22; x === 100 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); } ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(-300, H + 300); for (let x = -300; x <= W + 300; x += 20) ctx.lineTo(x, level + Math.sin(x * 0.012 + t * 2.2) * 14); ctx.lineTo(W + 300, H + 300); ctx.closePath();
+  ctx.fillStyle = C.yellow; ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.beginPath(); for (let x = 60; x <= 1020; x += 20) ctx.lineTo(x, level + 26 + Math.sin(x * 0.012 + t * 2.2) * 14); ctx.strokeStyle = C.white; ctx.globalAlpha = 0.35; ctx.lineWidth = 8; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+/** white toilet, front view (tank, seat, bowl, base). Origin = seat centre; ~420 px tall at s = 1 */
+export function toilet(x, y, s, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  rr(-80, 110, 160, 110, 20); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-80, 110, 120, 104, 20); ctx.fillStyle = C.gum; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-175, -20); ctx.bezierCurveTo(-170, 110, -80, 150, 0, 150); ctx.bezierCurveTo(80, 150, 170, 110, 175, -20); ctx.closePath(); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-175, -20); ctx.bezierCurveTo(-170, 100, -80, 136, 0, 136); ctx.bezierCurveTo(60, 136, 110, 110, 130, 60); ctx.lineTo(130, -20); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  rr(-150, -290, 300, 200, 26); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-150, -290, 260, 192, 26); ctx.fillStyle = C.white; ctx.fill();
+  rr(-170, -312, 340, 40, 16); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-170, -312, 340, 30, 16); ctx.fillStyle = C.white; ctx.fill();
+  rr(70, -250, 54, 18, 9); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ell(0, -30, 190, 52, C.gumEdge); ell(0, -36, 184, 46, C.white); ell(0, -30, 130, 28, C.sky);
+  ell(-60, -200, 50, 12, C.gum, -0.1);
+  ctx.restore();
+}
+
+/** flat storm cloud (grey, darker belly). ~520x260 px at s = 1 */
+export function stormCloud(x, y, s, t = 0) {
+  ctx.save(); ctx.translate(x + Math.sin(t * 1.3) * 8, y); ctx.scale(s, s);
+  const B = [[-170, 30, 95], [-60, -40, 125], [70, -20, 110], [175, 35, 90], [0, 50, 110]];
+  for (const [bx, by, r] of B) circle(bx, by + 14, r, STORM_D);
+  for (const [bx, by, r] of B) circle(bx, by, r, STORM);
+  rr(-250, 40, 500, 90, 45); ctx.fillStyle = STORM_D; ctx.fill(); rr(-250, 30, 500, 84, 42); ctx.fillStyle = STORM; ctx.fill();
+  ell(-80, -110, 60, 18, '#8A95A0', -0.15);
+  ctx.restore();
+}
+
+/** yellow lightning bolt with an ink outline (graphic). Top at (x, y), ~520 px long at s = 1. a = alpha */
+export function lightningBolt(x, y, s, a = 1, rot = 0) {
+  if (a <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.globalAlpha = a;
+  const P = () => { ctx.beginPath(); ctx.moveTo(40, 0); ctx.lineTo(-70, 230); ctx.lineTo(10, 230); ctx.lineTo(-60, 520); ctx.lineTo(110, 180); ctx.lineTo(25, 180); ctx.lineTo(110, 0); ctx.closePath(); };
+  ctx.lineJoin = 'round'; P(); ctx.lineWidth = 22; ctx.strokeStyle = C.ink; ctx.stroke(); P(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(50, 20); ctx.lineTo(-30, 200); ctx.strokeStyle = C.white; ctx.globalAlpha = a * 0.7; ctx.lineWidth = 10; ctx.lineCap = 'round'; ctx.stroke();
+  ctx.restore();
+}
+
+/** round skin patch (magnifier view) with a branching fern-like Lichtenberg pattern drawn in pink. p 0..1 grows it.
+ *  r = patch radius. Not a burn, not a wound: a soft pink pattern on skin */
+export function fernPatch(x, y, r, p = 1) {
+  ctx.save(); ctx.translate(x, y);
+  circle(0, 0, r + 18, C.ink); circle(0, 0, r, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  ell(r * 0.5, r * 0.55, r * 0.7, r * 0.5, C.skinShade);
+  ctx.lineCap = 'round';
+  const br = (bx, by, ang, len, w, depth, seed, t0) => {
+    const k = clamp((p - t0) / 0.3); if (k <= 0 || depth > 3 || len < 8) return;
+    const ex = bx + Math.cos(ang) * len * k, ey = by + Math.sin(ang) * len * k;
+    line([[bx, by], [ex, ey]], C.pinkDark, w); if (w > 6) line([[bx, by], [ex, ey]], C.pink, w * 0.5);
+    if (k < 1) return;
+    const n = 3;
+    for (let i = 1; i <= n; i++) {
+      const u = i / (n + 1), px = bx + Math.cos(ang) * len * u, py = by + Math.sin(ang) * len * u;
+      for (const sd of [-1, 1]) br(px, py, ang + sd * (0.75 + rnd(seed + i * 7 + sd) * 0.35), len * (0.42 - u * 0.12), w * 0.6, depth + 1, seed * 3 + i * 11 + sd, t0 + 0.12);
+    }
+    br(ex, ey, ang + (rnd(seed) - 0.5) * 0.4, len * 0.55, w * 0.75, depth + 1, seed + 5, t0 + 0.1);
+  };
+  br(-r * 0.9, r * 0.75, -0.75, r * 0.95, 20, 0, 1, 0);
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(0, 0, r - 14, Math.PI * 1.1, Math.PI * 1.45); ctx.strokeStyle = C.white; ctx.globalAlpha = 0.6; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.restore();
+}

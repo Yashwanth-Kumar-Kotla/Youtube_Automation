@@ -1,0 +1,21 @@
+{
+  "title": "What Happens If You Hold Your Pee Too Long?",
+  "description": "Your bladder holds about two cups, and nerves in its wall start nagging your brain long before it's full. If you suddenly can't pee at all, see a doctor right away.\nNext Body File: what happens if you get struck by lightning, and why it can paint a fern on your skin.\nFollow Body Files for a new one every day.\n#bodyfiles #bladder #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/body/25010-bladder\nNIDDK (NIH): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/15427-urinary-retention\nColumbiaDoctors: https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine\nHarvard Health: https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long",
+  "hashtags": [
+    "#bodyfiles",
+    "#bladder",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts"
+  ],
+  "pinned_comment": "What's the longest you've ever had to hold it, and where were you stuck?",
+  "series": "Body Files",
+  "topic": "What happens if you hold your pee too long?",
+  "experiment_arm": "E1-A (hook with a number: 'two cups' in line 2); E4 tease_next",
+  "teases": "What happens if you get struck by lightning?",
+  "topic_cluster": "bladder",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the magnet video (2026-11-08-body-1)",
+  "hook_pattern": "question+number",
+  "format": "explainer"
+}
