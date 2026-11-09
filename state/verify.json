@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-09T05:46:27+00:00",
+  "checked_at": "2026-11-09T05:49:24+00:00",
   "channels": {
     "body": {
       "scopes": [
@@ -24,8 +24,25 @@
     "YT_BODY_REFRESH_TOKEN": true,
     "YT_MATURE_REFRESH_TOKEN": false,
     "YT_SURVIVAL_REFRESH_TOKEN": false,
-    "TIKTOK_CLIENT_KEY": false,
-    "TIKTOK_CLIENT_SECRET": false
+    "TIKTOK_CLIENT_KEY": true,
+    "TIKTOK_CLIENT_SECRET": true
+  },
+  "tiktok": {
+    "body": {
+      "display_name": "what if",
+      "followers": 0,
+      "videos": 0,
+      "error": "ok",
+      "creator_info": {
+        "privacy_options": [
+          "PUBLIC_TO_EVERYONE",
+          "MUTUAL_FOLLOW_FRIENDS",
+          "SELF_ONLY"
+        ],
+        "max_video_seconds": 3600,
+        "error": "ok"
+      }
+    }
   },
   "api_key": "ok"
 }

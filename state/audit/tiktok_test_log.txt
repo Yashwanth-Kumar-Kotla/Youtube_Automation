@@ -1,0 +1,3 @@
+$ tiktok.upload(body, demo/body-files-1.mp4, mode=draft)   (2026-11-09T05:49:26Z)
+publish_id v_inbox_file~v2.7706044459993008142
+exit code 0
