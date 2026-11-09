@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-09T00:13:27+00:00",
+  "checked_at": "2026-11-09T05:46:27+00:00",
   "channels": {
     "body": {
       "scopes": [
@@ -10,8 +10,8 @@
       ],
       "channel_title": "whif",
       "channel_id": "UCGlXMTRZY_iJk6DxGXzs6bg",
-      "subscribers": "0",
-      "videos": "0",
+      "subscribers": "5",
+      "videos": "1",
       "long_uploads_status": "eligible",
       "analytics": "ok",
       "missing_scopes": []

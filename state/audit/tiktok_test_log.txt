@@ -1,0 +1,9 @@
+$ tiktok.upload(body, demo/body-files-1.mp4, mode=draft)   (2026-11-09T05:46:28Z)
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 57, in upload
+    tok = _token(channel)
+          ^^^^^^^^^^^^^^^
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 26, in _token
+    raise RuntimeError(f"Missing TikTok refresh token for '{channel}'")
+RuntimeError: Missing TikTok refresh token for 'body'
