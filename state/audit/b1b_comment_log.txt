@@ -1,0 +1,5 @@
+$ python -m pipeline.audit_comment body SiJ_gjDgDRc   (2026-11-09T01:05:40Z)
+videos.list id=SiJ_gjDgDRc -> title="What Happens If You Don't Sleep for 11 Days? 😳 #shorts" privacyStatus=public
+commentThreads.insert part=snippet videoId=SiJ_gjDgDRc text="What's the longest you've ever stayed awake? And what was the weirdest thing you"
+  -> 200 OK comment thread id=UgwGjUQqP79k4DVq5cp4AaABAg author=@whatt-happens-if
+exit code 0
