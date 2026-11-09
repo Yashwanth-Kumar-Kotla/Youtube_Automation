@@ -119,3 +119,16 @@ def video_stats(channel: str, ids: list[str], start: str, end: str) -> dict:
             d = dict(zip(cols, row))
             out.setdefault(d["video"], {}).update({k: d[k] for k in cols if k != "video"})
     return out
+
+
+def recent_uploads(channel: str, n: int = 15) -> list[dict]:
+    """The channel's latest uploads (any visibility the owner can see): [{id, title, privacy, publishAt}]. ~3 quota units."""
+    yt = service(channel)
+    up = yt.channels().list(part="contentDetails", mine=True).execute()["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+    items = yt.playlistItems().list(part="contentDetails", playlistId=up, maxResults=n).execute().get("items", [])
+    ids = [i["contentDetails"]["videoId"] for i in items]
+    if not ids:
+        return []
+    vs = yt.videos().list(part="snippet,status", id=",".join(ids)).execute().get("items", [])
+    return [{"id": v["id"], "title": v["snippet"]["title"], "privacy": v["status"]["privacyStatus"],
+             "publishAt": v["status"].get("publishAt")} for v in vs]

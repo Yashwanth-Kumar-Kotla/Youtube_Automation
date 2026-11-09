@@ -102,10 +102,13 @@ def run(dry: bool = False) -> int:
     for ch, c in CFG["channels"].items():
         if not c.get("enabled"):
             continue
-        yt_on = c.get("youtube", {}).get("enabled") and youtube.has_token(ch)
+        yt_ok = c.get("youtube", {}).get("enabled") and youtube.has_token(ch)
+        manual = yt_ok and c["youtube"].get("mode", "api") == "manual"   # audit period: owner uploads, we detect it
+        yt_on = yt_ok and not manual
         tt_on = c.get("tiktok", {}).get("enabled") and tt_connected(ch)
-        if not (yt_on or tt_on):
+        if not (yt_on or tt_on or manual):
             continue
+        uploads = None
         slots = (c.get("slots") or [])[:MAX_SLOTS]
         day = posts.setdefault(today, {}).setdefault(ch, [])
         for i, sl in enumerate(slots):
@@ -113,6 +116,42 @@ def run(dry: bool = False) -> int:
             yt_t = n.replace(hour=int(sl["youtube"]), minute=0, second=0, microsecond=0)
             tt_t = n.replace(hour=int(sl["tiktok"]), minute=0, second=0, microsecond=0)
             need_yt = yt_on and not (rec or {}).get("youtube") and n < yt_t - timedelta(minutes=20)
+            if manual:
+                if rec is None and n < yt_t + timedelta(hours=3):  # hand today's video to the owner (POST_TODAY.md)
+                    v = stock.pick(ch)
+                    if not v:
+                        print(f"::warning::[{ch}] slot {i}: stock is empty. Nothing to post today.")
+                        continue
+                    if dry:
+                        print(f"[{ch}] slot {i} would hand {v['id']} to the owner for manual upload")
+                        continue
+                    rec = {"slot": i, "id": v["id"], "date": today, "episode": next_episode(ch), "manual": True}
+                    day.append(rec)
+                    stock.set_status(ch, v["id"], "scheduled", f"slot {i} on {today}, episode {rec['episode']}, manual upload")
+                    state.save("posts.json", posts)
+                if rec and rec.get("manual") and not dry:
+                    v = stock.load(ch)["videos"][rec["id"]]
+                    if not rec.get("youtube"):
+                        uploads = uploads if uploads is not None else youtube.recent_uploads(ch)
+                        want = v["title"].lower()[:40]
+                        hit = next((u for u in uploads if u["title"].lower().startswith(want)), None)
+                        if hit:
+                            rec["youtube"] = hit["id"]
+                            print(f"[{ch}] found the owner's upload {hit['id']} ({hit['privacy']}) for {v['id']}")
+                            ledger_upsert(ch, v, rec)
+                    if rec.get("youtube") and not rec.get("commented") and v.get("pinned_comment"):
+                        try:
+                            youtube.comment(ch, rec["youtube"], v["pinned_comment"])
+                            rec["commented"] = True
+                            print(f"[{ch}] creator comment posted on {rec['youtube']} (pin it in the app)")
+                        except Exception as e:
+                            print(f"[{ch}] comment not possible yet (video not public?): {str(e)[:120]}")
+                    state.save("posts.json", posts)
+                    if not (tt_on and not rec.get("tiktok")):
+                        if rec.get("youtube") and v["status"] != "posted":
+                            stock.mark_posted(ch, v["id"], {"posted": today, "episode": rec["episode"], "youtube": rec["youtube"], "manual": True})
+                            stock.delete_branch(v["branch"])
+                        continue
             need_tt = tt_on and not (rec or {}).get("tiktok") and tt_t <= n < tt_t + timedelta(hours=4)
             if not (need_yt or need_tt):
                 continue
@@ -177,7 +216,42 @@ def run(dry: bool = False) -> int:
                                                 "youtube": rec.get("youtube", ""), "tiktok": rec.get("tiktok", "")})
                 stock.delete_branch(v["branch"])
             state.save("posts.json", posts)
+    if not dry:
+        write_post_today(posts)
     return fails
+
+
+def write_post_today(posts: dict) -> None:
+    """Manual-mode handoff: what the owner should upload, ready to copy-paste. Lives at the repo root."""
+    repo = "Yashwanth-Kumar-Kotla/Youtube_Automation"
+    out = ["# POST TODAY", "_Updated hourly by the publisher. Upload each video below in YouTube Studio (now, or scheduled for the time shown)._",
+           "_The publisher finds your upload by its title within the hour, records it, and posts the pinned comment once it's public._", ""]
+    pending = 0
+    for d in sorted(posts)[-3:]:
+        for ch, recs in posts[d].items():
+            c = CFG["channels"].get(ch, {})
+            for r in recs:
+                if not r.get("manual") or r.get("youtube") or r.get("released"):
+                    continue
+                v = stock.load(ch)["videos"].get(r["id"])
+                if not v:
+                    continue
+                pending += 1
+                sl = (c.get("slots") or [{}])[r["slot"]]
+                title = f"{v['title']} | {c.get('series', '')} #{r['episode']}".strip(" |#")
+                tags = ", ".join(h.lstrip("#") for h in v.get("hashtags", []))
+                out += [f"## {ch}: {title}", "",
+                        f"- **Download:** https://github.com/{repo}/raw/{v['branch']}/{v['id']}.mp4 (cover frame: `{v['id']}.jpg` on the same branch)",
+                        f"- **Best time:** {sl.get('youtube', 17)}:00 Central (schedule it in Studio, or post now). TikTok: {sl.get('tiktok', 19)}:00.",
+                        "- **Settings:** Not made for kids · Altered content: No · Category: Education · Comments on", "",
+                        "**Title** (paste exactly; the publisher matches on it)", "```", title, "```",
+                        "**Description**", "```", v.get("description", "") + ("\n\n#shorts" if "#shorts" not in v.get("description", "").lower() else ""), "```",
+                        "**Tags**", "```", tags, "```",
+                        "**TikTok caption**", "```", f"{v['title']} " + " ".join("#" + h.lstrip("#") for h in v.get("hashtags", [])[:5]) + " #fyp", "```",
+                        "**Pinned comment** (the publisher posts it for you on YouTube; on TikTok paste it yourself)", "```", v.get("pinned_comment", ""), "```", ""]
+    if not pending:
+        out.append("Nothing to upload right now.")
+    open(os.path.join(ROOT, "POST_TODAY.md"), "w").write("\n".join(out) + "\n")
 
 
 def main():

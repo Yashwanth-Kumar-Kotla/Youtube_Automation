@@ -37,6 +37,7 @@ channels:
       - {youtube: 17, tiktok: 19}   # local hours: YouTube goes public / TikTok is sent
     youtube:
       enabled: true
+      mode: manual             # manual until the API audit passes (owner uploads from POST_TODAY.md; publisher detects it). Then: api
       made_for_kids: false     # general audience by design (see BIBLE)
       category_id: "27"        # Education
       publish_hour_local: 17
