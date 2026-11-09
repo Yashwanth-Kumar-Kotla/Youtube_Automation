@@ -52,6 +52,27 @@ def main():
         except Exception as e:
             r["error"] = f"{type(e).__name__}: {str(e)[:300]}"
         out["channels"][ch] = r
+    for ch in cfg["channels"]:
+        if not os.environ.get(f"TIKTOK_{ch.upper()}_REFRESH_TOKEN"):
+            continue
+        t: dict = {}
+        try:
+            from . import tiktok
+            tok = tiktok._token(ch)
+            u = requests.get("https://open.tiktokapis.com/v2/user/info/", timeout=20,
+                             params={"fields": "open_id,display_name,follower_count,video_count"},
+                             headers={"Authorization": f"Bearer {tok}"}).json()
+            d = u.get("data", {}).get("user", {})
+            t = {"display_name": d.get("display_name"), "followers": d.get("follower_count"),
+                 "videos": d.get("video_count"), "error": u.get("error", {}).get("code")}
+            ci = requests.post("https://open.tiktokapis.com/v2/post/publish/creator_info/query/", timeout=20,
+                               headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json; charset=UTF-8"}).json()
+            t["creator_info"] = {"privacy_options": ci.get("data", {}).get("privacy_level_options"),
+                                 "max_video_seconds": ci.get("data", {}).get("max_video_post_duration_sec"),
+                                 "error": ci.get("error", {}).get("code")}
+        except Exception as e:
+            t["error"] = f"{type(e).__name__}: {str(e)[:300]}"
+        out.setdefault("tiktok", {})[ch] = t
     key = os.environ.get("YT_API_KEY")
     if key:
         j = requests.get("https://www.googleapis.com/youtube/v3/search", timeout=20,
