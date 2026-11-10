@@ -363,9 +363,12 @@ export function man(o) {
     rr(-36, -250, 72, 60, 20); ctx.fillStyle = C.xnavy; ctx.fill();
     for (let y = -246; y < -200; y += 22) { rr(-13, y, 26, 16, 6); ctx.fillStyle = C.cyan; ctx.fill(); }
   } else {
-    if (o.sit) for (const sd of [-1, 1]) ell(sd * 92, 360, 70, 34, BOOT);
-    rr(-128, 180, 122, LEG, 40); ctx.fillStyle = C.pants; ctx.fill(); rr(6, 180, 122, LEG, 40); ctx.fill();
-    rr(6, 180, 40, LEG, [0, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill();
+    if (o.cross) crossLegs();
+    else {
+      if (o.sit) for (const sd of [-1, 1]) ell(sd * 92, 360, 70, 34, BOOT);
+      rr(-128, 180, 122, LEG, 40); ctx.fillStyle = C.pants; ctx.fill(); rr(6, 180, 122, LEG, 40); ctx.fill();
+      rr(6, 180, 40, LEG, [0, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill();
+    }
     rr(-36, -250, 72, 60, 20); ctx.fillStyle = C.skin; ctx.fill();
   }
   arm(-1, o.armL || ARM.down, null, XR);
@@ -1200,7 +1203,7 @@ const BLOOD = '#B83A55', BLOOD_D = '#A3304A', RBC = '#D62839', RBC_D = '#A81E2D'
 
 /** plain drinking glass (tumbler, no text), pale blue water up to fill 0..1. Origin = glass centre, ~170x230 px at s = 1.
  *  rot tilts it (drinking). Safe to put in the hero's hand with man({ holding }) */
-export function glass(x, y, s, fill = 0.7, t = 0, rot = 0) {
+export function glass(x, y, s, fill = 0.7, t = 0, rot = 0, liq = C.sky) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
   const body = () => { ctx.beginPath(); ctx.moveTo(-85, -115); ctx.lineTo(85, -115); ctx.lineTo(68, 105); ctx.quadraticCurveTo(66, 118, 52, 118); ctx.lineTo(-52, 118); ctx.quadraticCurveTo(-66, 118, -68, 105); ctx.closePath(); };
   body(); ctx.fillStyle = C.gumEdge; ctx.fill();
@@ -1209,7 +1212,7 @@ export function glass(x, y, s, fill = 0.7, t = 0, rot = 0) {
     ctx.rotate(-rot);                                        // the water surface stays level when the glass tips
     const lv = lerp(130, -110, clamp(fill));
     ctx.beginPath(); ctx.moveTo(-200, 260); for (let xx = -200; xx <= 200; xx += 16) ctx.lineTo(xx, lv + Math.sin(xx * 0.05 + t * 4) * 5); ctx.lineTo(200, 260); ctx.closePath();
-    ctx.fillStyle = C.sky; ctx.fill();
+    ctx.fillStyle = liq; ctx.fill();
     ctx.rotate(rot);
   }
   rr(-58, -90, 18, 180, 9); ctx.fillStyle = C.white; ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1;
@@ -2688,22 +2691,27 @@ export function labMouse(x, y, s = 1, { t = 0, shiver = 0, eyes = 'n', smile = t
 }
 
 /** cartoon bare foot (side view, toes right) under a navy trouser cuff, with a sleepy little face. wake 0..1 opens its eyes.
+ *  pale 0..1 = numb (skin goes grey-lilac), wide = big round awake eyes, mouth null (smile) | 'o' | 'wavy' (tingly grimace).
  *  ~400x420 px at s = 1, origin = middle of the foot (sole at +84, cuff top at -260). sc = pop-in, t = film time */
-export function sleepyFoot(x, y, s = 1, { t = 0, sc = 1, wake = 0 } = {}) {
+export function sleepyFoot(x, y, s = 1, { t = 0, sc = 1, wake = 0, pale = 0, mouth = null, wide = false } = {}) {
   if (sc <= 0) return;
+  const SKN = pale > 0 ? mixHex(C.skin, NUMB, pale) : C.skin, SKS = pale > 0 ? mixHex(C.skinShade, NUMB_D, pale) : C.skinShade;
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.rotate(Math.sin(t * 1.6) * 0.02); ctx.lineCap = 'round';
-  rr(-80, -190, 150, 170, 50); ctx.fillStyle = C.skin; ctx.fill();
-  rr(-120, -40, 360, 124, 62); ctx.fill(); circle(-62, 12, 74, C.skin);
-  ctx.beginPath(); ctx.moveTo(-110, 70); ctx.quadraticCurveTo(60, 96, 210, 72); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 14; ctx.stroke();
-  for (const [tx, ty, tr] of [[214, -6, 40], [180, -34, 26]]) { circle(tx, ty, tr, C.skin); }
+  rr(-80, -190, 150, 170, 50); ctx.fillStyle = SKN; ctx.fill();
+  rr(-120, -40, 360, 124, 62); ctx.fill(); circle(-62, 12, 74, SKN);
+  ctx.beginPath(); ctx.moveTo(-110, 70); ctx.quadraticCurveTo(60, 96, 210, 72); ctx.strokeStyle = SKS; ctx.lineWidth = 14; ctx.stroke();
+  for (const [tx, ty, tr] of [[214, -6, 40], [180, -34, 26]]) { circle(tx, ty, tr, SKN); }
   ell(232, -20, 16, 11, SKIN_HI, -0.4);
-  circle(-30, -70, 18, C.skinShade); circle(-30, -70, 12, C.skin);
+  circle(-30, -70, 18, SKS); circle(-30, -70, 12, SKN);
   rr(-110, -260, 210, 100, 34); ctx.fillStyle = C.pants; ctx.fill(); rr(40, -260, 60, 100, [0, 34, 34, 0]); ctx.fillStyle = C.pantsShade; ctx.fill();
   const w = clamp(wake), ex = [70, 125];
-  if (w > 0.5) for (const e of ex) { ell(e, 6, 10, 13, C.ink); circle(e + 3, 1, 4, C.white); }
+  if (w > 0.5 && wide) for (const e of ex) { ell(e, 4, 17, 20, C.white); ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.beginPath(); ctx.ellipse(e, 4, 17, 20, 0, 0, TAU); ctx.stroke(); circle(e, 6, 9, C.ink); circle(e + 3, 2, 3.5, C.white); }
+  else if (w > 0.5) for (const e of ex) { ell(e, 6, 10, 13, C.ink); circle(e + 3, 1, 4, C.white); }
   else { ctx.strokeStyle = C.ink; ctx.lineWidth = 7; for (const e of ex) { ctx.beginPath(); ctx.arc(e, 2, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); } }
   ctx.globalAlpha = 0.35; ell(50, 34, 16, 9, C.pink); ell(150, 34, 16, 9, C.pink); ctx.globalAlpha = 1;
-  ctx.beginPath(); ctx.arc(98, 34, w > 0.5 ? 14 : 8, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.stroke();
+  if (mouth === 'o') { ell(98, 42, 10, 13, C.mouth); }
+  else if (mouth === 'wavy') { ctx.beginPath(); for (let i = 0; i <= 6; i++) ctx.lineTo(80 + i * 6, 40 + (i % 2 ? -5 : 5)); ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.lineJoin = 'round'; ctx.stroke(); }
+  else { ctx.beginPath(); ctx.arc(98, 34, w > 0.5 ? 14 : 8, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.stroke(); }
   ctx.restore();
 }
 
@@ -2752,3 +2760,129 @@ export function tingles(items, t, s = 1) {
     else sparkle4(x, y, 34 * s, sc * (0.8 + 0.2 * Math.sin(t * 8 + i)), t * 0.8 + i);
   });
 }
+
+// ═════════════════════════ FOOT-ASLEEP SET (2026-11-10 "foot falls asleep") ═════════════════════════
+const NUMB = '#C9C3D3', NUMB_D = '#AFA8BC', SOFA = '#C8734A', SOFA_D = '#A85E3A', SOFA_L = '#D98C63';
+/** hex colour mix a -> b by k (flat tone between two palette colours) */
+function mixHex(a, b, k) {
+  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return '#' + pa.map((v, i) => Math.round(lerp(v, pb[i], clamp(k))).toString(16).padStart(2, '0')).join('');
+}
+/** hands resting on the knees (cross-legged sitting), RIGHT arm */
+ARM.knee = { e: [215, 40], h: [238, 236] };
+/** cross-legged legs for man({ cross: true }) (front view, sitting, local coords): thighs out to the knees, shins crossing,
+ *  bare feet poking out sideways. The screen-right foot's shin lies UNDER the other one.
+ *  CROSS.pinch = where the top shin presses on it, CROSS.foot = that foot (the one that falls asleep), CROSS.seat = bottom of the legs */
+export const CROSS = { pinch: [0, 366], foot: [232, 392], seat: 440 };
+function bareFoot(x, y, dir) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(dir, 1);
+  ell(18, 8, 66, 36, C.skin); circle(74, -2, 26, C.skin); circle(56, -22, 16, C.skin);
+  ctx.beginPath(); ctx.moveTo(-30, 36); ctx.quadraticCurveTo(30, 48, 80, 30); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
+  ell(84, -12, 8, 6, SKIN_HI, -0.4);
+  ctx.restore();
+}
+function crossLegs() {
+  line([[-62, 220], [-250, 330]], C.pants, 124); line([[62, 220], [250, 330]], C.pants, 124);
+  line([[-250, 340], [150, 392]], C.pantsShade, 108);                 // back shin (left knee -> right ankle)
+  bareFoot(214, 396, 1);
+  bareFoot(-214, 396, -1);
+  line([[250, 340], [-150, 392]], C.pants, 108);                      // front shin on top: the weight
+  line([[230, 312], [-120, 360]], '#2A3656', 14);                    // flat light edge
+}
+/** flat sofa (terracotta). y = seat top, x = centre, ~860 px wide at s = 1. Draw BEFORE the sitter; nothing in front */
+export function sofa(x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  for (const lx of [-370, 340]) { rr(lx, 190, 30, 70, 8); ctx.fillStyle = SOFA_D; ctx.fill(); }
+  rr(-380, -330, 760, 380, 56); ctx.fillStyle = SOFA_D; ctx.fill();
+  rr(-360, -312, 720, 340, 46); ctx.fillStyle = SOFA; ctx.fill();
+  ell(-180, -270, 120, 16, SOFA_L); ell(170, -270, 110, 16, SOFA_L);
+  for (const sd of [-1, 1]) { rr(sd * 400 - 70, -170, 140, 370, 46); ctx.fillStyle = SOFA_D; ctx.fill(); rr(sd * 400 - 60, -160, 120, 50, 26); ctx.fillStyle = SOFA_L; ctx.fill(); }
+  rr(-340, -10, 680, 100, 32); ctx.fillStyle = SOFA_L; ctx.fill();
+  rr(-350, 70, 700, 130, 24); ctx.fillStyle = SOFA; ctx.fill(); rr(-350, 160, 700, 40, [0, 0, 24, 24]); ctx.fillStyle = SOFA_D; ctx.fill();
+  ctx.restore();
+}
+/** pinch icon: two chunky red arrowheads (ink edge) squeezing toward (x, y) from above and below. p 0..1 squeezes them in */
+export function pinchIcon(x, y, s = 1, p = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  const g = lerp(95, 45, clamp(p));
+  for (const sd of [-1, 1]) {
+    ctx.beginPath(); ctx.moveTo(0, sd * g); ctx.lineTo(-48, sd * (g + 52)); ctx.lineTo(-18, sd * (g + 52)); ctx.lineTo(-18, sd * (g + 110));
+    ctx.lineTo(18, sd * (g + 110)); ctx.lineTo(18, sd * (g + 52)); ctx.lineTo(48, sd * (g + 52)); ctx.closePath();
+    ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.red; ctx.fill();
+  }
+  ctx.restore();
+}
+/** cutaway lens of the lower leg (side view): ink ring, skin, a pink nerve running left (toward the brain) to right
+ *  (toward the foot). The other leg's shin (navy) presses down from the top: squash 0..1 flattens the nerve under it.
+ *  flow = film-time phase of the yellow signal blips (-1 = none); block 0..1 = blips stop and fizzle at the pinch.
+ *  glow 0..1 = the nerve lights up (waking). sc = pop-in. Returns { pinch: [x, y] } (screen px) */
+export function nerveLens(x, y, r, { squash = 0, flow = -1, block = 0, glow = 0, sc = 1, t = 0 } = {}) {
+  const out = { pinch: [x, y + 10 * r / 300] };
+  if (sc <= 0 || r <= 0) return out;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc * r / 300, sc * r / 300);
+  circle(0, 0, 318, C.ink);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 300, 0, TAU); ctx.clip();
+  ctx.fillStyle = C.bg; ctx.fillRect(-320, -320, 640, 640);
+  ctx.fillStyle = C.skinShade; ctx.fillRect(-320, -150, 640, 470);
+  ctx.fillStyle = C.skin; ctx.fillRect(-320, -130, 640, 450);
+  ell(-150, 190, 110, 40, SKIN_HI, 0.1);
+  const q = clamp(squash), bump = (px) => Math.exp(-((px / 120) ** 2));
+  const th = (px) => 66 * (1 - 0.72 * q * bump(px)), cy = (px) => 30 + 16 * q * bump(px);
+  const edge = (sgn, k) => { for (let px = -320; px <= 320; px += 10) { const yy = cy(px) + sgn * th(px) / 2 * k; px === -320 ? ctx.moveTo(px, yy) : ctx.lineTo(px, yy); } };
+  const tube = (k, col) => { ctx.beginPath(); edge(-1, k); for (let px = 320; px >= -320; px -= 10) ctx.lineTo(px, cy(px) + th(px) / 2 * k); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); };
+  if (glow > 0) { ctx.save(); ctx.globalAlpha = 0.45 * clamp(glow); tube(2.0, C.yellow); ctx.restore(); }
+  tube(1.25, C.pinkDark); tube(1, C.pink);
+  ctx.save(); ctx.globalAlpha = 0.7; ctx.beginPath(); for (let px = -320; px <= 320; px += 10) { const yy = cy(px) - th(px) * 0.22; px === -320 ? ctx.moveTo(px, yy) : ctx.lineTo(px, yy); }
+  ctx.strokeStyle = C.pinkLight; ctx.lineWidth = 10 * (1 - 0.5 * q); ctx.lineCap = 'round'; ctx.stroke(); ctx.restore();
+  if (flow >= 0) for (let k = 0; k < 3; k++) {
+    let u = (flow * 0.9 + k / 3) % 1, px = lerp(-330, 330, u), a = 1, rr2 = 22;
+    if (block > 0 && px > -150) { const f = clamp((px + 150) / 60); a = 1 - f * clamp(block); rr2 = 22 * (1 + 0.6 * f * block); px = lerp(px, -150, clamp(block)); }
+    if (a <= 0.02) continue;
+    ctx.save(); ctx.globalAlpha = a; circle(px, cy(px), rr2 + 7, C.ink); circle(px, cy(px), rr2, C.yellow); ctx.restore();
+  }
+  const pd = lerp(-190, -38 - 14 * q, q);             // the other leg's shin pressing down
+  rr(-190, -420, 380, pd + 420, [0, 0, 90, 90]); ctx.fillStyle = C.pants; ctx.fill();
+  rr(80, -420, 110, pd + 420, [0, 0, 90, 0]); ctx.fillStyle = C.pantsShade; ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(0, 0, 300, 0, TAU); ctx.lineWidth = 20; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.restore();
+  return out;
+}
+/** feeling badge: white disc with an ink ring and an icon. kind 'tingle' (yellow sparkles + buzz strokes) | 'prickle' (pins)
+ *  | 'burn' (a flat flame symbol: red + yellow, no skin, no injury). ~300 px wide at s = 1. sc = pop-in, t = film time */
+export function feelBadge(kind, x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  if (kind === 'tingle') {
+    sparkle4(-30, -20, 52, 1 + 0.12 * Math.sin(t * 9), t * 0.6); sparkle4(52, 40, 34, 1 + 0.12 * Math.sin(t * 9 + 2), -t * 0.6); sparkle4(-48, 62, 24, 1 + 0.15 * Math.sin(t * 9 + 4));
+    for (const [dx, dy, an] of [[70, -60, -0.6], [-95, 10, 3.2]]) { ctx.save(); ctx.translate(dx, dy); ctx.rotate(an); line([[-16, 0], [-6, -10], [6, 10], [16, 0]], C.ink, 7); ctx.restore(); }
+  } else if (kind === 'prickle') {
+    const j = Math.sin(t * 12) * 0.08;
+    pinIcon(-40, -60, 1.0, -0.35 + j); pinIcon(40, -70, 1.0, 0.3 - j); pinIcon(0, -30, 0.9, 0.02 + j);
+  } else {
+    const f = 1 + 0.06 * Math.sin(t * 14), fl = (k) => { ctx.beginPath(); ctx.moveTo(0, 80 * k); ctx.bezierCurveTo(-80 * k, 70 * k, -86 * k, -10 * k, -34 * k, -60 * k); ctx.quadraticCurveTo(-30 * k, -20 * k, -10 * k, -30 * k); ctx.quadraticCurveTo(-20 * k, -80 * k, 10 * k, -110 * k * f); ctx.bezierCurveTo(30 * k, -60 * k, 86 * k, -30 * k, 70 * k, 20 * k); ctx.bezierCurveTo(62 * k, 60 * k, 30 * k, 80 * k, 0, 80 * k); ctx.closePath(); };
+    ctx.save(); ctx.translate(0, 10); fl(1.08); ctx.fillStyle = C.ink; ctx.fill(); fl(1); ctx.fillStyle = C.red; ctx.fill(); ctx.translate(0, 26); fl(0.5); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore();
+  }
+  ctx.restore();
+}
+/** cartoon tooth (molar, two roots) with a happy face: white, gumEdge outline, dot eyes + smile. NO blood, never in a mouth.
+ *  ~260x320 px at s = 1, origin = crown centre. wink = closes the right eye; sc = pop-in, t = film time (gentle bob) */
+export function tooth(x, y, s = 1, { t = 0, sc = 1, wink = false } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * 5); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  const P = () => { ctx.beginPath(); ctx.moveTo(-110, -90); ctx.bezierCurveTo(-110, -150, -50, -150, -30, -128); ctx.quadraticCurveTo(0, -110, 30, -128);
+    ctx.bezierCurveTo(50, -150, 110, -150, 110, -90); ctx.bezierCurveTo(112, -10, 90, 40, 80, 90); ctx.bezierCurveTo(70, 170, 30, 170, 24, 110);
+    ctx.quadraticCurveTo(16, 60, 0, 60); ctx.quadraticCurveTo(-16, 60, -24, 110); ctx.bezierCurveTo(-30, 170, -70, 170, -80, 90); ctx.bezierCurveTo(-90, 40, -112, -10, -110, -90); ctx.closePath(); };
+  P(); ctx.lineWidth = 16; ctx.strokeStyle = C.gumEdge; ctx.stroke(); ctx.fillStyle = C.white; ctx.fill();
+  ell(-62, -96, 22, 12, C.gum, -0.5);
+  ell(-36, -40, 11, 14, C.ink); circle(-32, -45, 4, C.white);
+  if (wink) { ctx.beginPath(); ctx.arc(36, -36, 13, 1.1 * Math.PI, 1.9 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke(); }
+  else { ell(36, -40, 11, 14, C.ink); circle(40, -45, 4, C.white); }
+  ctx.globalAlpha = 0.35; ell(-62, -6, 16, 9, C.pink); ell(62, -6, 16, 9, C.pink); ctx.globalAlpha = 1;
+  ctx.beginPath(); ctx.moveTo(-24, -8); ctx.quadraticCurveTo(0, 14, 24, -8); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
+  ctx.restore();
+}
+/** glass of milk: glass() filled with white milk. ~170x230 px at s = 1 */
+export function milkGlass(x, y, s = 1, fill = 0.75, t = 0) { glass(x, y, s, fill, t, 0, C.white); }

@@ -1,0 +1,69 @@
+{
+  "title": "What Happens When Your Foot Falls Asleep?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NINDS, 'Paresthesia Information Page' (BrainFacts.org mirror) (paresthesia is a burning or prickling sensation usually felt in the hands, arms, legs or feet; described as tingling or numbness, skin crawling or itching; most people have had temporary paresthesia, a feeling of 'pins and needles', at some time, e.g. sitting with legs crossed too long or falling asleep with an arm crooked under the head; it happens when sustained pressure is placed on a nerve; the feeling quickly goes away once the pressure is relieved): https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia",
+    "Cleveland Clinic, 'Paresthesia' (tingling, burning, pricking or prickling, 'pins and needles'; commonly happens because of body positioning that puts pressure on a nerve or limits blood flow; the pins and needles happen when you change position and release the pressure; temporary paresthesia is the more common type and doesn't last long; see a provider when it won't go away or happens often): https://my.clevelandclinic.org/health/symptoms/24932-paresthesia",
+    "The Conversation, 'What happens when your foot falls asleep?' (Zachary Gillen, exercise physiologist, Mississippi State University, Sept 13 2021) (the nerves that let your brain and foot communicate get squished by the way you're sitting, so you temporarily lose feeling and control; once you move, the pressure is released, the nerves 'wake up' and you notice 'pins and needles'; lasts only a minute or two; no permanent damage): https://theconversation.com/what-happens-when-your-foot-falls-asleep-164655",
+    "Tease (next video): Mayo Clinic, 'Tooth loss: First aid' (replant a knocked-out adult tooth as soon as possible, holding it by the crown, not the root; if it can't go back in the socket, keep it in cold milk or your own saliva and get emergency dental care; sooner is better): https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635"
+  ],
+  "lines": [
+    {
+      "text": "What happens when your foot falls asleep?",
+      "caps": "WHAT *HAPPENS | WHEN YOUR *FOOT | FALLS *ASLEEP?"
+    },
+    {
+      "text": "Your foot isn't sleeping, it's lost touch with your brain,",
+      "caps": "YOUR FOOT *ISN'T | *SLEEPING, IT'S | LOST *TOUCH | WITH YOUR *BRAIN"
+    },
+    {
+      "text": "and the wake-up is even weirder.",
+      "caps": "AND THE *WAKE-UP | IS EVEN *WEIRDER"
+    },
+    {
+      "text": "Sit cross-legged too long, and you squash a nerve.",
+      "caps": "SIT *CROSS-LEGGED TOO | *LONG, AND YOU | SQUASH A *NERVE"
+    },
+    {
+      "text": "Under that pressure, its messages stop getting through,",
+      "caps": "UNDER THAT *PRESSURE | ITS *MESSAGES | STOP GETTING *THROUGH"
+    },
+    {
+      "text": "so your foot goes numb and hard to move.",
+      "caps": "SO YOUR *FOOT | GOES *NUMB AND | HARD TO *MOVE"
+    },
+    {
+      "text": "Then you stand up, the pressure lets go,",
+      "caps": "THEN YOU *STAND | UP, THE *PRESSURE | LETS *GO"
+    },
+    {
+      "text": "and your nerve wakes back up.",
+      "caps": "AND YOUR *NERVE | *WAKES BACK UP"
+    },
+    {
+      "text": "That's the pins and needles: tingling, prickling, even burning.",
+      "caps": "THAT'S THE *PINS | AND *NEEDLES | TINGLING, *PRICKLING | EVEN *BURNING"
+    },
+    {
+      "text": "That feeling fades in a minute or two.",
+      "caps": "THAT *FEELING | *FADES IN A | MINUTE OR *2"
+    },
+    {
+      "text": "If it happens often or won't go away, see a doctor.",
+      "caps": "IF IT *HAPPENS | *OFTEN OR | WON'T GO *AWAY | SEE A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: what happens if you knock out a tooth,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS IF | YOU KNOCK *OUT | A *TOOTH"
+    },
+    {
+      "text": "and why a glass of milk might save it.",
+      "caps": "AND *WHY A | GLASS OF *MILK | MIGHT *SAVE IT"
+    }
+  ]
+}

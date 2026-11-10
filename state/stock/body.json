@@ -345,6 +345,38 @@
    "branch": "stock/body/2026-11-10-body-05",
    "history": [],
    "description": "Goosebumps (piloerection) are an automatic reaction of your sympathetic nervous system, your fight-or-flight mode. Tiny muscles at the base of each hair follicle (the arrector pili) contract, so the hairs stand up and small bumps form. Cold, fear, shock, excitement and even music or a movie can set them off. In animals it makes them look bigger, like a cat that puffs up while it hisses; in humans it mostly helps conserve a little heat. A 2020 Harvard study in mice suggests a second job: the same nerve, bridged by that muscle, wakes up hair follicle stem cells, and mice kept in the cold grew new hair in under two weeks.\nNext Body File: what happens when your foot falls asleep, and the pins and needles once it wakes.\nFollow Body Files for a new one every day.\n#bodyfiles #goosebumps #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Why You Have Goosebumps on Your Skin: https://health.clevelandclinic.org/why-do-you-get-goosebumps\nNIH Research Matters, What goosebumps are for (2020): https://www.nih.gov/news-events/nih-research-matters/what-goosebumps-are\nNINDS, Paresthesia Information Page: https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia"
+  },
+  "2026-11-10-body-06": {
+   "title": "What Happens When Your Foot Falls Asleep?",
+   "hashtags": [
+    "#bodyfiles",
+    "#pinsandneedles",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts"
+   ],
+   "pinned_comment": "Where do you get pins and needles the most: foot, leg, or the arm you slept on? Tell us.",
+   "series": "Body Files",
+   "topic": "What happens when your foot falls asleep?",
+   "experiment_arm": "E1-B (hook without a number: lines 1-2 have no number); E4 tease_next",
+   "teases": "What happens if you knock out a tooth?",
+   "topic_cluster": "nerves",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the goosebumps video (2026-11-10-body-5) with 'and the pins and needles once it wakes' (paid off in lines 8-9: 'and your nerve wakes back up. That's the pins and needles...')",
+   "hook_pattern": "question+reframe-loop",
+   "format": "explainer",
+   "id": "2026-11-10-body-06",
+   "channel": "body",
+   "made_at": "2026-11-10T09:18-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 34.9,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-10-body-06",
+   "history": [],
+   "description": "That \"asleep\" feeling is temporary paresthesia: sitting with your legs crossed too long puts sustained pressure on a nerve (body position can also limit blood flow), so the messages between your foot and your brain get interrupted and the foot goes numb. Move, the pressure is released, and the nerve \"wakes up\": that's the pins and needles, a tingling, prickling or burning feeling that fades in a minute or two with no permanent damage. If it won't go away or happens often, see a doctor.\nNext Body File: what happens if you knock out a tooth, and why a glass of milk might save it.\nFollow Body Files for a new one every day.\n#bodyfiles #pinsandneedles #humanbody #science #shorts #healthfacts\n\nSources:\nNINDS, Paresthesia Information Page (via BrainFacts.org): https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia\nCleveland Clinic, Paresthesia: https://my.clevelandclinic.org/health/symptoms/24932-paresthesia\nThe Conversation, What happens when your foot falls asleep? (2021): https://theconversation.com/what-happens-when-your-foot-falls-asleep-164655\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635"
   }
  }
 }

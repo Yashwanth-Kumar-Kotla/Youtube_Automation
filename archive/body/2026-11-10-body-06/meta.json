@@ -1,0 +1,14 @@
+{
+  "title": "What Happens When Your Foot Falls Asleep?",
+  "description": "That \"asleep\" feeling is temporary paresthesia: sitting with your legs crossed too long puts sustained pressure on a nerve (body position can also limit blood flow), so the messages between your foot and your brain get interrupted and the foot goes numb. Move, the pressure is released, and the nerve \"wakes up\": that's the pins and needles, a tingling, prickling or burning feeling that fades in a minute or two with no permanent damage. If it won't go away or happens often, see a doctor.\nNext Body File: what happens if you knock out a tooth, and why a glass of milk might save it.\nFollow Body Files for a new one every day.\n#bodyfiles #pinsandneedles #humanbody #science #shorts #healthfacts\n\nSources:\nNINDS, Paresthesia Information Page (via BrainFacts.org): https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia\nCleveland Clinic, Paresthesia: https://my.clevelandclinic.org/health/symptoms/24932-paresthesia\nThe Conversation, What happens when your foot falls asleep? (2021): https://theconversation.com/what-happens-when-your-foot-falls-asleep-164655\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635",
+  "hashtags": ["#bodyfiles", "#pinsandneedles", "#humanbody", "#science", "#shorts", "#healthfacts"],
+  "pinned_comment": "Where do you get pins and needles the most: foot, leg, or the arm you slept on? Tell us.",
+  "series": "Body Files",
+  "topic": "What happens when your foot falls asleep?",
+  "experiment_arm": "E1-B (hook without a number: lines 1-2 have no number); E4 tease_next",
+  "teases": "What happens if you knock out a tooth?",
+  "topic_cluster": "nerves",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the goosebumps video (2026-11-10-body-5) with 'and the pins and needles once it wakes' (paid off in lines 8-9: 'and your nerve wakes back up. That's the pins and needles...')",
+  "hook_pattern": "question+reframe-loop",
+  "format": "explainer"
+}
