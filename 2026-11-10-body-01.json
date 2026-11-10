@@ -1,0 +1,33 @@
+{
+ "title": "What Happens If You Sneeze With Your Eyes Open?",
+ "description": "Closing your eyes during a sneeze is an automatic reflex, but with a lot of concentration you can keep them open, and they won't pop out. Each eye has six muscles, and a Texas A&M allergist says a sneeze is extremely unlikely to pop an eyeball out. The myth traces back to an 1882 newspaper story.\nNext Body File: what happens in space without a suit, and the NASA tester who felt his own spit boil.\nFollow Body Files for a new one every day.\n#bodyfiles #sneeze #eyes #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Sneezing: https://my.clevelandclinic.org/health/symptoms/sneezing\nCleveland Clinic, Eye Muscles: https://my.clevelandclinic.org/health/body/eye-muscles\nTexas A&M University (via ScienceDaily): https://www.sciencedaily.com/releases/2016/12/161209081007.htm\nGuinness World Records: https://www.guinnessworldrecords.com/world-records/447311-highest-equivalent-altitude-exposure-survived",
+ "hashtags": [
+  "#bodyfiles",
+  "#sneeze",
+  "#eyes",
+  "#humanbody",
+  "#science",
+  "#shorts",
+  "#healthfacts"
+ ],
+ "pinned_comment": "Be honest: have you ever tried to sneeze with your eyes open? Did it work?",
+ "series": "Body Files",
+ "topic": "What happens if you sneeze with your eyes open?",
+ "experiment_arm": "E1-A (hook with a number: line 2 'In eighteen eighty-two', caption '1882'); E4 tease_next",
+ "teases": "What happens to your body in space without a suit?",
+ "topic_cluster": "sneeze",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the knuckles video (2026-11-09-body-4) with the 'could your eyeballs really pop out?' tease (paid off in lines 8-10)",
+ "hook_pattern": "question+old-myth-number",
+ "format": "myth-bust",
+ "id": "2026-11-10-body-01",
+ "channel": "body",
+ "made_at": "2026-11-10T04:07-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 39.0,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-10-body-01",
+ "history": []
+}
