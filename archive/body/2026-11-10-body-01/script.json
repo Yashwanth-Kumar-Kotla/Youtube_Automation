@@ -1,0 +1,29 @@
+{
+  "title": "What Happens If You Sneeze With Your Eyes Open?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Sneezing' (sneezing is an involuntary burst of air forced from your lungs through your nose and mouth; closing your eyes when you sneeze is an automatic reflex reaction; it's possible to sneeze with your eyes open, but it takes a lot of concentration to override the natural response, and your eyes won't pop out if you do): https://my.clevelandclinic.org/health/symptoms/sneezing",
+    "Texas A&M University news release via ScienceDaily, 'Can you sneeze with your eyes open?', 2016-12-09 (allergist David Huston, MD: 'absolutely possible' to sneeze without closing the eyes; the eye-closing reflex is likely protective, keeping more irritants out of the eyes, though there is no definitive data; the eyeball myth traces to an April 1882 New York Times story of a woman on a street car who was 'seized with a sudden fit of sneezing' and 'burst one of her eyeballs', called a far-fetched tale with little to no evidence; pressure from a sneeze is 'extremely unlikely' to pop an eyeball out, even with eyes open): https://www.sciencedaily.com/releases/2016/12/161209081007.htm",
+    "Cleveland Clinic, 'Eye Muscles' (both of your eyes have six muscles that control movement, four rectus and two oblique; they attach to the outside of your eyeball): https://my.clevelandclinic.org/health/body/eye-muscles",
+    "Tease (next video): Guinness World Records, 'Highest equivalent altitude exposure survived' (Jim LeBlanc, a NASA volunteer testing space suits, 14 December 1966, Houston depressurisation chamber, equivalent of 120,000 ft after a hose disconnected; he recalled feeling his own saliva boiling off his tongue just before he lost consciousness; no long-term effects): https://www.guinnessworldrecords.com/world-records/447311-highest-equivalent-altitude-exposure-survived"
+  ],
+  "lines": [
+    { "text": "What happens if you sneeze with your eyes open?", "caps": "WHAT *HAPPENS IF | YOU *SNEEZE WITH | YOUR EYES *OPEN?" },
+    { "text": "In eighteen eighty-two, a newspaper claimed a sneeze burst a woman's eye.", "caps": "IN *1882 | A *NEWSPAPER CLAIMED | A SNEEZE *BURST | A WOMAN'S *EYE" },
+    { "text": "So could yours pop out? First, why do your eyes shut?", "caps": "SO COULD *YOURS | *POP OUT? | FIRST, *WHY DO | YOUR EYES *SHUT?" },
+    { "text": "A sneeze is an involuntary blast of air from your lungs,", "caps": "A *SNEEZE IS | AN *INVOLUNTARY | *BLAST OF AIR | FROM YOUR *LUNGS" },
+    { "text": "and shutting your eyes is an automatic reflex,", "caps": "AND *SHUTTING | YOUR *EYES IS | AN AUTOMATIC *REFLEX" },
+    { "text": "which doctors think helps keep irritants out.", "caps": "WHICH *DOCTORS THINK | *HELPS KEEP | *IRRITANTS OUT" },
+    { "text": "But focus hard, and you can keep them open.", "caps": "BUT *FOCUS HARD | AND YOU *CAN | KEEP THEM *OPEN" },
+    { "text": "And your eyeballs? Each one's attached to six muscles,", "caps": "AND YOUR *EYEBALLS? | EACH ONE'S *ATTACHED | TO *SIX MUSCLES" },
+    { "text": "and an allergist says a sneeze is extremely unlikely to pop one out.", "caps": "AND AN *ALLERGIST | SAYS A *SNEEZE | IS *EXTREMELY | *UNLIKELY TO | POP ONE *OUT" },
+    { "text": "So eyes open or shut, they're staying put.", "caps": "SO EYES *OPEN | OR *SHUT | THEY'RE STAYING *PUT" },
+    { "text": "Next Body File: what happens in space without a suit,", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IN *SPACE | WITHOUT A *SUIT" },
+    { "text": "and the NASA tester who felt his spit boil.", "caps": "AND THE *NASA | *TESTER WHO FELT | HIS SPIT *BOIL" }
+  ]
+}

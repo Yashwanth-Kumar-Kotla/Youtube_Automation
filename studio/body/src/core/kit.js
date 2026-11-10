@@ -258,9 +258,10 @@ function torsoPath() {
   ctx.bezierCurveTo(-130, -214, -162, -196, -164, -120); ctx.lineTo(-140, 192); ctx.quadraticCurveTo(-138, 210, -120, 210);
   ctx.lineTo(120, 210); ctx.quadraticCurveTo(138, 210, 140, 192); ctx.lineTo(164, -120); ctx.bezierCurveTo(162, -196, 130, -214, 50, -214); ctx.closePath();
 }
-function skeletonTorso(pulse) {
+function skeletonTorso(pulse, lungSq = null) {
   ctx.save(); torsoPath(); ctx.clip();
   ctx.fillStyle = C.xnavy; ctx.fillRect(-170, -220, 340, 440);
+  if (lungSq != null) lungs(0, -40, 1, lungSq);
   for (let y = -192; y < 200; y += 32) { rr(-14, y, 28, 24, 7); ctx.fillStyle = C.cyan; ctx.globalAlpha = 0.9; ctx.fill(); }
   ctx.globalAlpha = 1; ctx.strokeStyle = C.cyan; ctx.lineCap = 'round';
   for (const sd of [-1, 1]) {
@@ -268,8 +269,7 @@ function skeletonTorso(pulse) {
     for (let i = 0; i < 6; i++) { const y = -150 + i * 37; ctx.lineWidth = 11; ctx.beginPath(); ctx.moveTo(sd * 18, y); ctx.quadraticCurveTo(sd * 152, y - 26, sd * 116, y + 56); ctx.stroke(); }
     ctx.lineWidth = 12; ctx.beginPath(); ctx.ellipse(sd * 72, 232, 74, 46, 0, Math.PI, TAU); ctx.stroke();
   }
-  line([[0, -205], [-4, -80]], C.pink, 22);
-  stomach(20, 10, 0.8, pulse);
+  if (lungSq == null) { line([[0, -205], [-4, -80]], C.pink, 22); stomach(20, 10, 0.8, pulse); }
   ctx.restore();
   ctx.save(); ctx.globalAlpha = 0.8; torsoPath(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 7; ctx.stroke(); ctx.restore();
 }
@@ -289,9 +289,13 @@ function head(o) {
   ctx.strokeStyle = o.hairCol ? '#8E877B' : C.hair; ctx.lineWidth = 12;
   ctx.beginPath(); ctx.moveTo(-66, -26 - br - fr * 6); ctx.quadraticCurveTo(-44, -40 - br - tl * 4, -20, -32 - br + tl * 6 + fr * 12); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(20, -32 - br - tl * 8 + fr * 12); ctx.quadraticCurveTo(44, -42 - br - tl * 10, 66, -28 - br - tl * 6 - fr * 6); ctx.stroke();
-  // eyes: 'n' | 'wide' | 'closed'
+  // eyes: 'n' | 'wide' | 'closed' | 'squeeze' (squeezed shut > <, scrunched nose: mid-sneeze)
   if (o.eyes === 'wide') {
     for (const sd of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sd * 40, 6, 24, 27, 0, 0, TAU); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.stroke(); circle(sd * 40, 8, 12, C.ink); circle(sd * 40 + 4, 3, 4, C.white); }
+  } else if (o.eyes === 'squeeze') {   // squeezed shut: > <
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 40 + sd * 16, -8); ctx.lineTo(sd * 40 - sd * 10, 4); ctx.lineTo(sd * 40 + sd * 16, 16); ctx.stroke(); }
+    ctx.strokeStyle = C.skinShade; ctx.lineWidth = 5; for (const dy of [8, 18]) { ctx.beginPath(); ctx.moveTo(-6, dy); ctx.lineTo(6, dy); ctx.stroke(); }
   } else if (o.eyes === 'closed') {
     for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 2, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); }
   } else {
@@ -329,6 +333,7 @@ function head(o) {
 /**
  * The hero. o = { x, y, s, arm (pose), finger (rad or null), eyes, mouth, chew, brow, smirk, frown, look (-1..1),
  *   xray (bool: whole body becomes x-ray, head stays normal), pulse (stomach swell 0..1),
+ *   lungs (x-ray only: number 0..1 = show the lungs + windpipe instead of the stomach, 1 = squeezed empty: the sneeze blast),
  *   holding: [drawFn(x, y)] drawn at the right hand, inside: [x, y, rot] a gum drawn inside the body (local coords) }
  */
 let _coat = false;
@@ -349,7 +354,7 @@ export function man(o) {
     rr(-36, -250, 72, 60, 20); ctx.fillStyle = C.skin; ctx.fill();
   }
   arm(-1, o.armL || ARM.down, null, XR);
-  if (XR) skeletonTorso(o.pulse || 0);
+  if (XR) skeletonTorso(o.pulse || 0, o.lungs ?? null);
   else {
     torsoPath(); ctx.fillStyle = C.shirt; ctx.fill();
     ctx.save(); torsoPath(); ctx.clip(); ctx.beginPath(); ctx.moveTo(95, -220); ctx.quadraticCurveTo(70, 0, 100, 220); ctx.lineTo(200, 220); ctx.lineTo(200, -220); ctx.closePath(); ctx.fillStyle = C.shirtShade; ctx.fill(); ctx.restore();
@@ -1537,6 +1542,242 @@ export function sneezeBadge(x, y, s = 1, p = 0, t = 0, sc = 1) {
     ctx.save(); ctx.globalAlpha = clamp(k * 2); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round';
     for (const an of [-0.5, 0, 0.5]) line([[150 * Math.cos(an) + 14, 60 + 120 * Math.sin(an)], [190 * Math.cos(an) + 14, 60 + 150 * Math.sin(an)]], C.ink, 8);
     ctx.restore();
+  }
+  ctx.restore();
+}
+
+// ═════════════════════════ SNEEZE SET (2026-11-10 "sneeze with your eyes open") ═════════════════════════
+const PAPER = '#EFE6CF', PAPER_D = '#DDD0AF', PAPER_L = '#F8F2E2', PAPER_INK = '#8C8270', DUST = '#9C8F7A', DUST_D = '#7E7260',
+  SPACE = '#26314A', VISOR = '#34405A', HELMET_D = '#DCD6CB';
+
+/** extra arm poses for the hero: fists at the chest (keeps the hands high in close-ups), finger on the chin (thinking) */
+ARM.chest = { e: [200, 20], h: [70, -70] };
+ARM.chin = { e: [215, -30], h: [52, -205] };
+
+/** pink lungs + windpipe (flat, darker rim, light highlight), in the hero's torso coords. Origin = between the lungs.
+ *  sq 0..1 squeezes them (the sneeze blast pushes the air out). ~290x300 px at s = 1. Used by man({ xray, lungs }) */
+export function lungs(x, y, s, sq = 0) {
+  const k = clamp(sq);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  line([[0, -180], [0, -96]], C.pinkDark, 34); line([[0, -96], [-44, -70]], C.pinkDark, 28); line([[0, -96], [44, -70]], C.pinkDark, 28);
+  ctx.save(); ctx.scale(1 - 0.16 * k, 1 - 0.1 * k);
+  for (const sd of [-1, 1]) {
+    ctx.beginPath(); ctx.moveTo(sd * 18, -105);
+    ctx.bezierCurveTo(sd * 30, -150, sd * 80, -162, sd * 102, -112); ctx.bezierCurveTo(sd * 136, -50, sd * 142, 40, sd * 128, 95);
+    ctx.quadraticCurveTo(sd * 80, 122, sd * 22, 92); ctx.quadraticCurveTo(sd * 42, 0, sd * 18, -105); ctx.closePath();
+    ctx.lineWidth = 12; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ctx.fillStyle = C.pink; ctx.fill();
+    ell(sd * 98, -62, 13, 36, C.pinkLight, -sd * 0.25);
+  }
+  ctx.restore();
+  line([[0, -178], [0, -98]], C.pinkLight, 20); line([[0, -98], [-40, -74]], C.pinkLight, 16); line([[0, -98], [40, -74]], C.pinkLight, 16);
+  for (let yy = -168; yy < -104; yy += 16) line([[-9, yy], [9, yy]], C.pinkDark, 5);
+  ctx.restore();
+}
+
+/** soft sneeze spray: pale blue puffs flying out from (x, y) along dir (1 = right, -1 = left). p 0..1: they fly, grow and
+ *  fade out completely by p = 1 (nothing hangs mid-air). d0 = start distance, reach = travel (px at s = 1), ang rotates the lane */
+export function sneezeSpray(x, y, s, p, dir = 1, { d0 = 60, reach = 300, ang = 0 } = {}) {
+  if (p <= 0 || p >= 1) return;
+  for (let i = 0; i < 8; i++) {
+    const ph = clamp(p * 1.5 - i * 0.07); if (ph <= 0 || ph >= 1) continue;
+    const an = (rnd(i + 40) - 0.5) * 0.8, d = (d0 + ph * reach) * s, r = Math.max(0, (12 + (i % 3) * 6) * s * (0.6 + ph * 0.7));
+    const ux = dir * Math.cos(an), uy = Math.sin(an) * 0.7, ca = Math.cos(ang), sa = Math.sin(ang);
+    const px = x + (ux * ca - uy * sa) * d, py = y + (ux * sa + uy * ca) * d;
+    ctx.save(); ctx.globalAlpha = 0.9 * (1 - ph); circle(px, py, r, C.sky); circle(px - r * 0.3, py - r * 0.3, r * 0.35, C.white); ctx.restore();
+  }
+}
+
+/** an old 1882 newspaper (cream paper, masthead, date line, headline, a picture box + text columns). ~680x880 at s = 1.
+ *  rot/sc: spin-in. head 0..1 pops the headline in (placeholder grey bars before it). year 0..1 marks "1882" in yellow.
+ *  lady 0..1 = the engraving of a lady on a street car sneezing (0 = still, 0.3+ = sneeze puffs; eyes always shut) */
+export function newspaper(x, y, s, { rot = 0, sc = 1, head = 1, year = 0, lady = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-326, -426, 680, 880, 10); ctx.fillStyle = PAPER_D; ctx.fill();
+  rr(-340, -440, 680, 880, 10); ctx.fillStyle = PAPER; ctx.fill();
+  ctx.fillStyle = PAPER_D; ctx.fillRect(-4, -440, 8, 880);
+  const txt = (t, tx, ty, size, col, align = 'center', maxW = 620) => {
+    ctx.font = `900 ${size}px Inter`; ctx.textAlign = align; ctx.textBaseline = 'middle';
+    const w = ctx.measureText(t).width, k = Math.min(1, maxW / w);
+    ctx.save(); ctx.translate(tx, ty); ctx.scale(k, 1); ctx.fillStyle = col; ctx.fillText(t, 0, 0); ctx.restore();
+  };
+  txt('THE DAILY GAZETTE', 0, -372, 58, C.ink);
+  line([[-310, -326], [310, -326]], C.ink, 6); line([[-310, -312], [310, -312]], C.ink, 3);
+  if (year > 0) { ctx.save(); ctx.globalAlpha = clamp(year); rr(186, -310, 126, 44, 8); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); }
+  txt('VOL. XXXI', -310, -288, 30, PAPER_INK, 'left'); txt('APRIL', 160, -288, 30, PAPER_INK, 'right'); txt('1882', 196, -288, 34, C.ink, 'left');
+  line([[-310, -264], [310, -264]], C.ink, 3);
+  const hk = clamp(head);
+  if (hk < 1) { ctx.save(); ctx.globalAlpha = 1 - hk; for (const [yy, w] of [[-200, 560], [-120, 440]]) { rr(-w / 2, yy - 24, w, 48, 10); ctx.fillStyle = PAPER_D; ctx.fill(); } ctx.restore(); }
+  if (head > 0) {
+    ctx.save(); ctx.translate(0, -168); ctx.scale(head, head);
+    txt('SNEEZE BURSTS', 0, -48, 72, C.ink); txt("WOMAN'S EYE!", 0, 46, 72, C.ink);
+    ctx.restore();
+  }
+  line([[-310, -72], [310, -72]], C.ink, 3);
+  // picture box: a lady on a street car (engraving look: paper ink lines)
+  rr(-310, -46, 330, 300, 6); ctx.fillStyle = PAPER_L; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.save(); rr(-310, -46, 330, 300, 6); ctx.clip();
+  ctx.strokeStyle = PAPER_INK; ctx.lineWidth = 6;
+  ctx.strokeRect(-290, -20, 120, 110); ctx.strokeRect(-140, -20, 120, 110);
+  line([[-310, 190], [20, 190]], PAPER_INK, 6); line([[-310, 120], [20, 120]], PAPER_INK, 4);
+  const sn = clamp((lady - 0.3) / 0.7), lean = lady > 0.3 ? Math.sin(sn * Math.PI) * 0.25 : -0.12 * clamp(lady / 0.3);
+  ctx.save(); ctx.translate(-150, 240); ctx.rotate(lean);
+  ctx.beginPath(); ctx.moveTo(-60, 0); ctx.lineTo(-34, -120); ctx.lineTo(34, -120); ctx.lineTo(60, 0); ctx.closePath(); ctx.fillStyle = PAPER_INK; ctx.fill();
+  circle(0, -160, 36, PAPER_L); ctx.lineWidth = 5; ctx.strokeStyle = C.ink; ctx.beginPath(); ctx.arc(0, -160, 36, 0, TAU); ctx.stroke();
+  ell(0, -190, 56, 12, C.ink); ell(0, -206, 32, 22, C.ink);
+  line([[-20, -164], [-8, -160]], C.ink, 5); line([[8, -160], [20, -164]], C.ink, 5);   // eyes shut
+  ell(0, -140, 8, 6, C.ink);
+  ctx.restore();
+  if (lady > 0.3) for (let i = 0; i < 4; i++) {
+    const ph = clamp(sn * 1.4 - i * 0.12); if (ph <= 0 || ph >= 1) continue;
+    ctx.save(); ctx.globalAlpha = 1 - ph; ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.beginPath(); ctx.arc(-100 + ph * 120, 92 - i * 12 + ph * 10, Math.max(0, 8 + ph * 10), 0, TAU); ctx.stroke(); ctx.restore();
+  }
+  ctx.restore();
+  for (let yy = -40; yy < 420; yy += 34) { const w = 230 - (yy % 3 === 0 ? 40 : 0); rr(60, yy, w, 14, 7); ctx.fillStyle = PAPER_D; ctx.fill(); }
+  for (let yy = 284; yy < 420; yy += 34) { rr(-310, yy, 300 - (yy % 2) * 30, 14, 7); ctx.fillStyle = PAPER_D; ctx.fill(); }
+  ctx.restore();
+}
+
+/** simple front-view eye diagram in a round skin window (ink ring): brow, white eye, blue iris, upper lid.
+ *  lid 0 (open) .. 1 (shut, lashes down). look -1..1 moves the iris. Disc radius 330 px at s = 1 */
+export function eyeFront(x, y, s, { lid = 0, look = 0 } = {}) {
+  const L = clamp(lid);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 330, 0, TAU); ctx.clip();
+  circle(0, 0, 340, C.skin); ell(0, 250, 330, 120, C.skinShade);
+  ctx.beginPath(); ctx.moveTo(-230, -190); ctx.quadraticCurveTo(0, -280, 230, -180); ctx.strokeStyle = C.hair; ctx.lineWidth = 38; ctx.stroke();
+  const almond = () => { ctx.beginPath(); ctx.moveTo(-250, 10); ctx.quadraticCurveTo(0, -230, 250, 10); ctx.quadraticCurveTo(0, 230, -250, 10); ctx.closePath(); };
+  ctx.beginPath(); ctx.moveTo(-230, -30); ctx.quadraticCurveTo(0, -270, 230, -30); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 10; ctx.stroke();
+  ctx.save(); almond(); ctx.clip(); ctx.fillStyle = C.white; ctx.fill();
+  const ix = look * 60;
+  circle(ix, 10, 100, C.shirt); ctx.beginPath(); ctx.arc(ix, 10, 94, 0, TAU); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 12; ctx.stroke();
+  circle(ix, 10, 46, C.ink); circle(ix + 30, -18, 16, C.white);
+  const cy = lerp(-230, 230, L);
+  ctx.beginPath(); ctx.moveTo(-260, 10); ctx.quadraticCurveTo(0, cy, 260, 10); ctx.lineTo(260, -300); ctx.lineTo(-260, -300); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-260, 10); ctx.quadraticCurveTo(0, cy - 40, 260, 10); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 14; ctx.stroke();
+  ctx.restore();
+  ctx.beginPath(); ctx.moveTo(-250, 10); ctx.quadraticCurveTo(0, cy, 250, 10); ctx.strokeStyle = C.ink; ctx.lineWidth = 12; ctx.stroke();
+  if (L > 0.9) for (const u of [0.25, 0.42, 0.58, 0.75]) {
+    const bx = lerp(-250, 250, u), by = 10 + 2 * u * (1 - u) * (cy - 10) * 1;
+    line([[bx, by], [bx + (u - 0.5) * 30, by + 34]], C.ink, 8);
+  }
+  ctx.beginPath(); ctx.moveTo(-250, 10); ctx.quadraticCurveTo(0, 230, 250, 10); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 8; ctx.stroke();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(0, 0, 330, 0, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 16; ctx.stroke();
+  ctx.restore();
+}
+/** canvas y of the eyeFront lid edge at its middle (where things bounce off a shut lid) */
+export const eyeLidY = (y, s, lid = 1) => y + s * (10 + (lerp(-230, 230, clamp(lid)) - 10) / 2);
+
+/** an irritant dust speck (grey-brown fluffy clump). ~50 px at s = 1. a = alpha */
+export function dust(x, y, s = 1, rot = 0, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  ell(0, 0, 24, 19, DUST_D); ell(-10, -6, 15, 12, DUST); ell(11, -4, 12, 10, DUST); circle(3, 8, 8, DUST);
+  line([[18, 8], [32, 16]], DUST_D, 4); line([[-20, 10], [-30, 22]], DUST_D, 4);
+  ctx.restore();
+}
+
+/** clean side-view eyeball diagram: white eyeball (cornea + blue iris on the LEFT), off-white optic nerve to the back
+ *  (right), six pink eye muscles from the ball to the back anchor (4 straight + 2 oblique, one through a pulley).
+ *  n 0..6 grows the muscles in one by one. tug 0..1 makes them flex (holding the ball still). The ball never moves.
+ *  ~700x620 px at s = 1, origin = eyeball centre (ball radius 170) */
+export function eyeMuscles(x, y, s, { n = 6, tug = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const flex = tug * (3 + 3 * Math.sin(t * 22));
+  const band = (pts, w, p) => {
+    if (p <= 0) return;
+    const P = [pts[0]]; const segs = pts.length - 1, k = clamp(p) * segs;
+    for (let i = 1; i <= segs; i++) { const f = clamp(k - (i - 1)); if (f <= 0) break; P.push([lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)]); }
+    if (P.length < 2) return;
+    line(P, C.pinkDark, w + 12 + flex); line(P, C.pink, w + flex);
+    line(P.map(([a, b]) => [a, b - w * 0.18]), C.pinkLight, Math.max(2, w * 0.18));
+    line([P[0], [lerp(P[0][0], P[1][0], 0.12), lerp(P[0][1], P[1][1], 0.12)]], C.gum, w * 0.8);   // tendon end on the ball
+  };
+  const M = [
+    [[[-10, -168], [150, -150], [470, -46]], 52],     // superior rectus
+    [[[-10, 168], [150, 150], [470, 46]], 52],        // inferior rectus
+    [[[-50, -6], [470, -6]], 48],                     // lateral rectus (near side, over the ball)
+    [[[120, 40], [470, 16]], 44],                     // medial rectus (far side, behind)
+    [[[60, -158], [-40, -300], [470, -96]], 28],      // superior oblique (through the pulley)
+    [[[90, 150], [-60, 282]], 34],                    // inferior oblique
+  ];
+  const p = (i) => clamp(n - i);
+  // behind the ball: medial rectus + optic nerve
+  band(M[3][0], M[3][1], p(3));
+  line([[140, 0], [520, 0]], C.gumEdge, 84); line([[140, 0], [520, 0]], C.gum, 68); line([[160, -20], [500, -20]], C.white, 10);
+  circle(500, 0, 54, C.pinkDark); circle(500, 0, 36, C.pink);
+  // the eyeball
+  circle(0, 0, 176, C.gumEdge); circle(0, 0, 170, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 170, 0, TAU); ctx.clip(); circle(70, 60, 170, C.gum); circle(-10, -10, 168, C.white); ctx.restore();
+  ell(-168, 0, 26, 96, C.sky); ell(-160, 0, 16, 80, C.shirt); ell(-164, 0, 9, 34, C.ink);
+  ell(-60, -96, 40, 18, C.gum, -0.5);
+  band(M[0][0], M[0][1], p(0)); band(M[1][0], M[1][1], p(1)); band(M[2][0], M[2][1], p(2));
+  if (p(4) > 0) { ctx.save(); ctx.globalAlpha = clamp(p(4) * 3); ctx.beginPath(); ctx.arc(-40, -300, 26, 0, TAU); ctx.fillStyle = C.gum; ctx.fill(); ctx.lineWidth = 8; ctx.strokeStyle = C.gumEdge; ctx.stroke(); ctx.restore(); }
+  band(M[4][0], M[4][1], p(4)); band(M[5][0], M[5][1], p(5));
+  if (p(5) >= 1) { circle(-60, 282, 22, C.gumEdge); circle(-60, 282, 15, C.gum); }
+  ctx.restore();
+}
+
+/** rubber stamp (graphic): coloured double border + text, slightly rotated. text may hold "\n". sc = slam-in scale */
+export function stamp(text, x, y, size, rot = -0.12, sc = 1, col = C.red) {
+  if (sc <= 0) return;
+  const rows = text.split('\n');
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(sc, sc);
+  ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '3px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = Math.max(...rows.map((r) => ctx.measureText(r).width)) + size * 1.1, h = rows.length * size * 1.1 + size * 0.7;
+  rr(-w / 2, -h / 2, w, h, size * 0.25); ctx.fillStyle = C.white; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.lineWidth = size * 0.13; ctx.strokeStyle = col; ctx.stroke();
+  rr(-w / 2 + size * 0.2, -h / 2 + size * 0.2, w - size * 0.4, h - size * 0.4, size * 0.15); ctx.lineWidth = size * 0.05; ctx.stroke();
+  ctx.fillStyle = col; rows.forEach((r, i) => ctx.fillText(r, 0, (i - (rows.length - 1) / 2) * size * 1.1 + size * 0.05));
+  ctx.letterSpacing = '0px'; ctx.restore();
+}
+
+/** "staying put" badge: white disc, ink ring, an open eye + a yellow padlock. lock 0..1 drops the shackle shut. ~300 px at s = 1 */
+export function lockBadge(x, y, s = 1, sc = 1, lock = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.translate(-14, -30);
+  const al = () => { ctx.beginPath(); ctx.moveTo(-92, 0); ctx.quadraticCurveTo(0, -84, 92, 0); ctx.quadraticCurveTo(0, 84, -92, 0); ctx.closePath(); };
+  al(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.save(); al(); ctx.clip(); circle(0, 0, 34, C.shirt); circle(0, 0, 16, C.ink); circle(11, -10, 6, C.white); ctx.restore();
+  al(); ctx.lineWidth = 9; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.restore();
+  ctx.save(); ctx.translate(62, 62);
+  const up = (1 - clamp(lock)) * 26;
+  ctx.beginPath(); ctx.moveTo(-26, -20 - up); ctx.lineTo(-26, -44 - up); ctx.arc(0, -44 - up, 26, Math.PI, 0); ctx.lineTo(26, -20 - (lock < 1 ? up + 10 : 0));
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 13; ctx.stroke();
+  rr(-46, -26, 92, 72, 14); ctx.fillStyle = C.yellow; ctx.fill(); ctx.lineWidth = 7; ctx.stroke();
+  circle(0, 4, 9, C.ink); rr(-4, 4, 8, 20, 3); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+
+/** next-episode tease (space without a suit): dark space disc with stars, ink ring, a white space helmet with a navy
+ *  visor; boil 0..1 shows a small water droplet beside it with bubbles rising and popping in a loop (t = film time).
+ *  Nobody is in it and nothing is in danger. ~300 px at s = 1. sc = pop-in */
+export function helmetBadge(x, y, s = 1, sc = 1, t = 0, boil = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, SPACE);
+  for (let i = 0; i < 9; i++) { const a = rnd(i + 70) * TAU, r = 40 + rnd(i + 90) * 84; circle(Math.cos(a) * r, Math.sin(a) * r, 3 + (i % 3), C.white); }
+  ctx.save(); ctx.translate(-14, -8);
+  rr(-74, 58, 148, 34, 16); ctx.fillStyle = HELMET_D; ctx.fill(); rr(-62, 64, 124, 10, 5); ctx.fillStyle = C.white; ctx.fill();
+  circle(0, -8, 84, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, -8, 84, 0, TAU); ctx.clip(); circle(34, 20, 84, HELMET_D); circle(-6, -14, 80, C.white); ctx.restore();
+  rr(-58, -40, 116, 72, 34); ctx.fillStyle = VISOR; ctx.fill();
+  ell(-26, -20, 18, 8, C.white, -0.4); ell(4, -26, 6, 4, C.white);
+  rr(-12, -96, 24, 10, 5); ctx.fillStyle = C.red; ctx.fill();
+  ctx.restore();
+  if (boil > 0) {
+    const k = clamp(boil);
+    drop(78, 40, 1.2 * k, 0, 1);
+    for (let i = 0; i < 4; i++) {
+      const ph = (t * 1.3 + i / 4) % 1, bx = 78 + Math.sin((t + i) * 5) * 10 + (i - 1.5) * 10, by = -10 - ph * 66;
+      ctx.save(); ctx.globalAlpha = k * (1 - ph); ctx.beginPath(); ctx.arc(bx, by, Math.max(0, 8 + ph * 10), 0, TAU);
+      ctx.lineWidth = 6; ctx.strokeStyle = C.sky; ctx.stroke(); ctx.restore();
+    }
   }
   ctx.restore();
 }
