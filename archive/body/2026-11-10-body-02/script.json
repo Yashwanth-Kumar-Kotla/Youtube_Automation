@@ -1,0 +1,32 @@
+{
+  "title": "What Happens to Your Body in Space Without a Suit?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Christopher S. Baird (physics professor, West Texas A&M University), 'How long can a human in outer space last without a spacesuit before exploding?', Science Questions with Surprising Answers, 2012-12-17 ('Humans exposed to the vacuum of space don't explode'; 'our tissue is strong enough to handle the imbalance'; citing FAA AC 61-107, people remain fully conscious and useful for 9-12 seconds after vacuum exposure; they die from lack of oxygen): https://wtamu.edu/~cbaird/sq/2012/12/17/how-long-can-a-human-in-outer-space-last-without-a-spacesuit-before-exploding/",
+    "Michael Barratt (NASA astronaut and physician), 'The Body at Vacuum', The Engines of Our Ingenuity No. 2691, University of Houston (water's vapor pressure at body temperature is about 1/16 of an atmosphere, so above ~63,000 ft body fluids boil (ebullism); moist surfaces such as the eyes, mouth, throat and airways are affected immediately; vapor forms beneath the skin and in venous blood; Joe Kittinger's hand swelled to about twice its size after a glove pressure failure; about 12 seconds of useful consciousness; in 1966 a technician in a suit-test chamber lost suit pressure, recalled the sensation of saliva boiling off his tongue before losing consciousness, the chamber was quickly repressurized and he 'went home for lunch'; end note names him as NASA engineer James LeBlanc, chamber repressurized in 87 seconds): https://engines.egr.uh.edu/episode/2691",
+    "Guinness World Records, 'Highest equivalent altitude exposure survived' (Jim LeBlanc, NASA volunteer test subject testing space suits, 14 December 1966, depressurisation chamber in Houston, Texas; equipment failure disconnected the hose that kept his suit pressurised, exposing him to the equivalent of 120,000 ft; chamber took 87 seconds to repressurise, when he regained consciousness; he recalled his saliva boiling off his tongue just before he passed out; no long-term effects): https://www.guinnessworldrecords.com/world-records/447311-highest-equivalent-altitude-exposure-survived",
+    "Tease (next video): Guinness World Records, 'Longest attack of hiccups' (Charles Osborne, USA, started hiccupping in 1922 while weighing a hog before slaughter and continued until February 1990, about 68 years; Smithsonian Magazine 'The Curious Case of Charles Osborne, Who Hiccuped for 68 Years Straight' confirms 1922-1990): https://www.guinnessworldrecords.com/world-records/67619-longest-attack-of-hiccups",
+    "Tease (next video): Cleveland Clinic, 'Hiccups' (repeated spasms of the diaphragm; the glottis snaps shut, making the 'hic' sound; persistent hiccups last longer than 48 hours): https://my.clevelandclinic.org/health/symptoms/17672-hiccups"
+  ],
+  "lines": [
+    { "text": "What happens to your body in space without a suit?", "caps": "WHAT *HAPPENS | TO YOUR *BODY | IN *SPACE | WITHOUT A *SUIT?" },
+    { "text": "Spoiler, you don't explode. Your skin's too tough.", "caps": "*SPOILER, YOU | DON'T *EXPLODE | YOUR *SKIN'S | TOO *TOUGH" },
+    { "text": "But the weird part starts in your mouth.", "caps": "BUT THE *WEIRD | PART *STARTS | IN YOUR *MOUTH" },
+    { "text": "With almost no pressure, water boils at body temperature,", "caps": "WITH *ALMOST | NO *PRESSURE | WATER *BOILS | AT BODY *TEMP" },
+    { "text": "so your eyes and tongue start to fizz,", "caps": "SO YOUR *EYES | AND *TONGUE | START TO *FIZZ" },
+    { "text": "and your skin puffs up.", "caps": "AND YOUR *SKIN | *PUFFS UP" },
+    { "text": "With no oxygen, you black out in about twelve seconds.", "caps": "WITH NO *OXYGEN | YOU *BLACK OUT | IN *ABOUT | *12 SECONDS" },
+    { "text": "In nineteen sixty-six, a NASA tester's suit hose came loose", "caps": "IN *1966 | A *NASA TESTER'S | SUIT *HOSE | CAME *LOOSE" },
+    { "text": "inside a vacuum chamber in Houston.", "caps": "INSIDE A *VACUUM | CHAMBER IN *HOUSTON" },
+    { "text": "His last memory? Spit boiling off his tongue.", "caps": "HIS LAST *MEMORY? | *SPIT BOILING | OFF HIS *TONGUE" },
+    { "text": "The air came back, he woke up, and went home for lunch.", "caps": "THE *AIR | CAME *BACK | HE *WOKE UP | AND WENT *HOME | FOR *LUNCH" },
+    { "text": "No explosion, just a twelve second countdown.", "caps": "NO *EXPLOSION | JUST A *12 | SECOND *COUNTDOWN" },
+    { "text": "Next Body File: what happens if your hiccups won't stop,", "caps": "NEXT *BODY FILE | WHAT *HAPPENS | IF YOUR *HICCUPS | WON'T *STOP" },
+    { "text": "and the man who hiccuped for sixty-eight years.", "caps": "AND THE *MAN | WHO *HICCUPED | FOR *68 YEARS" }
+  ]
+}

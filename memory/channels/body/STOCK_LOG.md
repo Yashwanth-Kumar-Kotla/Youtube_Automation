@@ -9,3 +9,4 @@
 - 2026-11-09 19:36 · 2026-11-08-body-01 posted · conf 0.7 · {'posted': '2026-11-09', 'episode': 2, 'youtube': '', 'tiktok': 'v_inbox_file~v2.7706350688263194637'}
 - 2026-11-10 03:57 · 2026-11-09-body-01 ready → scheduled · slot 0 on 2026-11-10, episode 3, manual upload
 - 2026-11-10 04:07 · 2026-11-10-body-01 added · conf 0.7 · question+old-myth-number · What happens if you sneeze with your eyes open?
+- 2026-11-10 04:25 · 2026-11-10-body-02 added · conf 0.7 · question+instant-myth-bust · What happens to your body in space without a suit?

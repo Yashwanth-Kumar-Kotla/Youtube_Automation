@@ -286,7 +286,7 @@ function head(o) {
   ctx.beginPath(); ctx.moveTo(-60, -98); ctx.quadraticCurveTo(0, -118, 62, -96); ctx.strokeStyle = o.hairCol ? C.white + '88' : C.hairHi; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.stroke();
   // brows: brow 0..1 raises them; smirk tilts
   const br = (o.brow || 0) * 16, tl = o.smirk ? 1 : 0, fr = o.frown ? 1 : 0;
-  ctx.strokeStyle = o.hairCol ? '#8E877B' : C.hair; ctx.lineWidth = 12;
+  ctx.strokeStyle = o.browCol || (o.hairCol ? '#8E877B' : C.hair); ctx.lineWidth = 12;
   ctx.beginPath(); ctx.moveTo(-66, -26 - br - fr * 6); ctx.quadraticCurveTo(-44, -40 - br - tl * 4, -20, -32 - br + tl * 6 + fr * 12); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(20, -32 - br - tl * 8 + fr * 12); ctx.quadraticCurveTo(44, -42 - br - tl * 10, 66, -28 - br - tl * 6 - fr * 6); ctx.stroke();
   // eyes: 'n' | 'wide' | 'closed' | 'squeeze' (squeezed shut > <, scrunched nose: mid-sneeze)
@@ -1779,5 +1779,320 @@ export function helmetBadge(x, y, s = 1, sc = 1, t = 0, boil = 0) {
       ctx.lineWidth = 6; ctx.strokeStyle = C.sky; ctx.stroke(); ctx.restore();
     }
   }
+  ctx.restore();
+}
+
+// ═════════════════════════ SPACE SET (2026-11-10 "your body in space without a suit") ═════════════════════════
+const NIGHT = '#141E33', STEEL = '#C3C8CF', STEEL_D = '#A7AEB8', STEEL_L = '#DDE1E6', WALL = '#D9DCE0', HOSE = '#5A6573', HOSE_L = '#8A95A0',
+  BREAD = '#F7D88A', CRUST = '#C8734A', SUIT_D = '#DCD6CB';
+
+/** (G) deep space: night navy, twinkling stars, a blue planet low in the frame (behind the caption). planet 0 hides it */
+export function spaceBg(t, { planet = 1 } = {}) {
+  fillAll(NIGHT);
+  for (let i = 0; i < 48; i++) {
+    const x = rnd(i + 200) * (W + 400) - 200, y = rnd(i + 300) * (H + 400) - 200, r = 2 + rnd(i + 400) * 4;
+    ctx.save(); ctx.globalAlpha = 0.45 + 0.45 * Math.sin(t * (1.5 + rnd(i) * 2) + i); circle(x, y, r, C.white); ctx.restore();
+  }
+  if (planet > 0) {
+    circle(980, 2000, 560, C.shirtShade); circle(966, 1990, 544, C.shirt);
+    ctx.save(); ctx.beginPath(); ctx.arc(966, 1990, 544, 0, TAU); ctx.clip();
+    ell(760, 1520, 150, 70, C.leaf, -0.3); ell(1060, 1560, 110, 170, C.leaf, 0.4); ell(560, 1700, 70, 110, C.leaf, 0.2);
+    ell(820, 1480, 120, 18, C.white + '99', -0.2); ell(980, 1640, 160, 20, C.white + '77', -0.1);
+    ctx.restore();
+  }
+}
+
+/** tiny friendly bubbles rising from (x, y) and popping, in a loop (fizz / boiling). s = scale, a = alpha, t = film time.
+ *  spread = start width, rise = how high they go (px at s = 1). Nothing hangs: each bubble fades out at the top */
+export function fizz(x, y, s, t, a = 1, { n = 6, spread = 40, rise = 120, seed = 0 } = {}) {
+  if (a <= 0 || s <= 0) return;
+  for (let i = 0; i < n; i++) {
+    const ph = (t * 1.4 + rnd(i + seed)) % 1;
+    const bx = x + ((rnd(i + seed + 30) - 0.5) * spread + Math.sin(t * 6 + i) * 5) * s, by = y - ph * rise * s;
+    const r = Math.max(0, (5 + rnd(i + seed + 60) * 7) * s * (0.6 + ph * 0.6));
+    ctx.save(); ctx.globalAlpha = clamp(a) * Math.sin(ph * Math.PI);
+    ctx.beginPath(); ctx.arc(bx, by, r, 0, TAU); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = Math.max(1.5, 3.5 * s); ctx.strokeStyle = WATER_D; ctx.stroke();
+    ctx.restore();
+  }
+}
+
+/** THE TEST FIGURE (never the hero): a friendly off-white mannequin with a yellow/ink crash-test target on the chest.
+ *  Origin = chest centre, ~1140 px tall at s = 1 (head top -507, feet +640), like man().
+ *  o = { x, y, s, rot, t, spread 0..1 (arms float out: 0 = low, 1 = straight out), eyes 'n'|'wide'|'sleepy'|'closed',
+ *  mouth 'smile'|'o'|'flat'|'tongue', brow 0..1, look -1..1, puff 0..1 (gentle balloon swell + white swell marks, never
+ *  bursts), glow 0..1 (calm light-blue outline: "skin is tough"), fizzEyes 0..1, fizzTongue 0..1 (tiny bubbles) } */
+export function dummy(o) {
+  const s = o.s || 1, pf = clamp(o.puff || 0), t = o.t || 0, a = lerp(0.3, 1.45, clamp(o.spread ?? 0.4));
+  ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(o.rot || 0); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const sw = 1 + pf * 0.3, tw = 1 + pf * 0.14, hw = 1 + pf * 0.08;
+  const arms = (sd) => { const e = [sd * (125 + 160 * Math.sin(a)), -165 + 160 * Math.cos(a)]; return [e, [e[0] + sd * 150 * Math.sin(a + 0.3), e[1] + 150 * Math.cos(a + 0.3)]]; };
+  const parts = (col, ex) => {
+    for (const sd of [-1, 1]) { line([[sd * 58, 170], [sd * 62, 590]], col, 104 * sw + ex * 2); ell(sd * 74, 612, 70 * sw + ex, 34 + ex, col); }
+    for (const sd of [-1, 1]) { const [e, h] = arms(sd); line([[sd * 125, -165], e, h], col, 66 * sw + ex * 2); circle(h[0], h[1], 42 * sw + ex, col); }
+    line([[0, -220], [0, -290]], col, 70 + ex * 2);
+    rr(-150 * tw - ex, -225 - ex, 300 * tw + 2 * ex, 430 + 2 * ex, 110 + ex); ctx.fillStyle = col; ctx.fill();
+    ell(0, -385, 112 * hw + ex, 122 * hw + ex, col);
+  };
+  if (o.glow > 0) { ctx.save(); ctx.globalAlpha = clamp(o.glow) * (0.75 + 0.25 * Math.sin(t * 5)); parts(C.sky, 22); ctx.restore(); }
+  parts(C.gumEdge, 5); parts(C.gum, 0);
+  // flat shading: right side of torso + head, joints, hip line
+  ctx.save(); rr(-150 * tw, -225, 300 * tw, 430, 110); ctx.clip(); ctx.fillStyle = C.gumEdge; ctx.fillRect(95 * tw, -240, 120, 460); ctx.restore();
+  ctx.save(); ctx.beginPath(); ctx.ellipse(0, -385, 112 * hw, 122 * hw, 0, 0, TAU); ctx.clip(); ell(70 * hw, -370, 70, 140, '#E9E4DA'); ctx.restore();
+  for (const sd of [-1, 1]) { const [e] = arms(sd); circle(e[0], e[1], 22 * sw, C.gumEdge); circle(sd * 60, 380, 24 * sw, C.gumEdge); }
+  line([[-120 * tw, 150], [120 * tw, 150]], C.gumEdge, 8);
+  // crash-test target on the chest
+  ctx.save(); ctx.translate(-62, -90); circle(0, 0, 44, C.ink);
+  for (let q = 0; q < 4; q++) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, 36, q * Math.PI / 2, (q + 1) * Math.PI / 2); ctx.closePath(); ctx.fillStyle = q % 2 ? C.ink : C.yellow; ctx.fill(); }
+  ctx.restore();
+  // swell marks (white arcs beside the body) while puffed
+  if (pf > 0.3) {
+    ctx.save(); ctx.globalAlpha = clamp((pf - 0.3) / 0.4); ctx.strokeStyle = C.white; ctx.lineWidth = 12;
+    for (const sd of [-1, 1]) for (const [yy, r] of [[-60, 210], [40, 200]]) { ctx.beginPath(); ctx.arc(0, yy, r * tw, sd > 0 ? -0.35 : Math.PI - 0.35, sd > 0 ? 0.35 : Math.PI + 0.35); ctx.stroke(); }
+    ctx.beginPath(); ctx.arc(0, -385, 160 * hw, -2.2, -0.95); ctx.stroke();
+    ctx.restore();
+  }
+  // face (head centre 0, -385)
+  ctx.save(); ctx.translate(0, -385);
+  const br = (o.brow || 0) * 14, lk = (o.look || 0) * 7;
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 10;
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 62, -44 - br); ctx.quadraticCurveTo(sd * 42, -56 - br, sd * 22, -46 - br); ctx.stroke(); }
+  const E = o.eyes || 'n';
+  for (const sd of [-1, 1]) {
+    const ex = sd * 42;
+    if (E === 'wide') { ell(ex, -8, 22, 25, C.white); ctx.lineWidth = 4; ctx.beginPath(); ctx.ellipse(ex, -8, 22, 25, 0, 0, TAU); ctx.strokeStyle = C.ink; ctx.stroke(); circle(ex + lk, -6, 11, C.ink); circle(ex + lk + 4, -11, 4, C.white); }
+    else if (E === 'closed') { ctx.beginPath(); ctx.arc(ex, -12, 14, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); }
+    else if (E === 'sleepy') { ell(ex + lk, -4, 11, 8, C.ink); line([[ex - 18, -10], [ex + 18, -10]], C.ink, 7); }
+    else { ell(ex + lk, -8, 11, 14, C.ink); circle(ex + lk + 4, -13, 4, C.white); }
+  }
+  ctx.globalAlpha = 0.35; for (const sd of [-1, 1]) ell(sd * 64, 30, 18, 11, C.pink); ctx.globalAlpha = 1;
+  const M = o.mouth || 'smile'; ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.lineCap = 'round';
+  if (M === 'smile') { ctx.beginPath(); ctx.moveTo(-26, 52); ctx.quadraticCurveTo(0, 74, 26, 52); ctx.stroke(); }
+  if (M === 'flat') { ctx.beginPath(); ctx.moveTo(-20, 60); ctx.lineTo(20, 60); ctx.stroke(); }
+  if (M === 'o') { ell(0, 62, 18, 24, C.mouth); }
+  if (M === 'tongue') { ell(0, 58, 26, 20, C.mouth); rr(-17, 58, 34, 36, 16); ctx.fillStyle = C.pink; ctx.fill(); line([[0, 64], [0, 82]], C.pinkDark, 4); }
+  if (o.fizzEyes > 0) for (const sd of [-1, 1]) fizz(sd * 42, -24, 1.1, t, o.fizzEyes, { n: 5, spread: 34, rise: 120, seed: sd * 7 });
+  if (o.fizzTongue > 0) fizz(0, 70, 1.1, t, o.fizzTongue, { n: 6, spread: 34, rise: 110, seed: 21 });
+  ctx.restore();
+  ctx.restore();
+}
+/** canvas point of the dummy's mouth / face centre (rot = 0) */
+export const dummyMouth = (x, y, s) => [x, y - 323 * s];
+export const dummyFace = (x, y, s) => [x, y - 385 * s];
+
+/** cartoon explosion (graphic): yellow spiky star with an ink outline, red inner star, "BOOM" in white. ~520 px at s = 1 */
+export function boom(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 3) * 0.03); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  const star = (R, r, n, k) => { ctx.beginPath(); for (let i = 0; i < n * 2; i++) { const an = i * Math.PI / n - Math.PI / 2, rad = i % 2 ? r : R * (0.86 + 0.14 * rnd(i + k)); ctx.lineTo(Math.cos(an) * rad, Math.sin(an) * rad); } ctx.closePath(); };
+  star(260, 165, 12, 3); ctx.lineWidth = 20; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.yellow; ctx.fill();
+  star(180, 118, 10, 9); ctx.fillStyle = C.red; ctx.fill();
+  ctx.font = '900 86px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = C.ink;
+  ctx.strokeText('BOOM', 0, 6); ctx.fillStyle = C.white; ctx.fillText('BOOM', 0, 6);
+  ctx.restore();
+}
+
+/** "tough skin" shield (graphic): ink outline, green shield, light highlight, white tick. ~300x330 px at s = 1. sc = pop-in */
+export function shieldBadge(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const P = (k) => { ctx.beginPath(); ctx.moveTo(0, -150 * k); ctx.quadraticCurveTo(70 * k, -100 * k, 135 * k, -110 * k); ctx.lineTo(135 * k, -10 * k);
+    ctx.bezierCurveTo(135 * k, 90 * k, 60 * k, 140 * k, 0, 165 * k); ctx.bezierCurveTo(-60 * k, 140 * k, -135 * k, 90 * k, -135 * k, -10 * k); ctx.lineTo(-135 * k, -110 * k); ctx.quadraticCurveTo(-70 * k, -100 * k, 0, -150 * k); ctx.closePath(); };
+  P(1); ctx.lineWidth = 22; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = GLASS_GD; ctx.fill();
+  ctx.save(); ctx.translate(-8, -6); P(0.9); ctx.fillStyle = GLASS_G; ctx.fill(); ctx.restore();
+  ell(-62, -78, 26, 12, C.white + '66', -0.5);
+  line([[-56, 6], [-14, 50], [62, -42]], C.white, 30);
+  ctx.restore();
+}
+
+/** pressure dial (graphic): ink rim, white face, ticks, a red zone at the low end with a "0", ink needle.
+ *  level 1 = normal air pressure (needle up-right), 0 = vacuum (needle on 0). ~340 px at s = 1. sc = pop-in */
+export function pressureGauge(x, y, s = 1, level = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  const A0 = Math.PI * 0.75, A1 = Math.PI * 2.25;
+  circle(0, 0, 170, C.ink); circle(0, 0, 148, C.white);
+  ctx.beginPath(); ctx.arc(0, 0, 116, A0, A0 + 0.6); ctx.strokeStyle = C.red; ctx.lineWidth = 28; ctx.lineCap = 'butt'; ctx.stroke();
+  for (let i = 0; i <= 8; i++) { const an = lerp(A0, A1, i / 8); line([[Math.cos(an) * 100, Math.sin(an) * 100], [Math.cos(an) * 132, Math.sin(an) * 132]], C.ink, i % 4 ? 6 : 10); }
+  ctx.fillStyle = C.ink; ctx.font = '900 54px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('0', Math.cos(A0) * 66 + 6, Math.sin(A0) * 66 - 4);
+  ctx.save(); ctx.rotate(lerp(A0, A0 + (A1 - A0) * 0.72, clamp(level))); rr(-10, -10, 126, 20, 10); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore();
+  circle(0, 0, 24, C.ink); circle(0, 0, 10, C.gumEdge);
+  ctx.restore();
+}
+
+/** countdown timer (stopwatch look): red wedge = time left (frac 0..1, empties clockwise), big number + "SEC" in the middle.
+ *  ~560 px wide at s = 1 (crown top -330). sc = pop-in */
+export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-40, -330, 80, 60, 14); ctx.fillStyle = C.watch; ctx.fill();
+  ctx.save(); ctx.rotate(0.75); rr(-22, -300, 44, 46, 10); ctx.fill(); ctx.restore();
+  circle(0, 0, 280, C.watch); circle(0, 0, 240, C.white);
+  const f = clamp(frac);
+  if (f > 0.002) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, 226, -Math.PI / 2 + TAU * (1 - f), -Math.PI / 2 + TAU); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill(); }
+  for (let i = 0; i < 12; i++) { ctx.save(); ctx.rotate(i * Math.PI / 6); rr(-6, -232, 12, i % 3 === 0 ? 40 : 24, 6); ctx.fillStyle = C.watch; ctx.fill(); ctx.restore(); }
+  circle(0, 0, 138, C.watch); circle(0, 0, 126, C.white);
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = '900 150px Inter'; ctx.fillText(text, 0, -14); ctx.font = '900 44px Inter'; ctx.letterSpacing = '4px'; ctx.fillText('SEC', 4, 78); ctx.letterSpacing = '0px';
+  ctx.restore();
+}
+
+/** an "O2" oxygen bubble (pale blue disc, darker rim, ink O + small 2). ~120 px at s = 1. a = alpha */
+export function o2Bubble(x, y, s = 1, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.scale(s, s);
+  circle(0, 0, 62, WATER_D); circle(0, 0, 54, C.sky); ell(-22, -26, 14, 8, C.white, -0.6);
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '900 56px Inter'; ctx.fillText('O', -8, 2); ctx.font = '900 30px Inter'; ctx.fillText('2', 24, 20);
+  ctx.restore();
+}
+
+/** (H) inside the vacuum chamber: riveted steel panels, a porthole up top, a pressure gauge (left) and the suit-hose port
+ *  (left wall, chamberPort). level = the wall gauge (1 normal, 0 vacuum). t = film time */
+export const chamberPort = [120, 800];
+export function chamberRoom(t = 0, level = 1) {
+  fillAll(WALL);
+  for (let i = -1; i < 7; i++) { rr(i * 180 - 30, 110, 164, 1260, 22); ctx.fillStyle = STEEL_L; ctx.fill(); for (const yy of [150, 1330]) for (const k of [24, 140]) circle(i * 180 - 30 + k, yy, 7, STEEL_D); }
+  ctx.fillStyle = STEEL_D; ctx.fillRect(-300, 1360, W + 600, 700); ctx.fillStyle = STEEL; for (let x = -300; x < W + 300; x += 90) ctx.fillRect(x, 1380, 50, 700);
+  ctx.fillStyle = STEEL_D; ctx.fillRect(-300, 60, W + 600, 50);
+  circle(540, 290, 128, STEEL_D); circle(540, 290, 104, '#DCE8EC');
+  for (let i = 0; i < 6; i++) circle(540 + Math.cos(i * 1.05) * 116, 290 + Math.sin(i * 1.05) * 116, 7, C.gumEdge);
+  ell(500, 250, 30, 12, C.white + '55', -0.6);
+  pressureGauge(200, 330, 0.5, level);
+  rr(chamberPort[0] - 70, chamberPort[1] - 70, 110, 140, 18); ctx.fillStyle = STEEL_D; ctx.fill(); rr(chamberPort[0] - 70, chamberPort[1] - 70, 96, 128, 16); ctx.fillStyle = STEEL; ctx.fill();
+  circle(chamberPort[0], chamberPort[1], 30, HOSE);
+}
+
+/** the 1966 suit tester (not the hero): white pressure suit with knee/elbow rings, a chest control box (no logos), boots,
+ *  gloves, and a round helmet with a clear visor showing his face (ginger hair). Origin = chest centre, ~1170 px tall at s = 1.
+ *  o = man() face options (eyes, mouth, brow, look) + arm/armL (ARM poses) + port [x, y] (canvas: hose runs from there to the
+ *  chest), loose 0..1 (hose pops off the chest and droops, a white air puff), hoseHi 0..1 (yellow highlight on the hose), t */
+export function suitTester(o) {
+  const s = o.s || 1, t = o.t || 0;
+  ctx.save(); ctx.translate(o.x, o.y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const lx of [-140, 12]) {
+    rr(lx, 170, 128, 420, 54); ctx.fillStyle = SUIT_D; ctx.fill(); rr(lx, 170, 110, 420, 54); ctx.fillStyle = C.white; ctx.fill();
+    rr(lx - 4, 360, 136, 30, 14); ctx.fillStyle = SUIT_D; ctx.fill();
+    rr(lx - 8, 560, 144, 80, 30); ctx.fillStyle = HOSE; ctx.fill();
+  }
+  const arm = (sd, pose) => {
+    const sh = [sd * 160, -165], e = [pose.e[0] * 1.08 * sd, pose.e[1]], h = [pose.h[0] * 1.08 * sd, pose.h[1]];
+    line([sh, e, h], SUIT_D, 96); line([sh, e, h], C.white, 84);
+    circle(e[0], e[1], 30, SUIT_D); circle(h[0], h[1], 52, HOSE); circle(h[0] - 8, h[1] - 8, 44, HOSE_L);
+  };
+  arm(-1, o.armL || ARM.down);
+  rr(-180, -235, 360, 440, 120); ctx.fillStyle = SUIT_D; ctx.fill(); rr(-180, -235, 330, 440, 120); ctx.fillStyle = C.white; ctx.fill();
+  rr(-170, 150, 340, 40, 16); ctx.fillStyle = SUIT_D; ctx.fill();
+  rr(-80, -130, 150, 110, 18); ctx.fillStyle = STEEL_D; ctx.fill(); rr(-72, -122, 134, 94, 14); ctx.fillStyle = STEEL; ctx.fill();
+  circle(-36, -90, 14, C.red); circle(4, -90, 14, C.yellow); circle(-36, -52, 10, C.sky); rr(-6, -60, 50, 16, 8); ctx.fillStyle = HOSE; ctx.fill();
+  circle(-120, -150, 34, C.shirt); circle(-120, -150, 14, C.white);
+  circle(96, -36, 34, STEEL_D); circle(96, -36, 22, HOSE);
+  arm(1, o.arm || ARM.down);
+  rr(-130, -280, 260, 64, 30); ctx.fillStyle = STEEL_D; ctx.fill(); rr(-130, -280, 260, 30, 14); ctx.fillStyle = STEEL; ctx.fill();
+  circle(0, -372, 174, SUIT_D); circle(-4, -376, 166, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, -372, 146, 0, TAU); ctx.clip();
+  circle(0, -372, 150, GLASS); ctx.translate(0, -14); head({ hairCol: '#C8734A', browCol: '#9A5333', ...o }); ctx.translate(0, 14);
+  ctx.globalAlpha = 0.5; ctx.beginPath(); ctx.arc(0, -372, 128, Math.PI * 1.08, Math.PI * 1.42); ctx.strokeStyle = C.white; ctx.lineWidth = 18; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(0, -372, 146, 0, TAU); ctx.strokeStyle = SUIT_D; ctx.lineWidth = 10; ctx.stroke();
+  rr(-30, -556, 60, 24, 10); ctx.fillStyle = STEEL_D; ctx.fill();
+  ctx.restore();
+  if (o.port) {
+    const cx = o.x + 96 * s, cy = o.y - 36 * s, [px, py] = o.port, L = clamp(o.loose || 0);
+    const k = 1 - Math.pow(1 - L, 3), wig = L > 0 && L < 1 ? Math.sin(t * 30) * 30 * (1 - L) * s : 0;
+    const ex = lerp(cx, lerp(px, cx, 0.55), k) + wig, ey = lerp(cy, py + 330 * s, k);
+    const midx = (px + ex) / 2, midy = Math.max(py, ey) + lerp(160, 60, k) * s;
+    const hose = (col, w) => { ctx.beginPath(); ctx.moveTo(px, py); ctx.quadraticCurveTo(midx, midy, ex, ey); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.stroke(); };
+    if (o.hoseHi > 0) { ctx.save(); ctx.globalAlpha = clamp(o.hoseHi); hose(C.yellow, 70 * s); ctx.restore(); }
+    hose(HOSE, 46 * s); hose(HOSE_L, 14 * s);
+    circle(ex, ey, 30 * s, STEEL_D); circle(ex, ey, 16 * s, HOSE);
+    if (L > 0 && L < 1) for (let i = 0; i < 6; i++) {   // the air puff where the hose popped off: fades out by L = 1
+      const ph = clamp(L * 1.3 - i * 0.05), an = -1.2 + i * 0.45, d = (40 + ph * 160) * s;
+      ctx.save(); ctx.globalAlpha = 0.85 * (1 - ph); circle(cx + Math.cos(an) * d, cy + Math.sin(an) * d * 0.8, Math.max(0, (18 + ph * 22) * s), C.white); ctx.restore();
+    }
+  }
+}
+/** canvas centre of the suit tester's face (in the helmet) */
+export const testerFace = (x, y, s) => [x, y - 364 * s];
+
+/** the vacuum chamber seen from outside: a tall steel tank on legs, riveted bands, a big porthole (inside() draws what you
+ *  see through it, in the chamber's local coords: origin = tank centre, porthole centre (0, -90), radius 200), a pump pipe
+ *  leaving to the right, and a pressure gauge on the tank (level). ~660x1000 px at s = 1 */
+export function chamber(x, y, s, { level = 1, inside = null } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  for (const lx of [-230, 190]) { rr(lx, 420, 40, 90, 10); ctx.fillStyle = STEEL_D; ctx.fill(); }
+  rr(330, -380, 400, 64, 26); ctx.fillStyle = STEEL_D; ctx.fill(); rr(330, -380, 400, 26, 13); ctx.fillStyle = STEEL; ctx.fill();
+  rr(-330, -470, 660, 920, 210); ctx.fillStyle = STEEL_D; ctx.fill(); rr(-330, -470, 610, 920, 210); ctx.fillStyle = STEEL; ctx.fill();
+  rr(-270, -440, 60, 860, 30); ctx.fillStyle = STEEL_L; ctx.fill();
+  for (const by of [-300, 300]) { rr(-334, by - 18, 668, 36, 14); ctx.fillStyle = STEEL_D; ctx.fill(); for (let i = -4; i <= 4; i++) circle(i * 70, by, 6, C.gumEdge); }
+  circle(0, -90, 236, STEEL_D); circle(0, -90, 214, HOSE);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, -90, 200, 0, TAU); ctx.clip(); ctx.fillStyle = WALL; ctx.fillRect(-220, -310, 440, 440); if (inside) inside(); ctx.restore();
+  ctx.save(); ctx.globalAlpha = 0.35; ctx.beginPath(); ctx.arc(0, -90, 176, Math.PI * 1.1, Math.PI * 1.4); ctx.strokeStyle = C.white; ctx.lineWidth = 20; ctx.stroke(); ctx.restore();
+  for (let i = 0; i < 10; i++) circle(Math.cos(i * TAU / 10) * 224, -90 + Math.sin(i * TAU / 10) * 224, 8, C.gumEdge);
+  pressureGauge(170, 260, 0.42, level);
+  ctx.restore();
+}
+/** canvas point of the chamber pipe's open end (right side), for chamber(x, y, s) */
+export const chamberPipe = (x, y, s) => [x + 730 * s, y - 348 * s];
+
+/** red lunchbox (graphic): open 0..1 tips the lid back and lifts a sandwich out (bread, lettuce, tomato). ~400x330 px at s = 1 */
+export function lunchbox(x, y, s = 1, open = 0, sc = 1) {
+  if (sc <= 0) return;
+  const k = clamp(open);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  rr(-200, -60, 400, 60, 10); ctx.fillStyle = RED_D; ctx.fill();
+  ctx.save(); ctx.translate(0, lerp(60, -40, k)); ctx.rotate(-0.08);
+  ctx.beginPath(); ctx.moveTo(-130, 40); ctx.lineTo(130, 40); ctx.lineTo(0, -120); ctx.closePath(); ctx.lineWidth = 26; ctx.strokeStyle = CRUST; ctx.stroke(); ctx.fillStyle = BREAD; ctx.fill();
+  ctx.beginPath(); for (let i = 0; i <= 10; i++) ctx.lineTo(-120 + i * 24, 48 + (i % 2 ? 10 : 0)); ctx.strokeStyle = C.leaf; ctx.lineWidth = 16; ctx.stroke();
+  ell(-40, 64, 34, 12, C.red); ell(40, 64, 34, 12, C.red);
+  ctx.restore();
+  rr(-200, -40, 400, 200, 26); ctx.fillStyle = RED_D; ctx.fill(); rr(-200, -40, 370, 194, 26); ctx.fillStyle = C.red; ctx.fill();
+  rr(-30, -10, 60, 30, 8); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.save(); ctx.translate(-200, -40); ctx.rotate(-k * 1.25);
+  rr(0, -60, 400, 60, [26, 26, 6, 6]); ctx.fillStyle = C.red; ctx.fill(); rr(370, -60, 30, 60, [0, 26, 6, 0]); ctx.fillStyle = RED_D; ctx.fill();
+  ctx.beginPath(); ctx.arc(200, -60, 60, Math.PI, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 16; ctx.stroke();
+  ctx.restore();
+  ctx.restore();
+}
+
+/** "home" badge: white disc, ink ring, a little house (red roof, blue walls, yellow door). ~300 px at s = 1. sc = pop-in */
+export function homeBadge(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  rr(-74, -14, 148, 112, 8); ctx.fillStyle = C.shirt; ctx.fill(); rr(30, -14, 44, 112, [0, 8, 8, 0]); ctx.fillStyle = C.shirtShade; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-104, -6); ctx.lineTo(0, -96); ctx.lineTo(104, -6); ctx.closePath(); ctx.lineWidth = 14; ctx.strokeStyle = RED_D; ctx.stroke(); ctx.fillStyle = C.red; ctx.fill();
+  rr(-22, 30, 44, 68, [20, 20, 0, 0]); ctx.fillStyle = C.yellow; ctx.fill(); rr(-60, 10, 34, 30, 4); ctx.fillStyle = C.sky; ctx.fill();
+  ctx.restore();
+}
+
+/** red map pin (graphic): teardrop with a darker rim and a white dot; tip at (x, y). ~150x200 px at s = 1. sc = pop-in */
+export function mapPin(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  const P = () => { ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-30, -50, -70, -80, -70, -125); ctx.arc(0, -125, 70, Math.PI, 0); ctx.bezierCurveTo(70, -80, 30, -50, 0, 0); ctx.closePath(); };
+  P(); ctx.lineWidth = 14; ctx.strokeStyle = RED_D; ctx.lineJoin = 'round'; ctx.stroke(); ctx.fillStyle = C.red; ctx.fill();
+  circle(0, -125, 28, C.white); ell(-34, -150, 12, 20, C.pinkLight, 0.5);
+  ctx.restore();
+}
+
+/** next-episode tease (hiccups): white disc, ink ring, pink lungs over a dome-shaped diaphragm muscle.
+ *  jolt 0..1 snaps the diaphragm down (the hiccup spasm). ~300 px at s = 1. sc = pop-in */
+export function hiccupBadge(x, y, s = 1, sc = 1, jolt = 0) {
+  if (sc <= 0) return;
+  const j = clamp(jolt);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip();
+  lungs(0, -42, 0.5, j * 0.3);
+  const dome = (col, w, dy = 0) => { ctx.beginPath(); ctx.moveTo(-118, 74 + dy); ctx.quadraticCurveTo(0, lerp(-46, 34, j) + dy, 118, 74 + dy); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke(); };
+  dome(C.pinkDark, 40); dome(C.pink, 28); dome(C.pinkLight, 8, -6);
+  ctx.restore();
+  ctx.restore();
+}
+/** "HIC!" bubble (graphic): white disc with an ink ring and ink text. ~200 px at s = 1. sc = pop-in, a = alpha */
+export function hicBubble(x, y, s = 1, sc = 1, a = 1, rot = 0) {
+  if (sc <= 0 || a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 100, C.ink); circle(0, 0, 88, C.white);
+  ctx.fillStyle = C.ink; ctx.font = '900 70px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('HIC!', 0, 4);
   ctx.restore();
 }

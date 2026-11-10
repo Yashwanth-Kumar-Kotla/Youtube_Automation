@@ -1,0 +1,14 @@
+{
+  "title": "What Happens to Your Body in Space Without a Suit?",
+  "description": "In a vacuum you don't explode, because your tissue is strong enough. Water boils at body temperature, so wet spots like your eyes and mouth go first, and NASA astronaut-physician Michael Barratt puts useful consciousness at about 12 seconds. In December 1966, NASA test subject Jim LeBlanc's suit hose came loose in a Houston vacuum chamber. He felt his saliva boil off his tongue before passing out, and the chamber was repressurized. He had no long-term effects.\nNext Body File: what happens if your hiccups won't stop, and the man who hiccupped for 68 years.\nFollow Body Files for a new one every day.\n#bodyfiles #space #nasa #humanbody #science #shorts #spacefacts\n\nSources:\nWest Texas A&M University (Christopher S. Baird): https://wtamu.edu/~cbaird/sq/2012/12/17/how-long-can-a-human-in-outer-space-last-without-a-spacesuit-before-exploding/\nUniversity of Houston, The Engines of Our Ingenuity No. 2691 (Michael Barratt): https://engines.egr.uh.edu/episode/2691\nGuinness World Records: https://www.guinnessworldrecords.com/world-records/447311-highest-equivalent-altitude-exposure-survived\nGuinness World Records (hiccups): https://www.guinnessworldrecords.com/world-records/67619-longest-attack-of-hiccups",
+  "hashtags": ["#bodyfiles", "#space", "#nasa", "#humanbody", "#science", "#shorts", "#spacefacts"],
+  "pinned_comment": "Would you volunteer to test a space suit inside a vacuum chamber? Why or why not?",
+  "series": "Body Files",
+  "topic": "What happens to your body in space without a suit?",
+  "experiment_arm": "E1-B (hook without a number: lines 1-2 have none; first number is 'twelve seconds' in line 7); E4 tease_next",
+  "teases": "What happens if your hiccups won't stop?",
+  "topic_cluster": "space",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the sneeze video (2026-11-10-body-1) with 'the NASA tester who felt his spit boil' (paid off in lines 8-11: Jim LeBlanc, 1966, Houston chamber)",
+  "hook_pattern": "question+instant-myth-bust",
+  "format": "explainer"
+}
