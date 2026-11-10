@@ -10,3 +10,4 @@
 - 2026-11-10 03:57 · 2026-11-09-body-01 ready → scheduled · slot 0 on 2026-11-10, episode 3, manual upload
 - 2026-11-10 04:07 · 2026-11-10-body-01 added · conf 0.7 · question+old-myth-number · What happens if you sneeze with your eyes open?
 - 2026-11-10 04:25 · 2026-11-10-body-02 added · conf 0.7 · question+instant-myth-bust · What happens to your body in space without a suit?
+- 2026-11-10 04:42 · 2026-11-10-body-03 added · conf 0.7 · question+record-number · What happens if your hiccups won't stop?

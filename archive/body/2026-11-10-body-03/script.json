@@ -1,0 +1,75 @@
+{
+  "title": "What Happens If Your Hiccups Won't Stop?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Hiccups' (hiccups are repeated spasms of your diaphragm paired with a 'hic' sound from your vocal cords closing; the glottis suddenly closes to stop more air from coming in; persistent hiccups last longer than 48 hours, up to one month; intractable = longer than one month; call your healthcare provider if hiccups last longer than two days; 'Experts haven't found a hiccup cure'): https://my.clevelandclinic.org/health/symptoms/17672-hiccups",
+    "Cleveland Clinic, 'Diaphragm' (thin, dome-shaped muscle that sits below your lungs and heart; tightens and drops to draw air into the lungs): https://my.clevelandclinic.org/health/body/21578-diaphragm",
+    "NHS, 'Hiccups' (hiccups should only last a few minutes; see a GP if they last more than 48 hours; there's no evidence home remedies work for everyone): https://www.nhs.uk/conditions/hiccups/",
+    "Guinness World Records, 'Longest attack of hiccups' (Charles Osborne, USA, 1894-1991, started hiccoughing in 1922 while attempting to weigh a hog before slaughtering it, continued until a morning in February 1990; never found a cure; had two wives and eight children): https://www.guinnessworldrecords.com/world-records/67619-longest-attack-of-hiccups",
+    "Smithsonian Magazine, Kellie Gormly, 'The Curious Case of Charles Osborne, Who Hiccuped for 68 Years Straight', 2022-06-13 (hiccups began after a June 13, 1922 accident while hanging a hog near Union, Nebraska: 'I picked it up and then I fell down'; 20 to 40 involuntary diaphragm spasms per minute; an estimated 430 million hiccups; 'For reasons unknown, Osborne's hiccups suddenly stopped in 1990'; doctors never found a cure or confirmed cause; married twice and had eight children; died May 1991 at 97): https://www.smithsonianmag.com/history/the-curious-case-of-charles-osborne-who-hiccuped-for-68-years-straight-180980232/",
+    "Tease (next video): Cleveland Clinic, 'Brain Freeze' (scientific term: sphenopalatine ganglioneuralgia; brief, intense pain in the front of the head; usually lasts a few seconds to two minutes; press your tongue or thumb against the roof of your mouth to transfer warmth): https://my.clevelandclinic.org/health/diseases/21478-brain-freeze"
+  ],
+  "lines": [
+    {
+      "text": "What happens if your hiccups won't stop?",
+      "caps": "WHAT *HAPPENS | IF YOUR *HICCUPS | WON'T *STOP?"
+    },
+    {
+      "text": "One man hiccuped for sixty-eight years straight.",
+      "caps": "ONE *MAN | *HICCUPED FOR | *68 YEARS STRAIGHT"
+    },
+    {
+      "text": "So where does the hic even come from?",
+      "caps": "SO *WHERE | DOES THE *HIC | EVEN COME *FROM?"
+    },
+    {
+      "text": "Your diaphragm, the muscle under your lungs, suddenly spasms,",
+      "caps": "YOUR *DIAPHRAGM | THE *MUSCLE | UNDER YOUR *LUNGS | SUDDENLY *SPASMS"
+    },
+    {
+      "text": "air rushes in, and your vocal cords snap shut. Hic!",
+      "caps": "AIR *RUSHES IN | AND YOUR *VOCAL | CORDS *SNAP | SHUT. *HIC!"
+    },
+    {
+      "text": "Most bouts fade within minutes,",
+      "caps": "MOST *BOUTS | FADE WITHIN *MINUTES"
+    },
+    {
+      "text": "but past two days, doctors call them persistent.",
+      "caps": "BUT *PAST | *2 DAYS | *DOCTORS CALL | THEM *PERSISTENT"
+    },
+    {
+      "text": "In nineteen twenty-two, Charles Osborne picked up a hog,",
+      "caps": "IN *1922 | *CHARLES OSBORNE | *PICKED UP | A *HOG"
+    },
+    {
+      "text": "fell, and started hiccuping, twenty to forty times a minute.",
+      "caps": "*FELL, AND | STARTED *HICCUPING | *20 TO 40 | TIMES A *MINUTE"
+    },
+    {
+      "text": "Still, he married twice and had eight kids.",
+      "caps": "STILL, HE *MARRIED | *TWICE AND HAD | *8 KIDS"
+    },
+    {
+      "text": "Then in nineteen ninety, they just stopped. Nobody knows why.",
+      "caps": "THEN IN *1990 | THEY JUST *STOPPED | NOBODY KNOWS *WHY"
+    },
+    {
+      "text": "Yours hit two days? See a doctor. Don't wait sixty-eight years.",
+      "caps": "*YOURS HIT | *2 DAYS? | SEE A *DOCTOR | DON'T *WAIT | *68 YEARS"
+    },
+    {
+      "text": "Next Body File: what happens when you get brain freeze,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS | *WHEN YOU GET | *BRAIN FREEZE"
+    },
+    {
+      "text": "and the tongue trick that helps it thaw.",
+      "caps": "AND THE *TONGUE | *TRICK THAT HELPS | IT *THAW"
+    }
+  ]
+}

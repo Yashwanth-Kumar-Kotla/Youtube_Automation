@@ -57,7 +57,7 @@ export function calendar(x, y, s, big, small, rot = 0) {
   rr(-300, -340, 600, 170, [46, 46, 0, 0]); ctx.fillStyle = C.red; ctx.fill(); ctx.lineWidth = 10; ctx.stroke();
   for (const bx of [-150, 150]) { rr(bx - 18, -390, 36, 100, 18); ctx.fillStyle = C.ink; ctx.fill(); }
   ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  ctx.font = '900 330px Inter'; ctx.fillText(big, 0, 170);
+  ctx.font = '900 330px Inter'; { const bw = ctx.measureText(big).width; if (bw > 530) ctx.font = `900 ${Math.floor(330 * 530 / bw)}px Inter`; } ctx.fillText(big, 0, big.length > 3 && small ? 130 : 170);   // long text (a year) shrinks to fit
   ctx.font = '900 92px Inter'; ctx.letterSpacing = '4px'; ctx.fillText(small, 0, 285); ctx.letterSpacing = '0px';
   ctx.restore();
 }
@@ -249,7 +249,7 @@ function arm(side, pose, finger, xr) {
   }
   line([sh, e], C.skin, 50); line([e, h], C.skin, 44);
   if (_coat) { const wr = [lerp(e[0], h[0], 0.7), lerp(e[1], h[1], 0.7)]; line([sh, e, wr], COAT_D, 70); line([sh, e, wr], C.white, 60); }   // long lab-coat sleeve
-  else line([sh, [lerp(sh[0], e[0], 0.55), lerp(sh[1], e[1], 0.55)]], C.shirt, 72);       // short sleeve
+  else line([sh, [lerp(sh[0], e[0], 0.55), lerp(sh[1], e[1], 0.55)]], _shirt[0], 72);       // short sleeve
   if (finger != null) { ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(finger); rr(-11, -86, 22, 80, 11); ctx.fillStyle = C.skin; ctx.fill(); ctx.restore(); }
   ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(ang); ell(6, 0, 34, 28, C.skin); ell(-2, -sx * 22, 15, 10, C.skin, -0.5 * sx); ctx.restore();
 }
@@ -258,10 +258,11 @@ function torsoPath() {
   ctx.bezierCurveTo(-130, -214, -162, -196, -164, -120); ctx.lineTo(-140, 192); ctx.quadraticCurveTo(-138, 210, -120, 210);
   ctx.lineTo(120, 210); ctx.quadraticCurveTo(138, 210, 140, 192); ctx.lineTo(164, -120); ctx.bezierCurveTo(162, -196, 130, -214, 50, -214); ctx.closePath();
 }
-function skeletonTorso(pulse, lungSq = null) {
+function skeletonTorso(pulse, lungSq = null, dia = null) {
   ctx.save(); torsoPath(); ctx.clip();
   ctx.fillStyle = C.xnavy; ctx.fillRect(-170, -220, 340, 440);
   if (lungSq != null) lungs(0, -40, 1, lungSq);
+  if (dia != null) diaphragm(0, 0, 1, dia, _diaHi);
   for (let y = -192; y < 200; y += 32) { rr(-14, y, 28, 24, 7); ctx.fillStyle = C.cyan; ctx.globalAlpha = 0.9; ctx.fill(); }
   ctx.globalAlpha = 1; ctx.strokeStyle = C.cyan; ctx.lineCap = 'round';
   for (const sd of [-1, 1]) {
@@ -296,6 +297,9 @@ function head(o) {
     ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 40 + sd * 16, -8); ctx.lineTo(sd * 40 - sd * 10, 4); ctx.lineTo(sd * 40 + sd * 16, 16); ctx.stroke(); }
     ctx.strokeStyle = C.skinShade; ctx.lineWidth = 5; for (const dy of [8, 18]) { ctx.beginPath(); ctx.moveTo(-6, dy); ctx.lineTo(6, dy); ctx.stroke(); }
+  } else if (o.eyes === 'wink') {   // left eye open (dot), right eye closed arc: the wink to camera
+    ell(-40, 6, 11, 14, C.ink); circle(-36, 1, 4, C.white);
+    ctx.beginPath(); ctx.arc(40, 10, 15, 1.1 * Math.PI, 1.9 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
   } else if (o.eyes === 'closed') {
     for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 2, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); }
   } else {
@@ -320,6 +324,8 @@ function head(o) {
   if (o.glasses) { ctx.strokeStyle = C.ink; ctx.lineWidth = 6; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 6, 28, 0, TAU); ctx.stroke(); } line([[-12, 2], [12, 2]], C.ink, 6); }
   ctx.beginPath(); ctx.moveTo(4, 26); ctx.quadraticCurveTo(16, 44, 0, 48); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.stroke();
   ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 62, 46, 20, 12, C.pink); ctx.globalAlpha = 1;
+  if (o.stache) for (const sd of [-1, 1]) ell(sd * 22, 56, 26, 11, HC, sd * 0.25);
+  if (o.cap) { ell(0, -106, 118, 48, CAP); rr(-118, -102, 236, 30, 12); ctx.fillStyle = CAP; ctx.fill(); ell(24, -74, 100, 16, CAP_D, -0.04); ell(-34, -128, 44, 12, '#9A7A58', -0.2); }
   // mouth: 'smile' | 'smirk' | 'chew' | 'o' | 'flat' | 'grin'
   const m = o.mouth || 'smile'; ctx.lineCap = 'round'; ctx.strokeStyle = C.mouth; ctx.lineWidth = 8;
   if (m === 'smile') { ctx.beginPath(); ctx.moveTo(-24, 70); ctx.quadraticCurveTo(0, 90, 24, 70); ctx.stroke(); }
@@ -336,10 +342,18 @@ function head(o) {
  *   lungs (x-ray only: number 0..1 = show the lungs + windpipe instead of the stomach, 1 = squeezed empty: the sneeze blast),
  *   holding: [drawFn(x, y)] drawn at the right hand, inside: [x, y, rot] a gum drawn inside the body (local coords) }
  */
-let _coat = false;
+let _coat = false, _shirt = [C.shirt, C.shirtShade], _diaHi = 0;
+const BOOT = '#5A4030', CAP = '#7A5A3A', CAP_D = '#5A4030';
+/** denim overalls bib + straps over the shirt (the farmer look), in torso coords */
+function overallsBib() {
+  rr(-96, -96, 192, 306, [26, 26, 0, 0]); ctx.fillStyle = C.pants; ctx.fill(); rr(40, -96, 56, 306, [0, 26, 0, 0]); ctx.fillStyle = C.pantsShade; ctx.fill();
+  rr(-50, -40, 100, 60, 10); ctx.fillStyle = C.pantsShade; ctx.fill();
+  for (const sd of [-1, 1]) { line([[sd * 76, -90], [sd * 112, -206]], C.pants, 30); circle(sd * 72, -78, 11, C.yellow); }
+}
 const COAT_D = '#DCD6CB';
 export function man(o) {
-  const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR;
+  const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR; _shirt = o.shirtCol ? [o.shirtCol, o.shirtShade || o.shirtCol] : [C.shirt, C.shirtShade];
+  const LEG = o.sit ? 170 : 440; _diaHi = o.diaHi || 0;
   ctx.save(); ctx.translate(o.x, o.y); ctx.scale(s, s);
   if (XR) {
     for (const x of [-128, 6]) {
@@ -349,24 +363,26 @@ export function man(o) {
     rr(-36, -250, 72, 60, 20); ctx.fillStyle = C.xnavy; ctx.fill();
     for (let y = -246; y < -200; y += 22) { rr(-13, y, 26, 16, 6); ctx.fillStyle = C.cyan; ctx.fill(); }
   } else {
-    rr(-128, 180, 122, 440, 40); ctx.fillStyle = C.pants; ctx.fill(); rr(6, 180, 122, 440, 40); ctx.fill();
-    rr(6, 180, 40, 440, [0, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill();
+    if (o.sit) for (const sd of [-1, 1]) ell(sd * 92, 360, 70, 34, BOOT);
+    rr(-128, 180, 122, LEG, 40); ctx.fillStyle = C.pants; ctx.fill(); rr(6, 180, 122, LEG, 40); ctx.fill();
+    rr(6, 180, 40, LEG, [0, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill();
     rr(-36, -250, 72, 60, 20); ctx.fillStyle = C.skin; ctx.fill();
   }
   arm(-1, o.armL || ARM.down, null, XR);
-  if (XR) skeletonTorso(o.pulse || 0, o.lungs ?? null);
+  if (XR) skeletonTorso(o.pulse || 0, o.lungs ?? (o.dia != null ? 0 : null), o.dia ?? null);
   else {
-    torsoPath(); ctx.fillStyle = C.shirt; ctx.fill();
-    ctx.save(); torsoPath(); ctx.clip(); ctx.beginPath(); ctx.moveTo(95, -220); ctx.quadraticCurveTo(70, 0, 100, 220); ctx.lineTo(200, 220); ctx.lineTo(200, -220); ctx.closePath(); ctx.fillStyle = C.shirtShade; ctx.fill(); ctx.restore();
-    ctx.beginPath(); ctx.ellipse(0, -214, 46, 26, 0, 0, Math.PI); ctx.fillStyle = C.skin; ctx.fill(); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 12; ctx.stroke();
+    torsoPath(); ctx.fillStyle = _shirt[0]; ctx.fill();
+    ctx.save(); torsoPath(); ctx.clip(); ctx.beginPath(); ctx.moveTo(95, -220); ctx.quadraticCurveTo(70, 0, 100, 220); ctx.lineTo(200, 220); ctx.lineTo(200, -220); ctx.closePath(); ctx.fillStyle = _shirt[1]; ctx.fill(); ctx.restore();
+    ctx.beginPath(); ctx.ellipse(0, -214, 46, 26, 0, 0, Math.PI); ctx.fillStyle = C.skin; ctx.fill(); ctx.strokeStyle = _shirt[1]; ctx.lineWidth = 12; ctx.stroke();
     if (_coat) labCoat();
+    if (o.overalls) overallsBib();
   }
   head(o);
   const ra = o.arm || ARM.down;
   arm(1, ra, o.finger ?? null, XR);
   if (o.holding) o.holding(ra.h[0] - 34, ra.h[1] - 14);
   if (o.inside) gum(o.inside[0], o.inside[1], 0.5, o.inside[2] || 0);
-  ctx.restore(); _coat = false;
+  ctx.restore(); _coat = false; _shirt = [C.shirt, C.shirtShade];
 }
 /** white lab coat over the torso (open V showing the blue tee), lapels, pocket + pen, ink stethoscope */
 function labCoat() {
@@ -2094,5 +2110,169 @@ export function hicBubble(x, y, s = 1, sc = 1, a = 1, rot = 0) {
   ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
   circle(0, 0, 100, C.ink); circle(0, 0, 88, C.white);
   ctx.fillStyle = C.ink; ctx.font = '900 70px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('HIC!', 0, 4);
+  ctx.restore();
+}
+
+// ═════════════════════════ HICCUP SET (2026-11-10 "hiccups that won't stop") ═════════════════════════
+const PIG = '#F29AA7', PIG_D = '#E57A8A', PIG_S = '#F7B8C2', BARN = '#B5653F', BARN_D = '#9A5333', ROOF = '#7E3F28',
+  GRASS = '#7CC487', GRASS_D = '#5BAE6A', GOLD_D = '#F2B807', SLUSH = '#BFE3F2', SLUSH_D = '#9DCBE0';
+
+/** the diaphragm: thick pink dome muscle under the lungs, in the hero's torso coords (origin = chest centre).
+ *  j 0..1 = the spasm (dome snaps down and flattens). hi 0..1 = yellow glow behind it (the "this one" highlight).
+ *  Used by man({ xray: true, dia: j, diaHi }) which also shows the lungs. */
+export function diaphragm(x, y, s, j = 0, hi = 0) {
+  const k = clamp(j);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  const dome = (col, w, dy = 0) => { ctx.beginPath(); ctx.moveTo(-158, 150 + dy); ctx.quadraticCurveTo(0, lerp(16, 118, k) + dy, 158, 150 + dy); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke(); };
+  if (hi > 0) { ctx.save(); ctx.globalAlpha = clamp(hi); dome(C.yellow, 58); ctx.restore(); }
+  dome(C.pinkDark, 36); dome(C.pink, 26); dome(C.pinkLight, 7, -6);
+  ctx.restore();
+}
+
+/** the vocal cords seen from above (macro view, flat): pink throat ring, two pale folds in a V, dark gap between them.
+ *  close 0..1 snaps the folds shut (the "hic"). ~520x600 px at s = 1. Origin = centre of the gap */
+export function vocalCords(x, y, s, close = 0) {
+  const k = clamp(close), sp = lerp(120, 0, k);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round';
+  ell(0, 0, 260, 300, C.pinkDark); ell(0, -6, 240, 280, C.pink);
+  ell(-120, -170, 50, 26, C.pinkLight, -0.5);
+  if (sp > 1) { ctx.beginPath(); ctx.moveTo(0, -200); ctx.lineTo(-sp, 200); ctx.quadraticCurveTo(0, 230, sp, 200); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); }
+  for (const sd of [-1, 1]) {
+    const bx = sd * sp;
+    ctx.beginPath(); ctx.moveTo(0, -214); ctx.lineTo(bx, 204); ctx.lineTo(bx + sd * 62, 196); ctx.lineTo(sd * 46, -196); ctx.closePath();
+    ctx.fillStyle = C.gumEdge; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0, -206); ctx.lineTo(bx + sd * 6, 196); ctx.lineTo(bx + sd * 34, 192); ctx.lineTo(sd * 22, -196); ctx.closePath();
+    ctx.fillStyle = C.gum; ctx.fill();
+    ell(bx + sd * 40, 222, 46, 30, C.pinkLight);
+  }
+  ctx.restore();
+}
+
+/** cartoon farm hog (side view, faces right): pink body, darker shade, snout, curly tail. ~420x270 px at s = 1.
+ *  Origin = body centre. o = { rot, kick (0..1 leg wiggle), t, happy (smile), wide (surprised eye) } */
+export function hog(x, y, s, { rot = 0, kick = 0, t = 0, happy = 1, wide = false } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.lineCap = 'round';
+  [-100, -50, 50, 100].forEach((lx, i) => {
+    ctx.save(); ctx.translate(lx, 60); ctx.rotate(Math.sin(t * 22 + i * 1.7) * 0.35 * kick);
+    rr(-17, 0, 34, 80, 14); ctx.fillStyle = PIG_D; ctx.fill(); rr(-17, 62, 34, 18, [0, 0, 12, 12]); ctx.fillStyle = C.pinkDark; ctx.fill(); ctx.restore();
+  });
+  ctx.beginPath(); ctx.moveTo(-148, -20); ctx.bezierCurveTo(-200, -40, -200, -90, -170, -86); ctx.bezierCurveTo(-140, -82, -160, -48, -186, -56);
+  ctx.strokeStyle = PIG_D; ctx.lineWidth = 12; ctx.stroke();
+  ell(0, 6, 152, 100, PIG_D); ell(-4, -2, 146, 92, PIG); ell(-60, -54, 50, 16, PIG_S, -0.15);
+  for (const [ex, er] of [[104, -0.5], [168, 0.35]]) { ctx.save(); ctx.translate(ex, -104); ctx.rotate(er); ctx.beginPath(); ctx.moveTo(-24, 14); ctx.lineTo(0, -38); ctx.lineTo(24, 14); ctx.closePath(); ctx.fillStyle = PIG_D; ctx.fill(); ctx.restore(); }
+  circle(140, -40, 80, PIG_D); circle(136, -44, 76, PIG);
+  ell(212, -30, 34, 30, PIG_D); ell(210, -32, 30, 26, PIG_S);
+  ell(202, -32, 6, 10, C.pinkDark); ell(222, -32, 6, 10, C.pinkDark);
+  if (wide) { circle(150, -64, 16, C.white); circle(152, -62, 9, C.ink); } else { circle(152, -64, 10, C.ink); circle(155, -67, 3.5, C.white); }
+  ctx.beginPath(); if (happy) { ctx.moveTo(150, 4); ctx.quadraticCurveTo(170, 18, 190, 6); } else ell(170, 10, 9, 12, C.mouth);
+  ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 6; ctx.stroke();
+  ctx.restore();
+}
+
+/** (I) a simple old-timey farm (Nebraska, 1922): pale sky, two clouds, a wooden barn on the right, a fence, green field
+ *  from y ≈ ground. Keep people/hogs standing on y ≈ ground + 40 */
+export function farmBg(t = 0, ground = 1080) {
+  fillAll(C.sky);
+  for (const [cx, cy, k] of [[230, 300, 1], [640, 210, 0.8]]) { const dx = Math.sin(t * 0.3 + cx) * 12; ell(cx + dx, cy, 90 * k, 34 * k, C.white); ell(cx + dx + 50 * k, cy - 22 * k, 60 * k, 38 * k, C.white); }
+  // barn
+  rr(700, 640, 330, ground - 620, 6); ctx.fillStyle = BARN; ctx.fill(); rr(960, 640, 70, ground - 620, [0, 6, 0, 0]); ctx.fillStyle = BARN_D; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(670, 660); ctx.lineTo(730, 520); ctx.lineTo(865, 450); ctx.lineTo(1000, 520); ctx.lineTo(1060, 660); ctx.closePath(); ctx.fillStyle = ROOF; ctx.fill();
+  rr(800, 820, 130, ground - 800, 4); ctx.fillStyle = BARN_D; ctx.fill();
+  line([[808, 828], [922, ground - 8]], C.gum, 10); line([[922, 828], [808, ground - 8]], C.gum, 10);
+  rr(830, 600, 70, 60, 6); ctx.fillStyle = C.gum; ctx.fill(); rr(842, 612, 46, 36, 4); ctx.fillStyle = ROOF; ctx.fill();
+  // field
+  ctx.fillStyle = GRASS; ctx.beginPath(); ctx.moveTo(-300, ground - 40); ctx.quadraticCurveTo(540, ground - 90, W + 300, ground - 30); ctx.lineTo(W + 300, H + 300); ctx.lineTo(-300, H + 300); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = GRASS_D; ctx.fillRect(-300, ground + 160, W + 600, 900);
+  // fence (left)
+  for (let fx = -60; fx <= 600; fx += 110) { rr(fx - 13, ground - 210, 26, 190, 8); ctx.fillStyle = BARN_D; ctx.fill(); }
+  for (const fy of [ground - 180, ground - 100]) { rr(-300, fy, 900, 22, 8); ctx.fillStyle = BARN; ctx.fill(); }
+}
+
+/** Charles Osborne (the true story): the man() figure as a 1920s farmer: rust shirt, denim overalls, flat cap, mustache.
+ *  old: true = grey hair + mustache (1990). sit: true = sitting on the ground (after the fall). Same options as man() */
+export function farmer(o) {
+  man({ shirtCol: C.pot, shirtShade: BARN_D, overalls: true, cap: true, stache: true, ...(o.old ? { hairCol: '#B9B2A6' } : {}), ...o });
+}
+/** both hands in front of the chest at belly height (carrying something big): use for arm + armL */
+ARM.carry = { e: [200, 10], h: [96, -10] };
+
+/** two interlocked gold wedding rings (flat yellow, darker rim, a tiny white gem). ~330x220 px at s = 1. sc = pop-in */
+export function weddingRings(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  const ring = (cx, cy, a0 = 0, a1 = TAU) => { for (const [w, c] of [[34, GOLD_D], [22, C.yellow]]) { ctx.beginPath(); ctx.arc(cx, cy, 82, a0, a1); ctx.strokeStyle = c; ctx.lineWidth = w; ctx.stroke(); } };
+  ring(-58, 10); ring(58, 10); ring(-58, 10, -0.5, 0.5);
+  ctx.beginPath(); ctx.moveTo(-58, -100); ctx.lineTo(-34, -124); ctx.lineTo(-58, -146); ctx.lineTo(-82, -124); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill(); ctx.strokeStyle = SLUSH_D; ctx.lineWidth = 6; ctx.stroke();
+  ctx.beginPath(); ctx.arc(-58, 10, 92, 3.6, 4.2); ctx.strokeStyle = C.white; ctx.globalAlpha = 0.7; ctx.lineWidth = 7; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+/** hiccup-rate dial (stopwatch look): big text in the middle, a small unit word under it, a red dot running round the rim
+ *  at angle ang (rad). ~560 px wide at s = 1 (crown top -330). text/unit can be '' (shown on their spoken word). sc = pop-in */
+export function hicMeter(x, y, s = 1, text = '', unit = '', sc = 1, ang = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-40, -330, 80, 60, 14); ctx.fillStyle = C.watch; ctx.fill();
+  ctx.save(); ctx.rotate(0.75); rr(-22, -300, 44, 46, 10); ctx.fill(); ctx.restore();
+  circle(0, 0, 280, C.watch); circle(0, 0, 240, C.white);
+  for (let i = 0; i < 12; i++) { ctx.save(); ctx.rotate(i * Math.PI / 6); rr(-6, -232, 12, i % 3 === 0 ? 40 : 24, 6); ctx.fillStyle = C.watch; ctx.fill(); ctx.restore(); }
+  circle(Math.sin(ang) * 196, -Math.cos(ang) * 196, 20, C.red);
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  if (text) { ctx.font = '900 130px Inter'; const tw = ctx.measureText(text).width; if (tw > 330) ctx.font = `900 ${Math.floor(130 * 330 / tw)}px Inter`; ctx.fillText(text, 0, unit ? -24 : 0); }
+  if (unit) { ctx.font = '900 54px Inter'; ctx.letterSpacing = '4px'; ctx.fillText(unit, 4, 76); ctx.letterSpacing = '0px'; }
+  ctx.restore();
+}
+
+/** a six-armed snowflake (flat strokes). r = arm length */
+export function snowflake(x, y, r, col = C.white, w = 10, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round';
+  for (let i = 0; i < 6; i++) {
+    ctx.save(); ctx.rotate(i * Math.PI / 3); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -r);
+    for (const k of [0.45, 0.72]) { ctx.moveTo(0, -r * k); ctx.lineTo(-r * 0.24, -r * k - r * 0.2); ctx.moveTo(0, -r * k); ctx.lineTo(r * 0.24, -r * k - r * 0.2); }
+    ctx.stroke(); ctx.restore();
+  }
+  ctx.restore();
+}
+/** "frost" badge: white disc, ink ring, a pale-blue snowflake turning slowly. ~200 px at s = 1. sc = pop-in */
+export function frostBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 100, C.ink); circle(0, 0, 88, C.white);
+  snowflake(0, 0, 62, SLUSH_D, 14, t * 0.4); snowflake(0, 0, 62, C.sky, 7, t * 0.4);
+  ctx.restore();
+}
+/** next-episode tease (brain freeze): the flat brain() with a snowy cap and icicles. frost 0..1 grows the snow,
+ *  melt 0..1 shrinks it and lets drops fall (the "thaw"); t = film time. ~540x560 px at s = 1 */
+export function frostBrain(x, y, s, { t = 0, frost = 1, melt = 0 } = {}) {
+  brain(x, y, s, { t });
+  const f = clamp(frost) * (1 - 0.75 * clamp(melt));
+  if (f <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  for (const [cx, cy, rx, ry] of [[-170, -96, 70, 26], [-92, -216, 82, 30], [40, -242, 86, 30], [160, -150, 74, 28]]) ell(cx, cy, Math.max(0, rx * f), Math.max(0, ry * f), C.white);
+  for (const [ix, iy, l] of [[-150, -74, 50], [-70, -192, 60], [60, -218, 54], [176, -128, 46]]) {
+    ctx.beginPath(); ctx.moveTo(ix - 18 * f, iy); ctx.lineTo(ix, iy + l * f); ctx.lineTo(ix + 18 * f, iy); ctx.closePath(); ctx.fillStyle = SLUSH; ctx.fill();
+  }
+  ctx.restore();
+  if (melt > 0) for (let i = 0; i < 3; i++) {
+    const ph = (melt * 1.8 + i / 3) % 1, a = Math.sin(ph * Math.PI) * clamp(melt * 4);
+    drop(x + [-70, 60, 176][i] * s, y + ([-192, -218, -128][i] + 60 + ph * 140) * s, 0.9, 0, a);
+  }
+}
+/** slushie cup: white cup with red stripes, a pale-blue slush dome with ice chunks and a red straw. ~340x620 px at s = 1
+ *  (straw top ≈ -380, cup bottom +250). sc = pop-in, t = film time (sparkles) */
+export function slushCup(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  line([[30, -120], [96, -380]], RED_D, 30); line([[30, -120], [96, -380]], C.red, 20);
+  ell(0, -130, 176, 108, SLUSH_D); ell(-6, -138, 168, 98, SLUSH);
+  for (const [cx, cy, r] of [[-80, -170, 26], [10, -200, 22], [80, -150, 24], [-20, -130, 18]]) { rr(cx - r, cy - r * 0.8, r * 2, r * 1.6, 8); ctx.fillStyle = C.white; ctx.fill(); }
+  const cup = () => { ctx.beginPath(); ctx.moveTo(-160, -110); ctx.lineTo(160, -110); ctx.lineTo(118, 250); ctx.quadraticCurveTo(0, 268, -118, 250); ctx.closePath(); };
+  cup(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.save(); cup(); ctx.clip();
+  for (const sx of [-120, -20, 80]) { ctx.beginPath(); ctx.moveTo(sx, -120); ctx.lineTo(sx + 40, -120); ctx.lineTo(sx + 10, 280); ctx.lineTo(sx - 30, 280); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill(); }
+  ctx.fillStyle = C.gumEdge; ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.moveTo(100, -120); ctx.lineTo(200, -120); ctx.lineTo(200, 280); ctx.lineTo(70, 280); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  rr(-172, -124, 344, 30, 15); ctx.fillStyle = C.gumEdge; ctx.fill();
+  for (let i = 0; i < 3; i++) { const ph = (t * 0.9 + i / 3) % 1; ctx.save(); ctx.globalAlpha = Math.sin(ph * Math.PI); snowflake([-190, 190, -150][i], [-260, -60, 40][i] - ph * 40, 22, SLUSH_D, 7); ctx.restore(); }
   ctx.restore();
 }
