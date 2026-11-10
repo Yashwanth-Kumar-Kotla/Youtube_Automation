@@ -2276,3 +2276,213 @@ export function slushCup(x, y, s = 1, sc = 1, t = 0) {
   for (let i = 0; i < 3; i++) { const ph = (t * 0.9 + i / 3) % 1; ctx.save(); ctx.globalAlpha = Math.sin(ph * Math.PI); snowflake([-190, 190, -150][i], [-260, -60, 40][i] - ph * 40, 22, SLUSH_D, 7); ctx.restore(); }
   ctx.restore();
 }
+
+// ═════════════════════════ BRAIN FREEZE SET (2026-11-10 "brain freeze") ═════════════════════════
+const CONE = '#E3A857', CONE_D = '#C98B3F', CAT = '#E0956B', CAT_D = '#C8734A', CREAM = '#F7F4EE', SKIN_HI = '#F2CDB5';
+
+/** ice-cream cone (waffle cone + one pink scoop). Origin = the GRIP point on the cone (so it sits in a hand);
+ *  scoop centre at (0, -120), cone tip at (0, +120). rot turns it round the grip. bite 0..1 takes a round bite out of the scoop.
+ *  ~150x330 px at s = 1 */
+export function iceCone(x, y, s = 1, rot = 0, bite = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  ctx.beginPath(); ctx.moveTo(-62, -70); ctx.lineTo(62, -70); ctx.lineTo(6, 120); ctx.quadraticCurveTo(0, 130, -6, 120); ctx.closePath(); ctx.fillStyle = CONE; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.strokeStyle = CONE_D; ctx.lineWidth = 7;
+  for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(-90 + k * 40, -80); ctx.lineTo(60 + k * 40, 140); ctx.moveTo(90 + k * 40, -80); ctx.lineTo(-60 + k * 40, 140); ctx.stroke(); }
+  ctx.restore();
+  ctx.save();
+  if (bite > 0) { ctx.beginPath(); ctx.rect(-200, -300, 400, 400); ctx.arc(-40, -170, Math.max(0, 46 * clamp(bite)), 0, TAU, true); ctx.clip('evenodd'); }
+  circle(0, -120, 74, C.pinkDark); circle(-4, -126, 68, C.pinkLight);
+  for (const [dx, r] of [[-52, 22], [-14, 26], [26, 22], [56, 18]]) circle(dx, -72, r, C.pinkLight);
+  ell(16, -60, 9, 18, C.pinkLight); ell(-34, -152, 20, 11, C.white + 'AA', -0.5);
+  ctx.restore();
+  rr(-68, -82, 136, 24, 12); ctx.fillStyle = CONE_D; ctx.fill();
+  ctx.restore();
+}
+
+/** a spoon (side view) holding a pink scoop: bowl at the origin, handle off to the right. a = scoop alpha (0 = empty spoon) */
+export function scoopSpoon(x, y, s = 1, scoop = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  line([[40, 4], [420, -30]], C.gumEdge, 26); line([[40, 0], [420, -34]], C.gum, 16);
+  ell(0, 10, 62, 26, C.gumEdge); ell(0, 6, 56, 20, C.gum);
+  if (scoop > 0) { ctx.globalAlpha = clamp(scoop); circle(0, -22, 46, C.pinkDark); circle(-3, -26, 41, C.pinkLight); ell(-16, -42, 12, 7, C.white + 'AA', -0.5); }
+  ctx.restore();
+}
+
+/** SIDE CUTAWAY of the hero's head (facing right): skin profile, hair, a cut through the skull showing the brain,
+ *  the open mouth with the palate (roof of the mouth, pink band), tongue and throat. Origin ≈ middle of the face/jaw.
+ *  ~670x830 px at s = 1 (head top ≈ -400, the shirt runs off the bottom). Points: HC.* (local) / hcPt(x, y, s, key).
+ *  o = { chill 0..1 (palate turns icy blue + icicles), tongue 0..1 (tongue rises and presses the palate),
+ *        eyes 'n' | 'squeeze' | 'closed' | 'wide', brow 0..1, brainHi 0..1 (yellow ring round the brain), scoop [x, y, a]
+ *        (ice cream lump in the mouth, local coords), t } */
+export const HC = { palate: [175, 8], forehead: [246, -205], brain: [-20, -205], lips: [292, 58], tongue: [180, 80], neck: [10, 330],
+  nerve: [[248, -40], [180, -58], [110, -78], [44, -100], [8, -118]], nerveF: [[238, -200], [160, -165], [80, -132], [8, -118]] };
+export const hcPt = (x, y, s, k) => [x + HC[k][0] * s, y + HC[k][1] * s];
+export const hcPath = (x, y, s, k) => HC[k].map(([px, py]) => [x + px * s, y + py * s]);
+function headCutPath() {
+  ctx.beginPath(); ctx.moveTo(-110, 440); ctx.lineTo(-125, 210);
+  ctx.bezierCurveTo(-300, 150, -330, -110, -255, -260); ctx.bezierCurveTo(-170, -420, 130, -440, 225, -300);
+  ctx.bezierCurveTo(268, -235, 272, -175, 262, -130); ctx.quadraticCurveTo(268, -100, 280, -80); ctx.lineTo(335, -10);
+  ctx.quadraticCurveTo(330, 8, 284, 8); ctx.quadraticCurveTo(302, 20, 298, 38); ctx.lineTo(286, 42); ctx.lineTo(288, 74);
+  ctx.quadraticCurveTo(304, 84, 292, 104); ctx.quadraticCurveTo(306, 170, 270, 196); ctx.quadraticCurveTo(170, 222, 95, 232);
+  ctx.lineTo(80, 440); ctx.closePath();
+}
+export function headCut(x, y, s, o = {}) {
+  const chill = clamp(o.chill || 0), up = clamp(o.tongue || 0), t = o.t || 0;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // shirt + shoulders (run off the bottom of the frame)
+  ctx.beginPath(); ctx.ellipse(-20, 520, 300, 120, 0, Math.PI, TAU); ctx.lineTo(280, 1100); ctx.lineTo(-320, 1100); ctx.closePath(); ctx.fillStyle = C.shirt; ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-20, 520, 300, 120, 0, Math.PI * 1.55, TAU); ctx.lineTo(280, 1100); ctx.lineTo(160, 1100); ctx.closePath(); ctx.fillStyle = C.shirtShade; ctx.fill();
+  headCutPath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.save(); headCutPath(); ctx.clip();
+  ell(-110, -290, 300, 170, C.hair, -0.25); ell(-280, -60, 80, 190, C.hair, 0.1);
+  ctx.beginPath(); ctx.moveTo(-150, -380); ctx.quadraticCurveTo(-20, -420, 120, -380); ctx.strokeStyle = C.hairHi; ctx.lineWidth = 12; ctx.stroke();
+  ctx.restore();
+  // the cut: skull bone rim + cavity, brain inside
+  ell(-15, -212, 240, 165, C.gum); ell(-15, -212, 224, 150, C.skinShade);
+  brain(-20, -205, 0.56, { t });
+  if (o.brainHi > 0) { ctx.save(); ctx.globalAlpha = clamp(o.brainHi); ctx.beginPath(); ctx.ellipse(-15, -212, 250, 175, 0, 0, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 22; ctx.stroke(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 12; ctx.stroke(); ctx.restore(); }
+  // mouth cavity + throat
+  ctx.beginPath(); ctx.moveTo(287, 40); ctx.lineTo(250, 30); ctx.quadraticCurveTo(140, 16, 80, 30); ctx.quadraticCurveTo(52, 50, 58, 110);
+  ctx.lineTo(62, 440); ctx.lineTo(112, 440); ctx.lineTo(116, 160); ctx.quadraticCurveTo(160, 128, 250, 112); ctx.lineTo(289, 76); ctx.closePath();
+  ctx.fillStyle = C.mouth; ctx.fill();
+  rr(244, 22, 22, 24, 6); ctx.fillStyle = C.white; ctx.fill(); rr(242, 92, 22, 22, 6); ctx.fill();
+  // tongue (rises with up; at 1 it presses the palate)
+  const top = lerp(84, 30, up);
+  ctx.beginPath(); ctx.moveTo(108, 156); ctx.quadraticCurveTo(104, top + 14, 172, top); ctx.quadraticCurveTo(236, top + 4, 268, lerp(98, 70, up));
+  ctx.lineTo(262, 116); ctx.quadraticCurveTo(180, 134, 108, 156); ctx.closePath(); ctx.fillStyle = C.pink; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(140, top + 18); ctx.quadraticCurveTo(180, top + 8, 222, top + 14); ctx.strokeStyle = C.pinkLight; ctx.lineWidth = 9; ctx.stroke();
+  if (o.scoop && o.scoop[2] > 0) { ctx.save(); ctx.globalAlpha = clamp(o.scoop[2]); circle(o.scoop[0], o.scoop[1], 34, C.pinkDark); circle(o.scoop[0] - 2, o.scoop[1] - 3, 30, C.pinkLight); ctx.restore(); }
+  // palate: pink band, icy blue overlay with chill, icicles
+  const PAL = [[262, 22], [205, 8], [140, 4], [88, 16]];
+  line(PAL, C.pinkDark, 38); line(PAL, C.pink, 28);
+  if (chill > 0) {
+    ctx.save(); ctx.globalAlpha = chill; line(PAL, SLUSH_D, 38); line(PAL, C.sky, 28); ctx.restore();
+    for (const [ix, iy, l] of [[232, 26, 30], [190, 20, 38], [148, 18, 30], [110, 24, 26]]) {
+      const L2 = l * chill * (1 - up * 0.6);
+      if (L2 <= 1) continue;
+      ctx.beginPath(); ctx.moveTo(ix - 10, iy); ctx.lineTo(ix, iy + L2); ctx.lineTo(ix + 10, iy); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill();
+    }
+  }
+  // face: profile eye, brow, cheek
+  ctx.globalAlpha = 0.3; ell(222, -40, 26, 16, C.pink); ctx.globalAlpha = 1;
+  const br = (o.brow || 0) * 14, ey = o.eyes || 'n';
+  if (ey === 'squeeze') { ctx.beginPath(); ctx.moveTo(240, -136); ctx.lineTo(214, -122); ctx.lineTo(240, -108); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.stroke(); }
+  else if (ey === 'closed') { ctx.beginPath(); ctx.arc(226, -126, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); }
+  else if (ey === 'wide') { ell(226, -122, 18, 22, C.white); ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.stroke(); circle(232, -120, 10, C.ink); circle(235, -125, 3.5, C.white); }
+  else { ell(228, -122, 11, 14, C.ink); circle(232, -127, 4, C.white); }
+  ctx.beginPath(); ctx.moveTo(200, -158 - br + (ey === 'squeeze' ? 8 : 0)); ctx.quadraticCurveTo(226, -170 - br, 250, -162 - br); ctx.strokeStyle = C.hair; ctx.lineWidth = 11; ctx.stroke();
+  ctx.restore();
+}
+
+/** blood vessel close-up: a horizontal tube right across the frame (no visible ends) at height y, inner radius r.
+ *  Red blood cells drift along it (flow = speed, 0 = still). warm 0..1 tints the wall lighter */
+export function vessel(y, r, t = 0, flow = 1) {
+  const R = Math.max(10, r);
+  ctx.fillStyle = C.pinkDark; ctx.fillRect(-300, y - R - 30, W + 600, 2 * R + 60);
+  ctx.fillStyle = C.pink; ctx.fillRect(-300, y - R - 18, W + 600, 2 * R + 36);
+  ctx.fillStyle = BLOOD; ctx.fillRect(-300, y - R, W + 600, 2 * R);
+  ctx.save(); ctx.beginPath(); ctx.rect(-300, y - R, W + 600, 2 * R); ctx.clip();
+  const k = Math.min(1, R / 120);
+  for (let i = 0; i < 14; i++) {
+    const cx = ((rnd(i + 3) * (W + 400) + t * flow * (180 + rnd(i) * 80)) % (W + 400)) - 200, cy = y + (rnd(i + 20) - 0.5) * 1.5 * R;
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rnd(i + 40) * 2 - 1); ell(0, 0, 50 * k, 34 * k, RBC_D); ell(0, 0, 44 * k, 28 * k, RBC); ell(0, 0, 20 * k, 12 * k, RBC_D); ctx.restore();
+  }
+  ctx.restore();
+  ctx.fillStyle = C.pinkLight; ctx.fillRect(-300, y - R - 16, W + 600, 8);
+}
+
+/** cartoon brain character: brain() with big eyes, a smirk and a little pink arm that points along ang (radians).
+ *  point 0..1 = arm reach. ~560 px wide at s = 1. look -1..1 moves the pupils */
+export function brainBuddy(x, y, s, { t = 0, point = 0, ang = Math.PI, look = -1, mouth = 'smirk' } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  if (point > 0) {
+    const p0 = [Math.cos(ang) * 150, -20 + Math.sin(ang) * 150], L2 = 90 + 170 * clamp(point);
+    const p1 = [p0[0] + Math.cos(ang) * L2, p0[1] + Math.sin(ang) * L2];
+    line([p0, p1], C.pinkDark, 34); line([p0, p1], C.pink, 22);
+    ctx.save(); ctx.translate(p1[0], p1[1]); ctx.rotate(ang); circle(0, 0, 32, C.pinkDark); circle(0, 0, 25, C.pink);
+    rr(10, -12, 70, 24, 12); ctx.fillStyle = C.pinkDark; ctx.fill(); rr(14, -7, 62, 14, 7); ctx.fillStyle = C.pink; ctx.fill(); ctx.restore();
+  }
+  brain(0, 0, 1, { t });
+  for (const ex of [-80, 40]) { ell(ex, -40, 40, 46, C.ink); ell(ex, -40, 33, 39, C.white); circle(ex + look * 12, -36, 17, C.ink); circle(ex + look * 12 + 6, -43, 6, C.white); }
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 12;
+  ctx.beginPath(); ctx.moveTo(-118, -104); ctx.quadraticCurveTo(-82, -122, -48, -106); ctx.moveTo(10, -112); ctx.quadraticCurveTo(46, -128, 80, -100); ctx.stroke();
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 11; ctx.beginPath();
+  if (mouth === 'smirk') { ctx.moveTo(-60, 42); ctx.quadraticCurveTo(-10, 66, 30, 30); } else { ctx.moveTo(-50, 36); ctx.quadraticCurveTo(-10, 70, 30, 36); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+/** pain zap: short red zigzag strokes (ink edged) radiating from a point, flickering. sc = pop-in, t = film time */
+export function painZap(x, y, s = 1, sc = 1, t = 0, angs = [-2.5, -1.57, -0.64, 0.3, 2.85]) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  angs.forEach((an, i) => {
+    const w = 1 + 0.12 * Math.sin(t * 22 + i * 2);
+    ctx.save(); ctx.rotate(an + Math.PI / 2); ctx.scale(w, w);
+    const P = [[0, -40], [-14, -62], [12, -82], [-6, -104]];
+    line(P, C.ink, 20); line(P, C.red, 11); ctx.restore();
+  });
+  circle(0, 0, 20, C.ink); circle(0, 0, 13, C.red);
+  ctx.restore();
+}
+
+/** round skin patch close-up (lens): ink ring, skin, little hairs. bumps 0..1 raises goosebumps and stands the hairs up.
+ *  r = lens radius px, sc = pop-in, t = film time (a slight shiver while raised) */
+export function skinPatch(x, y, r, { bumps = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  const b = clamp(bumps);
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 16, C.ink); circle(0, 0, r, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  const g = r / 3.1, k = r / 200;
+  for (let row = -4; row <= 4; row++) for (let col = -4; col <= 4; col++) {
+    const px = (col + (row % 2 ? 0.5 : 0)) * g, py = row * g * 0.88;
+    if (Math.hypot(px, py) > r + 20) continue;
+    const jit = Math.sin(t * 30 + row * 3 + col) * 1.5 * b, bb = clamp(b * 1.3 - rnd(row * 9 + col + 50) * 0.3);
+    if (bb > 0) { circle(px + 3, py + 5, 22 * k * bb + 4 * k, C.skinShade); circle(px, py, 20 * k * bb + 2 * k, C.skin); ctx.save(); ctx.globalAlpha = 0.6; ell(px - 7 * k, py - 8 * k, 8 * k * bb, 5 * k * bb, SKIN_HI, -0.5); ctx.restore(); }
+    const an = lerp(1.15, 0.15, bb) * (rnd(row * 5 + col) > 0.5 ? 1 : -1), len = lerp(30, 46, bb) * k;
+    line([[px + jit, py], [px + jit + Math.sin(an) * len, py - Math.cos(an) * len]], C.hair, 6 * k);
+  }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** cute cartoon cat sitting (front view, orange). puff 0..1 = fur puffs up (spiky outline, bushy tail, big eyes, tiny "o"
+ *  hiss mouth). ~320x420 px at s = 1, origin = body centre (paws at +160, ear tips at -265). sc = pop-in, t = film time */
+export function cat(x, y, s = 1, { puff = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  const p = clamp(puff);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const spiky = (cx, cy, rx, ry, n, d, col) => {
+    ctx.beginPath();
+    for (let i = 0; i <= n * 2; i++) { const an = i / (n * 2) * TAU, k = i % 2 ? 1 : 1 + d / Math.max(rx, 1); const px = cx + Math.cos(an) * rx * k, py = cy + Math.sin(an) * ry * k; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+  };
+  // tail (bushy when puffed)
+  const TL = [[90, 120], [170, 80], [190, -10], [160, -90]];
+  if (p > 0) for (let i = 0; i < 14; i++) { const u = i / 13, a = TL[Math.min(3, Math.floor(u * 3))], b2 = TL[Math.min(3, Math.floor(u * 3) + 1)], f = u * 3 - Math.floor(u * 3);
+    const px = lerp(a[0], b2[0], f), py = lerp(a[1], b2[1], f); spiky(px, py, 14 + 26 * p, 14 + 26 * p, 6, 14 * p, CAT_D); }
+  line(TL, CAT_D, 40 + 26 * p); line(TL, CAT, 28 + 20 * p);
+  // body
+  if (p > 0) spiky(0, 40, 118 + 22 * p, 128 + 20 * p, 16, 30 * p, CAT_D);
+  ell(0, 40, 114 + 8 * p, 124 + 6 * p, CAT); ell(0, 74, 62, 82, CREAM);
+  for (const sd of [-1, 1]) { ell(sd * 46, 160, 36, 20, CREAM); ell(sd * 46, 164, 36, 14, C.gumEdge); ell(sd * 46, 158, 34, 16, CREAM); }
+  // head
+  if (p > 0) spiky(0, -122, 104 + 10 * p, 96 + 10 * p, 14, 22 * p, CAT_D);
+  for (const sd of [-1, 1]) {
+    ctx.beginPath(); ctx.moveTo(sd * 30, -196); ctx.lineTo(sd * (86 + 8 * p), -262 - 6 * p); ctx.lineTo(sd * 96, -150); ctx.closePath(); ctx.fillStyle = CAT; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(sd * 48, -192); ctx.lineTo(sd * (82 + 6 * p), -238 - 6 * p); ctx.lineTo(sd * 86, -164); ctx.closePath(); ctx.fillStyle = C.pinkLight; ctx.fill();
+  }
+  ell(0, -122, 100, 92, CAT);
+  for (const dx of [-26, 0, 26]) line([[dx, -206], [dx, -180]], CAT_D, 10);
+  ell(0, -86, 52, 34, CREAM);
+  // eyes (bigger + rounder when puffed)
+  const er = 22 + 8 * p;
+  for (const sd of [-1, 1]) { ell(sd * 40, -132, er, er * 1.1, C.ink); ell(sd * 40, -132, er - 5, er * 1.1 - 5, C.white); circle(sd * 40, -128, (er - 5) * 0.62, C.ink); circle(sd * 40 + 6, -138, 5, C.white); }
+  ctx.beginPath(); ctx.moveTo(-10, -100); ctx.lineTo(10, -100); ctx.lineTo(0, -88); ctx.closePath(); ctx.fillStyle = C.pinkDark; ctx.fill();
+  if (p > 0.3) { ell(0, -68, 13, 15 * p, C.mouth); rr(-9, -80, 6, 9, 3); ctx.fillStyle = C.white; ctx.fill(); rr(3, -80, 6, 9, 3); ctx.fill(); }
+  else { ctx.beginPath(); ctx.moveTo(-18, -78); ctx.quadraticCurveTo(-9, -68, 0, -80); ctx.quadraticCurveTo(9, -68, 18, -78); ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.stroke(); }
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 4;
+  for (const sd of [-1, 1]) for (const dy of [-8, 6]) { ctx.beginPath(); ctx.moveTo(sd * 50, -90 + dy); ctx.lineTo(sd * (110 + 14 * p), -96 + dy * 2); ctx.stroke(); }
+  ctx.restore();
+}

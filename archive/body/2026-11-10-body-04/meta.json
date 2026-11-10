@@ -1,0 +1,14 @@
+{
+  "title": "What Happens When You Get Brain Freeze?",
+  "description": "Brain freeze (scientific name: sphenopalatine ganglioneuralgia) starts when something cold, like ice cream, suddenly chills the roof of your mouth. Your body tries to warm up: blood vessels in your head change size to let in extra blood, and the trigeminal nerve, which carries pain from your face, sends the signal. You feel it in your forehead and temples instead of your mouth. It's not serious and usually lasts a few seconds to two minutes. To help it pass, press your tongue or thumb against the roof of your mouth, or sip something warm or room temperature.\nNext Body File: what happens when you get goosebumps, the same reaction that puffs up a hissing cat.\nFollow Body Files for a new one every day.\n#bodyfiles #brainfreeze #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Brain Freeze: https://my.clevelandclinic.org/health/diseases/21478-brain-freeze\nHouston Methodist, What's Happening During a Brain Freeze?: https://www.houstonmethodist.org/blog/articles/2020/jun/what-causes-brain-freeze/\nCleveland Clinic, Goosebumps: https://health.clevelandclinic.org/why-do-you-get-goosebumps",
+  "hashtags": ["#bodyfiles", "#brainfreeze", "#humanbody", "#science", "#shorts", "#healthfacts"],
+  "pinned_comment": "What gives you the worst brain freeze: ice cream, a slushie, or ice water? Did the tongue trick work for you?",
+  "series": "Body Files",
+  "topic": "What happens when you get brain freeze?",
+  "experiment_arm": "E1-B (hook without a number: lines 1-2 have no number); E4 tease_next",
+  "teases": "What happens when you get goosebumps?",
+  "topic_cluster": "brain",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the hiccups video (2026-11-10-body-3) with 'and the tongue trick that helps it thaw' (paid off in lines 12-14: press your tongue to the roof of your mouth)",
+  "hook_pattern": "question+myth-bust",
+  "format": "explainer"
+}

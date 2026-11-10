@@ -1,0 +1,76 @@
+{
+  "title": "What Happens When You Get Brain Freeze?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Brain Freeze' (brief but intense pain in the front part of your head; also called an ice cream headache; scientific name sphenopalatine ganglioneuralgia; triggered by cold such as ice cream, frozen or slushy drinks, ice cubes, popsicles; when your body senses sudden, extreme cold in the mouth or throat it tries to react and warm up; blood vessels throughout the head expand to let extra blood into the area for warmth, and this sudden change causes the pain; usually lasts a few seconds to two minutes; not serious, no medical attention needed; press your tongue or thumb against the roof of your mouth to transfer warmth, or drink something warm or room temperature): https://my.clevelandclinic.org/health/diseases/21478-brain-freeze",
+    "Houston Methodist, Katie McCallum, 'What's Happening During a Brain Freeze?' (2020) (occurs when the roof of your mouth goes from its usual warm temperature to one that's much colder; blood vessels narrow and then widen; triggers the trigeminal nerve, which controls sensation, including pain, in your face; referred pain makes you feel it in your forehead and temples instead of your mouth; press and hold your tongue against the roof of your mouth): https://www.houstonmethodist.org/blog/articles/2020/jun/what-causes-brain-freeze/",
+    "Tease (next video): Cleveland Clinic Health Essentials, 'Goosebumps: What They Are and Why They Happen' (goosebumps, or piloerections, are an involuntary, automatic reaction of the sympathetic nervous system; tiny muscles contract at the base of each hair follicle; in animals it thickens fur and makes them look bigger: 'Think of a cat that puffs up and pulls back onto its hind legs while it hisses'): https://health.clevelandclinic.org/why-do-you-get-goosebumps"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get brain freeze?",
+      "caps": "WHAT *HAPPENS | *WHEN YOU GET | *BRAIN FREEZE?"
+    },
+    {
+      "text": "Spoiler: it starts in your mouth, not your brain.",
+      "caps": "*SPOILER: IT | *STARTS IN | YOUR *MOUTH | NOT YOUR *BRAIN"
+    },
+    {
+      "text": "Ice cream chills the roof of your mouth,",
+      "caps": "ICE *CREAM | CHILLS THE *ROOF | OF YOUR *MOUTH"
+    },
+    {
+      "text": "and your body rushes to warm it back up.",
+      "caps": "AND YOUR *BODY | *RUSHES TO WARM | IT BACK *UP"
+    },
+    {
+      "text": "Blood vessels in your head narrow, then widen",
+      "caps": "BLOOD *VESSELS | IN YOUR *HEAD | NARROW, THEN *WIDEN"
+    },
+    {
+      "text": "to let in warm blood.",
+      "caps": "TO *LET IN | WARM *BLOOD"
+    },
+    {
+      "text": "That triggers your trigeminal nerve,",
+      "caps": "THAT *TRIGGERS | YOUR *TRIGEMINAL NERVE"
+    },
+    {
+      "text": "which senses pain in your face,",
+      "caps": "WHICH SENSES *PAIN | IN YOUR *FACE"
+    },
+    {
+      "text": "so your brain blames your forehead instead.",
+      "caps": "SO YOUR *BRAIN | *BLAMES YOUR | *FOREHEAD INSTEAD"
+    },
+    {
+      "text": "It's not serious, and usually gone within two minutes.",
+      "caps": "IT'S NOT *SERIOUS | AND USUALLY *GONE | WITHIN *2 MINUTES"
+    },
+    {
+      "text": "Want it gone faster?",
+      "caps": "*WANT IT GONE | *FASTER?"
+    },
+    {
+      "text": "Press your tongue to the roof of your mouth.",
+      "caps": "PRESS YOUR *TONGUE | TO THE *ROOF | OF YOUR *MOUTH"
+    },
+    {
+      "text": "Its warmth thaws the freeze.",
+      "caps": "ITS *WARMTH | *THAWS THE FREEZE"
+    },
+    {
+      "text": "Next Body File: what happens when you get goosebumps,",
+      "caps": "NEXT *BODY FILE | WHAT HAPPENS *WHEN | YOU GET *GOOSEBUMPS"
+    },
+    {
+      "text": "the same reaction that puffs up a hissing cat.",
+      "caps": "THE SAME *REACTION | THAT *PUFFS UP | A HISSING *CAT"
+    }
+  ]
+}

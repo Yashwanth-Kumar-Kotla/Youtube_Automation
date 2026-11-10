@@ -281,6 +281,38 @@
    "branch": "stock/body/2026-11-10-body-03",
    "history": [],
    "description": "A hiccup is a spasm of your diaphragm, the muscle below your lungs, followed by your vocal cords snapping shut: that's the \"hic\". Most bouts last a few minutes; hiccups lasting more than 48 hours are called persistent, and Cleveland Clinic and the NHS say to see a doctor if they go past two days. Experts haven't found a proven hiccup cure. Charles Osborne started hiccuping after a fall while hanging a hog in 1922 and didn't stop until 1990: 20 to 40 times a minute, an estimated 430 million hiccups. He married twice and had eight children.\nNext Body File: what happens when you get brain freeze, and the tongue trick that helps it thaw.\nFollow Body Files for a new one every day.\n#bodyfiles #hiccups #humanbody #science #shorts #healthfacts #worldrecord\n\nSources:\nCleveland Clinic, Hiccups: https://my.clevelandclinic.org/health/symptoms/17672-hiccups\nCleveland Clinic, Diaphragm: https://my.clevelandclinic.org/health/body/21578-diaphragm\nNHS, Hiccups: https://www.nhs.uk/conditions/hiccups/\nGuinness World Records: https://www.guinnessworldrecords.com/world-records/67619-longest-attack-of-hiccups\nSmithsonian Magazine: https://www.smithsonianmag.com/history/the-curious-case-of-charles-osborne-who-hiccuped-for-68-years-straight-180980232/\nCleveland Clinic, Brain Freeze: https://my.clevelandclinic.org/health/diseases/21478-brain-freeze"
+  },
+  "2026-11-10-body-04": {
+   "title": "What Happens When You Get Brain Freeze?",
+   "hashtags": [
+    "#bodyfiles",
+    "#brainfreeze",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts"
+   ],
+   "pinned_comment": "What gives you the worst brain freeze: ice cream, a slushie, or ice water? Did the tongue trick work for you?",
+   "series": "Body Files",
+   "topic": "What happens when you get brain freeze?",
+   "experiment_arm": "E1-B (hook without a number: lines 1-2 have no number); E4 tease_next",
+   "teases": "What happens when you get goosebumps?",
+   "topic_cluster": "brain",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the hiccups video (2026-11-10-body-3) with 'and the tongue trick that helps it thaw' (paid off in lines 12-14: press your tongue to the roof of your mouth)",
+   "hook_pattern": "question+myth-bust",
+   "format": "explainer",
+   "id": "2026-11-10-body-04",
+   "channel": "body",
+   "made_at": "2026-11-10T05:00-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 35.4,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-10-body-04",
+   "history": [],
+   "description": "Brain freeze (scientific name: sphenopalatine ganglioneuralgia) starts when something cold, like ice cream, suddenly chills the roof of your mouth. Your body tries to warm up: blood vessels in your head change size to let in extra blood, and the trigeminal nerve, which carries pain from your face, sends the signal. You feel it in your forehead and temples instead of your mouth. It's not serious and usually lasts a few seconds to two minutes. To help it pass, press your tongue or thumb against the roof of your mouth, or sip something warm or room temperature.\nNext Body File: what happens when you get goosebumps, the same reaction that puffs up a hissing cat.\nFollow Body Files for a new one every day.\n#bodyfiles #brainfreeze #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Brain Freeze: https://my.clevelandclinic.org/health/diseases/21478-brain-freeze\nHouston Methodist, What's Happening During a Brain Freeze?: https://www.houstonmethodist.org/blog/articles/2020/jun/what-causes-brain-freeze/\nCleveland Clinic, Goosebumps: https://health.clevelandclinic.org/why-do-you-get-goosebumps"
   }
  }
 }
