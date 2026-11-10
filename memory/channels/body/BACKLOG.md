@@ -1,10 +1,9 @@
 # BACKLOG: body (ranked; the scout and analyst re-rank weekly)
 ## Up next
-1. What happens if your hiccups won't stop? (promised) (by the space video, 2026-11-10-body-2: make this next. Tease used: "and the man who hiccuped for sixty-eight years." (pay it off: Charles Osborne, USA, hiccupped 1922 to Feb 1990 after a fall while hanging a hog; source: Guinness World Records 67619 + Smithsonian Magazine; mechanism: Cleveland Clinic "Hiccups" (diaphragm spasm, glottis snaps shut = "hic"; persistent = over 48 h); cluster: hiccups) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
-2. What happens when you get brain freeze? (source hint: Cleveland Clinic "Brain Freeze" / sphenopalatine ganglioneuralgia, cold on the roof of the mouth makes blood vessels constrict then dilate; cluster: brain) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
-3. What happens when you get goosebumps? (source hint: Cleveland Clinic "Goosebumps" / piloerection, tiny arrector pili muscles pull each hair upright, a leftover from furrier ancestors; cluster: skin) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
-4. What happens when your foot falls asleep? (source hint: Cleveland Clinic "Paresthesia" + NIH NINDS, pressure on a nerve blocks its signals, pins-and-needles when it wakes; cluster: nerves) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
-5. What happens if you knock out a tooth? (source hint: American Association of Endodontists "Knocked-out teeth" + Mayo Clinic first aid, hold it by the crown, keep it in milk, see a dentist within about 30-60 min to save it; cluster: teeth) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
+1. What happens when you get brain freeze? (promised) (by the hiccups video, 2026-11-10-body-3: make this next. Tease used: "and the tongue trick that helps it thaw." (pay it off: Cleveland Clinic "Brain Freeze": press your tongue or thumb against the roof of your mouth to transfer warmth; scientific term sphenopalatine ganglioneuralgia; brief intense pain in the front of the head, usually a few seconds to two minutes; blood vessels in the head expand to let in extra blood for warmth: https://my.clevelandclinic.org/health/diseases/21478-brain-freeze); cluster: brain) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
+2. What happens when you get goosebumps? (source hint: Cleveland Clinic "Goosebumps" / piloerection, tiny arrector pili muscles pull each hair upright, a leftover from furrier ancestors; cluster: skin) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
+3. What happens when your foot falls asleep? (source hint: Cleveland Clinic "Paresthesia" + NIH NINDS, pressure on a nerve blocks its signals, pins-and-needles when it wakes; cluster: nerves) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
+4. What happens if you knock out a tooth? (source hint: American Association of Endodontists "Knocked-out teeth" + Mayo Clinic first aid, hold it by the crown, keep it in milk, see a dentist within about 30-60 min to save it; cluster: teeth) (added by writer 2026-11-10, backlog ran dry — scout to re-rank)
 ## Used
 - 2026-11-08 · What happens if you don't sleep for 11 days? (Body Files #1, E1 arm A)
 - 2026-11-08 · What happens if you break your knuckle? (demo, not published)
@@ -15,3 +14,4 @@
 - 2026-11-09 · What happens if you crack your knuckles every day? (work/2026-11-09-body-4, E1 arm B, teases: sneeze with your eyes open)
 - 2026-11-10 · What happens if you sneeze with your eyes open? (work/2026-11-10-body-1, E1 arm A, teases: space without a suit)
 - 2026-11-10 · What happens to your body in space without a suit? (work/2026-11-10-body-2, E1 arm B, teases: hiccups that won't stop)
+- 2026-11-10 · What happens if your hiccups won't stop? (work/2026-11-10-body-3, E1 arm A, teases: brain freeze)
