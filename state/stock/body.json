@@ -410,6 +410,39 @@
    "branch": "stock/body/2026-11-10-body-07",
    "history": [],
    "description": "A knocked-out adult tooth put back in its socket, or stored properly, within five minutes will likely survive. Hold it by the crown, never the root: the root carries tiny fibers it needs to heal. Don't scrub it or put it in water. If it won't go back in, keep it in milk or your own saliva and get to a dentist or emergency department right away. Baby teeth are not put back.\nNext Body File: what happens when your ears pop, and the hidden tube linking your ears to your throat.\nFollow Body Files for a new one every day.\n#bodyfiles #teeth #firstaid #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, What To Do When You Knock Out a Tooth (2023): https://health.clevelandclinic.org/must-act-fast-tooth-gets-knocked/\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635\nMayo Clinic, Airplane ear: https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701"
+  },
+  "2026-11-10-body-08": {
+   "title": "What Happens When Your Ears Pop?",
+   "hashtags": [
+    "#bodyfiles",
+    "#ears",
+    "#humanbody",
+    "#science",
+    "#shorts",
+    "#healthfacts",
+    "#travel"
+   ],
+   "pinned_comment": "What's your go-to trick for popping your ears on a plane: gum, yawning, or something weirder?",
+   "series": "Body Files",
+   "topic": "What happens when your ears pop?",
+   "experiment_arm": "E1-B (hook without a number); E4 tease_next",
+   "teases": "What happens when you get a charley horse?",
+   "topic_cluster": "ears",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the knocked-out-tooth video (2026-11-10-body-7) with 'and the hidden tube linking your ears to your throat' (paid off in line 2 'a hidden tube opening inside your head' and line 4 'linked to your throat by that tube')",
+   "hook_pattern": "question+hidden-tube-reveal",
+   "format": "explainer",
+   "id": "2026-11-10-body-08",
+   "channel": "body",
+   "made_at": "2026-11-10T09:54-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 36.4,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-10-body-08",
+   "history": [],
+   "description": "A narrow passage called the eustachian tube links each middle ear to the back of your nose and throat. It stays shut until you swallow, yawn or chew; then it opens, air gets in, and the pressure on both sides of your eardrum evens out. On a plane the pressure can change faster than the tube can adjust, so hearing goes muffled. If ear discomfort, fullness or muffled hearing lasts more than a few days, or is severe, see a doctor.\nNext Body File: what happens when you get a charley horse, the sudden cramp that grabs your calf.\nFollow Body Files for a new one every day.\n#bodyfiles #ears #humanbody #science #shorts #healthfacts #travel\n\nSources:\nMayo Clinic, Airplane ear: https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701\nCleveland Clinic, Eustachian Tubes: https://my.clevelandclinic.org/health/body/22072-eustachian-tubes\nCleveland Clinic, Eustachian Tube Dysfunction: https://my.clevelandclinic.org/health/diseases/22527-eustachian-tube-dysfunction\nIndiana Public Media, A Moment of Science: What makes our ears pop?: https://indianapublicmedia.org/amomentofscience/what-makes-our-ears-pop.php\nMayo Clinic, Muscle cramp: https://www.mayoclinic.org/diseases-conditions/muscle-cramp/symptoms-causes/syc-20350820"
   }
  }
 }

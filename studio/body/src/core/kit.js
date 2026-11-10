@@ -326,13 +326,14 @@ function head(o) {
   ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 62, 46, 20, 12, C.pink); ctx.globalAlpha = 1;
   if (o.stache) for (const sd of [-1, 1]) ell(sd * 22, 56, 26, 11, HC, sd * 0.25);
   if (o.cap) { ell(0, -106, 118, 48, CAP); rr(-118, -102, 236, 30, 12); ctx.fillStyle = CAP; ctx.fill(); ell(24, -74, 100, 16, CAP_D, -0.04); ell(-34, -128, 44, 12, '#9A7A58', -0.2); }
-  // mouth: 'smile' | 'smirk' | 'chew' | 'o' | 'flat' | 'grin'
+  // mouth: 'smile' | 'smirk' | 'chew' | 'o' | 'flat' | 'grin' | 'yawn'
   const m = o.mouth || 'smile'; ctx.lineCap = 'round'; ctx.strokeStyle = C.mouth; ctx.lineWidth = 8;
   if (m === 'smile') { ctx.beginPath(); ctx.moveTo(-24, 70); ctx.quadraticCurveTo(0, 90, 24, 70); ctx.stroke(); }
   if (m === 'smirk') { ctx.beginPath(); ctx.moveTo(-22, 74); ctx.quadraticCurveTo(8, 88, 32, 64); ctx.stroke(); }
   if (m === 'flat') { ctx.beginPath(); ctx.moveTo(-20, 76); ctx.lineTo(20, 76); ctx.stroke(); }
   if (m === 'chew') ell(0, 76, 18, 4 + 8 * (o.chew || 0), C.mouth);
   if (m === 'o') { ell(0, 80, 20, 27, C.mouth); ell(0, 96, 13, 8, C.pink); }
+  if (m === 'yawn') { ell(0, 82, 26, 36, C.mouth); ell(0, 104, 16, 10, C.pink); }   // big tall yawn
   if (m === 'grin') { ctx.beginPath(); ctx.moveTo(-34, 66); ctx.quadraticCurveTo(0, 112, 34, 66); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); rr(-26, 66, 52, 12, 4); ctx.fillStyle = C.white; ctx.fill(); }
   ctx.restore();
 }
@@ -3165,4 +3166,156 @@ export function earCut(x, y, r, { tube = 0, flow = -1, ear = 0, throat = 0, sc =
     ctx.beginPath(); ctx.moveTo(160, 64); ctx.quadraticCurveTo(178, 74, 190, 64); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.stroke();
     ctx.restore();
   }, '#DCEFF7');
+}
+
+// ═════════════════════════ EARS POP SET (2026-11-10-body-8 "ears pop") ═════════════════════════
+/** hand cupped at the ear (right arm): "what was that?" / listening / a sore ear */
+ARM.ear = { e: [250, -150], h: [150, -330] };
+/** both arms stretched up beside the head (a big yawn / stretch). Use for arm and armL */
+ARM.stretch = { e: [230, -250], h: [200, -470] };
+/** arm held out level, hand to the side (pass finger: Math.PI / 2 to point sideways) */
+ARM.side = { e: [250, -60], h: [330, -60] };
+const MUF = '#A79E90';
+const EZ = { drum: -150, pocket: [-15, -20, 140, 135], tube: [[70, 95], [120, 160], [160, 205], [215, 240]], throatX: 260 };
+const polyAt = (P, u) => {
+  const L = []; let tot = 0; for (let i = 1; i < P.length; i++) { const l = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); L.push(l); tot += l; }
+  let d = clamp(u) * tot; for (let i = 0; i < L.length; i++) { if (d <= L[i] || i === L.length - 1) { const f = clamp(d / L[i]); return [lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f)]; } d -= L[i]; }
+  return P[P.length - 1];
+};
+/** sound waves (graphic): three arcs travelling out from (x, y) along ang, fading in and out (never pop).
+ *  muffle 0..1 turns them grey, wobbly and fainter (muffled hearing). size scales the reach (~220 px at 1). t = film time */
+export function soundWaves(x, y, ang, t, a = 1, muffle = 0, size = 1) {
+  if (a <= 0) return;
+  const m = clamp(muffle);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.lineCap = 'round';
+  for (let i = 0; i < 3; i++) {
+    const u = (t * 0.9 + i / 3) % 1, R = lerp(40, 220, u) * size;
+    ctx.globalAlpha = clamp(a) * Math.min(1, u * 5) * (1 - u) * lerp(1, 0.6, m);
+    ctx.beginPath();
+    for (let j = 0; j <= 28; j++) { const th = lerp(-0.6, 0.6, j / 28), rad = R + Math.sin(th * 34 + t * 9 + i) * 11 * m * size; const px = Math.cos(th) * rad, py = Math.sin(th) * rad; j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.strokeStyle = m > 0.5 ? MUF : C.ink; ctx.lineWidth = 13 * size; ctx.stroke();
+  }
+  ctx.restore();
+}
+/** little wooden speaker (prop): box with a darker side, two ink cones that thump with beat 0..1. ~200x280 px at s = 1. sc = pop-in */
+export function speaker(x, y, s = 1, sc = 1, beat = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-100, -140, 200, 280, 26); ctx.fillStyle = WOOD_D; ctx.fill(); rr(-100, -140, 176, 280, 26); ctx.fillStyle = WOOD; ctx.fill();
+  circle(-12, -62, 40, C.ink); circle(-12, -62, 16 + 4 * beat, '#3A3A42');
+  circle(-12, 50, 62 + 3 * beat, C.ink); circle(-12, 50, 26 + 6 * beat, '#3A3A42'); ell(-30, 30, 10, 6, C.white + '55', -0.6);
+  ctx.restore();
+}
+/** middle-ear close-up lens (side cut, outside on the LEFT): the ear canal (outside air, pale blue) ends at the eardrum
+ *  (pink membrane); behind it the middle-ear pocket of air (pale blue) with the tiny ear bones; from the pocket's lower
+ *  right the tube (eustachian) runs down to the throat (pink passage, right). Air is always pale blue.
+ *  o = { bow -1..1 (eardrum bent: + = pushed inward), drum / pocket / tube / throat 0..1 (yellow highlight rings),
+ *  open 0..1 (tube opens: a blue air channel through it; 0 = shut, a closed seam), flow (film-time phase of air bubbles
+ *  running UP the tube from the throat into the pocket, -1 = none), air 0..1 (bubble alpha), press 0..1 (red pressure arrows
+ *  in the canal pushing on the eardrum), even 0..1 (two equal blue arrows, one each side of the eardrum: pressure evened out),
+ *  wave (-1 or film time: sound waves in the canal), muffle 0..1, sc (pop-in), t }.
+ *  Returns screen points (at sc = 1): drum, pocket, tube (its middle), throat, canal */
+export function earZoom(x, y, r, o = {}) {
+  const { bow = 0, drum = 0, pocket = 0, tube = 0, open = 0, throat = 0, flow = -1, air = 1, press = 0, even = 0, wave = -1, muffle = 0, sc = 1, t = 0 } = o;
+  const k = r / 400, P = (px, py) => [x + px * k, y + py * k];
+  const out = { drum: P(EZ.drum + bow * 45, 0), pocket: P(EZ.pocket[0], EZ.pocket[1]), tube: P(...polyAt(EZ.tube, 0.5)), throat: P(EZ.throatX, 150), canal: P(-300, 0) };
+  if (sc <= 0 || r <= 0) return out;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = C.skin; ctx.fillRect(-420, -420, 840, 840);
+    ell(-230, -270, 190, 80, SKIN_HI, -0.35); ell(60, 340, 120, 50, C.skinShade, -0.3);
+    // ear canal (outside air)
+    rr(-440, -80, 300, 160, 34); ctx.fillStyle = C.skinShade; ctx.fill(); rr(-440, -66, 292, 132, 26); ctx.fillStyle = AIR; ctx.fill();
+    // throat passage
+    const TH = [[EZ.throatX, -460], [EZ.throatX, 460]];
+    if (throat > 0) { ctx.save(); ctx.globalAlpha = clamp(throat); line(TH, C.ink, 196); line(TH, C.yellow, 180); ctx.restore(); }
+    line(TH, C.pinkDark, 150); line(TH, C.pink, 130); line(TH, AIR, 66); line([[EZ.throatX + 50, -440], [EZ.throatX + 50, 440]], C.pinkLight, 8);
+    // the tube
+    const TB = EZ.tube, op = clamp(open);
+    if (tube > 0) { ctx.save(); ctx.globalAlpha = clamp(tube); line(TB, C.ink, 106); line(TB, C.yellow, 92); ctx.restore(); }
+    line(TB, C.pinkDark, 66); line(TB, C.pink, 50);
+    if (op < 1) { ctx.save(); ctx.globalAlpha = 1 - op; line(TB, C.pinkDark, 7); ctx.restore(); }
+    // middle-ear pocket (air)
+    const [px, py, prx, pry] = EZ.pocket;
+    ell(px, py, prx + 14, pry + 14, C.pinkDark); ell(px, py, prx, pry, AIR);
+    if (op > 0.02) line([[40, 60], ...TB, [EZ.throatX, 250]], AIR, 32 * op);
+    if (pocket > 0) { ctx.save(); ctx.globalAlpha = clamp(pocket); ctx.beginPath(); ctx.ellipse(px, py, prx + 40, pry + 40, 0, 0, TAU); ctx.lineWidth = 30; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 18; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+    // tiny ear bones on the eardrum
+    const dx = EZ.drum + bow * 45, OS = [[dx, 0], [-92, -48], [-36, -64], [6, -30]];
+    line(OS, BONE_D, 26); line(OS, BONE, 15); circle(-92, -48, 18, BONE_D); circle(-92, -48, 12, BONE); circle(6, -30, 16, BONE_D); circle(6, -30, 10, BONE);
+    // eardrum
+    const drumPath = () => { ctx.beginPath(); ctx.moveTo(EZ.drum, -128); ctx.quadraticCurveTo(EZ.drum + bow * 90, 0, EZ.drum, 128); };
+    if (drum > 0) { ctx.save(); ctx.globalAlpha = clamp(drum); drumPath(); ctx.lineWidth = 58; ctx.strokeStyle = C.ink; ctx.stroke(); drumPath(); ctx.lineWidth = 44; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+    drumPath(); ctx.lineWidth = 24; ctx.strokeStyle = C.pinkDark; ctx.stroke(); drumPath(); ctx.lineWidth = 12; ctx.strokeStyle = C.pinkLight; ctx.stroke();
+    // air bubbles up the tube (throat -> pocket)
+    if (flow >= 0 && air > 0) for (let i = 0; i < 3; i++) {
+      const u = (flow * 0.9 + i / 3) % 1, [bx, by] = polyAt([[EZ.throatX, 250], ...TB.slice().reverse(), [40, 60]], u);
+      ctx.save(); ctx.globalAlpha = clamp(air) * Math.min(1, u * 6, (1 - u) * 6); circle(bx, by, 17, C.ink); circle(bx, by, 12, C.white); ctx.restore();
+    }
+    if (wave >= 0) soundWaves(-430, 0, 0, wave, 1, muffle, 1.2);
+    if (press > 0) for (const dy of [-34, 34]) flowArrow(-300 + 16 * Math.sin(t * 10) * press, dy, 150, 0, press, C.red, 20);
+    if (even > 0) { flowArrow(-250, 0, 130, 0, even, C.sky, 22); flowArrow(-50, 62, 130, Math.PI, even, C.sky, 22); }
+    ctx.restore();
+  }, C.skin);
+  return out;
+}
+/** light sky background (flat): pale blue with flat white clouds drifting left (t = film time) */
+export function planeSky(t) {
+  fillAll(C.sky);
+  for (let i = 0; i < 6; i++) {
+    const cx = ((rnd(i + 70) * 1500 - t * (60 + 50 * rnd(i + 80))) % 1500 + 1500) % 1500 - 210, cy = 200 + rnd(i + 90) * 1050, s = 0.7 + 0.6 * rnd(i + 99);
+    ell(cx, cy, 120 * s, 46 * s, C.white); ell(cx - 50 * s, cy - 26 * s, 60 * s, 44 * s, C.white); ell(cx + 40 * s, cy - 34 * s, 70 * s, 52 * s, C.white);
+  }
+}
+
+// ═════════════════════════ CALF CRAMP SET (tease for "charley horse") ═════════════════════════
+/** lower-leg cutaway lens (side view, foot pointing right): rolled-up trouser at the top, shin, and the calf muscle
+ *  (pink, on the back of the leg) with its tendon to the heel. clench 0..1: the muscle bunches up short and fat, its
+ *  stripes squeeze together and the foot points down (a cramp; no injury, no face). ring 0..1 = yellow ring round the
+ *  muscle. Returns { muscle: [x, y] } (screen px at sc = 1) */
+export function calfLens(x, y, r, { clench = 0, ring = 0, sc = 1, t = 0 } = {}) {
+  const k = r / 300, c = clamp(clench), my = lerp(-30, -70, c), out = { muscle: [x + (30 - 58 * 1.12) * k, y + (my * 1.12 - 10) * k] };
+  if (sc <= 0 || r <= 0) return out;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(k, k); ctx.translate(30, -10); ctx.scale(1.12, 1.12); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const j = c > 0.5 ? Math.sin(t * 40) * 2 * c : 0;
+    // foot (rotates down at the ankle)
+    ctx.save(); ctx.translate(10, 196); ctx.rotate(0.38 * c);
+    ctx.beginPath(); ctx.moveTo(-76, -40); ctx.lineTo(60, -34); ctx.quadraticCurveTo(196, -8, 214, 34); ctx.quadraticCurveTo(220, 66, 182, 70);
+    ctx.lineTo(-60, 70); ctx.quadraticCurveTo(-98, 60, -90, 0); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+    rr(-60, 54, 242, 16, 8); ctx.fillStyle = C.skinShade; ctx.fill();
+    ctx.restore();
+    // leg
+    const legPath = () => { ctx.beginPath(); ctx.moveTo(-100, -340); ctx.bezierCurveTo(-196 - 22 * c, -170, -176 - 10 * c, 40, -66, 170); ctx.lineTo(-62, 215);
+      ctx.lineTo(84, 215); ctx.lineTo(84, 160); ctx.bezierCurveTo(98, 0, 104, -200, 108, -340); ctx.closePath(); };
+    legPath(); ctx.fillStyle = C.skin; ctx.fill();
+    ctx.save(); legPath(); ctx.clip(); ell(80, -60, 46, 320, C.skinShade); ctx.restore();
+    // calf muscle + tendon
+    const rx = lerp(72, 98, c), ry = lerp(165, 118, c), mx = -58 + j;
+    line([[mx + 8, my + ry - 20], [-44, 200]], BONE_D, 28); line([[mx + 8, my + ry - 20], [-44, 200]], BONE, 18);
+    if (ring > 0) { ctx.save(); ctx.globalAlpha = clamp(ring); ctx.beginPath(); ctx.ellipse(mx, my, rx + 34, ry + 34, 0.1, 0, TAU); ctx.lineWidth = 28; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 16; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+    ell(mx, my, rx + 10, ry + 10, MUSCLE_D, 0.1); ell(mx, my, rx, ry, C.pink, 0.1);
+    ctx.save(); ctx.translate(mx, my); ctx.rotate(0.1);
+    for (let i = -2; i <= 2; i++) { const xx = i * rx * 0.34, h = ry * Math.sqrt(Math.max(0, 1 - (xx / rx) ** 2)) * 0.82, b = lerp(0, 22, c) * (i % 2 ? 1 : -1);
+      ctx.beginPath(); ctx.moveTo(xx, -h); ctx.quadraticCurveTo(xx + b, 0, xx, h); ctx.strokeStyle = MUSCLE_D; ctx.lineWidth = 7; ctx.stroke(); }
+    ell(-rx * 0.45, -ry * 0.45, 14, ry * 0.28, C.pinkLight, 0.1);
+    ctx.restore();
+    // rolled-up trouser at the knee
+    rr(-150, -400, 300, 150, [0, 0, 36, 36]); ctx.fillStyle = C.pants; ctx.fill(); rr(-156, -290, 312, 46, 20); ctx.fillStyle = C.pantsShade; ctx.fill();
+    ctx.restore();
+  }, C.bg);
+  return out;
+}
+/** knot icon (graphic): a red rope tied in a loop, ink edge, with little squeeze strokes. tight 0..1 cinches the loop
+ *  smaller and the strokes grow. ~340x200 px at s = 1. sc = pop-in */
+export function knotIcon(x, y, s = 1, tight = 0, sc = 1) {
+  if (sc <= 0) return;
+  const q = clamp(tight), R = lerp(52, 34, q);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const A = () => { ctx.beginPath(); ctx.moveTo(-170, 40); ctx.bezierCurveTo(-60, 40, R, 10, R, -50); };
+  const B = () => { ctx.beginPath(); ctx.moveTo(R, -50); ctx.arc(0, -50, R, 0, Math.PI, true); ctx.bezierCurveTo(-R, 10, 60, 40, 170, 40); };
+  for (const [w, col] of [[46, C.ink], [30, C.red]]) { B(); ctx.lineWidth = w; ctx.strokeStyle = col; ctx.stroke(); }
+  for (const [w, col] of [[46, C.ink], [30, C.red]]) { A(); ctx.lineWidth = w; ctx.strokeStyle = col; ctx.stroke(); }
+  if (q > 0) for (const an of [-2.4, -1.57, -0.74]) { const r0 = R + 50, r1 = r0 + 40 * q; line([[Math.cos(an) * r0, -50 + Math.sin(an) * r0], [Math.cos(an) * r1, -50 + Math.sin(an) * r1]], C.ink, 12); }
+  ctx.restore();
 }

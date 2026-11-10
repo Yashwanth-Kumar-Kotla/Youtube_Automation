@@ -1,0 +1,66 @@
+{
+  "title": "What Happens When Your Ears Pop?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Mayo Clinic, 'Airplane ear' (airplane ear happens when the air pressure in the middle ear and the air pressure in the environment don't match; a narrow passage called the eustachian tube connects the middle ear to the back of the nose and throat and regulates the pressure; the mismatch keeps the eardrum (tympanic membrane) from moving as usual; rapid pressure changes during climb or descent can outpace the tube's ability to adjust; swallowing or yawning opens the tube so air can enter the middle ear and equalize pressure; symptoms: ear discomfort, fullness or stuffiness, muffled hearing; self-care: yawn, swallow, chew gum or suck candy; see a doctor if discomfort, fullness or muffled hearing lasts more than a few days or symptoms are severe): https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701 (text verified via the Mayo Clinic Care Network health library mirror)",
+    "Cleveland Clinic, 'Eustachian Tubes' (the tubes run from your middle ears to the back of your nose and throat; they close when you're not swallowing or yawning and should only open when you yawn, chew or swallow; they equalize air pressure in the middle ear and drain fluid): https://my.clevelandclinic.org/health/body/22072-eustachian-tubes",
+    "Cleveland Clinic, 'Eustachian Tube Dysfunction' (the tubes connect your middle ears to the back of your throat; most common symptom is muffled hearing, almost like you're underwater; clicking or popping sounds; home remedies: chew gum, yawn, swallow; see a provider if symptoms last longer than a couple of weeks): https://my.clevelandclinic.org/health/diseases/22527-eustachian-tube-dysfunction",
+    "Indiana Public Media / Indiana University, 'A Moment of Science: What makes our ears pop?' (the eustachian tube is normally closed; to equalize pressure it has to open, and the pop comes with that opening): https://indianapublicmedia.org/amomentofscience/what-makes-our-ears-pop.php",
+    "Tease (next video): Mayo Clinic, 'Muscle cramp' (a sudden, unexpected tightening of one or more muscles; occurs mostly in leg muscles, most often in the calf; usually lasts seconds to minutes): https://www.mayoclinic.org/diseases-conditions/muscle-cramp/symptoms-causes/syc-20350820"
+  ],
+  "lines": [
+    {
+      "text": "What happens when your ears pop?",
+      "caps": "WHAT *HAPPENS WHEN | YOUR EARS *POP?"
+    },
+    {
+      "text": "That pop is a hidden tube opening inside your head.",
+      "caps": "THAT *POP IS | A HIDDEN *TUBE | *OPENING INSIDE | YOUR *HEAD"
+    },
+    {
+      "text": "Behind each eardrum sits a pocket of air,",
+      "caps": "BEHIND EACH *EARDRUM | SITS A *POCKET | OF *AIR"
+    },
+    {
+      "text": "linked to your throat by that tube, which usually stays shut.",
+      "caps": "*LINKED TO YOUR | *THROAT BY | THAT *TUBE | WHICH *USUALLY | STAYS *SHUT"
+    },
+    {
+      "text": "On a plane, air pressure changes faster than the tube can adjust,",
+      "caps": "ON A *PLANE | AIR *PRESSURE CHANGES | *FASTER THAN | THE TUBE CAN *ADJUST"
+    },
+    {
+      "text": "so your eardrum can't move right, and everything sounds muffled.",
+      "caps": "SO YOUR *EARDRUM | CAN'T *MOVE RIGHT | AND *EVERYTHING | SOUNDS *MUFFLED"
+    },
+    {
+      "text": "Then you swallow or yawn, the tube opens,",
+      "caps": "THEN YOU *SWALLOW | OR *YAWN | THE TUBE *OPENS"
+    },
+    {
+      "text": "air slips in, and pop, the pressure evens out.",
+      "caps": "AIR *SLIPS IN | AND *POP, THE | PRESSURE *EVENS OUT"
+    },
+    {
+      "text": "Chewing gum works too.",
+      "caps": "*CHEWING GUM | WORKS *TOO"
+    },
+    {
+      "text": "Still sore or muffled days later? See a doctor.",
+      "caps": "STILL *SORE | OR *MUFFLED | DAYS *LATER? | SEE A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: what happens when a charley horse strikes,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | A *CHARLEY | HORSE *STRIKES"
+    },
+    {
+      "text": "the calf muscle that clenches tight by itself.",
+      "caps": "THE *CALF MUSCLE | THAT *CLENCHES TIGHT | BY *ITSELF"
+    }
+  ]
+}
