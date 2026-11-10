@@ -12,3 +12,4 @@
 - 2026-11-10 04:25 · 2026-11-10-body-02 added · conf 0.7 · question+instant-myth-bust · What happens to your body in space without a suit?
 - 2026-11-10 04:42 · 2026-11-10-body-03 added · conf 0.7 · question+record-number · What happens if your hiccups won't stop?
 - 2026-11-10 05:00 · 2026-11-10-body-04 added · conf 0.7 · question+myth-bust · What happens when you get brain freeze?
+- 2026-11-10 09:01 · 2026-11-10-body-05 added · conf 0.7 · question+number-loop · What happens when you get goosebumps?

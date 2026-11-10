@@ -2426,11 +2426,12 @@ export function painZap(x, y, s = 1, sc = 1, t = 0, angs = [-2.5, -1.57, -0.64, 
   ctx.restore();
 }
 
-/** round skin patch close-up (lens): ink ring, skin, little hairs. bumps 0..1 raises goosebumps and stands the hairs up.
+/** round skin patch close-up (lens): ink ring, skin, little hairs. bumps 0..1 raises goosebumps and stands the hairs up
+ *  (stand 0..1, if given, stands the hairs on its own clock).
  *  r = lens radius px, sc = pop-in, t = film time (a slight shiver while raised) */
-export function skinPatch(x, y, r, { bumps = 0, t = 0, sc = 1 } = {}) {
+export function skinPatch(x, y, r, { bumps = 0, stand = null, t = 0, sc = 1 } = {}) {
   if (sc <= 0) return;
-  const b = clamp(bumps);
+  const b = clamp(bumps), sd0 = stand == null ? null : clamp(stand);
   ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
   circle(0, 0, r + 16, C.ink); circle(0, 0, r, C.skin);
   ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
@@ -2440,7 +2441,8 @@ export function skinPatch(x, y, r, { bumps = 0, t = 0, sc = 1 } = {}) {
     if (Math.hypot(px, py) > r + 20) continue;
     const jit = Math.sin(t * 30 + row * 3 + col) * 1.5 * b, bb = clamp(b * 1.3 - rnd(row * 9 + col + 50) * 0.3);
     if (bb > 0) { circle(px + 3, py + 5, 22 * k * bb + 4 * k, C.skinShade); circle(px, py, 20 * k * bb + 2 * k, C.skin); ctx.save(); ctx.globalAlpha = 0.6; ell(px - 7 * k, py - 8 * k, 8 * k * bb, 5 * k * bb, SKIN_HI, -0.5); ctx.restore(); }
-    const an = lerp(1.15, 0.15, bb) * (rnd(row * 5 + col) > 0.5 ? 1 : -1), len = lerp(30, 46, bb) * k;
+    const hs = sd0 == null ? bb : clamp(sd0 * 1.3 - rnd(row * 9 + col + 50) * 0.3);
+    const an = lerp(1.15, 0.15, hs) * (rnd(row * 5 + col) > 0.5 ? 1 : -1), len = lerp(30, 46, hs) * k;
     line([[px + jit, py], [px + jit + Math.sin(an) * len, py - Math.cos(an) * len]], C.hair, 6 * k);
   }
   ctx.restore();
@@ -2485,4 +2487,268 @@ export function cat(x, y, s = 1, { puff = 0, t = 0, sc = 1 } = {}) {
   ctx.strokeStyle = C.ink; ctx.lineWidth = 4;
   for (const sd of [-1, 1]) for (const dy of [-8, 6]) { ctx.beginPath(); ctx.moveTo(sd * 50, -90 + dy); ctx.lineTo(sd * (110 + 14 * p), -96 + dy * 2); ctx.stroke(); }
   ctx.restore();
+}
+
+// ═════════════════════════ GOOSEBUMPS SET (2026-11-10-body-5) ═════════════════════════
+/** right forearm held up across the chest (looking at your own arm) */
+ARM.look = { e: [205, 30], h: [30, -60] };
+const MOUSE = '#F2EFE8', MOUSE_D = '#D6D0C4', BEDDING = '#E9D9A8', BEDDING_D = '#D2BD82', AIR = '#DCEFF7', DERMIS = '#F2CDB5';
+
+/** cartoon toggle switch (the fight-or-flight switch): white plate, ink edge, ON/OFF labels, a lever with a red knob.
+ *  on 0..1 flips the lever from OFF (down) to ON (up), ON label turns red. ~340x500 px at s = 1. sc = pop-in */
+export function toggleSwitch(x, y, s = 1, { on = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  const o = clamp(on);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-170, -250, 340, 500, 60); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 12; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(96, -238, 62, 476, [0, 50, 50, 0]); ctx.fillStyle = C.gum; ctx.fill();
+  for (const [sx, sy] of [[-118, -198], [118, 198]]) { circle(sx, sy, 14, STEEL_D); line([[sx - 8, sy], [sx + 8, sy]], C.white, 4); }
+  ctx.font = '900 54px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.letterSpacing = '2px';
+  ctx.fillStyle = o > 0.5 ? C.red : C.ink; ctx.globalAlpha = o > 0.5 ? 1 : 0.45; ctx.fillText('ON', 0, -196);
+  ctx.fillStyle = C.ink; ctx.globalAlpha = o > 0.5 ? 0.45 : 1; ctx.fillText('OFF', 0, 200); ctx.globalAlpha = 1; ctx.letterSpacing = '0px';
+  rr(-46, -132, 92, 264, 46); ctx.fillStyle = C.ink; ctx.fill();
+  ell(0, 0, 44, 20, STEEL_D);
+  const ty = 112 * Math.cos(Math.PI * o), kr = 50 + 16 * Math.sin(Math.PI * o);
+  line([[0, 0], [0, ty]], C.ink, 40); line([[0, 0], [0, ty]], STEEL, 26);
+  circle(0, ty, kr + 8, C.ink); circle(0, ty, kr, C.red); ell(-kr * 0.3, ty - kr * 0.35, kr * 0.32, kr * 0.18, C.pinkLight, -0.5);
+  ctx.restore();
+}
+
+/** spooky-but-cute "BOO!" sign: wooden board on a stick with a little white ghost peeking over it. ~360x420 px at s = 1,
+ *  origin = board centre. sc = pop-in, t = film time (gentle wobble) */
+export function booSign(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.rotate(Math.sin(t * 3) * 0.05);
+  // ghost behind the board (top right)
+  ctx.save(); ctx.translate(110, -120); ctx.rotate(0.15 + Math.sin(t * 4) * 0.06);
+  ctx.beginPath(); ctx.arc(0, -10, 64, Math.PI, TAU); ctx.lineTo(64, 70); ctx.lineTo(-64, 70); ctx.closePath();
+  ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.white; ctx.fill();
+  ell(-22, -14, 9, 13, C.ink); ell(22, -14, 9, 13, C.ink); ell(0, 18, 10, 13, C.ink);
+  ctx.globalAlpha = 0.35; ell(-38, 6, 10, 6, C.pink); ell(38, 6, 10, 6, C.pink); ctx.restore();
+  rr(-16, 60, 32, 220, 10); ctx.fillStyle = WOOD_D; ctx.fill();
+  rr(-180, -95, 360, 180, 26); ctx.fillStyle = WOOD; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(-170, 45, 340, 30, [0, 0, 20, 20]); ctx.fillStyle = WOOD_D; ctx.fill();
+  ctx.font = '900 112px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.lineWidth = 20; ctx.strokeStyle = C.ink; ctx.strokeText('BOO!', 0, -4); ctx.fillStyle = C.white; ctx.fillText('BOO!', 0, -4);
+  ctx.restore();
+}
+
+/** skin cutaway lens with ONE hair in its follicle and the tiny muscle at its base (arrector pili), side view.
+ *  r = lens radius px. o = { pull 0..1 (muscle squeezes: hair stands up, a bump rises), t, sc (pop-in),
+ *  cells 0..1 (stem cells at the bulge fade in), awake 0..1 (they open their eyes), newHair 0..1 (a new hair grows up
+ *  out of the bulb), nerve 0..1 (a nerve draws in from the lower right to the bulge), blip (-1 or 0..1 signal along it),
+ *  hi 0..1 (yellow ring round the muscle) }. Returns key points in screen px (for tags): open, tip, muscle, cells, newTip, bulb */
+export function follicleLens(x, y, r, o = {}) {
+  const { pull = 0, t = 0, sc = 1, cells = 0, awake = 0, newHair = 0, nerve: nv = 0, blip = -1, hi = 0 } = o;
+  const k = r / 400, p = clamp(pull);
+  const a = lerp(0.62, 0.12, p), ah = lerp(1.05, 0.1, p), y0 = -150, P0 = [-40, y0 - 44 * p];
+  const d = [-Math.sin(a), Math.cos(a)], n = [Math.cos(a), Math.sin(a)], FL = 330;
+  const along = (u, w = 0) => [P0[0] + d[0] * u + n[0] * w, P0[1] + d[1] * u + n[1] * w];
+  const shiv = p > 0.5 ? Math.sin(t * 34) * 0.02 * p : 0, uh = [Math.sin(ah + shiv), -Math.cos(ah + shiv)];
+  const tip = [P0[0] + uh[0] * 250, P0[1] + uh[1] * 250];
+  const A = along(190, 30), B = [210, y0 + 80], M = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2];
+  const CELLS = [along(222, 84), along(305, 80), along(262, -84)];
+  const E = along(268, 140);
+  const NP = [[460, 250], [300, 230], [190, 175], [E[0] + 40, E[1] + 10], E];
+  const G = ([px, py]) => [x + px * k, y + py * k];
+  const pts = { open: G(P0), tip: G(tip), muscle: G(M), cells: CELLS.map(G), bulb: G(along(FL)), newTip: G(along(FL - clamp(newHair) * (FL + 150), 26)) };
+  if (sc <= 0) return pts;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 16, C.ink);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip(); ctx.scale(k, k);
+  ctx.fillStyle = AIR; ctx.fillRect(-450, -450, 900, 900);
+  const surf = (dy) => { ctx.beginPath(); ctx.moveTo(-440, 460);
+    for (let sx = -440; sx <= 440; sx += 10) ctx.lineTo(sx, y0 + dy - 44 * p * Math.exp(-Math.pow((sx - P0[0]) / 120, 2)));
+    ctx.lineTo(440, 460); ctx.closePath(); };
+  surf(0); ctx.fillStyle = C.skin; ctx.fill();
+  surf(56); ctx.fillStyle = DERMIS; ctx.fill();
+  ctx.save(); ctx.globalAlpha = 0.6; line([[-440, 300], [-200, 320], [60, 300], [440, 330]], C.pinkLight, 26); ctx.restore();
+  // the tiny muscle: a striped band from inside the follicle (hidden under the sheath) up to under the skin top
+  const A0 = along(190, 0), ang = Math.atan2(B[1] - A0[1], B[0] - A0[0]), len = Math.hypot(B[0] - A0[0], B[1] - A0[1]), th = lerp(26, 50, p);
+  line([A0, B], MUSCLE_D, th + 10); line([A0, B], C.pink, th);
+  ctx.save(); ctx.translate(A0[0], A0[1]); ctx.rotate(ang); ctx.strokeStyle = MUSCLE_D; ctx.lineWidth = 4;
+  for (const u of [0.4, 0.55, 0.7, 0.85]) { ctx.beginPath(); ctx.moveTo(len * u - 6, -th * 0.35); ctx.lineTo(len * u + 6, th * 0.35); ctx.stroke(); }
+  ctx.restore();
+  // follicle sheath + bulb
+  line([P0, along(FL)], C.skinShade, 74); line([along(6), along(FL)], C.skin, 50);
+  const bp = along(FL + 8); circle(bp[0], bp[1], 56, C.skinShade); circle(bp[0], bp[1], 40, C.pink);
+  // the hair (inside + out)
+  line([along(FL - 10), P0, tip], C.hair, 16); line([P0, [lerp(P0[0], tip[0], 0.7), lerp(P0[1], tip[1], 0.7)]], C.hairHi, 5);
+  if (newHair > 0) { const nt = along(FL - clamp(newHair) * (FL + 150), 26); line([along(FL - 4, 22), nt], C.hair, 12); circle(nt[0], nt[1], 9, C.hairHi); }
+  // stem cells at the bulge
+  if (cells > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(cells);
+    CELLS.forEach(([cx, cy], i) => {
+      circle(cx, cy, 44, C.pinkDark); circle(cx, cy, 37, C.pinkLight); ell(cx - 16, cy - 20, 9, 5, C.white, -0.6);
+      const aw = clamp(awake * 1.6 - i * 0.3);
+      if (aw > 0.5) { for (const sd of [-1, 1]) { ell(cx + sd * 13, cy - 5, 7, 9, C.ink); circle(cx + sd * 13 + 2, cy - 9, 3, C.white); } }
+      else { ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.lineCap = 'round'; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(cx + sd * 13, cy - 7, 8, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); } }
+      ctx.beginPath(); ctx.arc(cx, cy + 10, aw > 0.5 ? 11 : 5, 0.1 * Math.PI, 0.9 * Math.PI); ctx.strokeStyle = C.mouth; ctx.lineWidth = 5; ctx.stroke();
+    });
+    ctx.restore();
+  }
+  // the nerve (from the lower right to the bulge)
+  if (nv > 0) nerve(NP, blip, nv);
+  if (hi > 0) { ctx.save(); ctx.globalAlpha = clamp(hi); ctx.beginPath(); ctx.ellipse((A[0] + B[0]) / 2 + 20, (A[1] + B[1]) / 2, Math.max(0, len / 2 + 30), Math.max(0, th / 2 + 45), ang, 0, TAU);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 20; ctx.stroke(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 11; ctx.stroke(); ctx.restore(); }
+  ctx.restore();
+  ctx.restore();
+  return pts;
+}
+
+/** side-view skin lens with a row of hairs: stand 0..1 raises the hairs, bumps 0..1 pops goosebumps round them,
+ *  heat 0..1 shows little warm shimmer strokes between the hairs, trap 0..1 tints that warm layer.
+ *  r = lens radius px, sc = pop-in, t = film time. Returns { surfY, tipY } in screen px */
+export function skinSideLens(x, y, r, { stand = 0, bumps = 0, heat = 0, trap = 0, t = 0, sc = 1 } = {}) {
+  const k = r / 400, y0 = 70, HX = [-300, -200, -100, 0, 100, 200, 300];
+  const out = { surfY: y + y0 * k, tipY: y + (y0 - 175) * k };
+  if (sc <= 0) return out;
+  const si = (i) => clamp(stand * 1.35 - rnd(i + 11) * 0.35), bi = (i) => clamp(bumps * 1.35 - rnd(i + 23) * 0.35);
+  const sy = (sx) => y0 - HX.reduce((acc, hx, i) => acc + 40 * bi(i) * Math.exp(-Math.pow((sx - hx) / 42, 2)), 0);
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 16, C.ink);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip(); ctx.scale(k, k);
+  ctx.fillStyle = AIR; ctx.fillRect(-450, -450, 900, 900);
+  if (trap > 0) { ctx.save(); ctx.globalAlpha = 0.28 * clamp(trap); ctx.beginPath(); ctx.moveTo(-440, y0 + 10);
+    for (let sx = -440; sx <= 440; sx += 20) ctx.lineTo(sx, y0 - 160 + Math.sin(sx * 0.03 + t * 3) * 8); ctx.lineTo(440, y0 + 10); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); }
+  const surf = (dy) => { ctx.beginPath(); ctx.moveTo(-440, 460); for (let sx = -440; sx <= 440; sx += 8) ctx.lineTo(sx, sy(sx) + dy); ctx.lineTo(440, 460); ctx.closePath(); };
+  surf(0); ctx.fillStyle = C.skin; ctx.fill(); surf(56); ctx.fillStyle = DERMIS; ctx.fill();
+  HX.forEach((hx, i) => {
+    const s1 = si(i), an = lerp(1.2, 0.1, s1) + Math.sin(t * 30 + i * 2) * 0.03 * s1, root = [hx, sy(hx)];
+    const fa = an * 0.6, fol = [hx - Math.sin(fa) * 130, root[1] + Math.cos(fa) * 130];
+    line([root, fol], C.skinShade, 30); circle(fol[0], fol[1], 20, C.skinShade);
+    const tip = [hx + Math.sin(an) * 170, root[1] - Math.cos(an) * 170];
+    line([fol, root, tip], C.hair, 12);
+  });
+  if (heat > 0) {
+    for (let i = 0; i < 6; i++) {
+      const cx = -250 + i * 100, cy = y0 - 70 - (i % 2) * 45 + Math.sin(t * 3 + i) * 6, w = 34;
+      ctx.save(); ctx.globalAlpha = clamp(heat * 1.4 - i * 0.08); ctx.beginPath();
+      for (let u = 0; u <= 1.001; u += 0.1) { const px = cx - w + u * 2 * w, py = cy + Math.sin(u * TAU * 1.5 + t * 6 + i) * 9; u ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+      ctx.lineCap = 'round'; ctx.strokeStyle = C.ink; ctx.lineWidth = 17; ctx.stroke(); ctx.strokeStyle = i % 2 ? C.red : C.yellow; ctx.lineWidth = 9; ctx.stroke(); ctx.restore();
+    }
+  }
+  ctx.restore();
+  ctx.restore();
+  return out;
+}
+
+/** clear lab box (cage) with a steel grid lid and soft bedding. ~640x480 px at s = 1, origin = centre.
+ *  frost 0..1 = frosty corners + icicles, snow 0..1 = flakes falling inside, inner(x0) draws the occupant (in screen px,
+ *  before the front glass), t = film time */
+export function coldBox(x, y, s = 1, { t = 0, frost = 0, snow = 0, inner = null } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-320, -200, 640, 440, 30); ctx.fillStyle = AIR; ctx.fill();
+  ctx.save(); rr(-320, -200, 640, 440, 30); ctx.clip();
+  ctx.fillStyle = BEDDING; ctx.beginPath(); ctx.moveTo(-330, 250); ctx.lineTo(-330, 160);
+  for (let bx = -330; bx <= 330; bx += 40) ctx.quadraticCurveTo(bx + 20, 140 + (bx % 80 ? 6 : -6), bx + 40, 160); ctx.lineTo(330, 250); ctx.closePath(); ctx.fill();
+  for (let i = 0; i < 14; i++) ell(-290 + rnd(i + 3) * 580, 180 + rnd(i + 7) * 45, 18, 6, BEDDING_D, rnd(i) * 3);
+  ctx.restore();
+  ctx.restore();
+  if (inner) inner();
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.save(); rr(-320, -200, 640, 440, 30); ctx.clip();
+  if (snow > 0) for (let i = 0; i < 8; i++) {
+    const ph = (t * 0.35 + rnd(i + 31)) % 1, fx = -260 + (i / 7) * 520 + Math.sin(t * 2 + i) * 16, fy = -170 + ph * 340;
+    ctx.save(); ctx.globalAlpha = clamp(snow) * Math.sin(ph * Math.PI); snowflake(fx, fy, 18, SLUSH_D, 9, t + i); snowflake(fx, fy, 18, C.white, 4, t + i); ctx.restore();
+  }
+  ctx.globalAlpha = 0.55; line([[-250, -120], [-170, -170]], C.white, 16); line([[-260, -60], [-130, -160]], C.white, 10); ctx.globalAlpha = 1;
+  if (frost > 0) { ctx.save(); ctx.globalAlpha = clamp(frost);
+    for (const [fx, fy] of [[-320, -200], [320, -200], [-320, 240], [320, 240]]) { circle(fx, fy, 70, C.white); circle(fx + Math.sign(-fx) * 50, fy, 36, C.white); circle(fx, fy + Math.sign(-fy) * 50, 36, C.white); }
+    ctx.restore(); }
+  ctx.restore();
+  rr(-320, -200, 640, 440, 30); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(-340, -236, 680, 56, 20); ctx.fillStyle = STEEL; ctx.fill(); ctx.lineWidth = 10; ctx.stroke();
+  for (let gx = -300; gx <= 300; gx += 50) line([[gx, -226], [gx, -190]], STEEL_D, 6);
+  if (frost > 0) { ctx.save(); ctx.globalAlpha = clamp(frost);
+    for (let i = 0; i < 6; i++) { const ix = -270 + i * 108, L2 = 26 + rnd(i + 5) * 26; ctx.beginPath(); ctx.moveTo(ix - 12, -182); ctx.lineTo(ix + 12, -182); ctx.lineTo(ix, -182 + L2); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill(); ctx.strokeStyle = SLUSH_D; ctx.lineWidth = 4; ctx.stroke(); }
+    rr(-330, -246, 660, 22, 11); ctx.fillStyle = C.white; ctx.fill(); ctx.restore(); }
+  ctx.restore();
+}
+
+/** cute white lab mouse sitting, side view, facing right. ~340x230 px at s = 1, origin = body centre (feet at +88).
+ *  o = { t, shiver 0..1, eyes 'n' | 'closed' | 'wide', smile (bool), sc (pop-in), flip (face left) } */
+export function labMouse(x, y, s = 1, { t = 0, shiver = 0, eyes = 'n', smile = true, sc = 1, flip = false } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x + Math.sin(t * 48) * 4 * shiver, y); ctx.scale(s * sc * (flip ? -1 : 1), s * sc); ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-110, 60); ctx.bezierCurveTo(-210, 90, -230, -10, -170, -20); ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 16; ctx.stroke(); ctx.strokeStyle = C.pinkLight; ctx.lineWidth = 9; ctx.stroke();
+  ell(0, 10, 128, 92, MOUSE_D); ell(-4, 4, 120, 86, MOUSE);
+  for (const fx of [-50, 50]) ell(fx, 88, 26, 12, C.pinkLight);
+  circle(88, -66, 66, MOUSE_D); circle(86, -70, 60, MOUSE);
+  circle(48, -128, 44, MOUSE_D); circle(48, -128, 30, C.pinkLight);
+  ell(150, -56, 34, 28, MOUSE); circle(180, -60, 13, C.pink);
+  if (eyes === 'closed') { ctx.beginPath(); ctx.arc(112, -82, 11, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.stroke(); }
+  else { const er = eyes === 'wide' ? 15 : 11; ell(112, -82, er, er * 1.2, C.ink); circle(115, -88, 4, C.white); }
+  ctx.globalAlpha = 0.4; ell(122, -44, 14, 8, C.pink); ctx.globalAlpha = 1;
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 5; ctx.beginPath();
+  if (smile) { ctx.moveTo(150, -36); ctx.quadraticCurveTo(162, -26, 172, -38); } else { ctx.moveTo(152, -32); ctx.lineTo(170, -34); } ctx.stroke();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 3; for (const dy of [-8, 6]) { ctx.beginPath(); ctx.moveTo(176, -56 + dy); ctx.lineTo(236, -64 + dy * 2); ctx.stroke(); }
+  ell(70, 40, 24, 16, MOUSE_D); ell(110, 52, 14, 9, C.pinkLight);
+  ctx.restore();
+}
+
+/** cartoon bare foot (side view, toes right) under a navy trouser cuff, with a sleepy little face. wake 0..1 opens its eyes.
+ *  ~400x420 px at s = 1, origin = middle of the foot (sole at +84, cuff top at -260). sc = pop-in, t = film time */
+export function sleepyFoot(x, y, s = 1, { t = 0, sc = 1, wake = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.rotate(Math.sin(t * 1.6) * 0.02); ctx.lineCap = 'round';
+  rr(-80, -190, 150, 170, 50); ctx.fillStyle = C.skin; ctx.fill();
+  rr(-120, -40, 360, 124, 62); ctx.fill(); circle(-62, 12, 74, C.skin);
+  ctx.beginPath(); ctx.moveTo(-110, 70); ctx.quadraticCurveTo(60, 96, 210, 72); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 14; ctx.stroke();
+  for (const [tx, ty, tr] of [[214, -6, 40], [180, -34, 26]]) { circle(tx, ty, tr, C.skin); }
+  ell(232, -20, 16, 11, SKIN_HI, -0.4);
+  circle(-30, -70, 18, C.skinShade); circle(-30, -70, 12, C.skin);
+  rr(-110, -260, 210, 100, 34); ctx.fillStyle = C.pants; ctx.fill(); rr(40, -260, 60, 100, [0, 34, 34, 0]); ctx.fillStyle = C.pantsShade; ctx.fill();
+  const w = clamp(wake), ex = [70, 125];
+  if (w > 0.5) for (const e of ex) { ell(e, 6, 10, 13, C.ink); circle(e + 3, 1, 4, C.white); }
+  else { ctx.strokeStyle = C.ink; ctx.lineWidth = 7; for (const e of ex) { ctx.beginPath(); ctx.arc(e, 2, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); } }
+  ctx.globalAlpha = 0.35; ell(50, 34, 16, 9, C.pink); ell(150, 34, 16, 9, C.pink); ctx.globalAlpha = 1;
+  ctx.beginPath(); ctx.arc(98, 34, w > 0.5 ? 14 : 8, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.stroke();
+  ctx.restore();
+}
+
+/** three still "Z z z" letters stepping up-right, gently bobbing (sleep), for tight layouts (zzz() floats far). a = alpha */
+export function zzzStill(x, y, t, a = 1, size = 70) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  for (let i = 0; i < 3; i++) {
+    const sz = size * (1 - i * 0.22), px = x + i * size * 0.62, py = y - i * size * 0.7 + Math.sin(t * 3 + i * 1.3) * 7;
+    ctx.font = `900 ${sz}px Inter`; ctx.lineWidth = sz * 0.16; ctx.strokeStyle = C.ink; ctx.strokeText('Z', px, py); ctx.fillStyle = C.white; ctx.fillText('Z', px, py);
+  }
+  ctx.restore();
+}
+
+/** yellow 4-point sparkle with an ink edge. r = radius px, sc = scale */
+export function sparkle4(x, y, r, sc = 1, rot = 0) {
+  if (sc <= 0 || r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(sc, sc);
+  ctx.beginPath(); for (let i = 0; i < 8; i++) { const an = i * Math.PI / 4 - Math.PI / 2, rr2 = i % 2 ? r * 0.36 : r; i ? ctx.lineTo(Math.cos(an) * rr2, Math.sin(an) * rr2) : ctx.moveTo(Math.cos(an) * rr2, Math.sin(an) * rr2); }
+  ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = 9; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.restore();
+}
+/** a sewing pin icon (yellow round head, steel shaft pointing down at rot = 0, ~50x120 px at s = 1). sc = pop-in */
+export function pinIcon(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  line([[0, 0], [0, 92]], C.ink, 16); line([[0, 4], [0, 88]], STEEL, 8); circle(0, 0, 25, C.ink); circle(0, 0, 18, C.yellow); circle(-6, -6, 5, C.white);
+  ctx.restore();
+}
+/** a sewing needle icon (steel, eye at the top, point down at rot = 0, ~20x160 px at s = 1, origin = middle). sc = pop-in */
+export function needleIcon(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  ctx.beginPath(); ctx.moveTo(-9, -70); ctx.lineTo(9, -70); ctx.lineTo(4, 70); ctx.lineTo(0, 90); ctx.lineTo(-4, 70); ctx.closePath(); ctx.lineJoin = 'round';
+  ctx.lineWidth = 8; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = STEEL; ctx.fill(); ell(0, -50, 3.5, 11, C.ink);
+  ctx.restore();
+}
+/** "pins and needles" icons: items = [[x, y, 'pin' | 'needle' | 'spark', rot, sc]] in screen px; they jiggle (tingle) with t.
+ *  Purely symbolic icons floating beside the body part: nothing touches anything */
+export function tingles(items, t, s = 1) {
+  items.forEach(([x, y, kind, rot = 0, sc = 1], i) => {
+    if (sc <= 0) return;
+    const j = Math.sin(t * 10 + i * 1.9) * 0.1;
+    if (kind === 'pin') pinIcon(x, y, s, rot + j, sc);
+    else if (kind === 'needle') needleIcon(x, y, s, rot + j, sc);
+    else sparkle4(x, y, 34 * s, sc * (0.8 + 0.2 * Math.sin(t * 8 + i)), t * 0.8 + i);
+  });
 }

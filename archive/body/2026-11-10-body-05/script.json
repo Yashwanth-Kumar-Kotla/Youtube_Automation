@@ -1,0 +1,64 @@
+{
+  "title": "What Happens When You Get Goosebumps?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic Health Essentials, 'Why You Have Goosebumps on Your Skin' (Feb 24, 2025; expert: Sara Fandino, APRN) (goosebumps, or piloerections, are an involuntary, automatic reaction that occurs whenever your sympathetic nervous system (or fight-or-flight mode) is triggered; tiny muscles contract at the base of each hair follicle, hairs stand up and small bumps form; triggers: cold, intense or sudden fear, shock, anger or excitement, music/movies ('psychogenic shivers', frisson); in animals the hair stands on end so they look larger to predators, e.g. a cat that puffs up while it hisses; in humans they don't appear to have much purpose beyond helping conserve heat; goosebumps themselves are nothing to worry about): https://health.clevelandclinic.org/why-do-you-get-goosebumps",
+    "NIH Research Matters, 'What goosebumps are for' (July 2020, on Shwartz et al., Cell 2020, Ya-Chieh Hsu lab, Harvard) (goosebumps might play two roles: making hair rise in the short term and triggering more hair growth by stem cells in the long term; the sympathetic nerve connects directly to hair follicle stem cells, with the arrector pili muscle as a bridge; mice exposed to cold started to produce new hairs from their stem cells in less than two weeks; findings are in mice): https://www.nih.gov/news-events/nih-research-matters/what-goosebumps-are",
+    "Tease (next video): NINDS 'Paresthesia Information Page' (temporary paresthesia, a feeling of 'pins and needles', when you sit with legs crossed too long or fall asleep on an arm; caused by sustained pressure on a nerve; goes away once the pressure is relieved): https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get goosebumps?",
+      "caps": "WHAT *HAPPENS WHEN | YOU GET *GOOSEBUMPS?"
+    },
+    {
+      "text": "They might have two jobs, and job two is wild.",
+      "caps": "THEY *MIGHT HAVE | *2 JOBS | AND JOB *2 | IS *WILD"
+    },
+    {
+      "text": "A chill or scare flips your fight-or-flight switch,",
+      "caps": "A *CHILL OR | *SCARE FLIPS YOUR | *FIGHT-OR-FLIGHT SWITCH"
+    },
+    {
+      "text": "and a tiny muscle at the base of each hair squeezes.",
+      "caps": "AND A *TINY | *MUSCLE AT THE | *BASE OF EACH | HAIR *SQUEEZES"
+    },
+    {
+      "text": "Your hairs stand on end, and bumps pop up.",
+      "caps": "YOUR HAIRS *STAND | ON *END, AND | *BUMPS POP UP"
+    },
+    {
+      "text": "That's how a hissing cat puffs up to look bigger.",
+      "caps": "*THAT'S HOW A | HISSING *CAT | *PUFFS UP TO | LOOK *BIGGER"
+    },
+    {
+      "text": "On you, it mostly just helps trap a little heat.",
+      "caps": "ON *YOU, IT | *MOSTLY JUST | HELPS *TRAP | A LITTLE *HEAT"
+    },
+    {
+      "text": "Job two? In mice left in the cold,",
+      "caps": "*JOB 2? | IN *MICE LEFT | IN THE *COLD"
+    },
+    {
+      "text": "those goosebump nerves woke up hair stem cells,",
+      "caps": "THOSE *GOOSEBUMP | NERVES *WOKE UP | HAIR *STEM CELLS"
+    },
+    {
+      "text": "and new hair grew in under two weeks.",
+      "caps": "AND NEW *HAIR | *GREW IN UNDER | *2 WEEKS"
+    },
+    {
+      "text": "Next Body File: what happens when your foot falls asleep,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOUR *FOOT FALLS | *ASLEEP"
+    },
+    {
+      "text": "and the pins and needles once it wakes.",
+      "caps": "AND THE *PINS | AND *NEEDLES | ONCE IT *WAKES"
+    }
+  ]
+}

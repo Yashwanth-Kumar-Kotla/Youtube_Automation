@@ -1,5 +1,5 @@
 # STOCK: body (generated from state/stock/body.json; change it with `python -m pipeline.stock`)
-_Updated 2026-11-10 05:00 · ready 7/30 · threshold 0.4 · max age 42 d_
+_Updated 2026-11-10 09:01 · ready 8/30 · threshold 0.4 · max age 42 d_
 
 | id | status | conf | topic | cluster | hook pattern | format | length | made | playbook | research |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -10,5 +10,6 @@ _Updated 2026-11-10 05:00 · ready 7/30 · threshold 0.4 · max age 42 d_
 | 2026-11-10-body-02 | ready | 0.7 | What happens to your body in space without a suit? | space | question+instant-myth-bust | explainer | 41.0s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-10-body-03 | ready | 0.7 | What happens if your hiccups won't stop? | hiccups | question+record-number | true-story | 41.8s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-10-body-04 | ready | 0.7 | What happens when you get brain freeze? | brain | question+myth-bust | explainer | 35.4s | 2026-W46 | pb-87d1a129 | none |
+| 2026-11-10-body-05 | ready | 0.7 | What happens when you get goosebumps? | skin | question+number-loop | explainer | 33.2s | 2026-W46 | pb-87d1a129 | none |
 
-Clusters in stock: brain ×1, hiccups ×1, joints ×1, lightning ×1, sneeze ×1, space ×1, water ×1
+Clusters in stock: brain ×1, hiccups ×1, joints ×1, lightning ×1, skin ×1, sneeze ×1, space ×1, water ×1
