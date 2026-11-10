@@ -1,0 +1,32 @@
+{
+ "title": "What Happens When You Get Goosebumps?",
+ "description": "Goosebumps (piloerection) are an automatic reaction of your sympathetic nervous system, your fight-or-flight mode. Tiny muscles at the base of each hair follicle (the arrector pili) contract, so the hairs stand up and small bumps form. Cold, fear, shock, excitement and even music or a movie can set them off. In animals it makes them look bigger, like a cat that puffs up while it hisses; in humans it mostly helps conserve a little heat. A 2020 Harvard study in mice suggests a second job: the same nerve, bridged by that muscle, wakes up hair follicle stem cells, and mice kept in the cold grew new hair in under two weeks.\nNext Body File: what happens when your foot falls asleep, and the pins and needles once it wakes.\nFollow Body Files for a new one every day.\n#bodyfiles #goosebumps #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Why You Have Goosebumps on Your Skin: https://health.clevelandclinic.org/why-do-you-get-goosebumps\nNIH Research Matters, What goosebumps are for (2020): https://www.nih.gov/news-events/nih-research-matters/what-goosebumps-are\nNINDS, Paresthesia Information Page: https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia",
+ "hashtags": [
+  "#bodyfiles",
+  "#goosebumps",
+  "#humanbody",
+  "#science",
+  "#shorts",
+  "#healthfacts"
+ ],
+ "pinned_comment": "What gives you goosebumps every single time: a song, a movie scene, or a cold wind? Name it.",
+ "series": "Body Files",
+ "topic": "What happens when you get goosebumps?",
+ "experiment_arm": "E1-A (hook with a number: line 2 'two jobs'); E4 tease_next",
+ "teases": "What happens when your foot falls asleep?",
+ "topic_cluster": "skin",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the brain freeze video (2026-11-10-body-4) with 'the same reaction that puffs up a hissing cat' (paid off in line 6: 'That's how a hissing cat puffs up to look bigger.')",
+ "hook_pattern": "question+number-loop",
+ "format": "explainer",
+ "id": "2026-11-10-body-05",
+ "channel": "body",
+ "made_at": "2026-11-10T09:01-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 33.2,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-10-body-05",
+ "history": []
+}
