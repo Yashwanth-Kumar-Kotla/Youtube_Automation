@@ -40,3 +40,40 @@ What Happens If You Swallow a Magnet? #bodyfiles #magnets #humanbody #science #s
 Did you know two magnets could do this, or did you think swallowing one was the dangerous part?
 ```
 
+## body: What Happens If You Hold Your Pee Too Long? | Body Files #3
+
+- **Download:** https://github.com/Yashwanth-Kumar-Kotla/Youtube_Automation/raw/stock/body/2026-11-09-body-01/2026-11-09-body-01.mp4 (cover frame: `2026-11-09-body-01.jpg` on the same branch)
+- **Best time:** 17:00 Central (schedule it in Studio, or post now). TikTok: 19:00.
+- **Settings:** Not made for kids · Altered content: No · Category: Education · Comments on
+
+**Title** (paste exactly; the publisher matches on it)
+```
+What Happens If You Hold Your Pee Too Long? | Body Files #3
+```
+**Description**
+```
+Your bladder holds about two cups, and nerves in its wall start nagging your brain long before it's full. If you suddenly can't pee at all, see a doctor right away.
+Next Body File: what happens if you get struck by lightning, and why it can paint a fern on your skin.
+Follow Body Files for a new one every day.
+#bodyfiles #bladder #humanbody #science #shorts #healthfacts
+
+Sources:
+Cleveland Clinic: https://my.clevelandclinic.org/health/body/25010-bladder
+NIDDK (NIH): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works
+Cleveland Clinic: https://my.clevelandclinic.org/health/diseases/15427-urinary-retention
+ColumbiaDoctors: https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine
+Harvard Health: https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long
+```
+**Tags**
+```
+bodyfiles, bladder, humanbody, science, shorts, healthfacts
+```
+**TikTok caption**
+```
+What Happens If You Hold Your Pee Too Long? #bodyfiles #bladder #humanbody #science #shorts #fyp
+```
+**Pinned comment** (the publisher posts it for you on YouTube; on TikTok paste it yourself)
+```
+What's the longest you've ever had to hold it, and where were you stuck?
+```
+

@@ -7,3 +7,4 @@
 - 2026-11-09 15:31 · 2026-11-09-body-03 added · conf 0.7 · question+number · What happens if you drink too much water?
 - 2026-11-09 15:53 · 2026-11-09-body-04 added · conf 0.7 · question+myth-loop · What happens if you crack your knuckles every day?
 - 2026-11-09 19:36 · 2026-11-08-body-01 posted · conf 0.7 · {'posted': '2026-11-09', 'episode': 2, 'youtube': '', 'tiktok': 'v_inbox_file~v2.7706350688263194637'}
+- 2026-11-10 03:57 · 2026-11-09-body-01 ready → scheduled · slot 0 on 2026-11-10, episode 3, manual upload

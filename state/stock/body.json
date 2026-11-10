@@ -74,9 +74,15 @@
    "research_file": "none",
    "length": 40.0,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "scheduled",
    "branch": "stock/body/2026-11-09-body-01",
-   "history": [],
+   "history": [
+    {
+     "at": "2026-11-10T03:57-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-10, episode 3, manual upload"
+    }
+   ],
    "description": "Your bladder holds about two cups, and nerves in its wall start nagging your brain long before it's full. If you suddenly can't pee at all, see a doctor right away.\nNext Body File: what happens if you get struck by lightning, and why it can paint a fern on your skin.\nFollow Body Files for a new one every day.\n#bodyfiles #bladder #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/body/25010-bladder\nNIDDK (NIH): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/15427-urinary-retention\nColumbiaDoctors: https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine\nHarvard Health: https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long"
   },
   "2026-11-09-body-02": {
