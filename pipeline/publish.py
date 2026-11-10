@@ -99,6 +99,30 @@ def run(dry: bool = False) -> int:
                             stock.set_status(ch, r["id"], "ready", f"slot on {d} missed its window")
                         r["released"] = True
     tz = CFG.get("timezone", "America/Chicago")
+    if not dry:  # manual mode: keep looking for the owner's upload of the last 3 days' videos
+        for d in sorted(posts)[-4:]:
+            if d >= today:
+                continue
+            for ch, recs in posts[d].items():
+                c = CFG["channels"].get(ch, {})
+                if not (c.get("youtube", {}).get("mode") == "manual" and youtube.has_token(ch)):
+                    continue
+                for r in recs:
+                    if r.get("manual") and not r.get("youtube"):
+                        v = stock.load(ch)["videos"].get(r["id"])
+                        if not v:
+                            continue
+                        hit = next((u for u in youtube.recent_uploads(ch) if u["title"].lower().startswith(v["title"].lower()[:40])), None)
+                        if hit:
+                            r["youtube"] = hit["id"]
+                            ledger_upsert(ch, v, r)
+                            print(f"[{ch}] found the owner's upload {hit['id']} for {v['id']} (from {d})")
+                            if v.get("pinned_comment") and hit["privacy"] == "public":
+                                try:
+                                    youtube.comment(ch, hit["id"], v["pinned_comment"]); r["commented"] = True
+                                except Exception as e:
+                                    print(f"[{ch}] comment later: {str(e)[:100]}")
+        state.save("posts.json", posts)
     for ch, c in CFG["channels"].items():
         if not c.get("enabled"):
             continue
@@ -210,7 +234,8 @@ def run(dry: bool = False) -> int:
                         traceback.print_exc()
             if rec.get("youtube") or rec.get("tiktok"):
                 ledger_upsert(ch, v, rec)
-            done = (not yt_on or rec.get("youtube")) and (not tt_on or rec.get("tiktok"))
+            # manual YouTube counts too: never mark posted (or delete the file) before the owner's upload is found
+            done = (not (yt_on or manual) or rec.get("youtube")) and (not tt_on or rec.get("tiktok"))
             if done:
                 stock.mark_posted(ch, v["id"], {"posted": today, "episode": rec["episode"],
                                                 "youtube": rec.get("youtube", ""), "tiktok": rec.get("tiktok", "")})
