@@ -1,0 +1,14 @@
+{
+  "title": "What Happens If You Knock Out a Tooth?",
+  "description": "A knocked-out adult tooth put back in its socket, or stored properly, within five minutes will likely survive. Hold it by the crown, never the root: the root carries tiny fibers it needs to heal. Don't scrub it or put it in water. If it won't go back in, keep it in milk or your own saliva and get to a dentist or emergency department right away. Baby teeth are not put back.\nNext Body File: what happens when your ears pop, and the hidden tube linking your ears to your throat.\nFollow Body Files for a new one every day.\n#bodyfiles #teeth #firstaid #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, What To Do When You Knock Out a Tooth (2023): https://health.clevelandclinic.org/must-act-fast-tooth-gets-knocked/\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635\nMayo Clinic, Airplane ear: https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701",
+  "hashtags": ["#bodyfiles", "#teeth", "#firstaid", "#humanbody", "#science", "#shorts", "#healthfacts"],
+  "pinned_comment": "Did you know about the milk trick before this? Have you ever chipped or lost a tooth? Tell us how.",
+  "series": "Body Files",
+  "topic": "What happens if you knock out a tooth?",
+  "experiment_arm": "E1-A (hook with a number: 'five minutes' in line 2); E4 tease_next",
+  "teases": "What happens when your ears pop?",
+  "topic_cluster": "teeth",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the foot-asleep video (2026-11-10-body-6) with 'and why a glass of milk might save it' (opened in line 3 'the backup plan is sitting in your fridge', paid off in line 8 'cover it in milk, which helps protect those fibers')",
+  "hook_pattern": "question+countdown-number",
+  "format": "explainer"
+}

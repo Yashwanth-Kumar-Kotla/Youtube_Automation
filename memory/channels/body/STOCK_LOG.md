@@ -14,3 +14,4 @@
 - 2026-11-10 05:00 · 2026-11-10-body-04 added · conf 0.7 · question+myth-bust · What happens when you get brain freeze?
 - 2026-11-10 09:01 · 2026-11-10-body-05 added · conf 0.7 · question+number-loop · What happens when you get goosebumps?
 - 2026-11-10 09:18 · 2026-11-10-body-06 added · conf 0.7 · question+reframe-loop · What happens when your foot falls asleep?
+- 2026-11-10 09:41 · 2026-11-10-body-07 added · conf 0.7 · question+countdown-number · What happens if you knock out a tooth?

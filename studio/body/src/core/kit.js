@@ -1938,9 +1938,9 @@ export function pressureGauge(x, y, s = 1, level = 1, sc = 1) {
   ctx.restore();
 }
 
-/** countdown timer (stopwatch look): red wedge = time left (frac 0..1, empties clockwise), big number + "SEC" in the middle.
+/** countdown timer (stopwatch look): red wedge = time left (frac 0..1, empties clockwise), big number + unit ("SEC" / "MIN") in the middle.
  *  ~560 px wide at s = 1 (crown top -330). sc = pop-in */
-export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1) {
+export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1, unit = 'SEC') {
   if (sc <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
   rr(-40, -330, 80, 60, 14); ctx.fillStyle = C.watch; ctx.fill();
@@ -1951,7 +1951,7 @@ export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1) {
   for (let i = 0; i < 12; i++) { ctx.save(); ctx.rotate(i * Math.PI / 6); rr(-6, -232, 12, i % 3 === 0 ? 40 : 24, 6); ctx.fillStyle = C.watch; ctx.fill(); ctx.restore(); }
   circle(0, 0, 138, C.watch); circle(0, 0, 126, C.white);
   ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.font = '900 150px Inter'; ctx.fillText(text, 0, -14); ctx.font = '900 44px Inter'; ctx.letterSpacing = '4px'; ctx.fillText('SEC', 4, 78); ctx.letterSpacing = '0px';
+  ctx.font = '900 150px Inter'; ctx.fillText(text, 0, -14); ctx.font = '900 44px Inter'; ctx.letterSpacing = '4px'; ctx.fillText(unit, 4, 78); ctx.letterSpacing = '0px';
   ctx.restore();
 }
 
@@ -2872,9 +2872,7 @@ export function feelBadge(kind, x, y, s = 1, sc = 1, t = 0) {
 export function tooth(x, y, s = 1, { t = 0, sc = 1, wink = false } = {}) {
   if (sc <= 0) return;
   ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * 5); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
-  const P = () => { ctx.beginPath(); ctx.moveTo(-110, -90); ctx.bezierCurveTo(-110, -150, -50, -150, -30, -128); ctx.quadraticCurveTo(0, -110, 30, -128);
-    ctx.bezierCurveTo(50, -150, 110, -150, 110, -90); ctx.bezierCurveTo(112, -10, 90, 40, 80, 90); ctx.bezierCurveTo(70, 170, 30, 170, 24, 110);
-    ctx.quadraticCurveTo(16, 60, 0, 60); ctx.quadraticCurveTo(-16, 60, -24, 110); ctx.bezierCurveTo(-30, 170, -70, 170, -80, 90); ctx.bezierCurveTo(-90, 40, -112, -10, -110, -90); ctx.closePath(); };
+  const P = toothPath;
   P(); ctx.lineWidth = 16; ctx.strokeStyle = C.gumEdge; ctx.stroke(); ctx.fillStyle = C.white; ctx.fill();
   ell(-62, -96, 22, 12, C.gum, -0.5);
   ell(-36, -40, 11, 14, C.ink); circle(-32, -45, 4, C.white);
@@ -2886,3 +2884,285 @@ export function tooth(x, y, s = 1, { t = 0, sc = 1, wink = false } = {}) {
 }
 /** glass of milk: glass() filled with white milk. ~170x230 px at s = 1 */
 export function milkGlass(x, y, s = 1, fill = 0.75, t = 0) { glass(x, y, s, fill, t, 0, C.white); }
+
+// ═════════════════════════ TOOTH SET (2026-11-10 "knock out a tooth") ═════════════════════════
+// The cartoon molar shape (crown on top, two roots) shared by tooth(), toothX(), gumBed() and dentistBadge().
+// Local coords: crown centre at the origin, crown top ≈ -150, crown/root line (gum line) ≈ +30, root tips ≈ +160.
+const ROOT = '#EFE6CF', ROOT_D = '#DDD0AF', SOCKET = '#A8445A', SPIT = '#F3EFE6', MILKY = '#F7F4EE';
+function toothPath() {
+  ctx.beginPath(); ctx.moveTo(-110, -90); ctx.bezierCurveTo(-110, -150, -50, -150, -30, -128); ctx.quadraticCurveTo(0, -110, 30, -128);
+  ctx.bezierCurveTo(50, -150, 110, -150, 110, -90); ctx.bezierCurveTo(112, -10, 90, 40, 80, 90); ctx.bezierCurveTo(70, 170, 30, 170, 24, 110);
+  ctx.quadraticCurveTo(16, 60, 0, 60); ctx.quadraticCurveTo(-16, 60, -24, 110); ctx.bezierCurveTo(-30, 170, -70, 170, -80, 90); ctx.bezierCurveTo(-90, 40, -112, -10, -110, -90); ctx.closePath();
+}
+const bez3 = (p, u) => { const v = 1 - u; return [0, 1].map((k) => v * v * v * p[0][k] + 3 * v * v * u * p[1][k] + 3 * v * u * u * p[2][k] + u * u * u * p[3][k]); };
+/** anchor points + outward normals along the root surface (both roots), for the fiber strands */
+const ROOT_PTS = (() => {
+  const out = [];
+  for (const sd of [-1, 1]) {
+    const A = [[110, -90], [112, -10], [90, 40], [80, 90]].map(([a, b]) => [a * sd, b]);
+    const B = [[80, 90], [70, 170], [30, 170], [24, 110]].map(([a, b]) => [a * sd, b]);
+    for (let u = 0.62; u <= 1.001; u += 0.095) out.push(bez3(A, u));
+    for (let u = 0.12; u <= 0.95; u += 0.115) out.push(bez3(B, u));
+  }
+  return out.map(([px, py], i) => { const cx = Math.sign(px) * 52, cy = 108, dx = px - cx, dy = py - cy, l = Math.hypot(dx, dy) || 1; return [px, py, dx / l, dy / l, i]; });
+})();
+function toothFace(face) {
+  if (!face) return;
+  if (face === 'wow') {
+    for (const sd of [-1, 1]) { ell(sd * 38, -44, 20, 24, C.white); ctx.lineWidth = 5; ctx.strokeStyle = C.ink; ctx.stroke(); circle(sd * 38, -40, 10, C.ink); circle(sd * 38 + 3, -44, 3.5, C.white); }
+    ell(0, 4, 16, 20, C.mouth);
+  } else {
+    ell(-36, -40, 11, 14, C.ink); circle(-32, -45, 4, C.white);
+    if (face === 'wink') { ctx.beginPath(); ctx.arc(36, -36, 13, 1.1 * Math.PI, 1.9 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke(); }
+    else { ell(36, -40, 11, 14, C.ink); circle(40, -45, 4, C.white); }
+    ctx.beginPath(); ctx.moveTo(-24, -8); ctx.quadraticCurveTo(0, 14, 24, -8); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
+  }
+  ctx.globalAlpha = 0.35; ell(-64, -6, 16, 9, C.pink); ell(64, -6, 16, 9, C.pink); ctx.globalAlpha = 1;
+}
+/** the knocked-out tooth, all options (no blood ever). Same molar as tooth(): white crown, cream root (below the gum line).
+ *  o = { face: 'smile' | 'wow' | 'wink' | null, cut 0..1 (cutaway: pink pulp chamber + root canals), fibers 0..1 (fine pink
+ *  fiber strands grow out of the root surface: the periodontal ligament), glow 0..1 (flat yellow halo under the fibers),
+ *  hiRoot 0..1 (yellow ring round the root), rot, sc (pop-in), t (fibers sway), bob (px of gentle bobbing) }.
+ *  ~260x330 px at s = 1 (+40 px of fibers round the root) */
+export function toothX(x, y, s = 1, o = {}) {
+  const sc = o.sc ?? 1; if (sc <= 0 || s <= 0) return;
+  const t = o.t || 0, fib = clamp(o.fibers || 0), gl = clamp(o.glow || 0);
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * (o.bob || 0)); ctx.rotate(o.rot || 0); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const strands = (w, col, k) => {
+    ctx.strokeStyle = col; ctx.lineWidth = w;
+    for (const [px, py, nx, ny, i] of ROOT_PTS) {
+      const L = (24 + 16 * rnd(i + 7)) * k, sway = Math.sin(t * 5 + i) * 5 * k, ex = px + nx * L, ey = py + ny * L;
+      ctx.beginPath(); ctx.moveTo(px - nx * 6, py - ny * 6); ctx.quadraticCurveTo(px + nx * L * 0.5 - ny * (6 + sway), py + ny * L * 0.5 + nx * (6 + sway), ex, ey); ctx.stroke();
+    }
+  };
+  if (gl > 0) { ctx.save(); ctx.globalAlpha = gl; strands(22, C.yellow, Math.max(fib, 0.6) * 1.15); ctx.restore(); }
+  if (fib > 0) strands(6, C.pinkDark, fib);
+  if (o.hiRoot > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(o.hiRoot); ctx.beginPath(); ctx.ellipse(0, 150, 220, 125, 0, 0, TAU); ctx.clip();
+    toothPath(); ctx.lineWidth = 40; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 26; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore();
+  }
+  toothPath(); ctx.lineWidth = 16; ctx.strokeStyle = C.gumEdge; ctx.stroke(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.save(); toothPath(); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(-140, 40); ctx.quadraticCurveTo(0, 18, 140, 40); ctx.lineTo(140, 200); ctx.lineTo(-140, 200); ctx.closePath(); ctx.fillStyle = ROOT; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(60, 40); ctx.quadraticCurveTo(95, 100, 60, 180); ctx.lineTo(140, 200); ctx.lineTo(140, 40); ctx.closePath(); ctx.fillStyle = ROOT_D; ctx.fill();
+  const cut = clamp(o.cut || 0);
+  if (cut > 0) {
+    ctx.globalAlpha = cut;
+    for (const [w, col] of [[30, C.pinkDark], [18, C.pink]]) { ctx.strokeStyle = col; ctx.lineWidth = w; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 26, -10); ctx.quadraticCurveTo(sd * 52, 60, sd * 50, 138); ctx.stroke(); } }
+    ell(0, -22, 58, 44, C.pinkDark); ell(0, -22, 48, 35, C.pink); ell(-18, -36, 14, 7, C.pinkLight, -0.4);
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  ell(-62, -100, 22, 11, C.gum, -0.5);
+  toothFace(o.face);
+  ctx.restore();
+}
+/** gum cross-section diagram (no blood): a pink gum band with two neighbour teeth (roots showing, cutaway) and an empty
+ *  dark-pink socket in the middle. inner() draws the main tooth in the bed's local coords (toothX(0, -lift, 1, ...): lift 0
+ *  = seated). ~860x420 px at s = 1; origin = the seated tooth's crown centre, gum from y +20 to +270 */
+export function gumBed(x, y, s = 1, { inner = null, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-430, 22, 860, 250, 80); ctx.fillStyle = C.pinkDark; ctx.fill();
+  rr(-430, 22, 860, 222, 80); ctx.fillStyle = C.pink; ctx.fill();
+  for (const bx of [-375, -125, 125, 375]) ell(bx, 34, 62, 30, C.pink);
+  for (const bx of [-375, -125, 125, 375]) ell(bx - 10, 22, 26, 8, C.pinkLight, -0.15);
+  ctx.save(); ctx.beginPath(); ctx.ellipse(0, 150, 215, 128, 0, 0, TAU); ctx.clip();
+  ctx.translate(0, 2); ctx.scale(1.13, 1.08); toothPath(); ctx.fillStyle = SOCKET; ctx.fill(); ctx.restore();
+  for (const sd of [-1, 1]) toothX(sd * 250, 0, 1, { face: null });
+  if (inner) inner();
+  ctx.restore();
+}
+/** canvas point of a gumBed's socket centre (where the main tooth's crown centre sits when seated) */
+export const socketAt = (x, y, s = 1, lift = 0) => [x, y - lift * s];
+/** a cartoon hand pinching something between thumb and index finger (back of the hand, flat skin, blue sleeve). The
+ *  fingertips meet round (x, y) with `gap` px between them (local, before s); the arm runs off along `rot` (default -PI/2 =
+ *  straight up, fingers pointing down, index on the left, thumb on the right). The arm is 2000 px long so it always leaves
+ *  the frame. ~330 px wide at s = 1, gap 200 */
+export function pinchHand(x, y, s = 1, { rot = -Math.PI / 2, gap = 200 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const fw = 50, g = gap / 2 + fw / 2 - 6;
+  line([[300, 0], [2200, 0]], C.skinShade, 132); line([[300, 0], [2200, 0]], C.skin, 120);
+  line([[460, 0], [2200, 0]], C.shirtShade, 168); line([[460, -10], [2200, -10]], C.shirt, 148);
+  const fing = (pts, w) => { line(pts, C.skinShade, w + 12); line(pts, C.skin, w); };
+  fing([[150, -96], [70, -g - 6], [8, -g]], fw);                         // index
+  ell(218, 0, 128, 122, C.skinShade); ell(214, -4, 120, 114, C.skin);   // back of the hand
+  for (const [kx, ky] of [[118, -60], [104, -14], [116, 32]]) { circle(kx, ky, 34, C.skinShade); circle(kx + 3, ky - 2, 29, C.skin); }   // curled fingers
+  fing([[180, 90], [92, g + 8], [8, g]], fw + 6);                        // thumb
+  for (const sd of [-1, 1]) ell(20, sd * g, 13, 18, SKIN_HI, 0);         // nails
+  ell(250, -50, 46, 20, SKIN_HI, -0.4);
+  ctx.restore();
+}
+/** scrubbing brush (wooden block, cream bristles pointing down at rot = 0). ~300x150 px at s = 1 */
+export function scrubBrush(x, y, s = 1, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  for (let i = 0; i < 12; i++) { rr(-128 + i * 22, 6, 13, 70, 6); ctx.fillStyle = i % 2 ? BEDDING_D : BEDDING; ctx.fill(); }
+  rr(-150, -70, 300, 92, 34); ctx.fillStyle = WOOD_D; ctx.fill(); rr(-150, -70, 300, 74, 34); ctx.fillStyle = WOOD; ctx.fill();
+  ell(-80, -50, 46, 9, '#D98C63', -0.05);
+  ctx.restore();
+}
+/** kitchen tap (flat steel), seen from the side: wall plate on the left, spout curving down to its mouth at (x, y).
+ *  flow 0..1 = water stream length (len px at 1), t = film time (wobble). ~330x260 px at s = 1 */
+export function tap(x, y, s = 1, flow = 0, t = 0, len = 320) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (flow > 0) {
+    const L = len * clamp(flow), wob = (k) => Math.sin(t * 18 + k * 0.05) * 3;
+    ctx.beginPath(); ctx.moveTo(-20, 0); for (let k = 0; k <= L; k += 20) ctx.lineTo(-20 + wob(k) - k * 0.02, k); ctx.lineTo(18 + wob(L) - L * 0.02, L);
+    for (let k = L; k >= 0; k -= 20) ctx.lineTo(18 + wob(k) - k * 0.02, k); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = WATER_D; ctx.stroke();
+    line([[-6, 10], [-8, L * 0.8]], C.white, 6);
+  }
+  rr(-300, -230, 60, 170, 20); ctx.fillStyle = STEEL_D; ctx.fill();
+  line([[-250, -150], [-60, -150], [0, -110], [0, -16]], STEEL_D, 62); line([[-250, -156], [-60, -156], [-6, -116], [-6, -16]], STEEL, 48);
+  line([[-220, -168], [-80, -168]], STEEL_L, 10);
+  rr(-36, -24, 72, 26, 10); ctx.fillStyle = STEEL_D; ctx.fill();
+  rr(-176, -232, 22, 60, 8); ctx.fillStyle = STEEL_D; ctx.fill(); rr(-220, -252, 110, 34, 16); ctx.fillStyle = C.shirt; ctx.fill(); rr(-214, -250, 60, 12, 6); ctx.fillStyle = '#7FB0EA'; ctx.fill();
+  ctx.restore();
+}
+/** round magnifier lens (graphic): ink ring, light inside, clipped; inner() draws in the lens' local coords (origin = centre,
+ *  1 unit = 1 px at sc = 1). bg = inside colour */
+export function lens(x, y, r, sc = 1, inner = null, bg = C.white) {
+  if (sc <= 0 || r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 16, C.ink);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip(); ctx.fillStyle = bg; ctx.fillRect(-r - 10, -r - 10, 2 * r + 20, 2 * r + 20);
+  if (inner) inner(); ctx.restore();
+  ctx.beginPath(); ctx.arc(0, 0, r + 8, 0, TAU); ctx.lineWidth = 18; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.restore();
+}
+/** compact fridge (white, light-grey side shade, freezer door on top). open 0..1 swings the main door open (hinge on the
+ *  left), showing a pale blue inside with shelves (shelf tops at local y, default [150]); inner() draws the contents in local coords.
+ *  ~420x760 px at s = 1, origin = centre */
+export function fridge(x, y, s = 1, open = 0, inner = null, shelves = [150]) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  rr(-210, -380, 420, 760, 40); ctx.fillStyle = COAT_D; ctx.fill(); rr(-210, -380, 396, 760, 40); ctx.fillStyle = C.white; ctx.fill();
+  rr(-196, -366, 380, 190, 30); ctx.fillStyle = C.gum; ctx.fill(); rr(120, -330, 22, 110, 11); ctx.fillStyle = STEEL_D; ctx.fill();
+  const k = clamp(open), a = k * Math.PI / 2 * 0.96, w = 380 * Math.cos(a), sd = 150 * Math.sin(a);
+  rr(-196, -160, 380, 526, 30); ctx.fillStyle = '#DCEFF7'; ctx.fill();
+  if (k > 0) {
+    ell(-6, -110, 150, 22, C.white);
+    for (const sy of shelves) { rr(-186, sy, 360, 16, 8); ctx.fillStyle = C.white; ctx.fill(); rr(-186, sy + 12, 360, 6, 3); ctx.fillStyle = '#BFD9E6'; ctx.fill(); }
+    if (inner) { ctx.save(); rr(-196, -160, 380, 526, 30); ctx.clip(); inner(); ctx.restore(); }
+  }
+  if (w > 6) { rr(-196, -160, w, 526, 30); ctx.fillStyle = C.white; ctx.fill(); rr(-196 + w - 24, -160, 24, 526, [0, 30, 30, 0]); ctx.fillStyle = C.gum; ctx.fill(); rr(-196 + w - 70, -120, 22, 170, 11); ctx.fillStyle = STEEL_D; ctx.fill(); }
+  if (sd > 6) { rr(-196 - sd, -170, sd + 14, 546, 26); ctx.fillStyle = COAT_D; ctx.fill(); rr(-196 - sd + 12, -150, sd - 10, 506, 18); ctx.fillStyle = C.gum; ctx.fill();
+    for (const sy of [-60, 120]) { rr(-196 - sd + 16, sy, sd - 18, 22, 8); ctx.fillStyle = COAT_D; ctx.fill(); }
+    rr(-200, -160, 16, 526, 6); ctx.fillStyle = C.white; ctx.fill();                       // fridge side wall
+    for (const hy of [-130, 320]) { rr(-206, hy, 22, 34, 6); ctx.fillStyle = STEEL_D; ctx.fill(); } }   // hinges
+  ctx.restore();
+}
+/** milk carton (white, blue gable top, "MILK" in blue). ~160x330 px at s = 1, origin = centre */
+export function milkCarton(x, y, s = 1, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  rr(-74, -170, 148, 26, 6); ctx.fillStyle = C.shirtShade; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-80, -70); ctx.lineTo(-60, -148); ctx.lineTo(60, -148); ctx.lineTo(80, -70); ctx.closePath(); ctx.fillStyle = C.shirt; ctx.fill();
+  rr(-80, -72, 160, 240, 12); ctx.fillStyle = C.white; ctx.fill(); rr(44, -72, 36, 240, [0, 12, 12, 0]); ctx.fillStyle = C.gum; ctx.fill();
+  rr(-80, -72, 160, 40, [12, 12, 0, 0]); ctx.fillStyle = C.shirt; ctx.fill();
+  ctx.fillStyle = C.shirt; ctx.font = '900 46px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('MILK', -4, 40);
+  ell(-4, 112, 40, 22, C.sky);
+  ctx.restore();
+}
+/** a glass of milk with something IN it: neutral glass (no blue), opaque milk, inner() draws the submerged thing in the glass' local coords
+ *  (origin = glass centre, ~150x210 px inner space at s = 1), then the milk goes over it, semi-opaque, with a white surface.
+ *  fill 0..1 = milk level, milk 0..1 = how opaque the milk looks over the thing (0.45 default) */
+export function milkDunk(x, y, s = 1, fill = 0.8, t = 0, inner = null, milk = 0.45) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const body = () => { ctx.beginPath(); ctx.moveTo(-85, -115); ctx.lineTo(85, -115); ctx.lineTo(68, 105); ctx.quadraticCurveTo(66, 118, 52, 118); ctx.lineTo(-52, 118); ctx.quadraticCurveTo(-66, 118, -68, 105); ctx.closePath(); };
+  body(); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.save(); ctx.scale(0.88, 0.92); body(); ctx.fillStyle = '#EEEAE2'; ctx.fill(); body(); ctx.clip(); ctx.scale(1 / 0.88, 1 / 0.92);
+  const lv = lerp(110, -100, clamp(fill)), surf = (xx) => lv + Math.sin(xx * 0.05 + t * 4) * 4;
+  const milkPath = () => { ctx.beginPath(); ctx.moveTo(-120, 240); for (let xx = -120; xx <= 120; xx += 12) ctx.lineTo(xx, surf(xx)); ctx.lineTo(120, 240); ctx.closePath(); };
+  milkPath(); ctx.fillStyle = MILKY; ctx.fill();                       // opaque milk base (blue = water in this channel)
+  if (inner) inner();
+  ctx.save(); ctx.globalAlpha = milk; milkPath(); ctx.fillStyle = C.white; ctx.fill(); ctx.restore();
+  ctx.beginPath(); for (let xx = -120; xx <= 120; xx += 12) xx === -120 ? ctx.moveTo(xx, surf(xx)) : ctx.lineTo(xx, surf(xx)); ctx.strokeStyle = C.white; ctx.lineWidth = 10; ctx.stroke();
+  rr(-62, -84, 14, 168, 7); ctx.fillStyle = C.white; ctx.globalAlpha = 0.7; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  ctx.restore();
+}
+/** small paper cup (white, pink band) with a frothy off-white liquid (saliva) + little bubbles at the top. inner() draws what sits in it
+ *  (local coords, origin = cup centre; the rim is at y = -85), drawn between the back rim and the cup front so it pokes out
+ *  of the top. ~190x190 px at s = 1. sc = pop-in */
+export function smallCup(x, y, s = 1, sc = 1, inner = null) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  ell(0, -85, 92, 20, C.gumEdge); ell(0, -82, 80, 14, SPIT);
+  if (inner) inner();
+  for (const [bx, by, br] of [[-52, -84, 9], [-30, -78, 6], [44, -82, 8], [62, -88, 5]]) { circle(bx, by, br + 3, C.gumEdge); circle(bx, by, br, C.white); }
+  ctx.beginPath(); ctx.moveTo(-92, -85); ctx.lineTo(-66, 90); ctx.quadraticCurveTo(0, 100, 66, 90); ctx.lineTo(92, -85); ctx.quadraticCurveTo(0, -60, -92, -85); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(52, -72); ctx.lineTo(92, -85); ctx.lineTo(66, 90); ctx.quadraticCurveTo(52, 93, 40, 95); ctx.closePath(); ctx.fillStyle = C.gum; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-84, -30); ctx.quadraticCurveTo(0, -12, 84, -30); ctx.lineTo(79, 4); ctx.quadraticCurveTo(0, 22, -79, 4); ctx.closePath(); ctx.fillStyle = C.pinkLight; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-92, -85); ctx.quadraticCurveTo(0, -60, 92, -85); ctx.strokeStyle = C.gumEdge; ctx.lineWidth = 8; ctx.stroke();
+  ctx.restore();
+}
+/** "see a dentist" badge: white disc, ink ring, a smiling cartoon tooth + a red medical cross (no person, no tools).
+ *  ~300 px at s = 1. sc = pop-in */
+export function dentistBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  toothX(-14, 16, 0.6, { face: 'smile' });
+  ctx.save(); ctx.translate(74, -62); circle(0, 0, 40, C.white); rr(-12, -32, 24, 64, 5); ctx.fillStyle = C.red; ctx.fill(); rr(-32, -12, 64, 24, 5); ctx.fill(); ctx.restore();
+  ctx.restore();
+}
+/** comic "POP!" star (graphic): yellow spiky star, ink outline, ink text. ~380 px at s = 1. sc = pop-in */
+export function popStar(x, y, s = 1, sc = 1, t = 0, text = 'POP!') {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(-0.12 + Math.sin(t * 3) * 0.03); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  ctx.beginPath(); for (let i = 0; i < 22; i++) { const an = i * Math.PI / 11 - Math.PI / 2, rad = i % 2 ? 120 : 190 * (0.85 + 0.15 * rnd(i + 5)); ctx.lineTo(Math.cos(an) * rad, Math.sin(an) * rad); } ctx.closePath();
+  ctx.lineWidth = 18; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.font = '900 92px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.ink; ctx.fillText(text, 0, 6);
+  ctx.restore();
+}
+/** flat airliner icon (graphic), side view facing right: white body + ink outline, blue tail and wing, sky-blue windows.
+ *  ~420x200 px at s = 1. rot tilts it (negative = climbing). sc = pop-in */
+export function airplane(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineWidth = 9; ctx.strokeStyle = C.ink;
+  const poly = (P, col) => { ctx.beginPath(); P.forEach(([a, b], i) => (i ? ctx.lineTo(a, b) : ctx.moveTo(a, b))); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); ctx.stroke(); };
+  poly([[-150, -20], [-200, -112], [-150, -112], [-90, -24]], C.shirt);
+  poly([[-40, -8], [40, -8], [-70, -70], [-104, -70]], C.shirtShade);
+  ctx.beginPath(); ctx.moveTo(-200, -30); ctx.lineTo(150, -34); ctx.quadraticCurveTo(212, -30, 214, 4); ctx.quadraticCurveTo(206, 34, 150, 36); ctx.lineTo(-170, 30); ctx.quadraticCurveTo(-210, 26, -210, -2); ctx.closePath();
+  ctx.fillStyle = C.white; ctx.fill(); ctx.stroke();
+  for (let wx = -130; wx <= 100; wx += 38) circle(wx, -6, 9, C.sky);
+  ctx.beginPath(); ctx.moveTo(158, -24); ctx.quadraticCurveTo(190, -22, 198, -6); ctx.lineTo(160, -6); ctx.closePath(); ctx.fillStyle = C.shirtShade; ctx.fill();
+  poly([[-30, 12], [50, 12], [-20, 96], [-64, 96]], C.shirt);
+  ctx.restore();
+}
+/** next-episode tease (ears pop): a round lens with a side-view head (facing right) cut open to show the ear, the throat
+ *  and the thin tube linking them (eustachian tube). tube 0..1 = flat yellow glow along the tube; flow = film-time phase of
+ *  air bubbles running along it (-1 = none); ear / throat 0..1 = yellow rings on them. r = lens radius. sc = pop-in */
+export const EAR = { ear: [-70, -20], mid: [-16, -6], naso: [96, 22], throat: [70, 200] };
+export function earCut(x, y, r, { tube = 0, flow = -1, ear = 0, throat = 0, sc = 1, t = 0 } = {}) {
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = '#DCEFF7'; ctx.fillRect(-320, -320, 640, 640);
+    const head = () => { ctx.beginPath(); ctx.moveTo(-80, 340); ctx.lineTo(-96, 150); ctx.bezierCurveTo(-250, 90, -260, -250, -40, -280); ctx.bezierCurveTo(110, -296, 190, -200, 186, -110);
+      ctx.quadraticCurveTo(196, -70, 228, -14); ctx.quadraticCurveTo(232, 6, 192, 12); ctx.quadraticCurveTo(204, 40, 192, 60); ctx.quadraticCurveTo(206, 80, 190, 100);
+      ctx.quadraticCurveTo(188, 150, 130, 160); ctx.lineTo(120, 340); ctx.closePath(); };
+    ctx.beginPath(); ctx.ellipse(10, 400, 260, 110, 0, Math.PI, TAU); ctx.fillStyle = C.shirt; ctx.fill();
+    head(); ctx.fillStyle = C.skin; ctx.fill();
+    ctx.save(); head(); ctx.clip(); ell(-80, -200, 220, 130, C.hair, -0.2); ell(-200, -60, 70, 150, C.hair, 0.1); ctx.restore();
+    ctx.beginPath(); ctx.moveTo(-120, -250); ctx.quadraticCurveTo(-30, -280, 60, -262); ctx.strokeStyle = C.hairHi; ctx.lineWidth = 12; ctx.stroke();
+    // inside: nose cavity + throat (pink), ear canal + middle ear, the tube
+    const TH = [[150, 0], [EAR.naso[0], EAR.naso[1]], [72, 90], [64, 200], [60, 340]], TB = [[EAR.mid[0], EAR.mid[1]], [36, 4], [EAR.naso[0], EAR.naso[1]]];
+    if (throat > 0) { ctx.save(); ctx.globalAlpha = clamp(throat); line(TH.slice(1), C.ink, 92); line(TH.slice(1), C.yellow, 80); ctx.restore(); }
+    line(TH, C.pinkDark, 56); line(TH, C.pink, 42); line([[140, -6], [100, 14], [80, 80]], C.pinkLight, 10);
+    if (tube > 0) { ctx.save(); ctx.globalAlpha = clamp(tube); line(TB, C.ink, 52); line(TB, C.yellow, 42); ctx.restore(); }
+    line(TB, C.pinkDark, 24); line(TB, C.pink, 14);
+    line([[EAR.ear[0], EAR.ear[1]], [EAR.mid[0] - 14, EAR.mid[1] - 4]], C.mouth, 18);
+    circle(EAR.mid[0], EAR.mid[1], 20, C.pinkDark); circle(EAR.mid[0], EAR.mid[1], 13, C.pink);
+    if (flow >= 0) for (let k = 0; k < 3; k++) {
+      const u = (flow * 0.8 + k / 3) % 1, P = u < 0.5 ? [lerp(TB[0][0], TB[1][0], u * 2), lerp(TB[0][1], TB[1][1], u * 2)] : [lerp(TB[1][0], TB[2][0], u * 2 - 1), lerp(TB[1][1], TB[2][1], u * 2 - 1)];
+      circle(P[0], P[1], 10, C.ink); circle(P[0], P[1], 7, C.white);
+    }
+    // outer ear (on top: the side of the head) with a cut notch so the canal shows
+    if (ear > 0) { ctx.save(); ctx.globalAlpha = clamp(ear); ctx.beginPath(); ctx.ellipse(EAR.ear[0] - 22, EAR.ear[1] + 6, 70, 92, 0.15, 0, TAU); ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 16; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+    ctx.beginPath(); ctx.ellipse(EAR.ear[0] - 22, EAR.ear[1] + 6, 44, 66, 0.15, 0.5 * Math.PI, 1.5 * Math.PI + 0.9); ctx.lineWidth = 26; ctx.strokeStyle = C.skinShade; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(EAR.ear[0] - 22, EAR.ear[1] + 6, 44, 66, 0.15, 0.5 * Math.PI, 1.5 * Math.PI + 0.9); ctx.lineWidth = 14; ctx.strokeStyle = C.skin; ctx.stroke();
+    // face: eye, brow, cheek, smile (profile)
+    ell(120, -100, 12, 15, C.ink); circle(124, -105, 4, C.white);
+    ctx.beginPath(); ctx.moveTo(96, -138); ctx.quadraticCurveTo(122, -150, 150, -142); ctx.strokeStyle = C.hair; ctx.lineWidth = 11; ctx.stroke();
+    ctx.globalAlpha = 0.3; ell(130, -30, 28, 16, C.pink); ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.moveTo(160, 64); ctx.quadraticCurveTo(178, 74, 190, 64); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.stroke();
+    ctx.restore();
+  }, '#DCEFF7');
+}

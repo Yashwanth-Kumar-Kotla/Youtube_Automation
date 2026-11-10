@@ -1,0 +1,60 @@
+{
+  "title": "What Happens If You Knock Out a Tooth?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'What To Do When You Knock Out a Tooth' (Todd Coy, DMD, Aug 28 2023) (if the tooth is replaced into the socket or placed in proper storage within five minutes of being knocked out, it's likely it will survive; out of the mouth and dry for more than 60 minutes, its chance for survival decreases significantly; handle the tooth by the crown (the chewing surface), never touch the root; the root contains important fibers called periodontal ligaments, which are necessary for proper healing; don't scrub or soak it; gently push it back into its socket but don't force it; do not put it in water; cover it in milk: the makeup of milk helps maintain the periodontal ligaments; or store it between gums and cheek where saliva moistens it; go immediately to a dentist or the nearest emergency department; baby teeth aren't re-implanted): https://health.clevelandclinic.org/must-act-fast-tooth-gets-knocked/",
+    "Mayo Clinic, 'Tooth loss: First aid' (replant an adult tooth right away or as quickly as possible; handle it by the top (crown) only, don't touch the roots; don't scrub it; try to put it back in the socket; if it can't go back in, put it in cow's milk or your own saliva; don't use tap water: too much tap water could kill the cells on the root surface that help reattach the tooth; see a dentist right away, or the emergency department if the office is closed; baby teeth are not replanted): https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635",
+    "Tease (next video): Mayo Clinic, 'Airplane ear' (a narrow passage called the eustachian tube connects the middle ear to the back of the nose and throat; swallowing or yawning opens it and evens out air pressure): https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701"
+  ],
+  "lines": [
+    {
+      "text": "What happens if you knock out a tooth?",
+      "caps": "WHAT *HAPPENS IF | YOU *KNOCK OUT | A *TOOTH?"
+    },
+    {
+      "text": "Put it back within five minutes, it'll likely survive.",
+      "caps": "PUT IT *BACK | WITHIN 5 *MINUTES | IT'LL LIKELY *SURVIVE"
+    },
+    {
+      "text": "And the backup plan is sitting in your fridge.",
+      "caps": "AND THE *BACKUP | PLAN IS *SITTING | IN YOUR *FRIDGE"
+    },
+    {
+      "text": "Its root has tiny fibers it needs to heal,",
+      "caps": "ITS *ROOT HAS | TINY *FIBERS IT | NEEDS TO *HEAL"
+    },
+    {
+      "text": "so grab it by the crown, not the root, no scrubbing.",
+      "caps": "SO *GRAB IT | BY THE *CROWN | NOT THE *ROOT | NO *SCRUBBING"
+    },
+    {
+      "text": "Adult tooth? Gently push it back in place.",
+      "caps": "*ADULT TOOTH? | GENTLY *PUSH IT | *BACK IN PLACE"
+    },
+    {
+      "text": "Won't fit? Skip the water, it can harm the root cells.",
+      "caps": "WON'T *FIT? | SKIP THE *WATER | IT CAN *HARM | THE ROOT *CELLS"
+    },
+    {
+      "text": "Instead, cover it in milk, which helps protect those fibers,",
+      "caps": "INSTEAD, *COVER | IT IN *MILK | WHICH HELPS *PROTECT | THOSE *FIBERS"
+    },
+    {
+      "text": "or your own spit, then see a dentist right away.",
+      "caps": "OR YOUR *OWN | *SPIT, THEN | SEE A *DENTIST | RIGHT *AWAY"
+    },
+    {
+      "text": "Next Body File: what happens when your ears pop,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOUR EARS *POP"
+    },
+    {
+      "text": "and the hidden tube linking your ears to your throat.",
+      "caps": "AND THE *HIDDEN | *TUBE LINKING | YOUR *EARS TO | YOUR *THROAT"
+    }
+  ]
+}
