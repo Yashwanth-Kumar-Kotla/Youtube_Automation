@@ -6,3 +6,4 @@
 - 2026-11-09 15:13 · 2026-11-09-body-02 added · conf 0.7 · question+mystery-souvenir · What happens if you get struck by lightning?
 - 2026-11-09 15:31 · 2026-11-09-body-03 added · conf 0.7 · question+number · What happens if you drink too much water?
 - 2026-11-09 15:53 · 2026-11-09-body-04 added · conf 0.7 · question+myth-loop · What happens if you crack your knuckles every day?
+- 2026-11-09 19:36 · 2026-11-08-body-01 posted · conf 0.7 · {'posted': '2026-11-09', 'episode': 2, 'youtube': '', 'tiktok': 'v_inbox_file~v2.7706350688263194637'}
