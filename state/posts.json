@@ -18,6 +18,18 @@
         "id": "2026-11-09-body-01",
         "date": "2026-11-10",
         "episode": 3,
+        "manual": true,
+        "released": true
+      }
+    ]
+  },
+  "2026-11-11": {
+    "body": [
+      {
+        "slot": 0,
+        "id": "2026-11-09-body-01",
+        "date": "2026-11-11",
+        "episode": 3,
         "manual": true
       }
     ]

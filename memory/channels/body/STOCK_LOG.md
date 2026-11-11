@@ -16,3 +16,5 @@
 - 2026-11-10 09:18 · 2026-11-10-body-06 added · conf 0.7 · question+reframe-loop · What happens when your foot falls asleep?
 - 2026-11-10 09:41 · 2026-11-10-body-07 added · conf 0.7 · question+countdown-number · What happens if you knock out a tooth?
 - 2026-11-10 09:54 · 2026-11-10-body-08 added · conf 0.7 · question+hidden-tube-reveal · What happens when your ears pop?
+- 2026-11-11 00:35 · 2026-11-09-body-01 scheduled → ready · slot on 2026-11-10 missed its window
+- 2026-11-11 00:35 · 2026-11-09-body-01 ready → scheduled · slot 0 on 2026-11-11, episode 3, manual upload
