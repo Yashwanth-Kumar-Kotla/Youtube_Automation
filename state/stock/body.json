@@ -122,9 +122,15 @@
    "research_file": "none",
    "length": 43.5,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "scheduled",
    "branch": "stock/body/2026-11-09-body-02",
-   "history": [],
+   "history": [
+    {
+     "at": "2026-11-12T05:25-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-12, episode 4, manual upload"
+    }
+   ],
    "description": "About 9 in 10 people struck by lightning survive, and the fern-like Lichtenberg figures some get are not burns: they fade within hours. If someone is struck, they're safe to touch, so call 911 and start CPR.\nNext Body File: what happens if you drink too much water, and why it can make your brain swell.\nFollow Body Files for a new one every day.\n#bodyfiles #lightning #humanbody #science #shorts #healthfacts\n\nSources:\nNWS (NOAA): https://www.weather.gov/safety/lightning-temperature\nNWS (NOAA): https://www.weather.gov/safety/lightning-odds\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC5253516/\nNWS (NOAA): https://www.weather.gov/safety/lightning-medical\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC10329080/\nNWS (NOAA): https://www.weather.gov/media/safety/Dr_Lightning_Guide-Victims.pdf\nNWS (NOAA): https://www.weather.gov/safety/lightning\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia"
   },
   "2026-11-09-body-03": {
