@@ -227,7 +227,8 @@ def run(dry: bool = False) -> int:
                     try:
                         from . import tiktok
                         cap = f"{v['title']} " + " ".join(f"#{t}" for t in tags[:6])
-                        rec["tiktok"] = tiktok.upload(ch, mp4, cap, c["tiktok"].get("mode", "draft"))
+                        pre = state.load("tiktok_drafts.json", {}).get(v["id"])  # already sent by tiktok_bulk
+                        rec["tiktok"] = pre or tiktok.upload(ch, mp4, cap, c["tiktok"].get("mode", "draft"))
                         print(f"[{ch}] TikTok {c['tiktok'].get('mode', 'draft')} {rec['tiktok']} ← {v['id']}")
                     except Exception:
                         fails += 1

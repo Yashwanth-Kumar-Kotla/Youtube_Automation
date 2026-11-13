@@ -1,0 +1,37 @@
+name: tiktok-drafts
+# One-off (owner request): send the stocked videos listed in .github/tiktok-drafts-request to the TikTok inbox as drafts.
+on:
+  push:
+    branches: [main]
+    paths: [".github/tiktok-drafts-request"]
+  workflow_dispatch:
+permissions: { contents: write }
+concurrency: publish
+jobs:
+  drafts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -q pyyaml requests google-api-python-client google-auth
+      - name: Send drafts to the TikTok inbox
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_BODY_REFRESH_TOKEN: ${{ secrets.TIKTOK_BODY_REFRESH_TOKEN }}
+        run: |
+          mkdir -p state/audit
+          python -u -m pipeline.tiktok_bulk 2>&1 | tee state/audit/tiktok_drafts_log.txt; exit ${PIPESTATUS[0]}
+      - name: Save
+        if: always()
+        run: |
+          git config user.name "autoshorts-bot"
+          git config user.email "autoshorts-bot@users.noreply.github.com"
+          git add state/ || true
+          git diff --cached --quiet && exit 0
+          git commit -m "tiktok: bulk drafts $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done; exit 1
