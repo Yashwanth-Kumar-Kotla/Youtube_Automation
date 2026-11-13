@@ -53,7 +53,8 @@ def _put_file(upload_url: str, mp4: str, size: int, chunk: int):
                 raise RuntimeError(f"TikTok chunk upload failed {r.status_code}: {r.text[:300]}")
 
 
-def upload(channel: str, mp4: str, caption: str, mode: str = "draft") -> str:
+def upload(channel: str, mp4: str, caption: str, mode: str = "draft", privacy: str | None = None) -> str:
+    """privacy (direct mode only): force a level, e.g. "SELF_ONLY" for a private test post."""
     tok = _token(channel)
     h = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json; charset=UTF-8"}
     size = os.path.getsize(mp4)
@@ -63,7 +64,9 @@ def upload(channel: str, mp4: str, caption: str, mode: str = "draft") -> str:
     if mode == "direct":
         info = requests.post(f"{API}/post/publish/creator_info/query/", headers=h, timeout=30).json()
         levels = info.get("data", {}).get("privacy_level_options", ["SELF_ONLY"])
-        privacy = "PUBLIC_TO_EVERYONE" if "PUBLIC_TO_EVERYONE" in levels else levels[0]
+        if privacy and privacy not in levels:
+            raise RuntimeError(f"Privacy {privacy} not allowed for this account; options: {levels}")
+        privacy = privacy or ("PUBLIC_TO_EVERYONE" if "PUBLIC_TO_EVERYONE" in levels else levels[0])
         body = {"post_info": {"title": caption[:2200], "privacy_level": privacy, "disable_duet": False,
                               "disable_comment": False, "disable_stitch": False, "video_cover_timestamp_ms": 1500,
                               "is_aigc": True},

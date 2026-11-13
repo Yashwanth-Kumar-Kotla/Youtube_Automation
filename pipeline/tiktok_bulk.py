@@ -16,15 +16,18 @@ import traceback
 from . import state, stock, tiktok
 from .publish import ROOT, download
 
-REQ = os.path.join(ROOT, ".github", "tiktok-drafts-request")
+REQ = os.path.join(ROOT, ".github", os.environ.get("TIKTOK_REQUEST", "tiktok-drafts-request"))
 
 
 def main() -> int:
     ch = "body"
     lines = [l.split("#")[0].strip() for l in open(REQ)] if os.path.exists(REQ) else []
     mode = next((l.split(":", 1)[1].strip() for l in lines if l.startswith("mode:")), "draft")
-    ids = [i for i in lines if i and not i.startswith("mode:")]
-    print(f"mode: {mode}")
+    opt = lambda k, d: next((l.split(":", 1)[1].strip() for l in lines if l.startswith(k + ":")), d)
+    privacy = opt("privacy", None)
+    record = opt("record", "yes") != "no"          # a test post must not stop the publisher sending it later
+    ids = [i for i in lines if i and ":" not in i]
+    print(f"mode: {mode}  privacy: {privacy or 'default'}  record: {record}")
     sent = state.load("tiktok_drafts.json", {})
     posts = state.load("posts.json", {})
     already = {r["id"] for d in posts.values() for r in d.get(ch, []) if r.get("tiktok")}
@@ -43,9 +46,10 @@ def main() -> int:
                 download(v["branch"], tmp)
                 tags = [h.lstrip("#").replace(" ", "") for h in v.get("hashtags", [])][:6]
                 cap = f"{v.get('title', '')} " + " ".join(f"#{t}" for t in tags)
-                pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode)
-            sent[vid] = pid
-            state.save("tiktok_drafts.json", sent)
+                pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode, privacy)
+            if record:
+                sent[vid] = pid
+                state.save("tiktok_drafts.json", sent)
             print(f"{mode} sent {vid} -> {pid}  ({v.get('title', '')})")
         except Exception:
             traceback.print_exc()
