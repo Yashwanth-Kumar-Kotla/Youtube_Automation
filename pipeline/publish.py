@@ -227,8 +227,19 @@ def run(dry: bool = False) -> int:
                     try:
                         from . import tiktok
                         cap = f"{v['title']} " + " ".join(f"#{t}" for t in tags[:6])
-                        pre = state.load("tiktok_drafts.json", {}).get(v["id"])  # already sent by tiktok_bulk
-                        rec["tiktok"] = pre or tiktok.upload(ch, mp4, cap, c["tiktok"].get("mode", "draft"))
+                        pre = state.load("tiktok_drafts.json", {}).get(v["id"])  # already sent by tiktok_bulk/approval
+                        tmode = c["tiktok"].get("mode", "draft")
+                        ok = state.load("tiktok/approved.json", {}).get(v["id"]) if tmode == "direct" else None
+                        if pre:
+                            rec["tiktok"] = pre
+                        elif tmode == "direct" and not ok:   # Direct Post only with the creator's own approval
+                            print(f"::warning::[{ch}] {v['id']} not approved on the TikTok approval page yet; not posted to TikTok")
+                        elif ok:
+                            pi = {k: ok[k] for k in ("title", "privacy_level", "disable_comment", "disable_duet",
+                                                     "disable_stitch", "brand_organic_toggle", "brand_content_toggle")}
+                            rec["tiktok"] = tiktok.upload(ch, mp4, pi["title"], "direct", pi["privacy_level"], pi)
+                        else:
+                            rec["tiktok"] = tiktok.upload(ch, mp4, cap, tmode)
                         print(f"[{ch}] TikTok {c['tiktok'].get('mode', 'draft')} {rec['tiktok']} ← {v['id']}")
                     except Exception:
                         fails += 1

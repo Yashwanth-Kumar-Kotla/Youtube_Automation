@@ -1,0 +1,41 @@
+name: tiktok-approve
+# Runs when the owner taps Post on the approval page (yashwanth-kumar-kotla.github.io/tiktok/post), which opens an
+# issue "[tiktok-post] <id> <nonce>". Only the repo owner's issues are acted on. Result is commented on the issue.
+on:
+  issues:
+    types: [opened]
+permissions: { contents: write, issues: write }
+concurrency: publish
+jobs:
+  approve:
+    if: github.event.issue.user.login == github.repository_owner && startsWith(github.event.issue.title, '[tiktok-post]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -q pyyaml requests google-api-python-client google-auth
+      - name: Pick the app (sandbox or production) from the issue body
+        id: app
+        env: { BODY: "${{ github.event.issue.body }}" }
+        run: |
+          if printf '%s' "$BODY" | grep -q '"app": *"sandbox"'; then echo "app=sandbox" >> "$GITHUB_OUTPUT"; else echo "app=prod" >> "$GITHUB_OUTPUT"; fi
+      - name: Post to TikTok with the creator's choices
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TIKTOK_APP: ${{ steps.app.outputs.app }}
+          TIKTOK_CLIENT_KEY: ${{ steps.app.outputs.app == 'sandbox' && secrets.TIKTOK_SANDBOX_CLIENT_KEY || secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ steps.app.outputs.app == 'sandbox' && secrets.TIKTOK_SANDBOX_CLIENT_SECRET || secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_BODY_REFRESH_TOKEN: ${{ steps.app.outputs.app == 'sandbox' && secrets.TIKTOK_SANDBOX_REFRESH_TOKEN || secrets.TIKTOK_BODY_REFRESH_TOKEN }}
+        run: python -u -m pipeline.tiktok_approve
+      - name: Save
+        if: always()
+        run: |
+          git config user.name "autoshorts-bot"
+          git config user.email "autoshorts-bot@users.noreply.github.com"
+          git add state/ || true
+          git diff --cached --quiet && exit 0
+          git commit -m "tiktok: approval #${{ github.event.issue.number }}"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done; exit 1

@@ -53,8 +53,10 @@ def _put_file(upload_url: str, mp4: str, size: int, chunk: int):
                 raise RuntimeError(f"TikTok chunk upload failed {r.status_code}: {r.text[:300]}")
 
 
-def upload(channel: str, mp4: str, caption: str, mode: str = "draft", privacy: str | None = None) -> str:
-    """privacy (direct mode only): force a level, e.g. "SELF_ONLY" for a private test post."""
+def upload(channel: str, mp4: str, caption: str, mode: str = "draft", privacy: str | None = None,
+           post_info: dict | None = None) -> str:
+    """privacy (direct mode only): force a level, e.g. "SELF_ONLY" for a private test post.
+    post_info (direct mode only): the creator's own choices from the approval page; overrides the defaults."""
     tok = _token(channel)
     h = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json; charset=UTF-8"}
     size = os.path.getsize(mp4)
@@ -71,6 +73,8 @@ def upload(channel: str, mp4: str, caption: str, mode: str = "draft", privacy: s
                               "disable_comment": False, "disable_stitch": False, "video_cover_timestamp_ms": 1500,
                               "is_aigc": True},
                 "source_info": src}
+        if post_info:
+            body["post_info"].update(post_info)
         url = f"{API}/post/publish/video/init/"
     else:
         body = {"source_info": src}
@@ -81,3 +85,21 @@ def upload(channel: str, mp4: str, caption: str, mode: str = "draft", privacy: s
         raise RuntimeError(f"TikTok init failed: {j}")
     _put_file(j["data"]["upload_url"], mp4, size, chunk)
     return j["data"]["publish_id"]
+
+
+def creator_info(channel: str) -> dict:
+    """What TikTok says this creator can post right now (nickname, avatar, privacy options, interaction limits)."""
+    tok = _token(channel)
+    h = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json; charset=UTF-8"}
+    j = requests.post(f"{API}/post/publish/creator_info/query/", headers=h, timeout=30).json()
+    err = j.get("error", {})
+    if err.get("code") not in (None, "ok"):
+        return {"error": err.get("code"), "message": err.get("message", "")}
+    return j.get("data", {})
+
+
+def status(channel: str, publish_id: str) -> dict:
+    tok = _token(channel)
+    h = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json; charset=UTF-8"}
+    return requests.post(f"{API}/post/publish/status/fetch/", headers=h, timeout=30,
+                         json={"publish_id": publish_id}).json()

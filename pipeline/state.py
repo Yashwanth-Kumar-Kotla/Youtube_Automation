@@ -10,8 +10,9 @@ STATE = os.path.join(ROOT, "state")
 
 
 def _path(name: str) -> str:
-    os.makedirs(STATE, exist_ok=True)
-    return os.path.join(STATE, name)
+    p = os.path.join(STATE, name)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    return p
 
 
 def load(name: str, default):
