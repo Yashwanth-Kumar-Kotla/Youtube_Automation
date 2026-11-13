@@ -21,6 +21,10 @@ def main() -> int:
         print("connected TikTok account:", u.get("data", {}).get("user"), u.get("error", {}).get("code"))
     except Exception as e:
         print("user info failed:", e)
+    ci = requests.post("https://open.tiktokapis.com/v2/post/publish/creator_info/query/", headers=h, timeout=30).json()
+    print("creator_info privacy options:", ci.get("data", {}).get("privacy_level_options"),
+          "nickname:", ci.get("data", {}).get("creator_nickname"), "err:", ci.get("error", {}).get("code"),
+          ci.get("error", {}).get("message", "")[:200])
     for vid, pid in ids.items():
         j = requests.post("https://open.tiktokapis.com/v2/post/publish/status/fetch/", headers=h, timeout=30,
                           json={"publish_id": pid}).json()
