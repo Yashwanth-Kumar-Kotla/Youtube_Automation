@@ -1,0 +1,10 @@
+mode: direct  privacy: SELF_ONLY  record: False
+Traceback (most recent call last):
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 49, in main
+    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode, privacy)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 81, in upload
+    raise RuntimeError(f"TikTok init failed: {j}")
+RuntimeError: TikTok init failed: {'error': {'code': 'unaudited_client_can_only_post_to_private_accounts', 'message': 'Please review our integration guidelines at https://developers.tiktok.com/doc/content-sharing-guidelines/', 'log_id': '202611132252156F7094ADF7332E35B9D7'}}
+stopped at 2026-11-10-body-05; the rest can be sent by re-running
+6 drafts recorded in state/tiktok_drafts.json
