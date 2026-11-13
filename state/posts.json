@@ -19,7 +19,8 @@
         "date": "2026-11-10",
         "episode": 3,
         "manual": true,
-        "released": true
+        "released": true,
+        "youtube": "06QOx0awTm0"
       }
     ]
   },
@@ -31,7 +32,8 @@
         "date": "2026-11-11",
         "episode": 3,
         "manual": true,
-        "tiktok": "v_inbox_file~v2.7707115665186408478"
+        "tiktok": "v_inbox_file~v2.7707115665186408478",
+        "youtube": "06QOx0awTm0"
       }
     ]
   },
@@ -43,7 +45,8 @@
         "date": "2026-11-12",
         "episode": 4,
         "manual": true,
-        "tiktok": "v_inbox_file~v2.7707456855953524749"
+        "tiktok": "v_inbox_file~v2.7707456855953524749",
+        "youtube": "ydfZSZtqBrI"
       }
     ]
   },
@@ -54,7 +57,8 @@
         "id": "2026-11-09-body-03",
         "date": "2026-11-13",
         "episode": 5,
-        "manual": true
+        "manual": true,
+        "youtube": "JE-zKZZTRrM"
       }
     ]
   }
