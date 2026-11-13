@@ -1,15 +1,10 @@
-skip 2026-11-09-body-03: already in the TikTok inbox
-skip 2026-11-09-body-04: already in the TikTok inbox
-skip 2026-11-10-body-01: already in the TikTok inbox
-skip 2026-11-10-body-02: already in the TikTok inbox
-skip 2026-11-10-body-03: already in the TikTok inbox
-skip 2026-11-10-body-04: already in the TikTok inbox
+mode: direct
 Traceback (most recent call last):
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 42, in main
-    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), v.get("title", ""), "draft")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 46, in main
+    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 78, in upload
     raise RuntimeError(f"TikTok init failed: {j}")
-RuntimeError: TikTok init failed: {'error': {'code': 'spam_risk_too_many_pending_share', 'message': 'spam_risk_too_many_pending_share', 'log_id': '202611132145159C2449AA99F53B2B2861'}}
+RuntimeError: TikTok init failed: {'error': {'code': 'unaudited_client_can_only_post_to_private_accounts', 'message': 'Please review our integration guidelines at https://developers.tiktok.com/doc/content-sharing-guidelines/', 'log_id': '2026111322075923DDEE93C27C7D2D7FF5'}}
 stopped at 2026-11-10-body-05; the rest can be sent by re-running
 6 drafts recorded in state/tiktok_drafts.json
