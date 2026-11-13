@@ -1,15 +1,15 @@
-draft sent 2026-11-09-body-03 -> v_inbox_file~v2.7707775041915799566  (What Happens If You Drink Too Much Water?)
-draft sent 2026-11-09-body-04 -> v_inbox_file~v2.7707775086169917454  (What Happens If You Crack Your Knuckles Every Day?)
-draft sent 2026-11-10-body-01 -> v_inbox_file~v2.7707775038876174350  (What Happens If You Sneeze With Your Eyes Open?)
-draft sent 2026-11-10-body-02 -> v_inbox_file~v2.7707775117597673486  (What Happens to Your Body in Space Without a Suit?)
-draft sent 2026-11-10-body-03 -> v_inbox_file~v2.7707775121100523533  (What Happens If Your Hiccups Won't Stop?)
-draft sent 2026-11-10-body-04 -> v_inbox_file~v2.7707775029723334670  (What Happens When You Get Brain Freeze?)
+skip 2026-11-09-body-03: already in the TikTok inbox
+skip 2026-11-09-body-04: already in the TikTok inbox
+skip 2026-11-10-body-01: already in the TikTok inbox
+skip 2026-11-10-body-02: already in the TikTok inbox
+skip 2026-11-10-body-03: already in the TikTok inbox
+skip 2026-11-10-body-04: already in the TikTok inbox
 Traceback (most recent call last):
   File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 42, in main
     pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), v.get("title", ""), "draft")
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 78, in upload
     raise RuntimeError(f"TikTok init failed: {j}")
-RuntimeError: TikTok init failed: {'data': {}, 'error': {'code': 'rate_limit_exceeded', 'message': 'The API rate limit exceeded. Please try again later.', 'log_id': '20261113214425CA9878A31282F2358E1C'}}
+RuntimeError: TikTok init failed: {'error': {'code': 'spam_risk_too_many_pending_share', 'message': 'spam_risk_too_many_pending_share', 'log_id': '202611132145159C2449AA99F53B2B2861'}}
 stopped at 2026-11-10-body-05; the rest can be sent by re-running
 6 drafts recorded in state/tiktok_drafts.json
