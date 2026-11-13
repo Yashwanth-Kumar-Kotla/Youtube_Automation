@@ -1,8 +1,9 @@
 connected TikTok account: None scope_not_authorized
+creator_info privacy options: ['PUBLIC_TO_EVERYONE', 'MUTUAL_FOLLOW_FRIENDS', 'SELF_ONLY'] nickname: what if err: ok 
 2026-11-09-body-03: status=SEND_TO_USER_INBOX fail_reason=None err=ok
 2026-11-09-body-04: status=SEND_TO_USER_INBOX fail_reason=None err=ok
-2026-11-10-body-01: status=SEND_TO_USER_INBOX fail_reason=None err=ok
-2026-11-10-body-02: status=SEND_TO_USER_INBOX fail_reason=None err=ok
+2026-11-10-body-01: status=PUBLISH_COMPLETE fail_reason=None err=ok
+2026-11-10-body-02: status=PUBLISH_COMPLETE fail_reason=None err=ok
 2026-11-10-body-03: status=SEND_TO_USER_INBOX fail_reason=None err=ok
 2026-11-10-body-04: status=SEND_TO_USER_INBOX fail_reason=None err=ok
 2026-11-08-body-01: status=PUBLISH_COMPLETE fail_reason=None err=ok
