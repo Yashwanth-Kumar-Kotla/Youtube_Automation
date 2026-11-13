@@ -79,3 +79,40 @@ What Happens If You Get Struck by Lightning? #bodyfiles #lightning #humanbody #s
 Have you ever been close enough to a lightning strike to feel it? Where were you?
 ```
 
+## body: What Happens If You Drink Too Much Water? | Body Files #5
+
+- **Download:** https://github.com/Yashwanth-Kumar-Kotla/Youtube_Automation/raw/stock/body/2026-11-09-body-03/2026-11-09-body-03.mp4 (cover frame: `2026-11-09-body-03.jpg` on the same branch)
+- **Best time:** 17:00 Central (schedule it in Studio, or post now). TikTok: 19:00.
+- **Settings:** Not made for kids · Altered content: No · Category: Education · Comments on
+
+**Title** (paste exactly; the publisher matches on it)
+```
+What Happens If You Drink Too Much Water? | Body Files #5
+```
+**Description**
+```
+Drinking about a gallon of water in an hour or two can dilute your blood sodium, so water moves into your cells and they swell, including in your brain. It's rare, and drinking water is vital: drink when you're thirsty.
+Next Body File: what happens if you crack your knuckles every day, and what's really making that pop.
+Follow Body Files for a new one every day.
+#bodyfiles #water #hydration #humanbody #science #shorts #healthfacts
+
+Sources:
+Cleveland Clinic: https://my.clevelandclinic.org/health/diseases/water-intoxication
+Mayo Clinic: https://www.mayoclinic.org/diseases-conditions/hyponatremia/symptoms-causes/syc-20373711
+MedlinePlus (NIH): https://medlineplus.gov/ency/article/000394.htm
+Cleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia
+Cleveland Clinic: https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you
+```
+**Tags**
+```
+bodyfiles, water, hydration, humanbody, science, shorts, healthfacts
+```
+**TikTok caption**
+```
+What Happens If You Drink Too Much Water? #bodyfiles #water #hydration #humanbody #science #fyp
+```
+**Pinned comment** (the publisher posts it for you on YouTube; on TikTok paste it yourself)
+```
+How much water do you actually drink in a day? Be honest.
+```
+

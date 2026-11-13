@@ -19,3 +19,4 @@
 - 2026-11-11 00:35 · 2026-11-09-body-01 scheduled → ready · slot on 2026-11-10 missed its window
 - 2026-11-11 00:35 · 2026-11-09-body-01 ready → scheduled · slot 0 on 2026-11-11, episode 3, manual upload
 - 2026-11-12 05:25 · 2026-11-09-body-02 ready → scheduled · slot 0 on 2026-11-12, episode 4, manual upload
+- 2026-11-13 02:04 · 2026-11-09-body-03 ready → scheduled · slot 0 on 2026-11-13, episode 5, manual upload

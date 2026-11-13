@@ -161,9 +161,15 @@
    "research_file": "none",
    "length": 37.4,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "scheduled",
    "branch": "stock/body/2026-11-09-body-03",
-   "history": [],
+   "history": [
+    {
+     "at": "2026-11-13T02:04-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-13, episode 5, manual upload"
+    }
+   ],
    "description": "Drinking about a gallon of water in an hour or two can dilute your blood sodium, so water moves into your cells and they swell, including in your brain. It's rare, and drinking water is vital: drink when you're thirsty.\nNext Body File: what happens if you crack your knuckles every day, and what's really making that pop.\nFollow Body Files for a new one every day.\n#bodyfiles #water #hydration #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/water-intoxication\nMayo Clinic: https://www.mayoclinic.org/diseases-conditions/hyponatremia/symptoms-causes/syc-20373711\nMedlinePlus (NIH): https://medlineplus.gov/ency/article/000394.htm\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia\nCleveland Clinic: https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you"
   },
   "2026-11-09-body-04": {
