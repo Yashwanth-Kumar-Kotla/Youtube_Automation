@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14T10:00:10+00:00",
+  "updated": "2026-11-14T10:24:46+00:00",
   "videos": [
     {
       "id": "2026-11-09-body-01",
@@ -26,7 +26,7 @@
       "title": "What Happens If You Crack Your Knuckles Every Day?",
       "caption": "What Happens If You Crack Your Knuckles Every Day? #bodyfiles #knuckles #arthritis #humanbody #science #shorts",
       "length": 43.0,
-      "status": "ready",
+      "status": "scheduled",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-09-body-04/2026-11-09-body-04.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-09-body-04/2026-11-09-body-04.mp4",
       "approved": false
@@ -119,6 +119,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-01/2026-11-14-body-01.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-01/2026-11-14-body-01.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-14-body-02",
+      "title": "What Happens When You Cry?",
+      "caption": "What Happens When You Cry? #bodyfiles #crying #tears #humanbody #science #shorts",
+      "length": 36.7,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-02/2026-11-14-body-02.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-02/2026-11-14-body-02.mp4",
       "approved": false
     }
   ]
