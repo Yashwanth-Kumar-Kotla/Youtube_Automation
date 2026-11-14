@@ -1,0 +1,33 @@
+{
+ "title": "What Happens When You Get a Charley Horse?",
+ "description": "A charley horse is a muscle cramp: a sudden tightening, most often in the calf, where the muscle contracts on its own and can't relax. It can last from a few seconds to 10 minutes, and most people get them at night or while resting. Stretching and massaging the muscle, or putting your weight on that leg, may ease it, and the muscle can stay sore afterward. See a doctor if cramps happen often, are severe, or come with swelling or numbness.\nNext Body File: what happens when you cry, and why the extra tears drain into the back of your nose.\nFollow Body Files for a new one every day.\n#bodyfiles #charleyhorse #musclecramp #humanbody #science #shorts #healthfacts\n\nSources:\nNHS, Leg cramps: https://www.nhs.uk/conditions/leg-cramps/\nCleveland Clinic, Muscle Spasms: https://my.clevelandclinic.org/health/symptoms/21190-muscle-cramps\nCleveland Clinic, Leg Cramps at Night: https://my.clevelandclinic.org/health/diseases/14170-leg-cramps-at-night\nMayo Clinic, Muscle cramp: https://www.mayoclinic.org/diseases-conditions/muscle-cramp/symptoms-causes/syc-20350820\nCleveland Clinic, Lacrimal Apparatus: https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus",
+ "hashtags": [
+  "#bodyfiles",
+  "#charleyhorse",
+  "#musclecramp",
+  "#humanbody",
+  "#science",
+  "#shorts",
+  "#healthfacts"
+ ],
+ "pinned_comment": "Where do your cramps hit hardest: calf, foot, or thigh? And what's your trick to make them let go?",
+ "series": "Body Files",
+ "topic": "What happens when you get a charley horse?",
+ "experiment_arm": "E1-A (hook with a number: 'sometimes for ten minutes' in line 2); E4 tease_next",
+ "teases": "What happens when you cry?",
+ "topic_cluster": "muscles",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the ears-pop video (2026-11-10-body-8) with 'the calf muscle that clenches tight by itself' (paid off in line 2 'Your calf clenches tight by itself')",
+ "hook_pattern": "question+duration-number",
+ "format": "explainer",
+ "id": "2026-11-14-body-01",
+ "channel": "body",
+ "made_at": "2026-11-14T03:59-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 34.5,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-14-body-01",
+ "history": []
+}
