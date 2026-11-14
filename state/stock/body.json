@@ -209,9 +209,15 @@
    "research_file": "none",
    "length": 43.0,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "scheduled",
    "branch": "stock/body/2026-11-09-body-04",
-   "history": [],
+   "history": [
+    {
+     "at": "2026-11-14T04:00-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-14, episode 6, manual upload"
+    }
+   ],
    "description": "The pop is gas in the fluid that lubricates your finger joints, and it needs time to build back up before that knuckle cracks again. Studies, including one doctor who cracked only his left hand for about 50 years, found no link to arthritis. If it hurts or swells, see a doctor.\nNext Body File: what happens if you sneeze with your eyes open, and could your eyeballs really pop out?\nFollow Body Files for a new one every day.\n#bodyfiles #knuckles #arthritis #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://health.clevelandclinic.org/is-cracking-your-knuckles-bad-for-you\nHarvard Health: https://www.health.harvard.edu/blog/knuckle-cracking-annoying-and-harmful-or-just-annoying-2018051413797\nScientific American: https://www.scientificamerican.com/article/crack-research/"
   },
   "2026-11-10-body-01": {

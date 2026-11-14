@@ -22,3 +22,4 @@
 - 2026-11-13 02:04 · 2026-11-09-body-03 ready → scheduled · slot 0 on 2026-11-13, episode 5, manual upload
 - 2026-11-13 21:21 · 2026-11-09-body-03 posted · conf 0.7 · {'posted': '2026-11-13', 'episode': 5, 'youtube': 'JE-zKZZTRrM', 'tiktok': 'v_inbox_file~v2.7707775041915799566'}
 - 2026-11-14 03:59 · 2026-11-14-body-01 added · conf 0.7 · question+duration-number · What happens when you get a charley horse?
+- 2026-11-14 04:00 · 2026-11-09-body-04 ready → scheduled · slot 0 on 2026-11-14, episode 6, manual upload
