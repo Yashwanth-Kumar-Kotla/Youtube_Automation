@@ -1,0 +1,18 @@
+[
+ {
+  "sub": "todayilearned",
+  "error": "Expecting value: line 1 column 1 (char 0)"
+ },
+ {
+  "sub": "askscience",
+  "error": "Expecting value: line 1 column 1 (char 0)"
+ },
+ {
+  "sub": "NoStupidQuestions",
+  "error": "Expecting value: line 1 column 1 (char 0)"
+ },
+ {
+  "sub": "AskDocs",
+  "error": "Expecting value: line 1 column 1 (char 0)"
+ }
+]
