@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14T06:18:27+00:00",
+  "updated": "2026-11-14T10:00:10+00:00",
   "videos": [
     {
       "id": "2026-11-09-body-01",
@@ -109,6 +109,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-08/2026-11-10-body-08.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-08/2026-11-10-body-08.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-14-body-01",
+      "title": "What Happens When You Get a Charley Horse?",
+      "caption": "What Happens When You Get a Charley Horse? #bodyfiles #charleyhorse #musclecramp #humanbody #science #shorts",
+      "length": 34.5,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-01/2026-11-14-body-01.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-01/2026-11-14-body-01.mp4",
       "approved": false
     }
   ]
