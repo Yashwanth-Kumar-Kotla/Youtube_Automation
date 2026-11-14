@@ -1,0 +1,33 @@
+{
+ "title": "What Happens When You Cry?",
+ "description": "Tears are made by glands behind the upper outside corner of each eye. Every blink drains used tears into your tear ducts, which empty into the back of your nose. When you cry, tears flow in faster than usual and drain into your throat, which is why you might feel stuffy after crying. Emotional tears, triggered by feelings like sadness or joy, contain more stress hormones and natural painkillers than everyday tears.\nNext Body File: what happens when you blush, and why the red can spread to your neck and upper chest.\nFollow Body Files for a new one every day.\n#bodyfiles #crying #tears #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Lacrimal Apparatus: https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus\nCleveland Clinic, Tears: https://my.clevelandclinic.org/health/body/tears\nCleveland Clinic, Tears: Why We Cry and More: https://health.clevelandclinic.org/tears-why-we-cry-and-more-infographic/\nCleveland Clinic, Skin Flushing: https://my.clevelandclinic.org/health/symptoms/skin-flushing",
+ "hashtags": [
+  "#bodyfiles",
+  "#crying",
+  "#tears",
+  "#humanbody",
+  "#science",
+  "#shorts",
+  "#healthfacts"
+ ],
+ "pinned_comment": "Did you know your tears drain into your nose? What's the last thing that made you cry: a movie, a song, or an onion?",
+ "series": "Body Files",
+ "topic": "What happens when you cry?",
+ "experiment_arm": "E1-B (hook without a number: no number in lines 1-2); E4 tease_next",
+ "teases": "What happens when you blush?",
+ "topic_cluster": "tears",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the charley-horse video (2026-11-14-body-1) with 'and why extra tears sneak into your nose' (paid off in lines 6-10: tear ducts empty into the back of your nose, crying floods them, that's why you feel stuffy)",
+ "hook_pattern": "question+hidden-place-loop",
+ "format": "explainer",
+ "id": "2026-11-14-body-02",
+ "channel": "body",
+ "made_at": "2026-11-14T04:24-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 36.7,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-14-body-02",
+ "history": []
+}
