@@ -1,0 +1,66 @@
+{
+  "title": "What Happens When You Get a Charley Horse?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NHS, 'Leg cramps' (leg cramps happen when a muscle in the leg tightens and causes a sudden pain that can make it hard to move; common and usually harmless; most often the calf muscle; cramps can last from a few seconds to 10 minutes; they can happen at any time, but most people have them at night or when resting; stretching and massaging the muscle may ease the pain during a cramp, and putting your weight on the leg with the cramp may also help; after the cramp has stopped the muscle might feel sore for up to 24 hours; see a GP if cramps disturb your sleep, you also have numbness or swelling in your legs, or cramps last longer than 10 minutes): https://www.nhs.uk/conditions/leg-cramps/",
+    "Cleveland Clinic, 'Muscle Spasms' (muscle spasms, also called muscle cramps, occur when your muscle involuntarily and forcibly contracts and can't relax; charley horses are a common type; contributors include muscle fatigue, not enough stretching and dehydration; a particularly painful cramp can leave lingering discomfort for a day or two; self-care: stretch, massage, heat or ice; see a provider if spasms are unbearably painful, happen frequently or last a long time): https://my.clevelandclinic.org/health/symptoms/21190-muscle-cramps",
+    "Cleveland Clinic, 'Leg Cramps at Night' (leg cramps are sudden, involuntary, intense muscle spasms, usually in the calf, foot or thigh, also known as charley horses): https://my.clevelandclinic.org/health/diseases/14170-leg-cramps-at-night",
+    "Mayo Clinic, 'Muscle cramp' (a sudden, unexpected tightening of one or more muscles; mostly in leg muscles, most often the calf; usually lasts seconds to minutes; the area might be sore for hours or days after; see a provider if cramps cause severe discomfort, come with leg swelling, redness or skin changes, or muscle weakness, happen often, or don't improve with self-care): https://www.mayoclinic.org/diseases-conditions/muscle-cramp/symptoms-causes/syc-20350820 (text verified via the Mayo Clinic Care Network health library mirror)",
+    "Tease (next video): Cleveland Clinic, 'Lacrimal Apparatus' (tears drain into your tear ducts, which empty into the back of your nose; when you cry, excess tears flow faster than usual into the back of your nose and drain into your throat, which is why you might feel stuffy): https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get a charley horse?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *GET | A *CHARLEY HORSE?"
+    },
+    {
+      "text": "Your calf clenches tight by itself, sometimes for ten minutes.",
+      "caps": "YOUR *CALF CLENCHES | TIGHT BY *ITSELF | *SOMETIMES FOR | *10 MINUTES"
+    },
+    {
+      "text": "The muscle squeezes on its own and just can't relax,",
+      "caps": "THE *MUSCLE SQUEEZES | ON ITS *OWN | AND JUST CAN'T *RELAX"
+    },
+    {
+      "text": "and the sudden pain can make it hard to move.",
+      "caps": "AND THE *SUDDEN | *PAIN CAN | MAKE IT *HARD | TO *MOVE"
+    },
+    {
+      "text": "Tired muscles and dehydration can trigger it.",
+      "caps": "*TIRED MUSCLES | AND *DEHYDRATION | CAN *TRIGGER IT"
+    },
+    {
+      "text": "Weirdly, most people get them at night, or while resting.",
+      "caps": "*WEIRDLY, MOST | PEOPLE *GET THEM | AT *NIGHT | OR WHILE *RESTING"
+    },
+    {
+      "text": "To fight back, stretch and massage the calf,",
+      "caps": "TO FIGHT *BACK | *STRETCH AND | *MASSAGE THE CALF"
+    },
+    {
+      "text": "or stand up and put your weight on that leg.",
+      "caps": "OR *STAND UP AND | PUT YOUR *WEIGHT | ON THAT *LEG"
+    },
+    {
+      "text": "The calf might stay sore for a day or two.",
+      "caps": "THE *CALF MIGHT | STAY *SORE | FOR A *DAY | OR *TWO"
+    },
+    {
+      "text": "Frequent cramps, swelling or numbness? See a doctor.",
+      "caps": "*FREQUENT CRAMPS | *SWELLING OR | *NUMBNESS? | SEE A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: what happens when you cry,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOU *CRY"
+    },
+    {
+      "text": "and why extra tears sneak into your nose.",
+      "caps": "AND *WHY EXTRA | *TEARS SNEAK | INTO YOUR *NOSE"
+    }
+  ]
+}

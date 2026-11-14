@@ -3292,7 +3292,7 @@ export function calfLens(x, y, r, { clench = 0, ring = 0, sc = 1, t = 0 } = {}) 
     ctx.save(); legPath(); ctx.clip(); ell(80, -60, 46, 320, C.skinShade); ctx.restore();
     // calf muscle + tendon
     const rx = lerp(72, 98, c), ry = lerp(165, 118, c), mx = -58 + j;
-    line([[mx + 8, my + ry - 20], [-44, 200]], BONE_D, 28); line([[mx + 8, my + ry - 20], [-44, 200]], BONE, 18);
+    line([[mx + 8, my + ry - 20], [-44, 200]], C.skinShade, 22); line([[mx + 8, my + ry - 20], [-44, 200]], BONE_D, 12);
     if (ring > 0) { ctx.save(); ctx.globalAlpha = clamp(ring); ctx.beginPath(); ctx.ellipse(mx, my, rx + 34, ry + 34, 0.1, 0, TAU); ctx.lineWidth = 28; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 16; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
     ell(mx, my, rx + 10, ry + 10, MUSCLE_D, 0.1); ell(mx, my, rx, ry, C.pink, 0.1);
     ctx.save(); ctx.translate(mx, my); ctx.rotate(0.1);
@@ -3318,4 +3318,147 @@ export function knotIcon(x, y, s = 1, tight = 0, sc = 1) {
   for (const [w, col] of [[46, C.ink], [30, C.red]]) { A(); ctx.lineWidth = w; ctx.strokeStyle = col; ctx.stroke(); }
   if (q > 0) for (const an of [-2.4, -1.57, -0.74]) { const r0 = R + 50, r1 = r0 + 40 * q; line([[Math.cos(an) * r0, -50 + Math.sin(an) * r0], [Math.cos(an) * r1, -50 + Math.sin(an) * r1]], C.ink, 12); }
   ctx.restore();
+}
+
+// ═════════════════════════ CHARLEY HORSE SET (2026-11-14 "charley horse") ═════════════════════════
+/** night version of home() (THE channel room, same layout): dimmed walls, dark window with a crescent moon + stars.
+ *  MOON = the moon's centre (screen px) */
+export const MOON = [860, 340];
+export function nightHome() {
+  home();
+  ctx.save(); ctx.globalAlpha = 0.55; fillAll(C.navy); ctx.restore();
+  rr(622, 252, 316, 396, 12); ctx.fillStyle = C.navy; ctx.fill();
+  circle(MOON[0], MOON[1], 44, C.gum); circle(MOON[0] + 20, MOON[1] - 14, 40, C.navy);
+  for (const [sx, sy] of [[680, 300], [720, 560], [880, 520], [660, 470]]) circle(sx, sy, 5, C.gum);
+  ctx.fillStyle = '#6E7A86'; ctx.fillRect(772, 252, 14, 396); ctx.fillRect(622, 442, 316, 14);
+}
+
+/** big side view of the hero's lower leg from OUTSIDE (skin, no cutaway): rolled-up trouser at the top, foot pointing right,
+ *  the calf bulging on the LEFT (back of the leg). flex 0..1 pulls the toes up toward the shin (the calf stretch);
+ *  clench 0..1 bunches the calf up and points the foot down (a cramp, slight shiver). ~400x1000 px at s = 1, origin = mid-shin
+ *  (trouser top -620, sole ≈ +380). Returns { calf: [x, y], toes: [x, y] } in screen px (for hands, knots, rings) */
+export function legClose(x, y, s, { flex = 0, clench = 0, t = 0 } = {}) {
+  const c = clamp(clench), f = clamp(flex), j = c > 0.5 ? Math.sin(t * 40) * 3 * c : 0, fa = 0.38 * c - 0.42 * f;
+  const AX = 10, AY = 290, TX = 236, TY = 14;
+  const out = { calf: [x + (-150 + j) * s, y + (-170 - 40 * c) * s],
+    toes: [x + (AX + TX * Math.cos(fa) - TY * Math.sin(fa) + j) * s, y + (AY + TX * Math.sin(fa) + TY * Math.cos(fa)) * s] };
+  ctx.save(); ctx.translate(x + j, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // foot (rotates at the ankle)
+  ctx.save(); ctx.translate(AX, AY); ctx.rotate(fa); ctx.scale(1.15, 1.15);
+  ctx.beginPath(); ctx.moveTo(-76, -40); ctx.lineTo(60, -34); ctx.quadraticCurveTo(196, -8, 214, 34); ctx.quadraticCurveTo(220, 66, 182, 70);
+  ctx.lineTo(-60, 70); ctx.quadraticCurveTo(-98, 60, -90, 0); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  rr(-60, 54, 242, 16, 8); ctx.fillStyle = C.skinShade; ctx.fill();
+  ell(188, 8, 16, 10, SKIN_HI, -0.4);
+  ctx.restore();
+  // leg
+  const legPath = () => { ctx.beginPath(); ctx.moveTo(-120, -480); ctx.bezierCurveTo(-236 - 30 * c, -330 - 50 * c, -214 - 10 * c, 40, -80, 220); ctx.lineTo(-76, 320);
+    ctx.lineTo(96, 320); ctx.lineTo(96, 240); ctx.bezierCurveTo(112, 40, 120, -240, 124, -480); ctx.closePath(); };
+  legPath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.save(); legPath(); ctx.clip(); ell(104, -80, 46, 380, C.skinShade); ctx.restore();
+  ell(-150, -200 - 40 * c, 20, 90, SKIN_HI, 0.12);
+  circle(66, 268, 20, C.skinShade); circle(66, 268, 13, C.skin);                 // ankle bone
+  // rolled-up trouser at the knee
+  rr(-190, -620, 380, 180, [0, 0, 40, 40]); ctx.fillStyle = C.pants; ctx.fill(); rr(-196, -470, 392, 56, 24); ctx.fillStyle = C.pantsShade; ctx.fill();
+  ctx.restore();
+  return out;
+}
+
+/** muscle close-up (graphic, side view): a pink bundle of 5 fibres with darker cross-stripes, white tendons out to two bone
+ *  anchors at x ± w/2. sq 0..1 = the squeeze: the bundle gets shorter and fatter, its stripes bunch up and the tendons pull
+ *  long (slight shiver above 0.5). ~w x 400 px. Returns the bundle's half-length in px */
+export function fiberBundle(x, y, w, sq = 0, t = 0) {
+  const q = clamp(sq), hl = lerp(w * 0.34, w * 0.24, q), hh = lerp(118, 158, q), j = q > 0.5 ? Math.sin(t * 38) * 2.5 * q : 0;
+  ctx.save(); ctx.translate(x, y); ctx.lineCap = 'round';
+  for (const sd of [-1, 1]) { rr(sd * w / 2 - 44, -200, 88, 400, 44); ctx.fillStyle = BONE_D; ctx.fill(); rr(sd * w / 2 - 34, -190, 68, 380, 34); ctx.fillStyle = BONE; ctx.fill(); }
+  ctx.translate(j, 0);
+  for (const sd of [-1, 1]) { line([[sd * (w / 2 - 30), 0], [sd * (hl - 20), 0]], BONE_D, 50); line([[sd * (w / 2 - 30), 0], [sd * (hl - 20), 0]], BONE, 36); }
+  ell(0, 0, hl + 14, hh + 14, MUSCLE_D);
+  const sp = lerp(48, 24, q), fh = hh * 0.42;
+  for (let i = 0; i < 5; i++) {
+    const fy = lerp(-hh * 0.7, hh * 0.7, i / 4), fl = Math.max(fh, hl * Math.sqrt(Math.max(0, 1 - (fy / (hh + 8)) ** 2)));
+    ctx.save(); rr(-fl, fy - fh / 2, 2 * fl, fh, fh / 2); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = MUSCLE_D; ctx.stroke(); ctx.clip();
+    for (let xx = -fl + sp * 0.6 + (i % 2) * sp * 0.5; xx < fl; xx += sp) line([[xx, fy - fh], [xx, fy + fh]], MUSCLE_D, 6);
+    ctx.restore();
+  }
+  ell(-hl * 0.35, -hh * 0.72, hl * 0.32, 12, C.pinkLight);
+  ctx.restore();
+  return hl;
+}
+
+/** little vertical lower-leg icon (skin, foot pointing right, navy cuff) for badges, in local px at s = 1 (~180x240).
+ *  puff 0..1 = swollen calf, col = skin colour, dashed = ink dashed outline (numb) */
+function legIcon(puff = 0, col = C.skin, dashed = false) {
+  const p = clamp(puff);
+  const leg = () => { ctx.beginPath(); ctx.moveTo(-46 - p * 14, -100); ctx.bezierCurveTo(-92 - p * 46, -50, -84 - p * 30, 20, -40, 46); ctx.lineTo(-38, 80);
+    ctx.lineTo(70, 80); ctx.quadraticCurveTo(88, 60, 62, 48); ctx.lineTo(22, 40); ctx.bezierCurveTo(24, 0, 28, -60, 32 + p * 10, -100); ctx.closePath(); };
+  leg(); ctx.fillStyle = col; ctx.fill();
+  if (dashed) { ctx.setLineDash([16, 12]); ctx.lineWidth = 8; ctx.strokeStyle = C.ink; leg(); ctx.stroke(); ctx.setLineDash([]); }
+  rr(-66 - p * 16, -124, 118 + p * 26, 40, 12); ctx.fillStyle = C.pants; ctx.fill();
+}
+/** "when to see a doctor" symptom badges (white disc, ink ring, like symptom()): 'often' = a red knot inside a circular
+ *  repeat arrow (frequent cramps), 'swell' = a puffy lower leg with small red out-arrows, 'numb' = a pale lower leg with a
+ *  dashed outline. ~300 px at s = 1, sc = pop-in, t = film time */
+export function crampBadge(kind, x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  if (kind === 'often') {
+    ctx.save(); ctx.rotate(t * 1.2);
+    ctx.beginPath(); ctx.arc(0, 0, 100, -0.2 * Math.PI, 1.35 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 14; ctx.stroke();
+    const an = 1.35 * Math.PI, ex = Math.cos(an) * 100, ey = Math.sin(an) * 100, tx = -Math.sin(an), ty = Math.cos(an);
+    ctx.beginPath(); ctx.moveTo(ex + tx * 34, ey + ty * 34); ctx.lineTo(ex - ty * 26, ey + tx * 26); ctx.lineTo(ex + ty * 26, ey - tx * 26); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+    ctx.restore();
+    knotIcon(0, 22, 0.36, 0.8);
+  } else if (kind === 'swell') {
+    const p = 0.85 + 0.15 * Math.sin(t * 6);
+    ctx.save(); ctx.translate(14, 16); legIcon(p); ctx.restore();
+    for (const [ax, ay, an] of [[-112, -30, Math.PI], [-96, 46, Math.PI * 0.85]]) {
+      ctx.save(); ctx.translate(ax + Math.cos(an) * 4 * Math.sin(t * 6), ay); ctx.rotate(an);
+      ctx.beginPath(); ctx.moveTo(26, 0); ctx.lineTo(0, -16); ctx.lineTo(0, 16); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill(); line([[-14, 0], [4, 0]], C.red, 10);
+      ctx.restore();
+    }
+  } else {
+    ctx.save(); ctx.translate(10, 16); legIcon(0, NUMB, true); ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** next-episode tease (crying): round lens on a face close-up, front view: the hero's eye (upper left: blue iris, brow), a nose
+ *  (lower right) and the tear duct, a thin pink tube from the eye's inner corner down beside the nose into the nostril.
+ *  tear 0..1 = a pale-blue tear wells on the lower lid (0..0.5) and rolls down the cheek (0.5..1); flow = film-time phase of
+ *  tear drops running down the duct into the nose (-1 = none); nose 0..1 = yellow ring round the nose; sc = pop-in */
+const seg01 = (v, a, b) => clamp((v - a) / (b - a));
+export function tearLens(x, y, r, { tear = 0, flow = -1, nose = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  const k = r / 300, E = [-118, -96];
+  const DUCT = [[E[0] + 112, E[1] + 2], [16, -40], [30, 40], [44, 120], [60, 172]];
+  const at = (u) => { const n = DUCT.length - 1, f = clamp(u) * n, i = Math.min(n - 1, Math.floor(f)), v = f - i; return [lerp(DUCT[i][0], DUCT[i + 1][0], v), lerp(DUCT[i][1], DUCT[i + 1][1], v)]; };
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = C.skin; ctx.fillRect(-320, -320, 640, 640);
+    ctx.save(); ctx.globalAlpha = 0.3; ell(-140, 110, 70, 34, C.pink); ctx.restore();
+    // brow
+    ctx.beginPath(); ctx.moveTo(-226, -196); ctx.quadraticCurveTo(-130, -250, -20, -206); ctx.strokeStyle = C.hair; ctx.lineWidth = 28; ctx.stroke();
+    // eye
+    const almond = () => { ctx.beginPath(); ctx.moveTo(E[0] - 112, E[1]); ctx.quadraticCurveTo(E[0], E[1] - 112, E[0] + 112, E[1]); ctx.quadraticCurveTo(E[0], E[1] + 84, E[0] - 112, E[1]); ctx.closePath(); };
+    ctx.save(); almond(); ctx.fillStyle = C.white; ctx.fill(); ctx.clip();
+    circle(E[0] + 10, E[1] - 4, 46, C.shirt); circle(E[0] + 10, E[1] - 4, 22, C.ink); circle(E[0] + 24, E[1] - 18, 9, C.white);
+    if (tear > 0) { ctx.globalAlpha = clamp(tear * 2) * 0.85; ell(E[0], E[1] + 36, 100, 14, C.sky); ctx.globalAlpha = 1; }
+    ctx.restore();
+    ctx.beginPath(); ctx.moveTo(E[0] - 112, E[1]); ctx.quadraticCurveTo(E[0], E[1] - 112, E[0] + 112, E[1]); ctx.strokeStyle = C.ink; ctx.lineWidth = 12; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(E[0] - 104, E[1] + 4); ctx.quadraticCurveTo(E[0], E[1] + 84, E[0] + 104, E[1] + 4); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 8; ctx.stroke();
+    circle(E[0] + 100, E[1] + 2, 9, C.pinkLight);
+    // nose (front view): side shade, wings, round tip, nostrils
+    ctx.beginPath(); ctx.moveTo(56, -150); ctx.quadraticCurveTo(52, 40, 34, 130); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 12; ctx.stroke();
+    for (const nx of [36, 148]) { circle(nx, 160, 38, C.skinShade); circle(nx, 155, 31, C.skin); }
+    ell(92, 142, 64, 56, C.skinShade); ell(92, 136, 60, 52, C.skin); ell(104, 116, 20, 12, SKIN_HI, -0.3);
+    ell(60, 184, 18, 9, C.mouth); ell(124, 184, 18, 9, C.mouth);
+    // tear duct
+    line(DUCT, MUSCLE_D, 26); line(DUCT, C.pinkLight, 15);
+    if (flow >= 0) for (let i = 0; i < 3; i++) { const u = (flow * 0.9 + i / 3) % 1, [px, py] = at(u); ctx.save(); ctx.globalAlpha = Math.min(1, u * 6, (1 - u) * 6); circle(px, py, 13, WATER_D); circle(px, py, 9, C.sky); ctx.restore(); }
+    // the tear on the cheek
+    if (tear > 0) { const g = clamp(tear * 2), v = eoK(clamp(tear * 2 - 1)); drop(E[0] - 10, E[1] + 66 + v * 190, 0.45 + 0.35 * g, 0, 1 - seg01(tear, 0.9, 1)); }
+    if (nose > 0) { ctx.save(); ctx.globalAlpha = clamp(nose); ctx.beginPath(); ctx.ellipse(92, 150, 122, 92, 0, 0, TAU); ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 14; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+    ctx.restore();
+  }, C.skin);
 }
