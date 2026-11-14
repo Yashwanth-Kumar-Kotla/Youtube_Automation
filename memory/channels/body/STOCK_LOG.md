@@ -20,3 +20,4 @@
 - 2026-11-11 00:35 · 2026-11-09-body-01 ready → scheduled · slot 0 on 2026-11-11, episode 3, manual upload
 - 2026-11-12 05:25 · 2026-11-09-body-02 ready → scheduled · slot 0 on 2026-11-12, episode 4, manual upload
 - 2026-11-13 02:04 · 2026-11-09-body-03 ready → scheduled · slot 0 on 2026-11-13, episode 5, manual upload
+- 2026-11-13 21:21 · 2026-11-09-body-03 posted · conf 0.7 · {'posted': '2026-11-13', 'episode': 5, 'youtube': 'JE-zKZZTRrM', 'tiktok': 'v_inbox_file~v2.7707775041915799566'}
