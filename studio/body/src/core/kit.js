@@ -286,10 +286,10 @@ function head(o) {
   ctx.fillStyle = HC; ctx.fill(); rr(-106, -40, 18, 46, 8); ctx.fill(); rr(88, -40, 18, 46, 8); ctx.fill();
   ctx.beginPath(); ctx.moveTo(-60, -98); ctx.quadraticCurveTo(0, -118, 62, -96); ctx.strokeStyle = o.hairCol ? C.white + '88' : C.hairHi; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.stroke();
   // brows: brow 0..1 raises them; smirk tilts
-  const br = (o.brow || 0) * 16, tl = o.smirk ? 1 : 0, fr = o.frown ? 1 : 0;
+  const br = (o.brow || 0) * 16, tl = o.smirk ? 1 : 0, fr = o.frown ? 1 : 0, sa = clamp(o.sad || 0);   // sad: inner brow ends up
   ctx.strokeStyle = o.browCol || (o.hairCol ? '#8E877B' : C.hair); ctx.lineWidth = 12;
-  ctx.beginPath(); ctx.moveTo(-66, -26 - br - fr * 6); ctx.quadraticCurveTo(-44, -40 - br - tl * 4, -20, -32 - br + tl * 6 + fr * 12); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(20, -32 - br - tl * 8 + fr * 12); ctx.quadraticCurveTo(44, -42 - br - tl * 10, 66, -28 - br - tl * 6 - fr * 6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-66, -26 - br - fr * 6 + sa * 8); ctx.quadraticCurveTo(-44, -40 - br - tl * 4 - sa * 2, -20, -32 - br + tl * 6 + fr * 12 - sa * 14); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(20, -32 - br - tl * 8 + fr * 12 - sa * 14); ctx.quadraticCurveTo(44, -42 - br - tl * 10 - sa * 2, 66, -28 - br - tl * 6 - fr * 6 + sa * 8); ctx.stroke();
   // eyes: 'n' | 'wide' | 'closed' | 'squeeze' (squeezed shut > <, scrunched nose: mid-sneeze)
   if (o.eyes === 'wide') {
     for (const sd of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sd * 40, 6, 24, 27, 0, 0, TAU); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.stroke(); circle(sd * 40, 8, 12, C.ink); circle(sd * 40 + 4, 3, 4, C.white); }
@@ -324,6 +324,7 @@ function head(o) {
   if (o.glasses) { ctx.strokeStyle = C.ink; ctx.lineWidth = 6; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 6, 28, 0, TAU); ctx.stroke(); } line([[-12, 2], [12, 2]], C.ink, 6); }
   ctx.beginPath(); ctx.moveTo(4, 26); ctx.quadraticCurveTo(16, 44, 0, 48); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.stroke();
   ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 62, 46, 20, 12, C.pink); ctx.globalAlpha = 1;
+  if (o.stuffy > 0) { ctx.save(); ctx.globalAlpha = 0.75 * clamp(o.stuffy); ell(8, 40, 22, 17, C.pink); ctx.restore(); ell(2, 34, 7, 5, SKIN_HI_H); }   // rosy stuffy nose
   if (o.stache) for (const sd of [-1, 1]) ell(sd * 22, 56, 26, 11, HC, sd * 0.25);
   if (o.cap) { ell(0, -106, 118, 48, CAP); rr(-118, -102, 236, 30, 12); ctx.fillStyle = CAP; ctx.fill(); ell(24, -74, 100, 16, CAP_D, -0.04); ell(-34, -128, 44, 12, '#9A7A58', -0.2); }
   // mouth: 'smile' | 'smirk' | 'chew' | 'o' | 'flat' | 'grin' | 'yawn'
@@ -334,14 +335,44 @@ function head(o) {
   if (m === 'chew') ell(0, 76, 18, 4 + 8 * (o.chew || 0), C.mouth);
   if (m === 'o') { ell(0, 80, 20, 27, C.mouth); ell(0, 96, 13, 8, C.pink); }
   if (m === 'yawn') { ell(0, 82, 26, 36, C.mouth); ell(0, 104, 16, 10, C.pink); }   // big tall yawn
+  if (m === 'sad') { ctx.beginPath(); ctx.moveTo(-26, 86); ctx.quadraticCurveTo(0, 64, 26, 86); ctx.stroke(); }   // down-turned
+  if (m === 'bawl') { ctx.beginPath(); ctx.moveTo(-32, 92); ctx.quadraticCurveTo(0, 50, 32, 92); ctx.quadraticCurveTo(0, 104, -32, 92); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); ell(0, 92, 14, 6, C.pink); }   // open wail
+  if (o.cry > 0 || o.gush > 0) headTears(o);
   if (m === 'grin') { ctx.beginPath(); ctx.moveTo(-34, 66); ctx.quadraticCurveTo(0, 112, 34, 66); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); rr(-26, 66, 52, 12, 4); ctx.fillStyle = C.white; ctx.fill(); }
+  ctx.restore();
+}
+// ── tears on the hero's face (crying set, 2026-11-14 "crying") ──
+const TEAR_D = '#7EC3E0', SKIN_HI_H = '#F2CDB5';
+/** head-local tears: o.cry 0..1 = pale-blue pools on the lower lids + streams down the cheeks with drops rolling (o.ct = film
+ *  time); o.gush 0..1 = playful cartoon fountains arcing out sideways from both eyes, o.gushTo = [dx, dy] arc end (head units) */
+function headTears(o) {
+  const c = clamp(o.cry || 0), g = clamp(o.gush || 0), t = o.ct || 0, [gx, gy] = o.gushTo || [190, 260];
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const sd of [-1, 1]) {
+    if (c > 0) {
+      const sx = sd * 46, len = 96 * c;
+      line([[sx, 24], [sx + sd * 6, 24 + len]], TEAR_D, 20); line([[sx, 24], [sx + sd * 6, 24 + len]], C.sky, 12);
+      ell(sd * 40, 22, 26 * c + 2, 9 * c + 2, TEAR_D); ell(sd * 40, 21, 24 * c, 7 * c, C.sky);
+      const u = (t * 0.8 + (sd > 0 ? 0.45 : 0)) % 1;
+      drop(sx + sd * 6 * u, 34 + len * u, 0.32 * c, 0, Math.min(1, u * 5, (1 - u) * 5));
+    }
+    if (g > 0) {
+      const P = (u) => [sd * (50 + gx * u), 2 - 120 * u + (120 + gy) * u * u], N = 18, pts = [];
+      for (let i = 0; i <= N * g; i++) pts.push(P(i / N));
+      if (pts.length > 1) { line(pts, TEAR_D, 30); line(pts, C.sky, 20); line(pts.slice(0, Math.max(2, pts.length >> 1)), C.white, 5); }
+      for (let k = 0; k < 4; k++) { const u = (t * 1.6 + k / 4) % 1; if (u > g) continue; const [px, py] = P(u); drop(px, py + 16, 0.42, 0, Math.min(1, (g - u) * 6)); }
+      const [ex, ey] = P(g); drop(ex, ey + 22, 0.5, 0, 1);
+    }
+  }
   ctx.restore();
 }
 /**
  * The hero. o = { x, y, s, arm (pose), finger (rad or null), eyes, mouth, chew, brow, smirk, frown, look (-1..1),
  *   xray (bool: whole body becomes x-ray, head stays normal), pulse (stomach swell 0..1),
  *   lungs (x-ray only: number 0..1 = show the lungs + windpipe instead of the stomach, 1 = squeezed empty: the sneeze blast),
- *   holding: [drawFn(x, y)] drawn at the right hand, inside: [x, y, rot] a gum drawn inside the body (local coords) }
+ *   holding: [drawFn(x, y)] drawn at the right hand, inside: [x, y, rot] a gum drawn inside the body (local coords),
+ *   crying set: sad 0..1 (inner brows up), mouth 'sad' | 'bawl', cry 0..1 + ct (film time) tear streams, gush 0..1 + gushTo
+ *   [dx, dy] cartoon tear fountains, stuffy 0..1 rosy nose }
  */
 let _coat = false, _shirt = [C.shirt, C.shirtShade], _diaHi = 0;
 const BOOT = '#5A4030', CAP = '#7A5A3A', CAP_D = '#5A4030';
@@ -3461,4 +3492,193 @@ export function tearLens(x, y, r, { tear = 0, flow = -1, nose = 0, sc = 1, t = 0
     if (nose > 0) { ctx.save(); ctx.globalAlpha = clamp(nose); ctx.beginPath(); ctx.ellipse(92, 150, 122, 92, 0, 0, TAU); ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 14; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
     ctx.restore();
   }, C.skin);
+}
+
+// ═════════════════════════ CRYING SET (2026-11-14 "what happens when you cry") ═════════════════════════
+/** hand holding something at chest height (a tissue) / up at the nose (dabbing it). RIGHT arm */
+ARM.chest = { e: [210, 40], h: [70, -60] };
+ARM.nose = { e: [215, -60], h: [50, -222] };   // tissue just under the nose
+/** yellow highlight ring (ink edge) round a point. a = alpha / pop */
+export function hiRing(x, y, rx, ry, a = 1, rot = 0) {
+  if (a <= 0 || rx <= 0 || ry <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.beginPath(); ctx.ellipse(x, y, Math.max(0, rx), Math.max(0, ry), rot, 0, TAU);
+  ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 14; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore();
+}
+/** tear gland: a pink lobed cluster (~240x150 px at s = 1). dashed = ink dashed outline (it sits BEHIND the skin) */
+export function glandIcon(x, y, s = 1, rot = 0, a = 1, dashed = true) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const LB = [[-62, 6, 36], [-24, -14, 42], [22, -10, 44], [62, 8, 34], [-20, 24, 36], [24, 24, 36]];
+  for (const [lx, ly, r] of LB) circle(lx, ly, r + 7, C.pinkDark);
+  for (const [lx, ly, r] of LB) circle(lx, ly, r, C.pink);
+  for (const [lx, ly, r] of LB) ell(lx - r * 0.3, ly - r * 0.35, r * 0.32, r * 0.2, C.pinkLight, -0.4);
+  if (dashed) { ctx.setLineDash([16, 12]); ctx.lineWidth = 6; ctx.strokeStyle = C.ink; ctx.beginPath(); ctx.ellipse(0, 6, 122, 74, 0, 0, TAU); ctx.stroke(); ctx.setLineDash([]); }
+  ctx.restore();
+}
+/** big front-view diagram of ONE eye (the hero's left eye: nose bridge on the LEFT = inner corner, temple on the RIGHT =
+ *  outer corner) in a round skin window (ink ring, radius 330 at s = 1). The tear gland sits behind the UPPER OUTSIDE corner
+ *  (gland 0..1, dashed = behind the skin), tiny ducts drip onto the eye. flow = film-time phase of tear drops running from the
+ *  gland across the eye to the drain hole at the inner corner (-1 = none); ring 0..1 = yellow ring on the gland; punct 0..1 =
+ *  yellow ring on the drain hole; lid 0..1 blink; look -1..1 iris. GLAND_EYE = local points (scale by s) */
+export const GLAND_EYE = { gland: [168, -150], punct: [-206, 74] };
+const GE_FLOW = [[176, -84], [180, 6], [130, 70], [0, 122], [-130, 112], [-206, 74]];
+export function glandEye(x, y, s, { gland = 1, ring = 0, flow = -1, lid = 0, punct = 0, look = 0, n = 4, t = 0 } = {}) {
+  const Lc = clamp(lid), G = GLAND_EYE.gland, PU = GLAND_EYE.punct;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 330, 0, TAU); ctx.clip();
+  circle(0, 0, 340, C.skin);
+  ctx.beginPath(); ctx.moveTo(-340, -140); ctx.quadraticCurveTo(-262, 80, -296, 340); ctx.lineTo(-360, 340); ctx.lineTo(-360, -140); ctx.closePath(); ctx.fillStyle = C.skinShade; ctx.fill();
+  ell(30, 310, 330, 90, C.skinShade);
+  ctx.save(); ctx.globalAlpha = 0.3; ell(160, 236, 80, 34, C.pink); ctx.restore();
+  ctx.beginPath(); ctx.moveTo(-230, -220); ctx.quadraticCurveTo(0, -330, 260, -230); ctx.strokeStyle = C.hair; ctx.lineWidth = 40; ctx.stroke();
+  // crease above the lid
+  ctx.beginPath(); ctx.moveTo(-220, 0); ctx.quadraticCurveTo(0, -200, 220, 0); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 10; ctx.stroke();
+  // the gland behind the upper outside corner + its tiny ducts down to the lid
+  if (gland > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(gland);
+    for (const [ax, bx] of [[130, 150], [170, 178], [208, 204]]) line([[ax, -100], [bx, -20]], C.pinkDark, 9);
+    ctx.restore();
+    glandIcon(G[0], G[1], 0.82, 0.22, gland);
+  }
+  const almond = () => { ctx.beginPath(); ctx.moveTo(-240, 50); ctx.quadraticCurveTo(0, -150, 240, 50); ctx.quadraticCurveTo(0, 250, -240, 50); ctx.closePath(); };
+  ctx.save(); almond(); ctx.fillStyle = C.white; ctx.fill(); ctx.clip();
+  const ix = look * 50;
+  circle(ix, 52, 92, C.shirt); ctx.beginPath(); ctx.arc(ix, 52, 86, 0, TAU); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 12; ctx.stroke();
+  circle(ix, 52, 42, C.ink); circle(ix + 28, 26, 15, C.white);
+  line([[-200, 112], [-80, 142], [80, 142], [200, 112]], C.sky, 12);   // the tear film along the lower lid
+  const cy = lerp(-150, 250, Lc);
+  ctx.beginPath(); ctx.moveTo(-260, 50); ctx.quadraticCurveTo(0, cy, 260, 50); ctx.lineTo(260, -300); ctx.lineTo(-260, -300); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.moveTo(-240, 50); ctx.quadraticCurveTo(0, cy, 240, 50); ctx.strokeStyle = C.ink; ctx.lineWidth = 12; ctx.stroke();
+  if (Lc > 0.85) for (const u of [0.25, 0.42, 0.58, 0.75]) { const bx = lerp(-240, 240, u), by = 50 + 2 * u * (1 - u) * (cy - 50); line([[bx, by], [bx + (u - 0.5) * 30, by + 32]], C.ink, 8); }
+  ctx.beginPath(); ctx.moveTo(-236, 54); ctx.quadraticCurveTo(0, 250, 236, 54); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 9; ctx.stroke();
+  ell(-226, 54, 16, 13, C.pinkLight);                          // inner corner
+  circle(PU[0], PU[1], 9, C.mouth);                             // the drain hole (into the tear duct)
+  if (flow >= 0) for (let i = 0; i < n; i++) {
+    const u = (flow * 0.45 + i / n) % 1, [px, py] = polyAt(GE_FLOW, u);
+    drop(px, py, 0.5, 0, Math.min(1, u * 8, (1 - u) * 8) * clamp(gland + 0.6));
+  }
+  ctx.restore();
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 322, 0, TAU); ctx.clip(); hiRing(G[0] - 30, G[1] + 4, 128, 88, ring, 0.22); ctx.restore();   // stays inside the rim
+  hiRing(PU[0], PU[1], 48, 40, punct);
+  ctx.beginPath(); ctx.arc(0, 0, 330, 0, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 16; ctx.stroke();
+  ctx.restore();
+}
+
+/** side-view head cutaway (facing right) in a round lens of radius r: the eye, the TEAR DUCT (pink tube) running from the eye
+ *  down into the nose, the nose cavity and, at the back of the nose, the throat going down. Tear drops travel the path
+ *  eye → duct → nose → back of nose → throat (TC_U marks: ductEnd, back, throat). flow = film-time phase (-1 = none),
+ *  n drops, speed, from..reach = the stretch of path they run (0..1). duct / back / throat 0..1 = yellow highlights.
+ *  lid 0..1 = blink, cry 0..1 = crying (eye shut, tear on the cheek, sad mouth). gland 0..1 = small gland above the eye.
+ *  tcPt(x, y, r, [lx, ly]) / tcAt(x, y, r, u) give screen points (sc = 1) */
+export const TC = { eye: [128, -98], duct: [154, -50], nose: [150, -6], back: [70, 12], throat: [62, 200] };
+const TC_PATH = [[150, -86], [160, -44], [164, -6], [120, 6], [72, 14], [66, 90], [62, 200], [60, 330]];
+export const TC_U = { ductEnd: 0.165, back: 0.357, throat: 0.736 };
+export const tcPt = (x, y, r, p) => [x + p[0] * r / 300, y + p[1] * r / 300];
+export const tcAt = (x, y, r, u) => tcPt(x, y, r, polyAt(TC_PATH, u));
+export function tearCut(x, y, r, { duct = 0, back = 0, throat = 0, flow = -1, n = 3, speed = 1, from = 0, reach = TC_U.back, lid = 0, cry = 0, gland = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = '#DCEFF7'; ctx.fillRect(-320, -320, 640, 640);
+    const head = () => { ctx.beginPath(); ctx.moveTo(-80, 340); ctx.lineTo(-96, 150); ctx.bezierCurveTo(-250, 90, -260, -250, -40, -280); ctx.bezierCurveTo(110, -296, 190, -200, 186, -110);
+      ctx.quadraticCurveTo(196, -70, 228, -14); ctx.quadraticCurveTo(232, 6, 192, 12); ctx.quadraticCurveTo(204, 40, 192, 60); ctx.quadraticCurveTo(206, 80, 190, 100);
+      ctx.quadraticCurveTo(188, 150, 130, 160); ctx.lineTo(120, 340); ctx.closePath(); };
+    ctx.beginPath(); ctx.ellipse(10, 400, 260, 110, 0, Math.PI, TAU); ctx.fillStyle = C.shirt; ctx.fill();
+    head(); ctx.fillStyle = C.skin; ctx.fill();
+    ctx.save(); head(); ctx.clip(); ell(-80, -200, 220, 130, C.hair, -0.2); ell(-200, -60, 70, 150, C.hair, 0.1); ctx.restore();
+    ctx.beginPath(); ctx.moveTo(-120, -250); ctx.quadraticCurveTo(-30, -280, 60, -262); ctx.strokeStyle = C.hairHi; ctx.lineWidth = 12; ctx.stroke();
+    // outer ear
+    ctx.beginPath(); ctx.ellipse(-92, -14, 44, 66, 0.15, 0, TAU); ctx.fillStyle = C.skinShade; ctx.fill(); ell(-88, -14, 30, 50, C.skin, 0.15);
+    // highlights under the tubes
+    const NOSE = [[204, -2], [150, -6], [110, 4], [70, 14]], THR = [[70, 14], [66, 90], [62, 200], [60, 340]];
+    if (throat > 0) { ctx.save(); ctx.globalAlpha = clamp(throat); line(THR, C.ink, 86); line(THR, C.yellow, 74); ctx.restore(); }
+    if (duct > 0) { ctx.save(); ctx.globalAlpha = clamp(duct); line(TC_PATH.slice(0, 3), C.ink, 48); line(TC_PATH.slice(0, 3), C.yellow, 38); ctx.restore(); }
+    // nose cavity → back of the nose → throat (pink), the duct (thin pink) from the eye down into the nose
+    line(NOSE, C.pinkDark, 62); line(THR, C.pinkDark, 54); line(NOSE, C.pink, 48); line(THR, C.pink, 40);
+    line([[190, -14], [130, -10], [96, 4]], C.pinkLight, 10); line([[58, 40], [56, 160]], C.pinkLight, 8);
+    line(TC_PATH.slice(0, 3), MUSCLE_D, 24); line(TC_PATH.slice(0, 3), C.pinkLight, 13);
+    if (gland > 0) glandIcon(104, -150, 0.3, 0.3, gland, false);
+    // tear drops along the path
+    if (flow >= 0) for (let i = 0; i < n; i++) {
+      const v = (flow * 0.7 * speed + i / n) % 1, u = lerp(from, reach, v), [px, py] = polyAt(TC_PATH, u);
+      ctx.save(); ctx.globalAlpha = Math.min(1, v * 7, (1 - v) * 7); circle(px, py, 14, TEAR_D); circle(px, py, 10, C.sky); ctx.restore();
+    }
+    hiRing(TC.back[0] - 4, TC.back[1] + 2, 58, 48, back);
+    // face: eye (blink / crying), brow, cheek, mouth
+    const shut = Math.max(clamp(lid), clamp(cry));
+    if (shut > 0.5) { ctx.beginPath(); ctx.arc(130, -104, 15, 0.2 * Math.PI, 0.9 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.stroke(); }
+    else { ell(132, -100, 13, 16, C.ink); circle(136, -105, 4, C.white); }
+    ctx.beginPath(); ctx.moveTo(100, -140 + cry * 6); ctx.quadraticCurveTo(124, -150 - cry * 4, 152, -144 - cry * 8); ctx.strokeStyle = C.hair; ctx.lineWidth = 11; ctx.stroke();
+    ctx.save(); ctx.globalAlpha = 0.3; ell(134, -34, 28, 16, C.pink); ctx.restore();
+    if (cry > 0) { const u = (t * 0.7) % 1; line([[140, -86], [146, -4]], TEAR_D, 14); line([[140, -86], [146, -4]], C.sky, 8); drop(140 + 6 * u, -78 + 80 * u, 0.42, 0, clamp(cry) * Math.min(1, u * 6, (1 - u) * 6)); }
+    ctx.beginPath(); if (cry > 0.5) { ctx.moveTo(162, 72); ctx.quadraticCurveTo(176, 60, 190, 70); } else { ctx.moveTo(160, 64); ctx.quadraticCurveTo(178, 74, 190, 64); }
+    ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.stroke();
+    ctx.restore();
+  }, '#DCEFF7');
+}
+
+/** tiny molecule icon for what's IN an emotional tear (graphic, ink edge, ~150 px at s = 1). kind 'stress' = red hexagon
+ *  ring with jittery zig-zags; 'calm' = two leaf-green linked hexagon rings (natural painkiller). sc = pop-in */
+export function tearMolecule(kind, x, y, s = 1, sc = 1, rot = 0, t = 0) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const hex = (cx, cy, r) => { ctx.beginPath(); for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + Math.PI / 6, px = cx + Math.cos(a) * r, py = cy + Math.sin(a) * r; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.closePath(); };
+  const ring = (cx, cy, r, col) => { hex(cx, cy, r); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 14; ctx.strokeStyle = col; ctx.stroke(); };
+  if (kind === 'stress') {
+    const j = Math.sin(t * 40) * 3;
+    for (const a of [-2.3, -0.8, 0.8, 2.3]) { ctx.save(); ctx.rotate(a); const Z = [[58 + j, 0], [72, -12], [84, 10], [98 + j, -4]]; line(Z, C.ink, 16); line(Z, C.red, 8); ctx.restore(); }
+    ring(0, 0, 46, C.red); circle(0, 0, 10, C.red);
+  } else {
+    line([[-32, 0], [32, 0]], C.ink, 22); line([[-32, 0], [32, 0]], C.leaf, 10);
+    ring(-46, 0, 38, C.leaf); ring(46, 0, 38, C.leaf);
+    ctx.save(); ctx.translate(46, -58); ctx.rotate(0.5); ell(0, 0, 13, 24, GERM_D); ell(0, 0, 9, 19, C.leaf); ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** a white paper tissue (soft wavy top, grey fold lines), ~150x150 px at s = 1 */
+export function tissue(x, y, s = 1, rot = 0) {
+  if (s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const p = (k) => { ctx.beginPath(); ctx.moveTo(-70 * k, -58 * k); ctx.quadraticCurveTo(-36 * k, -86 * k, 0, -62 * k); ctx.quadraticCurveTo(36 * k, -40 * k, 72 * k, -66 * k);
+    ctx.lineTo(64 * k, 62 * k); ctx.quadraticCurveTo(0, 80 * k, -64 * k, 62 * k); ctx.closePath(); };
+  p(1.1); ctx.fillStyle = C.gumEdge; ctx.fill(); p(1); ctx.fillStyle = C.white; ctx.fill();
+  line([[-30, -52], [-22, 58]], C.gumEdge, 6); line([[26, -48], [22, 60]], C.gumEdge, 6);
+  ctx.restore();
+}
+
+/** next-episode tease (blushing): round lens with a cartoon face (NOT the hero: brown bob, green tee), neck and upper chest
+ *  (scoop neckline). blush 0..1 = rosy cheeks; spread 0..1 = flat red bands fill down the neck (0..0.6) then the upper chest
+ *  (0.6..1), lighter as they go down. t = film time (gentle pulse). sc = pop-in */
+export function blushLens(x, y, r, { blush = 0, spread = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  const HB = '#7A5A3A', HB_D = '#5A4030', TEE_D = '#4E9A5C';
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = '#DCEFF7'; ctx.fillRect(-320, -320, 640, 640);
+    rr(-150, -150, 300, 270, 120); ctx.fillStyle = HB_D; ctx.fill();                       // hair behind
+    rr(-54, 20, 108, 200, 30); ctx.fillStyle = C.skin; ctx.fill(); ell(0, 230, 170, 110, C.skin);   // neck + upper chest
+    const pu = 0.9 + 0.1 * Math.sin(t * 5), sp = clamp(spread);
+    const band = (y0, y1, a, p) => { if (p <= 0) return; ctx.save(); ctx.globalAlpha = a * clamp(p) * pu; ctx.fillStyle = C.red; ctx.fillRect(-180, y0, 360, y1 - y0); ctx.restore(); };
+    ctx.save(); ctx.beginPath(); ctx.rect(-56, 20, 112, 200); ctx.ellipse(0, 230, 170, 110, 0, 0, TAU); ctx.clip();
+    band(40, 110, 0.5, seg01(sp, 0, 0.3)); band(110, 170, 0.42, seg01(sp, 0.3, 0.6)); band(170, 340, 0.34, seg01(sp, 0.6, 1));
+    ctx.restore();
+    ctx.beginPath(); ctx.moveTo(-300, 340); ctx.lineTo(-300, 220); ctx.quadraticCurveTo(-270, 166, -160, 160); ctx.lineTo(-104, 160); ctx.quadraticCurveTo(0, 360, 104, 160);
+    ctx.lineTo(160, 160); ctx.quadraticCurveTo(270, 166, 300, 220); ctx.lineTo(300, 340); ctx.closePath(); ctx.fillStyle = C.leaf; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(150, 340); ctx.lineTo(170, 200); ctx.quadraticCurveTo(260, 180, 300, 230); ctx.lineTo(300, 340); ctx.closePath(); ctx.fillStyle = TEE_D; ctx.fill();
+    for (const sd of [-1, 1]) ell(sd * 128, -66, 22, 30, C.skinShade);
+    ell(0, -80, 128, 136, C.skin);
+    ctx.beginPath(); ctx.moveTo(-132, -60); ctx.quadraticCurveTo(-140, -220, 0, -222); ctx.quadraticCurveTo(140, -220, 132, -60); ctx.quadraticCurveTo(110, -150, 30, -150);
+    ctx.quadraticCurveTo(-60, -150, -100, -110); ctx.quadraticCurveTo(-120, -90, -132, -60); ctx.closePath(); ctx.fillStyle = HB; ctx.fill();
+    // face: shy smile, eyes glancing aside, raised brows
+    for (const sd of [-1, 1]) { ell(sd * 46 - 6, -78, 12, 16, C.ink); circle(sd * 46 - 2, -84, 4, C.white); }
+    ctx.strokeStyle = HB_D; ctx.lineWidth = 9; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 24, -118); ctx.quadraticCurveTo(sd * 46, -132, sd * 68, -120); ctx.stroke(); }
+    ctx.beginPath(); ctx.moveTo(4, -50); ctx.quadraticCurveTo(14, -34, 0, -30); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 7; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-20, 4); ctx.quadraticCurveTo(0, 18, 20, 4); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.stroke();
+    const b = clamp(blush);
+    if (b > 0) { ctx.save(); ctx.globalAlpha = 0.6 * b * pu; for (const sd of [-1, 1]) ell(sd * 78, -24, 40 * (0.7 + 0.3 * b), 24 * (0.7 + 0.3 * b), C.red); ctx.restore();
+      ctx.save(); ctx.globalAlpha = b; for (const sd of [-1, 1]) for (const k of [-1, 0, 1]) line([[sd * 78 + k * 16 - 5, -32], [sd * 78 + k * 16 + 5, -16]], C.white, 5); ctx.restore(); }
+    ctx.restore();
+  }, '#DCEFF7');
 }

@@ -1,0 +1,65 @@
+{
+  "title": "What Happens When You Cry?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Lacrimal Apparatus' (lacrimal glands behind the upper outside corner of your eyes make the salty water that becomes your tears; every time you blink, your puncta act like valves that drain used tears away from your eye; your tear ducts empty into the back of your nose; when you cry, your excess tears are flowing faster than they usually would into the back of your nose and draining into your throat, which is why you might feel stuffy if you've been crying; page says 'stuffy', not 'runny'): https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus",
+    "Cleveland Clinic, 'Tears' (three types: basal tears keep your eyes lubricated, reflex tears flush out irritants like dust, smoke or onion fumes, and strong emotions like sadness, joy or grief cause emotional tears; tears drain into your tear ducts that empty into the back of your nose): https://my.clevelandclinic.org/health/body/tears",
+    "Cleveland Clinic Health Essentials, 'Tears: Why We Cry and More (Infographic)' (emotional tears gush in response to strong emotions; they have the same chemical makeup as basal tears but contain more stress hormones and natural painkillers): https://health.clevelandclinic.org/tears-why-we-cry-and-more-infographic/",
+    "Tease (next video): Cleveland Clinic, 'Skin Flushing' (skin flushing, or blushing, is the sudden increase of blood flow to your cheeks, neck or upper chest, turning them red or darker temporarily; most often a reaction to strong emotions like affection or embarrassment; it goes away on its own): https://my.clevelandclinic.org/health/symptoms/skin-flushing"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you cry?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *CRY?"
+    },
+    {
+      "text": "Your eyes flood, but the weirdest part happens in your nose.",
+      "caps": "YOUR EYES *FLOOD | BUT THE *WEIRDEST | PART *HAPPENS | IN YOUR *NOSE"
+    },
+    {
+      "text": "Tears come from glands behind the upper outside corner of each eye.",
+      "caps": "*TEARS COME FROM | *GLANDS BEHIND | THE UPPER *OUTSIDE | CORNER OF EACH *EYE"
+    },
+    {
+      "text": "Strong feelings like sadness or joy open the floodgates,",
+      "caps": "*STRONG FEELINGS | LIKE *SADNESS | OR JOY *OPEN | THE *FLOODGATES"
+    },
+    {
+      "text": "and those emotional tears carry extra stress hormones and natural painkillers.",
+      "caps": "AND THOSE *EMOTIONAL | TEARS *CARRY | EXTRA *STRESS | *HORMONES AND | NATURAL *PAINKILLERS"
+    },
+    {
+      "text": "Normally, every blink drains used tears into your tear ducts,",
+      "caps": "*NORMALLY, EVERY | *BLINK DRAINS | USED *TEARS | INTO *TEAR DUCTS"
+    },
+    {
+      "text": "which empty into the back of your nose.",
+      "caps": "WHICH *EMPTY | INTO THE *BACK | OF YOUR *NOSE"
+    },
+    {
+      "text": "Cry, and tears rush in faster than usual,",
+      "caps": "CRY, AND *TEARS | RUSH IN *FASTER | THAN *USUAL"
+    },
+    {
+      "text": "then drain down into your throat.",
+      "caps": "THEN *DRAIN DOWN | INTO YOUR *THROAT"
+    },
+    {
+      "text": "That's why a good cry leaves you feeling stuffy.",
+      "caps": "THAT'S *WHY A GOOD | *CRY LEAVES YOU | FEELING *STUFFY"
+    },
+    {
+      "text": "Next Body File: what happens when you blush,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOU *BLUSH"
+    },
+    {
+      "text": "and why the red can spread to your chest.",
+      "caps": "AND *WHY THE | RED CAN *SPREAD | TO YOUR *CHEST"
+    }
+  ]
+}
