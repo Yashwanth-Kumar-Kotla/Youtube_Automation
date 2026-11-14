@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14T10:24:46+00:00",
+  "updated": "2026-11-14T10:40:30+00:00",
   "videos": [
     {
       "id": "2026-11-09-body-01",
@@ -129,6 +129,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-02/2026-11-14-body-02.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-02/2026-11-14-body-02.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-14-body-03",
+      "title": "What Happens When You Blush?",
+      "caption": "What Happens When You Blush? #bodyfiles #blushing #humanbody #science #shorts #healthfacts",
+      "length": 35.4,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-03/2026-11-14-body-03.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-03/2026-11-14-body-03.mp4",
       "approved": false
     }
   ]
