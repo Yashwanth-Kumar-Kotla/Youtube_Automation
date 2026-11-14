@@ -280,6 +280,7 @@ function head(o) {
   ell(0, -34, 116, 94, HC);
   for (const sd of [-1, 1]) { ell(sd * 104, 14, 22, 28, C.skin); ell(sd * 106, 14, 10, 15, C.skinShade); }
   ell(0, 12, 102, 112, C.skin);
+  if (o.blush > 0) { ctx.save(); ctx.globalAlpha = 0.13 * clamp(o.blush); ell(0, 34, 92, 86, C.red); ctx.restore(); }   // faint all-over flush
   // fringe with side part
   ctx.beginPath(); ctx.moveTo(-104, -6); ctx.quadraticCurveTo(-118, -112, -14, -124); ctx.quadraticCurveTo(96, -132, 112, -26);
   ctx.quadraticCurveTo(92, -70, 40, -74); ctx.quadraticCurveTo(-20, -76, -58, -50); ctx.quadraticCurveTo(-86, -34, -104, -6); ctx.closePath();
@@ -324,6 +325,12 @@ function head(o) {
   if (o.glasses) { ctx.strokeStyle = C.ink; ctx.lineWidth = 6; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 6, 28, 0, TAU); ctx.stroke(); } line([[-12, 2], [12, 2]], C.ink, 6); }
   ctx.beginPath(); ctx.moveTo(4, 26); ctx.quadraticCurveTo(16, 44, 0, 48); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.stroke();
   ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 62, 46, 20, 12, C.pink); ctx.globalAlpha = 1;
+  if (o.blush > 0) {   // blushing set (2026-11-14 "blush"): red cheeks + white hatch glints, blush 0..1
+    const bl = clamp(o.blush), k = 0.75 + 0.25 * bl;
+    ctx.save(); ctx.globalAlpha = 0.68 * bl; for (const sd of [-1, 1]) ell(sd * 60, 46, 36 * k, 22 * k, C.red); ctx.restore();
+    ctx.save(); ctx.globalAlpha = bl; for (const sd of [-1, 1]) for (const q of [-1, 0, 1]) line([[sd * 60 + q * 15 - 5, 36], [sd * 60 + q * 15 + 5, 54]], C.white, 5); ctx.restore();
+  }
+  if (o.sweat > 0) drop(112, -14, 0.5, 0.25, clamp(o.sweat));   // awkward sweat drop at the temple
   if (o.stuffy > 0) { ctx.save(); ctx.globalAlpha = 0.75 * clamp(o.stuffy); ell(8, 40, 22, 17, C.pink); ctx.restore(); ell(2, 34, 7, 5, SKIN_HI_H); }   // rosy stuffy nose
   if (o.stache) for (const sd of [-1, 1]) ell(sd * 22, 56, 26, 11, HC, sd * 0.25);
   if (o.cap) { ell(0, -106, 118, 48, CAP); rr(-118, -102, 236, 30, 12); ctx.fillStyle = CAP; ctx.fill(); ell(24, -74, 100, 16, CAP_D, -0.04); ell(-34, -128, 44, 12, '#9A7A58', -0.2); }
@@ -3681,4 +3688,138 @@ export function blushLens(x, y, r, { blush = 0, spread = 0, sc = 1, t = 0 } = {}
       ctx.save(); ctx.globalAlpha = b; for (const sd of [-1, 1]) for (const k of [-1, 0, 1]) line([[sd * 78 + k * 16 - 5, -32], [sd * 78 + k * 16 + 5, -16]], C.white, 5); ctx.restore(); }
     ctx.restore();
   }, '#DCEFF7');
+}
+
+// ═════════════════════════ BLUSHING SET (2026-11-14 "blush") ═════════════════════════
+// hero face option: man({ blush 0..1 }) = red cheeks + white hatch glints + faint all-over flush; sweat 0..1 = awkward drop at the temple
+const BB_HAIR = '#7A5A3A', BB_HAIR_D = '#5A4030', BB_TEE_D = '#4E9A5C', BB_COLLAR = '#86C892';
+/** BUST points (local, scale by s): screen-right cheek, neck middle, upper chest (inside the open collar) */
+export const BUST = { cheek: [78, -204], neck: [0, -60], chest: [0, 92] };
+/** front-view bust of the "diagram person" (NOT the hero: brown bob, green button-up shirt with a collar), same look as
+ *  blushLens. Origin = neck base, head top ≈ -405, shirt runs down past +1400 (let it leave the frame). cheek / neck / chest 0..1 =
+ *  flat red flush on each place (gently pulsing). peek 0..1 = the collar opens a little wider (tasteful V, collarbone level) to
+ *  show the upper chest. look -1..1 eyes, mouth 'smile' | 'flat' | 'o'. sc = pop-in */
+export function blushBust(x, y, s = 1, { cheek = 0, neck = 0, chest = 0, peek = 0, look = 0, mouth = 'smile', t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const pu = 0.9 + 0.1 * Math.sin(t * 5), pk = clamp(peek), vw = lerp(58, 92, pk), vd = lerp(66, 178, pk);
+  rr(-160, -410, 320, 300, 130); ctx.fillStyle = BB_HAIR_D; ctx.fill();
+  rr(-58, -140, 116, 180, 30); ctx.fillStyle = C.skin; ctx.fill(); ell(0, 120, 190, 120, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.rect(-58, -140, 116, 180); ctx.ellipse(0, 120, 190, 120, 0, 0, TAU); ctx.clip();
+  if (neck > 0) { ctx.save(); ctx.globalAlpha = 0.5 * clamp(neck) * pu; ctx.fillStyle = C.red; ctx.fillRect(-80, -120, 160, 130); ctx.restore(); }
+  if (chest > 0) { ctx.save(); ctx.globalAlpha = 0.42 * clamp(chest) * pu; ell(0, 70, 190, 130, C.red); ctx.restore(); }
+  ctx.restore();
+  // shirt with a V opening at the neck
+  const shirt = () => { ctx.beginPath(); ctx.moveTo(-340, 1500); ctx.lineTo(-340, 150); ctx.quadraticCurveTo(-330, 20, -190, 6); ctx.lineTo(-vw, 0); ctx.lineTo(0, vd);
+    ctx.lineTo(vw, 0); ctx.lineTo(190, 6); ctx.quadraticCurveTo(330, 20, 340, 150); ctx.lineTo(340, 1500); ctx.closePath(); };
+  shirt(); ctx.fillStyle = C.leaf; ctx.fill();
+  ctx.save(); shirt(); ctx.clip(); ctx.beginPath(); ctx.moveTo(230, 0); ctx.quadraticCurveTo(200, 400, 230, 1500); ctx.lineTo(400, 1500); ctx.lineTo(400, 0); ctx.closePath(); ctx.fillStyle = BB_TEE_D; ctx.fill(); ctx.restore();
+  line([[0, vd], [0, 1500]], BB_TEE_D, 8);
+  for (let by = vd + 60; by < 1400; by += 110) { circle(0, by, 13, BB_TEE_D); circle(0, by, 8, C.white); }
+  // collar flaps (splay open with peek)
+  for (const sd of [-1, 1]) {
+    ctx.beginPath(); ctx.moveTo(sd * (vw + 16), -10); ctx.lineTo(sd * lerp(12, 46, pk), lerp(62, 118, pk)); ctx.lineTo(sd * (vw + lerp(70, 96, pk)), lerp(44, 58, pk)); ctx.closePath();
+    ctx.fillStyle = BB_COLLAR; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = BB_TEE_D; ctx.stroke();
+  }
+  // head (same face as blushLens, moved up 180)
+  ctx.save(); ctx.translate(0, -180);
+  for (const sd of [-1, 1]) ell(sd * 128, -66, 22, 30, C.skinShade);
+  ell(0, -80, 128, 136, C.skin);
+  ctx.beginPath(); ctx.moveTo(-132, -60); ctx.quadraticCurveTo(-140, -220, 0, -222); ctx.quadraticCurveTo(140, -220, 132, -60); ctx.quadraticCurveTo(110, -150, 30, -150);
+  ctx.quadraticCurveTo(-60, -150, -100, -110); ctx.quadraticCurveTo(-120, -90, -132, -60); ctx.closePath(); ctx.fillStyle = BB_HAIR; ctx.fill();
+  for (const sd of [-1, 1]) { ell(sd * 46 + look * 8, -78, 12, 16, C.ink); circle(sd * 46 + 4 + look * 8, -84, 4, C.white); }
+  ctx.strokeStyle = BB_HAIR_D; ctx.lineWidth = 9; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 24, -118); ctx.quadraticCurveTo(sd * 46, -132, sd * 68, -120); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(4, -50); ctx.quadraticCurveTo(14, -34, 0, -30); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 7; ctx.stroke();
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.beginPath();
+  if (mouth === 'o') { ctx.stroke(); ell(0, 8, 14, 18, C.mouth); }
+  else { if (mouth === 'flat') { ctx.moveTo(-18, 8); ctx.lineTo(18, 8); } else { ctx.moveTo(-20, 4); ctx.quadraticCurveTo(0, 18, 20, 4); } ctx.stroke(); }
+  const b = clamp(cheek);
+  if (b > 0) { ctx.save(); ctx.globalAlpha = 0.62 * b * pu; for (const sd of [-1, 1]) ell(sd * 78, -24, 40 * (0.7 + 0.3 * b), 24 * (0.7 + 0.3 * b), C.red); ctx.restore();
+    ctx.save(); ctx.globalAlpha = b; for (const sd of [-1, 1]) for (const k of [-1, 0, 1]) line([[sd * 78 + k * 16 - 5, -32], [sd * 78 + k * 16 + 5, -16]], C.white, 5); ctx.restore(); }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** a face in a round lens (radius r) for skin-tone comparisons. tone 'light' (palette skin, short brown hair, blue tee) or
+ *  'deep' (deep brown skin, short black curls, yellow-ochre tee). flush 0..1 = the blush on the cheeks: light skin turns red,
+ *  deep skin turns a deeper, darker shade (not red). Shy smile; look -1..1. bg = lens colour; sc = pop-in */
+const TF = { light: { skin: C.skin, shade: C.skinShade, hair: C.hair, flush: C.red, fa: 0.62, tee: C.shirt, teeD: C.shirtShade },
+  deep: { skin: '#8D5A3C', shade: '#704328', hair: '#1E1612', flush: '#4A1F1A', fa: 0.6, tee: '#E0A53A', teeD: '#C68C28' } };
+export function toneFace(x, y, r, { tone = 'light', flush = 0, look = 0, t = 0, sc = 1, bg = '#FFF1B8' } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  const P = TF[tone] || TF.light;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.ellipse(0, 400, 280, 150, 0, Math.PI, TAU); ctx.fillStyle = P.tee; ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.ellipse(0, 400, 280, 150, 0, Math.PI, TAU); ctx.clip(); ell(240, 330, 90, 160, P.teeD); ctx.restore();
+    rr(-56, 120, 112, 150, 30); ctx.fillStyle = P.skin; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0, 258, 58, 26, 0, 0, Math.PI); ctx.fillStyle = P.skin; ctx.fill();
+    for (const sd of [-1, 1]) { ell(sd * 132, 0, 24, 32, P.shade); }
+    ell(0, -10, 130, 142, P.skin);
+    if (tone === 'deep') { for (const [cx, cy, cr] of [[-110, -100, 44], [-60, -140, 48], [0, -152, 50], [60, -140, 48], [110, -100, 44], [-128, -50, 30], [128, -50, 30]]) circle(cx, cy, cr, P.hair); }
+    else { ctx.beginPath(); ctx.moveTo(-134, -20); ctx.quadraticCurveTo(-146, -160, 0, -158); ctx.quadraticCurveTo(140, -160, 134, -20); ctx.quadraticCurveTo(110, -96, 20, -92);
+      ctx.quadraticCurveTo(-70, -90, -134, -20); ctx.closePath(); ctx.fillStyle = P.hair; ctx.fill(); }
+    const pu = 0.92 + 0.08 * Math.sin(t * 5), f = clamp(flush);
+    if (f > 0) { ctx.save(); ctx.globalAlpha = 0.12 * f; ell(0, 20, 118, 112, P.flush); ctx.restore();
+      ctx.save(); ctx.globalAlpha = P.fa * f * pu; for (const sd of [-1, 1]) ell(sd * 72, 46, 40 * (0.7 + 0.3 * f), 25 * (0.7 + 0.3 * f), P.flush); ctx.restore(); }
+    for (const sd of [-1, 1]) { ell(sd * 44 + look * 8, -4, 12, 16, C.ink); circle(sd * 44 + 4 + look * 8, -10, 4, C.white); }
+    ctx.strokeStyle = tone === 'deep' ? P.hair : C.hair; ctx.lineWidth = 9; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 22, -42); ctx.quadraticCurveTo(sd * 44, -56, sd * 66, -44); ctx.stroke(); }
+    ctx.beginPath(); ctx.moveTo(4, 24); ctx.quadraticCurveTo(14, 40, 0, 44); ctx.strokeStyle = P.shade; ctx.lineWidth = 7; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-22, 76); ctx.quadraticCurveTo(0, 92, 22, 76); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.stroke();
+    if (f > 0) { ctx.save(); ctx.globalAlpha = f * (tone === 'deep' ? 0.7 : 1); for (const sd of [-1, 1]) for (const k of [-1, 0, 1]) line([[sd * 72 + k * 16 - 5, 36], [sd * 72 + k * 16 + 5, 54]], C.white, 5); ctx.restore(); }
+    ctx.restore();
+  }, bg);
+}
+/** flat love heart graphic (red, ink outline, light glint), ~220 px wide at s = 1. beat 0..1 swells it. sc = pop-in */
+export function loveHeart(x, y, s = 1, sc = 1, beat = 0, rot = 0) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const k = s * sc * (1 + 0.1 * beat); ctx.scale(k, k);
+  const p = () => { ctx.beginPath(); ctx.moveTo(0, 90); ctx.bezierCurveTo(-170, -10, -110, -150, 0, -70); ctx.bezierCurveTo(110, -150, 170, -10, 0, 90); ctx.closePath(); };
+  ctx.lineJoin = 'round'; p(); ctx.lineWidth = 22; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.red; ctx.fill();
+  ell(-58, -62, 24, 13, C.pinkLight, -0.6);
+  ctx.restore();
+}
+
+// ═════════════════════════ MOTION SICKNESS TEASE (2026-11-14 "blush" → next) ═════════════════════════
+/** small boat icon on rolling waves (graphic, ink outline): red hull, white cabin with sky windows, yellow flag. Rocks + bobs
+ *  with film time t. ~380x300 px at s = 1, origin = waterline centre. sc = pop-in */
+export function seaBoat(x, y, s = 1, { t = 0, sc = 1, rock = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.save(); ctx.translate(0, Math.sin(t * 2.6) * 10 * rock); ctx.rotate(Math.sin(t * 2.2) * 0.16 * rock);
+  ctx.lineWidth = 9; ctx.strokeStyle = C.ink;
+  line([[10, -60], [10, -200]], C.ink, 9);
+  ctx.beginPath(); ctx.moveTo(14, -196); ctx.lineTo(80, -176); ctx.lineTo(14, -152); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill(); ctx.stroke();
+  rr(-90, -110, 150, 80, 14); ctx.fillStyle = C.white; ctx.fill(); ctx.stroke();
+  for (const wx of [-60, -16, 28]) { rr(wx - 14, -94, 28, 26, 8); ctx.fillStyle = C.sky; ctx.fill(); }
+  ctx.beginPath(); ctx.moveTo(-180, -34); ctx.lineTo(180, -34); ctx.quadraticCurveTo(150, 30, 100, 36); ctx.lineTo(-110, 36); ctx.quadraticCurveTo(-160, 30, -180, -34); ctx.closePath();
+  ctx.fillStyle = C.red; ctx.fill(); ctx.stroke();
+  line([[-150, -8], [150, -8]], C.white, 10);
+  ctx.restore();
+  for (let row = 0; row < 2; row++) {
+    const pts = [], yy = 20 + row * 46, ph = t * (row ? -3 : 3);
+    for (let px = -220; px <= 220; px += 10) pts.push([px, yy + Math.sin(px / 34 + ph) * 13]);
+    line(pts, C.ink, 22); line(pts, row ? C.sky : C.shirt, 12);
+  }
+  ctx.restore();
+}
+/** queasy cartoon face badge (NOT the hero): round face in an ink ring, pale green tinge on the lower face, woozy wavy eyes,
+ *  worried brows, wobbly mouth, and a drop of saliva at the mouth corner (drool 0..1 grows it and lets it slide a little).
+ *  Little wobble marks either side. Nothing gross. ~320 px at s = 1. sc = pop-in, t = film time */
+export function queasyFace(x, y, s = 1, { t = 0, drool = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 2.2) * 0.06); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  circle(0, 0, 160, C.ink); circle(0, 0, 148, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 148, 0, TAU); ctx.clip(); ctx.globalAlpha = 0.45; ell(0, 70, 150, 90, '#9FD39A'); ctx.restore();
+  ctx.beginPath(); ctx.moveTo(-120, -80); ctx.quadraticCurveTo(-40, -170, 60, -140); ctx.quadraticCurveTo(130, -120, 130, -70); ctx.quadraticCurveTo(60, -110, -120, -80); ctx.closePath(); ctx.fillStyle = BB_HAIR; ctx.fill();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 8;
+  for (const sd of [-1, 1]) { ctx.beginPath(); for (let k = 0; k <= 8; k++) { const px = sd * 50 - 26 + k * 6.5, py = -14 + Math.sin(k * 1.4 + t * 6) * 5; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
+  ctx.lineWidth = 8; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 24, -50 + 2); ctx.quadraticCurveTo(sd * 46, -66, sd * 70, -56); ctx.stroke(); }
+  ctx.strokeStyle = C.mouth; ctx.beginPath(); for (let k = 0; k <= 10; k++) { const px = -36 + k * 7.2, py = 62 + Math.sin(k * 1.3) * 7; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke();
+  const dl = clamp(drool);
+  if (dl > 0) drop(40, 84 + 34 * dl, 0.75 * (0.5 + 0.5 * dl), 0, dl);
+  ctx.restore();
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  for (const sd of [-1, 1]) { ctx.save(); ctx.translate(sd * 205, -20); const W2 = [[0, -50], [sd * 14, -25], [0, 0], [sd * 14, 25], [0, 50]]; line(W2, C.ink, 10); ctx.restore(); }
+  ctx.restore();
 }

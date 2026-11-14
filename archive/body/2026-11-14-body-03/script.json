@@ -1,0 +1,64 @@
+{
+  "title": "What Happens When You Blush?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Skin Flushing' (skin flushing, or blushing, is the sudden increase of blood flow to your cheeks, neck or upper chest; it causes your cheeks, neck or upper chest to turn red or darker temporarily; on a dark skin tone it can cause the skin on these parts to darken slightly; most often blushing is a reaction to strong emotions like affection or embarrassment; increased blood flow to your head, face, neck or upper chest causes flushed skin; if a strong emotion is the culprit, symptoms may go away once you relax): https://my.clevelandclinic.org/health/symptoms/skin-flushing",
+    "Better Health Channel (Victoria State Government, Department of Health), 'Blushing and flushing', reviewed 2023-10-12 (facial blushing is an involuntary reddening of the face due to embarrassment or stress; given the right stimulus such as embarrassment, the nerves prompt the blood vessels to open wide, flooding the skin with blood; the sympathetic nervous system regulates glands and organs without our conscious effort; in some people the ears, neck and chest also blush): https://www.betterhealth.vic.gov.au/health/conditionsandtreatments/blushing-and-flushing",
+    "Tease (next video): Cleveland Clinic, 'Motion Sickness' (happens when your eyes, inner ear and body send conflicting messages to your brain; symptoms can come on gradually or suddenly and include nausea, dizziness, headache, a cold sweat and excess saliva): https://my.clevelandclinic.org/health/diseases/12782-motion-sickness"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you blush?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *BLUSH?"
+    },
+    {
+      "text": "Blushing can hit three places, and one hides under your shirt.",
+      "caps": "*BLUSHING CAN HIT | 3 *PLACES | AND ONE *HIDES | UNDER YOUR *SHIRT"
+    },
+    {
+      "text": "It starts with a strong feeling, like embarrassment or affection.",
+      "caps": "IT *STARTS WITH | A STRONG *FEELING | LIKE *EMBARRASSMENT | OR *AFFECTION"
+    },
+    {
+      "text": "Your nerves tell the blood vessels in your face to open wide,",
+      "caps": "YOUR *NERVES TELL | THE BLOOD *VESSELS | IN YOUR *FACE | TO OPEN *WIDE"
+    },
+    {
+      "text": "flooding the skin with blood, no permission needed.",
+      "caps": "*FLOODING THE | SKIN WITH *BLOOD | NO *PERMISSION NEEDED"
+    },
+    {
+      "text": "That's the red that lights up your cheeks.",
+      "caps": "THAT'S THE *RED | THAT *LIGHTS UP | YOUR *CHEEKS"
+    },
+    {
+      "text": "In some people, the blood rush keeps going,",
+      "caps": "IN SOME *PEOPLE | THE BLOOD *RUSH | KEEPS *GOING"
+    },
+    {
+      "text": "down the neck and right onto the upper chest.",
+      "caps": "DOWN THE *NECK | AND *RIGHT ONTO | THE UPPER *CHEST"
+    },
+    {
+      "text": "On darker skin, it can look darker, not red.",
+      "caps": "ON DARKER *SKIN | IT CAN *LOOK | DARKER, NOT *RED"
+    },
+    {
+      "text": "Once you relax, it usually fades on its own.",
+      "caps": "ONCE YOU *RELAX | IT USUALLY *FADES | ON ITS *OWN"
+    },
+    {
+      "text": "Next Body File: what happens when motion sickness hits,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | *MOTION SICKNESS HITS"
+    },
+    {
+      "text": "and why your mouth suddenly starts watering.",
+      "caps": "AND *WHY YOUR | MOUTH *SUDDENLY | STARTS *WATERING"
+    }
+  ]
+}

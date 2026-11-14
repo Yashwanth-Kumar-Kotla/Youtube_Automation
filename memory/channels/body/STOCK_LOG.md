@@ -24,3 +24,4 @@
 - 2026-11-14 03:59 · 2026-11-14-body-01 added · conf 0.7 · question+duration-number · What happens when you get a charley horse?
 - 2026-11-14 04:00 · 2026-11-09-body-04 ready → scheduled · slot 0 on 2026-11-14, episode 6, manual upload
 - 2026-11-14 04:24 · 2026-11-14-body-02 added · conf 0.7 · question+hidden-place-loop · What happens when you cry?
+- 2026-11-14 04:40 · 2026-11-14-body-03 added · conf 0.7 · question+hidden-place-number · What happens when you blush?

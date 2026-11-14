@@ -1,0 +1,14 @@
+{
+  "title": "What Happens When You Blush?",
+  "description": "Blushing is a sudden rush of blood to your cheeks, neck or upper chest, most often set off by strong emotions like embarrassment or affection. Nerves prompt the blood vessels to open wide, flooding the skin with blood, and you don't control it. On darker skin it can look slightly darker instead of red, and if an emotion caused it, it may go away once you relax.\nNext Body File: what happens when motion sickness hits, and why your mouth suddenly starts watering.\nFollow Body Files for a new one every day.\n#bodyfiles #blushing #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Skin Flushing: https://my.clevelandclinic.org/health/symptoms/skin-flushing\nBetter Health Channel (Victoria State Government), Blushing and flushing: https://www.betterhealth.vic.gov.au/health/conditionsandtreatments/blushing-and-flushing\nCleveland Clinic, Motion Sickness: https://my.clevelandclinic.org/health/diseases/12782-motion-sickness",
+  "hashtags": ["#bodyfiles", "#blushing", "#humanbody", "#science", "#shorts", "#healthfacts"],
+  "pinned_comment": "Be honest: where does your blush show up first, your cheeks, your ears or your neck? What's the last thing that made you go red?",
+  "series": "Body Files",
+  "topic": "What happens when you blush?",
+  "experiment_arm": "E1-A (hook with a number: 'three places' in line 2); E4 tease_next",
+  "teases": "What happens when you get motion sickness?",
+  "topic_cluster": "blood",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the crying video (2026-11-14-body-2) with 'and why the red can spread to your chest' (paid off in lines 2 and 7-8: the blood rush can keep going down the neck onto the upper chest, the place 'hiding under your shirt')",
+  "hook_pattern": "question+hidden-place-number",
+  "format": "explainer"
+}
