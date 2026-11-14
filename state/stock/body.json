@@ -578,6 +578,38 @@
    "branch": "stock/body/2026-11-14-body-03",
    "history": [],
    "description": "Blushing is a sudden rush of blood to your cheeks, neck or upper chest, most often set off by strong emotions like embarrassment or affection. Nerves prompt the blood vessels to open wide, flooding the skin with blood, and you don't control it. On darker skin it can look slightly darker instead of red, and if an emotion caused it, it may go away once you relax.\nNext Body File: what happens when motion sickness hits, and why your mouth suddenly starts watering.\nFollow Body Files for a new one every day.\n#bodyfiles #blushing #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Skin Flushing: https://my.clevelandclinic.org/health/symptoms/skin-flushing\nBetter Health Channel (Victoria State Government), Blushing and flushing: https://www.betterhealth.vic.gov.au/health/conditionsandtreatments/blushing-and-flushing\nCleveland Clinic, Motion Sickness: https://my.clevelandclinic.org/health/diseases/12782-motion-sickness"
+  },
+  "2026-11-14-body-04": {
+   "title": "What Happens When You Get Motion Sickness?",
+   "hashtags": [
+    "#bodyfiles",
+    "#motionsickness",
+    "#carsick",
+    "#humanbody",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "Car, boat, plane or VR headset: which one gets you every time? And what's your go-to trick to stop it?",
+   "series": "Body Files",
+   "topic": "What happens when you get motion sickness?",
+   "experiment_arm": "E1-B (hook without a number: no number in lines 1-2; 'two to twelve' only appears in line 9); E4 tease_next",
+   "teases": "What happens when your stomach growls?",
+   "topic_cluster": "balance",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the blush video (2026-11-14-body-3) with 'and why your mouth suddenly starts watering' (opened in line 2, paid off in lines 7-8 as a listed symptom: salivating more than usual, alongside a cold sweat; no mechanism claimed since no reliable source explains it)",
+   "hook_pattern": "question+senses-argue-loop",
+   "format": "explainer",
+   "id": "2026-11-14-body-04",
+   "channel": "body",
+   "made_at": "2026-11-14T10:30-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 34.8,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-14-body-04",
+   "history": [],
+   "description": "Motion sickness happens when your eyes, inner ear and body send your brain conflicting messages: your eyes sense movement while your inner ear senses you're sitting still. Symptoms can include dizziness, nausea, a cold sweat and salivating more than usual, and it's more likely to affect kids ages 2 to 12 than adults. Looking at the horizon, facing forward and getting fresh air can help.\nNext Body File: what happens when your stomach growls, and why it can rumble even when you're not hungry.\nFollow Body Files for a new one every day.\n#bodyfiles #motionsickness #carsick #humanbody #science #shorts\n\nSources:\nCleveland Clinic, Motion Sickness: https://my.clevelandclinic.org/health/diseases/12782-motion-sickness\nNHS, Motion sickness: https://www.nhs.uk/conditions/motion-sickness/\nCleveland Clinic, Hunger Pangs: https://health.clevelandclinic.org/hunger-pangs"
   }
  }
 }

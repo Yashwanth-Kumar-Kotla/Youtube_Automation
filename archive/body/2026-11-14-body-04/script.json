@@ -1,0 +1,68 @@
+{
+  "title": "What Happens When You Get Motion Sickness?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Motion Sickness' (happens when your eyes, inner ear and body send conflicting messages to your brain; your eyes sense movement while your inner ear and the nerve endings in your muscles and joints sense that you're sitting still; your brain can't process the conflicting messages, so you feel nauseated or sweaty; symptoms include dizziness, nausea, excess saliva / salivating more than usual, and sweating, particularly a cold sweat; more likely to affect children ages 2 to 12 than adults; tips: put away your book, phone or tablet, face forward (e.g. the front passenger seat), look at objects in the distance or the horizon, roll down a window for fresh air; symptoms usually go away once you're off the plane or boat or out of the car): https://my.clevelandclinic.org/health/diseases/12782-motion-sickness",
+    "NHS, 'Motion sickness' (the inner ear sends signals to the brain that conflict with what the eyes see; symptoms include dizziness, nausea, feeling cold and sweating; sit in the front of a car, look straight ahead at a fixed point such as the horizon, breathe fresh air if possible, do not read, watch films or use electronic devices): https://www.nhs.uk/conditions/motion-sickness/",
+    "Tease (next video): Cleveland Clinic Health Essentials, 'Hunger Pangs' (stomach rumbling is the noise produced by the movement of gas and fluids in your digestive system, caused by the contraction of the muscles in your stomach and intestines; stomach rumbling can occur at any time and isn't always a sign of hunger): https://health.clevelandclinic.org/hunger-pangs"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get motion sickness?",
+      "caps": "WHAT *HAPPENS WHEN | YOU GET *MOTION | *SICKNESS?"
+    },
+    {
+      "text": "Your senses start arguing, and your mouth gets dragged into it.",
+      "caps": "YOUR SENSES *START | *ARGUING | AND YOUR *MOUTH | GETS *DRAGGED INTO IT"
+    },
+    {
+      "text": "Your eyes sense movement,",
+      "caps": "YOUR *EYES SENSE | *MOVEMENT"
+    },
+    {
+      "text": "but your inner ear swears you're sitting still.",
+      "caps": "BUT YOUR *INNER EAR | *SWEARS YOU'RE | SITTING *STILL"
+    },
+    {
+      "text": "Your brain can't sort out the mixed signals,",
+      "caps": "YOUR *BRAIN CAN'T | *SORT OUT THE | MIXED *SIGNALS"
+    },
+    {
+      "text": "so you get dizzy, sweaty, and queasy.",
+      "caps": "SO YOU *GET | *DIZZY, SWEATY | AND *QUEASY"
+    },
+    {
+      "text": "Then the weird one: your mouth starts watering,",
+      "caps": "THEN THE *WEIRD ONE | YOUR *MOUTH | STARTS *WATERING"
+    },
+    {
+      "text": "way more than usual, plus a cold sweat.",
+      "caps": "WAY *MORE | THAN *USUAL | PLUS A COLD *SWEAT"
+    },
+    {
+      "text": "Kids aged two to twelve get it more than adults.",
+      "caps": "KIDS *AGED | 2 TO *12 | GET IT *MORE | THAN *ADULTS"
+    },
+    {
+      "text": "The fix? Put the phone away, sit up front,",
+      "caps": "THE *FIX? | PUT THE *PHONE AWAY | SIT UP *FRONT"
+    },
+    {
+      "text": "stare at the horizon, and open a window.",
+      "caps": "*STARE AT THE | *HORIZON | AND *OPEN | A *WINDOW"
+    },
+    {
+      "text": "Next Body File: what happens when your stomach growls,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOUR STOMACH *GROWLS"
+    },
+    {
+      "text": "and why it rumbles even when you're not hungry.",
+      "caps": "AND WHY IT *RUMBLES | *EVEN WHEN | YOU'RE NOT *HUNGRY"
+    }
+  ]
+}

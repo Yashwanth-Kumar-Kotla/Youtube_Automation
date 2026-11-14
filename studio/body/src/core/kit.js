@@ -1,6 +1,6 @@
 // Inside Out engine: the COMPONENT ZOO. Every reusable thing on screen lives here.
 // All functions draw immediately with the shared ctx, in 1080x1920 canvas pixels unless a scale is given.
-import { ctx, C, W, H, TAU, lerp, clamp, rnd, rr, circle, ell, line, fillAll } from './lib.js';
+import { ctx, C, W, H, TAU, lerp, clamp, rnd, rr, circle, ell, line, fillAll, bigText } from './lib.js';
 
 // ═════════════════════════ PROPS ═════════════════════════
 /** a piece of gum (pill shape). s = scale (1 = 80x52 px) */
@@ -280,6 +280,7 @@ function head(o) {
   ell(0, -34, 116, 94, HC);
   for (const sd of [-1, 1]) { ell(sd * 104, 14, 22, 28, C.skin); ell(sd * 106, 14, 10, 15, C.skinShade); }
   ell(0, 12, 102, 112, C.skin);
+  if (o.green > 0) { ctx.save(); ctx.beginPath(); ctx.ellipse(0, 12, 102, 112, 0, 0, TAU); ctx.clip(); ctx.globalAlpha = 0.55 * clamp(o.green); ell(0, 78, 120, 78, QUEASY_G); ctx.restore(); }   // queasy green tinge (lower face)
   if (o.blush > 0) { ctx.save(); ctx.globalAlpha = 0.13 * clamp(o.blush); ell(0, 34, 92, 86, C.red); ctx.restore(); }   // faint all-over flush
   // fringe with side part
   ctx.beginPath(); ctx.moveTo(-104, -6); ctx.quadraticCurveTo(-118, -112, -14, -124); ctx.quadraticCurveTo(96, -132, 112, -26);
@@ -301,11 +302,18 @@ function head(o) {
   } else if (o.eyes === 'wink') {   // left eye open (dot), right eye closed arc: the wink to camera
     ell(-40, 6, 11, 14, C.ink); circle(-36, 1, 4, C.white);
     ctx.beginPath(); ctx.arc(40, 10, 15, 1.1 * Math.PI, 1.9 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
+  } else if (o.eyes === 'spiral') {   // dizzy: white discs with ink spirals turning (o.spin = film time)
+    for (const sd of [-1, 1]) {
+      circle(sd * 40, 6, 27, C.ink); circle(sd * 40, 6, 23, C.white);
+      ctx.beginPath(); for (let k = 0; k <= 36; k++) { const an = k * 0.5 + (o.spin || 0) * 7 * sd, r = 1 + k * 0.55; const px = sd * 40 + Math.cos(an) * r * sd, py = 6 + Math.sin(an) * r; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.stroke();
+    }
   } else if (o.eyes === 'closed') {
     for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 40, 2, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); }
   } else {
     const look = o.look || 0;
-    for (const sd of [-1, 1]) { ell(sd * 40 + look * 6, 6, 11, 14, C.ink); circle(sd * 40 + 4 + look * 6, 1, 4, C.white); }
+    const ly = (o.lookY || 0) * 7;   // lookY 0..1: eyes down (reading a phone)
+    for (const sd of [-1, 1]) { ell(sd * 40 + look * 6, 6 + ly, 11, 14, C.ink); circle(sd * 40 + 4 + look * 6, 1 + ly, 4, C.white); }
   }
   // tired 0..1: heavy lids + eye bags (sleep loss)
   if (o.tired > 0) {
@@ -331,6 +339,11 @@ function head(o) {
     ctx.save(); ctx.globalAlpha = bl; for (const sd of [-1, 1]) for (const q of [-1, 0, 1]) line([[sd * 60 + q * 15 - 5, 36], [sd * 60 + q * 15 + 5, 54]], C.white, 5); ctx.restore();
   }
   if (o.sweat > 0) drop(112, -14, 0.5, 0.25, clamp(o.sweat));   // awkward sweat drop at the temple
+  if (o.sweats > 0) {   // cold sweat: drops at both temples + one rolling down the cheek (o.ct = film time)
+    const sw = clamp(o.sweats), u = ((o.ct || 0) * 0.7) % 1;
+    drop(-118, -8, 0.5 * sw, -0.25, sw); drop(120, 22, 0.44 * sw, 0.25, sw);
+    drop(-92, 44 + u * 46, 0.36 * sw, -0.1, sw * Math.min(1, u * 5, (1 - u) * 5));
+  }
   if (o.stuffy > 0) { ctx.save(); ctx.globalAlpha = 0.75 * clamp(o.stuffy); ell(8, 40, 22, 17, C.pink); ctx.restore(); ell(2, 34, 7, 5, SKIN_HI_H); }   // rosy stuffy nose
   if (o.stache) for (const sd of [-1, 1]) ell(sd * 22, 56, 26, 11, HC, sd * 0.25);
   if (o.cap) { ell(0, -106, 118, 48, CAP); rr(-118, -102, 236, 30, 12); ctx.fillStyle = CAP; ctx.fill(); ell(24, -74, 100, 16, CAP_D, -0.04); ell(-34, -128, 44, 12, '#9A7A58', -0.2); }
@@ -345,6 +358,8 @@ function head(o) {
   if (m === 'sad') { ctx.beginPath(); ctx.moveTo(-26, 86); ctx.quadraticCurveTo(0, 64, 26, 86); ctx.stroke(); }   // down-turned
   if (m === 'bawl') { ctx.beginPath(); ctx.moveTo(-32, 92); ctx.quadraticCurveTo(0, 50, 32, 92); ctx.quadraticCurveTo(0, 104, -32, 92); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); ell(0, 92, 14, 6, C.pink); }   // open wail
   if (o.cry > 0 || o.gush > 0) headTears(o);
+  if (m === 'wavy') { ctx.beginPath(); for (let k = 0; k <= 10; k++) { const px = -34 + k * 6.8, py = 76 + Math.sin(k * 1.5) * 7; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }   // queasy
+  if (o.drool > 0) { const dl = clamp(o.drool); drop(30, 92 + 26 * dl, 0.42 * (0.5 + 0.5 * dl), 0, dl); }   // mouth watering: saliva drop at the corner
   if (m === 'grin') { ctx.beginPath(); ctx.moveTo(-34, 66); ctx.quadraticCurveTo(0, 112, 34, 66); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); rr(-26, 66, 52, 12, 4); ctx.fillStyle = C.white; ctx.fill(); }
   ctx.restore();
 }
@@ -379,7 +394,9 @@ function headTears(o) {
  *   lungs (x-ray only: number 0..1 = show the lungs + windpipe instead of the stomach, 1 = squeezed empty: the sneeze blast),
  *   holding: [drawFn(x, y)] drawn at the right hand, inside: [x, y, rot] a gum drawn inside the body (local coords),
  *   crying set: sad 0..1 (inner brows up), mouth 'sad' | 'bawl', cry 0..1 + ct (film time) tear streams, gush 0..1 + gushTo
- *   [dx, dy] cartoon tear fountains, stuffy 0..1 rosy nose }
+ *   [dx, dy] cartoon tear fountains, stuffy 0..1 rosy nose,
+ *   motion-sickness set: eyes 'spiral' (+ spin = film time), lookY 0..1 (eyes down at a phone), green 0..1 (queasy tinge),
+ *   mouth 'wavy', sweats 0..1 (cold sweat drops, + ct), drool 0..1 (saliva drop at the mouth corner) }
  */
 let _coat = false, _shirt = [C.shirt, C.shirtShade], _diaHi = 0;
 const BOOT = '#5A4030', CAP = '#7A5A3A', CAP_D = '#5A4030';
@@ -390,6 +407,7 @@ function overallsBib() {
   for (const sd of [-1, 1]) { line([[sd * 76, -90], [sd * 112, -206]], C.pants, 30); circle(sd * 72, -78, 11, C.yellow); }
 }
 const COAT_D = '#DCD6CB';
+const QUEASY_G = '#9FD39A';
 export function man(o) {
   const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR; _shirt = o.shirtCol ? [o.shirtCol, o.shirtShade || o.shirtCol] : [C.shirt, C.shirtShade];
   const LEG = o.sit ? 170 : 440; _diaHi = o.diaHi || 0;
@@ -2435,7 +2453,7 @@ export function vessel(y, r, t = 0, flow = 1) {
 
 /** cartoon brain character: brain() with big eyes, a smirk and a little pink arm that points along ang (radians).
  *  point 0..1 = arm reach. ~560 px wide at s = 1. look -1..1 moves the pupils */
-export function brainBuddy(x, y, s, { t = 0, point = 0, ang = Math.PI, look = -1, mouth = 'smirk' } = {}) {
+export function brainBuddy(x, y, s, { t = 0, point = 0, ang = Math.PI, look = -1, mouth = 'smirk', eyes = 'n', wob = 0 } = {}) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
   if (point > 0) {
     const p0 = [Math.cos(ang) * 150, -20 + Math.sin(ang) * 150], L2 = 90 + 170 * clamp(point);
@@ -2444,12 +2462,18 @@ export function brainBuddy(x, y, s, { t = 0, point = 0, ang = Math.PI, look = -1
     ctx.save(); ctx.translate(p1[0], p1[1]); ctx.rotate(ang); circle(0, 0, 32, C.pinkDark); circle(0, 0, 25, C.pink);
     rr(10, -12, 70, 24, 12); ctx.fillStyle = C.pinkDark; ctx.fill(); rr(14, -7, 62, 14, 7); ctx.fillStyle = C.pink; ctx.fill(); ctx.restore();
   }
-  brain(0, 0, 1, { t });
-  for (const ex of [-80, 40]) { ell(ex, -40, 40, 46, C.ink); ell(ex, -40, 33, 39, C.white); circle(ex + look * 12, -36, 17, C.ink); circle(ex + look * 12 + 6, -43, 6, C.white); }
+  brain(0, 0, 1, { t, wob });
+  for (const ex of [-80, 40]) {
+    ell(ex, -40, 40, 46, C.ink); ell(ex, -40, 33, 39, C.white);
+    if (eyes === 'spiral') { ctx.beginPath(); for (let k = 0; k <= 36; k++) { const an = k * 0.5 + t * 7, r = 1 + k * 0.75; const px = ex + Math.cos(an) * r, py = -40 + Math.sin(an) * r; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.stroke(); }
+    else { circle(ex + look * 12, -36, 17, C.ink); circle(ex + look * 12 + 6, -43, 6, C.white); }
+  }
   ctx.strokeStyle = C.ink; ctx.lineWidth = 12;
   ctx.beginPath(); ctx.moveTo(-118, -104); ctx.quadraticCurveTo(-82, -122, -48, -106); ctx.moveTo(10, -112); ctx.quadraticCurveTo(46, -128, 80, -100); ctx.stroke();
   ctx.strokeStyle = C.mouth; ctx.lineWidth = 11; ctx.beginPath();
-  if (mouth === 'smirk') { ctx.moveTo(-60, 42); ctx.quadraticCurveTo(-10, 66, 30, 30); } else { ctx.moveTo(-50, 36); ctx.quadraticCurveTo(-10, 70, 30, 36); }
+  if (mouth === 'smirk') { ctx.moveTo(-60, 42); ctx.quadraticCurveTo(-10, 66, 30, 30); }
+  else if (mouth === 'wavy') { for (let k = 0; k <= 10; k++) { const px = -62 + k * 9, py = 46 + Math.sin(k * 1.5 + t * 8) * 8; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } }   // confused
+  else { ctx.moveTo(-50, 36); ctx.quadraticCurveTo(-10, 70, 30, 36); }
   ctx.stroke();
   ctx.restore();
 }
@@ -3822,4 +3846,257 @@ export function queasyFace(x, y, s = 1, { t = 0, drool = 0, sc = 1 } = {}) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
   for (const sd of [-1, 1]) { ctx.save(); ctx.translate(sd * 205, -20); const W2 = [[0, -50], [sd * 14, -25], [0, 0], [sd * 14, 25], [0, 50]]; line(W2, C.ink, 10); ctx.restore(); }
   ctx.restore();
+}
+
+// ═════════════════════════ MOTION SICKNESS SET (2026-11-14-body-4 "motion sickness") ═════════════════════════
+const CAR = '#E0956B', CAR_D = '#C8734A', CAR_DK = '#A85E3A', SEAT = '#5A4A44', SEAT_D = '#4A3A34', TYRE = '#2A2A30', HUB = '#C9C2B5', ARCH = '#3A3A42';
+const FIELD = '#D5E6B5', HILL = '#A9D08E', ROAD = '#8A8A92', ROAD_D = '#74747C', LEAF_D = '#4E9A5C', MS_SKIN_HI = '#F2CDB5';
+/** (G) road trip outside, full frame: sky, drifting clouds, rolling hills on the horizon, a field with roadside trees and a
+ *  road with dashes, all scrolling to the RIGHT (the car drives left). horizon / road = canvas y. speed scales the scroll.
+ *  beforeTrees() draws after the field, before the trees (a sun on the horizon); dashes: false drops the lane dashes;
+ *  treeDrop (px) sets the trees lower so their crowns stay under something sitting on the horizon */
+export function roadScene(t, { horizon = 700, road = 1500, speed = 1, beforeTrees = null, dashes = true, treeDrop = 0 } = {}) {
+  fillAll(C.sky);
+  for (let i = 0; i < 4; i++) {
+    const x = ((rnd(i + 1) * 1500 + t * 30 * speed) % 1500) - 210, y = horizon - 150 - rnd(i + 7) * Math.max(60, Math.min(500, horizon - 300));
+    ell(x, y, 90, 32, C.white); ell(x + 46, y - 20, 58, 34, C.white);
+  }
+  const off = t * 40 * speed;
+  ctx.fillStyle = HILL; ctx.beginPath(); ctx.moveTo(-300, horizon + 4);
+  for (let x = -300; x <= W + 300; x += 20) ctx.lineTo(x, horizon - 40 - 30 * Math.sin((x - off) / 150) - 14 * Math.sin((x - off) / 63));
+  ctx.lineTo(W + 300, horizon + 4); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = FIELD; ctx.fillRect(-300, horizon, W + 600, H + 600 - horizon);
+  if (beforeTrees) beforeTrees();   // e.g. a sun on the horizon (behind the trees)
+  for (let i = 0; i < 6; i++) {
+    const x = ((i * 250 + t * 520 * speed) % 1500) - 210, ty = Math.min(road - 30, horizon + 110 + treeDrop + (i % 2) * 50);
+    rr(x - 13, ty - 90, 26, 90, 8); ctx.fillStyle = C.pot; ctx.fill();
+    circle(x, ty - 150, 74, LEAF_D); circle(x - 8, ty - 158, 66, C.leaf); ell(x - 30, ty - 186, 20, 12, '#7CC489', -0.5);
+  }
+  ctx.fillStyle = ROAD; ctx.fillRect(-300, road, W + 600, 260); ctx.fillStyle = ROAD_D; ctx.fillRect(-300, road, W + 600, 18);
+  if (dashes) for (let i = 0; i < 7; i++) { const x = ((i * 240 + t * 900 * speed) % 1680) - 300; rr(x, road + 110, 130, 16, 8); ctx.fillStyle = C.white; ctx.fill(); }
+}
+/** where a passenger sits in the car (local units): man({ ...carSeat(x, y, s, 'back' | 'front'), sit: true }) */
+export const CAR_SEAT = { back: [190, -215], front: [-170, -215] };
+export const carSeat = (x, y, s, k) => ({ x: x + CAR_SEAT[k][0] * s, y: y + CAR_SEAT[k][1] * s, s: 0.45 * s });
+/** the car's seats (draw BEFORE the passengers, then carBody over them). Side cutaway, car faces LEFT. origin = door sill
+ *  line under the B-pillar; ~1070 px wide, roof at -495, windows -460..-225 (sill), wheel centres at y +40 (r 98) at s = 1 */
+export function carInside(x, y, s) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(60, -420, 270, 440, 50); ctx.fillStyle = SEAT; ctx.fill(); rr(60, -420, 60, 440, [50, 0, 0, 50]); ctx.fillStyle = SEAT_D; ctx.fill();
+  rr(-290, -410, 220, 430, 50); ctx.fillStyle = SEAT; ctx.fill(); rr(-290, -410, 60, 430, [50, 0, 0, 50]); ctx.fillStyle = SEAT_D; ctx.fill();
+  ctx.restore();
+}
+const CAR_WF = [[-360, -225], [-226, -460], [-20, -460], [-20, -225]], CAR_WB = [[20, -225], [20, -460], [228, -460], [362, -225]];
+/** the car body (side cutaway, faces LEFT) with open window holes so the seats + passengers show. glassF / glassB 0..1 =
+ *  how far the front / back window glass is up (0 = rolled all the way down). t = film time (wheels turn).
+ *  handles: false hides the door handles (close-ups where they'd sit in the caption zone) */
+export function carBody(x, y, s, { t = 0, glassF = 1, glassB = 1, spin = 1, handles = true } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const outer = () => { ctx.moveTo(-525, 40); ctx.lineTo(-535, -110); ctx.quadraticCurveTo(-530, -192, -450, -205); ctx.lineTo(-385, -215); ctx.lineTo(-242, -472);
+    ctx.quadraticCurveTo(-230, -495, -200, -495); ctx.lineTo(220, -495); ctx.quadraticCurveTo(245, -495, 258, -472); ctx.lineTo(400, -232); ctx.lineTo(495, -215);
+    ctx.quadraticCurveTo(535, -205, 535, -150); ctx.lineTo(530, 40); ctx.closePath(); };
+  const poly = (P) => { ctx.moveTo(P[0][0], P[0][1]); for (const p of P.slice(1)) ctx.lineTo(p[0], p[1]); ctx.closePath(); };
+  ell(0, 140, 580, 24, '#00000022');
+  ctx.beginPath(); outer(); poly(CAR_WF); poly(CAR_WB); ctx.fillStyle = CAR; ctx.fill('evenodd');
+  ctx.save(); ctx.beginPath(); outer(); ctx.clip(); ctx.fillStyle = CAR_D; ctx.fillRect(-560, -30, 1120, 90);
+  ctx.beginPath(); ctx.moveTo(-226, -486); ctx.lineTo(230, -486); ctx.strokeStyle = '#ECAE8A'; ctx.lineWidth = 10; ctx.stroke(); ctx.restore();
+  // glass: faint tint + two shine stripes, its top edge slides down as it opens
+  for (const [P, g, sx] of [[CAR_WF, glassF, -300], [CAR_WB, glassB, 300]]) {
+    if (g <= 0.01) continue;
+    const top = lerp(-225, -460, clamp(g));
+    ctx.save(); ctx.beginPath(); poly(P); ctx.clip();
+    ctx.globalAlpha = 0.14; ctx.fillStyle = C.white; ctx.fillRect(-560, top, 1120, -225 - top);
+    ctx.globalAlpha = 0.5; for (const [dx, w] of [[0, 26], [46, 12]]) { ctx.beginPath(); ctx.moveTo(sx + dx, top); ctx.lineTo(sx + dx + w, top); ctx.lineTo(sx + dx + w - 120, top + 260); ctx.lineTo(sx + dx - 120, top + 260); ctx.closePath(); ctx.fill(); }
+    ctx.globalAlpha = 0.8; ctx.fillRect(-560, top, 1120, 7);
+    ctx.restore();
+  }
+  for (const P of [CAR_WF, CAR_WB]) { ctx.beginPath(); poly(P); ctx.strokeStyle = CAR_DK; ctx.lineWidth = 12; ctx.stroke(); }
+  for (const sx of [0, -385, 372]) line([[sx, sx ? -205 : -225], [sx, 30]], CAR_DK, 6);
+  if (handles) for (const hx of [-120, 250]) { rr(hx, -182, 76, 20, 10); ctx.fillStyle = CAR_DK; ctx.fill(); }
+  ell(-512, -140, 20, 34, C.yellow); rr(512, -176, 22, 74, 8); ctx.fillStyle = C.red; ctx.fill();
+  rr(-560, -16, 96, 48, 22); ctx.fillStyle = HUB; ctx.fill(); rr(470, -16, 90, 48, 22); ctx.fill();
+  for (const wx of [-330, 330]) {
+    ctx.beginPath(); ctx.arc(wx, 40, 120, Math.PI, TAU); ctx.closePath(); ctx.fillStyle = ARCH; ctx.fill();
+    circle(wx, 40, 98, TYRE); circle(wx, 40, 54, HUB);
+    for (let k = 0; k < 5; k++) { const an = -t * 9 * spin + k * TAU / 5; line([[wx + Math.cos(an) * 16, 40 + Math.sin(an) * 16], [wx + Math.cos(an) * 46, 40 + Math.sin(an) * 46]], '#9A9488', 10); }
+    circle(wx, 40, 16, TYRE);
+  }
+  ctx.restore();
+}
+/** small phone with the screen to camera (a red play button on it: watching a video). ~300x560 at s = 1 */
+export function phoneSmall(x, y, s = 1, rot = 0) {
+  if (s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  rr(-150, -280, 300, 560, 48); ctx.fillStyle = C.ink; ctx.fill(); rr(-124, -244, 248, 488, 24); ctx.fillStyle = C.sky; ctx.fill();
+  circle(0, -10, 74, C.red); ctx.beginPath(); ctx.moveTo(-24, -46); ctx.lineTo(40, -10); ctx.lineTo(-24, 26); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  rr(-90, 120, 180, 20, 10); ctx.fillStyle = C.white; ctx.fill(); rr(-90, 120, 80, 20, 10); ctx.fillStyle = C.red; ctx.fill();
+  ctx.restore();
+}
+/** a sense as a little cartoon character (graphic, ink outlined): kind 'eye' (eyeball, blue iris) | 'ear' (skin ear with a
+ *  face) | 'mouth' (pink lips, floating eyes above). Stubby ink legs + arms. ~280 px wide at s = 1, origin = body centre.
+ *  o = { talk 0..1 (mouth open, animate it), mood 'n' | 'mad' | 'smug' | 'shock' | 'calm', look -1..1, arm 0..1 (right
+ *  hand rises: an oath / a point), drool 0..1 (mouth only), shake 0..1, sc pop-in, t } */
+export function senseBuddy(kind, x, y, s = 1, { t = 0, talk = 0, mood = 'n', look = 0, arm = 0, drool = 0, shake = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const R = kind === 'ear' ? [108, 150] : kind === 'mouth' ? [150, 90] : [134, 134];
+  ctx.save(); ctx.translate(x + Math.sin(t * 42) * 7 * shake, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const sd of [-1, 1]) { line([[sd * 40, R[1] - 16], [sd * 46, R[1] + 34]], C.ink, 13); ell(sd * 58, R[1] + 40, 32, 15, C.ink); }
+  const limb = (sd, up) => { const sx = sd * (R[0] - 6), sy = kind === 'mouth' ? 0 : 20; const an = sd > 0 ? lerp(1.2, -0.8, up) : Math.PI - 1.2, len = lerp(86, 120, up);
+    const hx = sx + Math.cos(an) * len, hy = sy + Math.sin(an) * len;
+    if (up > 0) line([[sx, sy], [hx, hy]], C.white, 25);   // white halo so a raised arm reads on dark backgrounds
+    line([[sx, sy], [hx, hy]], C.ink, 13);
+    if (up > 0.3) { ctx.save(); ctx.globalAlpha = clamp((up - 0.3) / 0.4); ctx.translate(hx, hy); ctx.rotate(an + Math.PI / 2); rr(-13, -54, 26, 50, 13); ctx.fillStyle = C.ink; ctx.fill(); rr(-7, -48, 14, 40, 7); ctx.fillStyle = C.white; ctx.fill(); ctx.restore(); }
+    circle(hx, hy, 21, C.ink); circle(hx, hy, 13, C.white); };   // white cartoon gloves   // raised: open hand, fingers up
+  limb(-1, 0); const raised = clamp(arm); if (raised <= 0) limb(1, 0);
+  const brows = (y0, dx) => {
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 13; ctx.beginPath();
+    if (mood === 'mad') { ctx.moveTo(-dx - 34, y0 - 18); ctx.lineTo(-dx + 26, y0 + 4); ctx.moveTo(dx - 26, y0 + 4); ctx.lineTo(dx + 34, y0 - 18); }
+    else if (mood === 'shock') { ctx.moveTo(-dx - 30, y0 - 14); ctx.quadraticCurveTo(-dx, y0 - 34, -dx + 30, y0 - 14); ctx.moveTo(dx - 30, y0 - 14); ctx.quadraticCurveTo(dx, y0 - 34, dx + 30, y0 - 14); }
+    else if (mood === 'smug' || mood === 'calm') { ctx.moveTo(-dx - 30, y0 - 4); ctx.lineTo(-dx + 28, y0 - 8); ctx.moveTo(dx - 28, y0 - 8); ctx.lineTo(dx + 30, y0 - 4); }
+    else { ctx.moveTo(-dx - 30, y0); ctx.quadraticCurveTo(-dx, y0 - 14, -dx + 30, y0); ctx.moveTo(dx - 30, y0); ctx.quadraticCurveTo(dx, y0 - 14, dx + 30, y0); }
+    ctx.stroke();
+  };
+  const mouthAt = (mx, my, w) => {
+    ctx.strokeStyle = C.mouth; ctx.lineWidth = 10;
+    if (talk > 0) { ell(mx, my, w * 0.5, 7 + 18 * clamp(talk), C.mouth); return; }
+    ctx.beginPath();
+    if (mood === 'shock') { ell(mx, my + 4, w * 0.3, w * 0.38, C.mouth); return; }
+    if (mood === 'mad') { ctx.moveTo(mx - w / 2, my + 8); ctx.quadraticCurveTo(mx, my - 8, mx + w / 2, my + 8); }
+    else if (mood === 'smug') { ctx.moveTo(mx - w / 2, my); ctx.quadraticCurveTo(mx + 6, my + 18, mx + w / 2, my - 10); }
+    else { ctx.moveTo(mx - w / 2, my); ctx.quadraticCurveTo(mx, my + 20, mx + w / 2, my); }
+    ctx.stroke();
+  };
+  const dotEyes = (ey, dx, r = 1, closed = false) => {
+    for (const sd of [-1, 1]) {
+      if (closed) { ctx.beginPath(); ctx.arc(sd * dx, ey - 4, 15 * r, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 9; ctx.stroke(); continue; }
+      ell(sd * dx + look * 6, ey, 13 * r, 17 * r, C.ink); circle(sd * dx + look * 6 + 5 * r, ey - 6 * r, 5 * r, C.white);
+    }
+  };
+  if (kind === 'eye') {
+    circle(0, 0, 144, C.ink); circle(0, 0, 132, C.white); ell(-62, -74, 26, 12, '#EEF5F8', -0.7);
+    const ix = look * 44;
+    circle(ix, -20, 62, C.shirtShade); circle(ix, -20, 54, C.shirt); circle(ix, -20, 27, C.ink); circle(ix + 20, -40, 11, C.white);
+    brows(-176, 54); mouthAt(0, 78, 70);
+  } else if (kind === 'ear') {
+    const earP = () => { ctx.beginPath(); ctx.moveTo(-70, -128); ctx.bezierCurveTo(-24, -178, 116, -172, 120, -60); ctx.bezierCurveTo(124, 20, 78, 48, 66, 96);
+      ctx.bezierCurveTo(54, 150, -6, 176, -42, 142); ctx.bezierCurveTo(-74, 108, -52, 62, -78, 22); ctx.bezierCurveTo(-110, -30, -108, -98, -70, -128); ctx.closePath(); };
+    earP(); ctx.lineWidth = 24; ctx.strokeStyle = C.ink; ctx.stroke(); earP(); ctx.fillStyle = C.skin; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-58, -110); ctx.bezierCurveTo(-14, -148, 92, -140, 92, -62); ctx.bezierCurveTo(92, 0, 52, 26, 40, 78); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 20; ctx.stroke();
+    ell(36, -126, 30, 11, MS_SKIN_HI, 0.3);
+    ctx.save(); ctx.translate(14, 0); brows(-82, 26); ctx.restore();
+    ctx.save(); ctx.translate(14, 0); dotEyes(-44, 26, 0.9, mood === 'calm'); ctx.restore(); mouthAt(24, 92, 48);
+  } else {
+    ell(0, 0, R[0] + 10, R[1] + 10, C.ink); ell(0, 0, R[0], R[1], C.pink); ell(-64, -54, 34, 11, C.pinkLight, -0.15);
+    const op = talk > 0 ? 18 + 26 * clamp(talk) : mood === 'shock' ? 46 : 20;
+    ell(0, 8, 112, op, C.mouth); if (op > 28) { ell(0, 8 + op * 0.45, 58, op * 0.42, C.pinkLight); rr(-62, 8 - op + 2, 124, 16, 6); ctx.fillStyle = C.white; ctx.fill(); }
+    for (const sd of [-1, 1]) { ell(sd * 52, -150, 34, 38, C.ink); ell(sd * 52, -150, 27, 31, C.white); circle(sd * 52 + look * 9, -146, 13, C.ink); circle(sd * 52 + look * 9 + 5, -152, 5, C.white); }
+    brows(-206, 52);
+    const dl = clamp(drool); if (dl > 0) drop(120, 54 + 40 * dl, 0.7 * (0.5 + 0.5 * dl), 0, dl);
+  }
+  if (raised > 0) limb(1, raised);   // a raised arm goes in front of the body so it always reads
+  ctx.restore();
+}
+/** speech bubble with a word (or text '#scribble' = an angry ink scribble + red "!"). Tail points at (tx, ty). sc = pop-in */
+export function textBubble(text, x, y, w, h, tx, ty, sc = 1, size = 84, col = C.ink) {
+  if (sc <= 0) return;
+  bubble(x, y, w, h, tx, ty, sc);
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  if (text === '#scribble') { tangle(-36, 2, (w - 140) / 450, 1, C.ink); bigText('!', w / 2 - 54, 0, 92, C.red, 0.1); }
+  else { ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '2px'; ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 0, size * 0.06); ctx.letterSpacing = '0px'; }
+  ctx.restore();
+}
+/** tall level tube (graphic): white tube, ink rim, pale-blue liquid at level 0..1 with a wavy top + rising bubbles, a dashed
+ *  ink mark line at mark 0..1. ~200x640 px at s = 1. Returns the mark's canvas y */
+export function levelTube(x, y, s = 1, { level = 0.3, mark = 0.3, t = 0, sc = 1 } = {}) {
+  const my = y + lerp(300, -300, mark) * s * sc;
+  if (sc <= 0) return my;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-100, -320, 200, 640, 92); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); rr(-86, -306, 172, 612, 80); ctx.fillStyle = C.white; ctx.fill(); ctx.clip();
+  const lv = lerp(300, -300, clamp(level));
+  ctx.beginPath(); ctx.moveTo(-100, 330); for (let xx = -100; xx <= 100; xx += 10) ctx.lineTo(xx, lv + Math.sin(xx * 0.05 + t * 7) * 7); ctx.lineTo(100, 330); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill();
+  for (let i = 0; i < 4; i++) { const u = (t * 0.5 + i / 4) % 1, by = lerp(300, lv + 20, u); if (by > lv + 14) { circle(-30 + i * 22, by, 9, WATER_D); circle(-30 + i * 22, by, 6, C.white); } }
+  rr(-62, -270, 24, 520, 12); ctx.globalAlpha = 0.75; ctx.fillStyle = C.white; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+  const mk = lerp(300, -300, mark); ctx.setLineDash([24, 16]); line([[-120, mk], [120, mk]], C.ink, 9); ctx.setLineDash([]);
+  ctx.restore();
+  return my;
+}
+/** age icon (graphic person, NOT the hero): origin = between the feet. kid: big head, short body (~560 px tall), orange tee;
+ *  adult: ~800 px tall, slate shirt. queasy 0..1 = green tinge, wavy eyes + mouth and a wobble. sc = pop-in */
+export function ageIcon(x, y, s = 1, { kid = false, queasy = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const q = clamp(queasy);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 3.2) * 0.05 * q); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const [legH, bodyT, bodyW, hy, hr, col, colD] = kid ? [120, -330, 190, -440, 108, '#E0956B', '#C8734A'] : [270, -580, 240, -700, 98, '#5A6B8C', '#4A5A78'];
+  for (const lx of [-1, 1]) { rr(lx < 0 ? -bodyW * 0.38 : 6, -legH - 10, bodyW * 0.32, legH + 10, 24); ctx.fillStyle = C.pants; ctx.fill(); ell(lx * bodyW * 0.24, -4, bodyW * 0.2, 14, C.ink); }
+  for (const sd of [-1, 1]) { rr(sd * (bodyW / 2 + 8) - 22, bodyT + 20, 44, (kid ? 170 : 250), 22); ctx.fillStyle = C.skin; ctx.fill(); rr(sd * (bodyW / 2 + 8) - 26, bodyT + 16, 52, 70, 22); ctx.fillStyle = col; ctx.fill(); }
+  rr(-bodyW / 2, bodyT, bodyW, -legH - bodyT, [bodyW * 0.35, bodyW * 0.35, 16, 16]); ctx.fillStyle = col; ctx.fill();
+  rr(bodyW * 0.18, bodyT + 20, bodyW * 0.32, -legH - bodyT - 30, [0, bodyW * 0.3, 16, 0]); ctx.fillStyle = colD; ctx.fill();
+  ell(0, hy - hr * 0.3, hr * 1.06, hr * 0.86, C.hair); ell(0, hy + 6, hr * 0.98, hr * 0.94, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy + 6, hr * 0.98, hr * 0.94, 0, 0, TAU); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(-hr, hy - hr * 0.2); ctx.quadraticCurveTo(-hr * 0.2, hy - hr * 1.0, hr, hy - hr * 0.3); ctx.lineTo(hr, hy - hr); ctx.lineTo(-hr, hy - hr); ctx.closePath(); ctx.fillStyle = C.hair; ctx.fill();
+  if (q > 0) { ctx.globalAlpha = 0.55 * q; ell(0, hy + hr * 0.6, hr * 1.1, hr * 0.6, QUEASY_G); ctx.globalAlpha = 1; }
+  ctx.restore();
+  ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * hr * 0.58, hy + hr * 0.38, hr * 0.2, hr * 0.12, C.pink); ctx.globalAlpha = 1;
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 7;
+  for (const sd of [-1, 1]) {
+    if (q > 0.5) { ctx.beginPath(); for (let k = 0; k <= 6; k++) { const px = sd * hr * 0.38 - 18 + k * 6, py = hy + 2 + Math.sin(k * 1.6 + t * 6) * 5; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
+    else { ell(sd * hr * 0.38, hy + 4, 10, 13, C.ink); circle(sd * hr * 0.38 + 4, hy - 1, 4, C.white); }
+  }
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.beginPath();
+  if (q > 0.5) { for (let k = 0; k <= 8; k++) { const px = -26 + k * 6.5, py = hy + hr * 0.5 + Math.sin(k * 1.5) * 6; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } }
+  else { ctx.moveTo(-24, hy + hr * 0.46); ctx.quadraticCurveTo(0, hy + hr * 0.62, 24, hy + hr * 0.46); }
+  ctx.stroke();
+  ctx.restore();
+}
+/** top of an ageIcon's head (canvas y) */
+export const ageIconTop = (y, s, kid = false) => y + (kid ? -440 - 108 * 1.16 : -700 - 98 * 1.16) * s;
+/** one tip card (graphic): white rounded card, ink rim, an icon: 'phone' (phone + arrow down: put away) | 'front' (little car,
+ *  a head in the front window) | 'horizon' (sun on the horizon line) | 'window' (window, glass half down, wind lines).
+ *  done 0..1 pops a green check on its corner. ~200 px at s = 1. sc = pop-in */
+export function fixCard(kind, x, y, s = 1, { done = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rr(-100, -100, 200, 200, 36); ctx.fillStyle = C.ink; ctx.fill(); rr(-90, -90, 180, 180, 28); ctx.fillStyle = C.white; ctx.fill();
+  if (kind === 'phone') {
+    phoneSmall(-26, -6, 0.2);
+    line([[44, -40], [44, 30]], C.ink, 12); ctx.beginPath(); ctx.moveTo(22, 22); ctx.lineTo(44, 52); ctx.lineTo(66, 22); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill(); ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.stroke();
+  } else if (kind === 'front') {
+    ctx.save(); ctx.scale(0.15, 0.15); carInside(0, 120, 1);
+    ell(-170, -385, 54, 46, C.hair); ell(-170, -366, 50, 50, C.skin);
+    carBody(0, 120, 1, { t: 0 }); ctx.restore();
+  } else if (kind === 'horizon') {
+    ctx.save(); rr(-90, -90, 180, 180, 28); ctx.clip();
+    ctx.fillStyle = C.sky; ctx.fillRect(-90, -90, 180, 120); ctx.fillStyle = FIELD; ctx.fillRect(-90, 30, 180, 60);
+    ctx.beginPath(); ctx.arc(0, 30, 44, Math.PI, TAU); ctx.fillStyle = C.yellow; ctx.fill();
+    ctx.restore(); line([[-80, 30], [80, 30]], C.ink, 9);
+  } else {
+    rr(-62, -66, 124, 132, 14); ctx.fillStyle = CAR; ctx.fill(); rr(-48, -52, 96, 104, 8); ctx.fillStyle = C.sky; ctx.fill();
+    rr(-48, 10, 96, 42, 6); ctx.fillStyle = '#DDF0F8'; ctx.fill(); line([[-48, 10], [48, 10]], C.white, 6);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 7;
+    for (const wy of [-34, -12]) { ctx.beginPath(); for (let k = 0; k <= 8; k++) { const px = -78 + k * 13, py = wy + Math.sin(k * 1.3 + t * 9) * 5; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
+  }
+  ctx.restore();
+  if (done > 0) checkMark(x + 82 * s * sc, y + 82 * s * sc, 0.6 * s * sc, clamp(done) <= 0 ? 0 : done);
+}
+/** cartoon stomach with a face (graphic, the next-episode tease): K.stomach + eyes and a grumbly mouth on its big curve;
+ *  growl 0..1 = it shakes and swells + rumble lines either side. ~330 px at s = 1. sc = pop-in, t = film time */
+export function growlStomach(x, y, s = 1, { t = 0, growl = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const g = clamp(growl), j = Math.sin(t * 44) * 5 * g;
+  ctx.save(); ctx.translate(x + j, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  stomach(0, 0, 1.25, 0.25 * g * (0.5 + 0.5 * Math.sin(t * 18)));
+  for (const [ex, ey] of [[-74, 72], [-10, 98]]) { ell(ex, ey, 15, 19, C.ink); circle(ex + 5, ey - 7, 6, C.white); }
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(-96, 40); ctx.lineTo(-58, 52); ctx.moveTo(-28, 72); ctx.lineTo(6, 70); ctx.stroke();
+  ctx.save(); ctx.translate(52, 100); ctx.rotate(-0.35); ell(0, 0, 22, 8 + 10 * g * (0.5 + 0.5 * Math.sin(t * 22)), C.mouth); ctx.restore();
+  ctx.restore();
+  if (g > 0) {
+    ctx.save(); ctx.globalAlpha = g; ctx.strokeStyle = C.ink; ctx.lineCap = 'round';
+    for (const sd of [-1, 1]) for (let k = 0; k < 3; k++) {
+      const r = (190 + k * 44) * s * sc, a0 = sd > 0 ? -0.5 : Math.PI - 0.5, w = Math.sin(t * 20 + k) * 0.06;
+      ctx.lineWidth = 12 * s * sc; ctx.beginPath(); ctx.arc(x + 10 * s, y + 30 * s, r, a0 + w, a0 + 1 + w); ctx.stroke();
+    }
+    ctx.restore();
+  }
 }
