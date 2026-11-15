@@ -26,3 +26,4 @@
 - 2026-11-14 04:24 · 2026-11-14-body-02 added · conf 0.7 · question+hidden-place-loop · What happens when you cry?
 - 2026-11-14 04:40 · 2026-11-14-body-03 added · conf 0.7 · question+hidden-place-number · What happens when you blush?
 - 2026-11-14 10:30 · 2026-11-14-body-04 added · conf 0.7 · question+senses-argue-loop · What happens when you get motion sickness?
+- 2026-11-14 19:57 · 2026-11-09-body-04 posted · conf 0.7 · {'posted': '2026-11-14', 'episode': 6, 'youtube': 'h9oHP8Kzp4A', 'tiktok': 'v_inbox_file~v2.7707775086169917454'}
