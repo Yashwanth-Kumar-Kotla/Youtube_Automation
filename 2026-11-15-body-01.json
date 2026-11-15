@@ -1,0 +1,33 @@
+{
+ "title": "What Happens When Your Stomach Growls?",
+ "description": "Stomach rumbling is the sound of gas and fluids moving through your digestive system, caused by the muscles of your stomach and intestines contracting. It can happen at any time, not just when you're hungry: swallowing air or drinking fizzy drinks can do it too. Most of these sounds are normal and simply mean your gut is working.\nNext Body File: what happens when you get a nosebleed, and why dry air is the most common cause.\nFollow Body Files for a new one every day.\n#bodyfiles #stomachgrowling #hungry #humanbody #digestion #science #shorts\n\nSources:\nCleveland Clinic, Hunger Pangs: https://health.clevelandclinic.org/hunger-pangs\nNIH MedlinePlus, Abdominal sounds: https://medlineplus.gov/ency/article/003137.htm\nCleveland Clinic, Nosebleed (Epistaxis): https://my.clevelandclinic.org/health/diseases/13464-nosebleed-epistaxis",
+ "hashtags": [
+  "#bodyfiles",
+  "#stomachgrowling",
+  "#hungry",
+  "#humanbody",
+  "#digestion",
+  "#science",
+  "#shorts"
+ ],
+ "pinned_comment": "Be honest: when was the loudest your stomach ever growled? Silent exam, meeting, first date?",
+ "series": "Body Files",
+ "topic": "What happens when your stomach growls?",
+ "experiment_arm": "E1-A (hook with a number: line 2 'just two hours after you eat', caption '2 HOURS'); E4 tease_next",
+ "teases": "What happens when you get a nosebleed?",
+ "topic_cluster": "gut",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the motion sickness video (2026-11-14-body-4) with 'and why it rumbles even when you're not hungry' (opened in line 2 'the growl isn't always hunger', paid off in lines 7-8: it can rumble at any time, and swallowed air or fizzy drinks do it too)",
+ "hook_pattern": "question+number-not-hunger-loop",
+ "format": "explainer",
+ "id": "2026-11-15-body-01",
+ "channel": "body",
+ "made_at": "2026-11-15T03:57-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 36.1,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-15-body-01",
+ "history": []
+}
