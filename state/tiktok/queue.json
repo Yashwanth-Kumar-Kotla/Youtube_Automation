@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-15T06:25:56+00:00",
+  "updated": "2026-11-15T09:58:14+00:00",
   "videos": [
     {
       "id": "2026-11-09-body-01",
@@ -26,7 +26,7 @@
       "title": "What Happens If You Sneeze With Your Eyes Open?",
       "caption": "What Happens If You Sneeze With Your Eyes Open? #bodyfiles #sneeze #eyes #humanbody #science #shorts",
       "length": 39.0,
-      "status": "ready",
+      "status": "scheduled",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-01/2026-11-10-body-01.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-01/2026-11-10-body-01.mp4",
       "approved": false
@@ -139,6 +139,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-04/2026-11-14-body-04.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-04/2026-11-14-body-04.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-15-body-01",
+      "title": "What Happens When Your Stomach Growls?",
+      "caption": "What Happens When Your Stomach Growls? #bodyfiles #stomachgrowling #hungry #humanbody #digestion #science",
+      "length": 36.1,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-01/2026-11-15-body-01.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-01/2026-11-15-body-01.mp4",
       "approved": false
     }
   ]
