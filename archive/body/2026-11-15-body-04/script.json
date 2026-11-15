@@ -1,0 +1,74 @@
+{
+  "title": "What Happens When You Get a Sunburn?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Sunburn' ('Sunburn is red, painful, damaged skin from being out in the sun for too long'; ultraviolet (UV) rays from the sun or tanning beds burn your skin; 'When your skin becomes sunburned, your skin's blood vessels dilate, which leads to redness, inflammation and swelling'; 'The damage to the DNA in your skin cells is permanent'; pain usually starts within a few hours and peaks around 24 hours; aloe vera gel, drink water, cool bath or shower; let peeling skin come off on its own; seek care for chills, severe swelling or widespread blisters): https://my.clevelandclinic.org/health/diseases/21858-sunburn",
+    "Cleveland Clinic Health Essentials, 'Is It Bad To Peel Sunburn?' ('Peeling is a form of skin cell turnover'; 'New, fresh skin layers grow underneath, and the outer layer peels away'; peeling usually begins about three days after the burn; 'The top layer of skin, even though it's dead, protects the new skin cells beneath it'): https://health.clevelandclinic.org/is-it-bad-to-peel-sunburn",
+    "NHS, 'Sunburn' (skin may feel hot to touch, sore or painful; may 'flake or peel – this usually happens a few days after you get sunburn'; usually gets better within 7 days; cool your skin with a cool shower, bath or damp towel; aftersun or unperfumed moisturiser; drink plenty of water; do not scratch or try to remove peeling skin; urgent GP or NHS 111 if skin is blistered or swollen, or you feel hot, cold or shivery): https://www.nhs.uk/conditions/sunburn/",
+    "American Academy of Dermatology, 'How to treat sunburn' (get out of the sun, preferably indoors; frequent cool baths or showers; moisturizer with aloe vera or soy to soothe; drink extra water): https://www.aad.org/public/everyday-care/injured-skin/burns/treat-sunburn",
+    "Tease (next video): NHS, 'Laryngitis' ('do not talk loudly or whisper – both strain your voice'): https://www.nhs.uk/conditions/laryngitis/ ; Cleveland Clinic, 'Laryngitis' ('Don't whisper, as even that can aggravate your symptoms'): https://my.clevelandclinic.org/health/diseases/22268-laryngitis"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get a sunburn?",
+      "caps": "WHAT *HAPPENS WHEN | YOU GET A *SUNBURN?"
+    },
+    {
+      "text": "Ultraviolet rays just damaged the DNA in your skin cells,",
+      "caps": "*ULTRAVIOLET RAYS JUST | DAMAGED THE *DNA | IN YOUR SKIN *CELLS"
+    },
+    {
+      "text": "and that damage is permanent.",
+      "caps": "AND THAT *DAMAGE | IS *PERMANENT"
+    },
+    {
+      "text": "Your skin's blood vessels widen,",
+      "caps": "YOUR SKIN'S *BLOOD | VESSELS *WIDEN"
+    },
+    {
+      "text": "so it turns red, swollen and hot.",
+      "caps": "SO IT TURNS *RED, | SWOLLEN AND *HOT"
+    },
+    {
+      "text": "The pain hits within hours, then peaks the next day.",
+      "caps": "THE *PAIN HITS | WITHIN *HOURS, THEN | *PEAKS THE NEXT DAY"
+    },
+    {
+      "text": "About three days later, the peeling starts.",
+      "caps": "ABOUT *3 DAYS LATER, | THE *PEELING STARTS"
+    },
+    {
+      "text": "That's fresh new skin growing underneath,",
+      "caps": "THAT'S *FRESH NEW | SKIN GROWING *UNDERNEATH"
+    },
+    {
+      "text": "while the dead top layer peels away.",
+      "caps": "WHILE THE *DEAD | TOP *LAYER | *PEELS AWAY"
+    },
+    {
+      "text": "Don't pick it. That dead layer is protecting your new skin.",
+      "caps": "DON'T *PICK IT. | THAT DEAD *LAYER | IS *PROTECTING | YOUR NEW *SKIN"
+    },
+    {
+      "text": "Cool showers, aloe and plenty of water help soothe it,",
+      "caps": "COOL SHOWERS, *ALOE | AND PLENTY OF *WATER | HELP *SOOTHE IT"
+    },
+    {
+      "text": "and blisters or chills? Call a doctor.",
+      "caps": "AND BLISTERS OR *CHILLS? | CALL A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: what happens when you lose your voice,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOU LOSE YOUR *VOICE"
+    },
+    {
+      "text": "and why whispering makes it worse.",
+      "caps": "AND WHY *WHISPERING | MAKES IT *WORSE"
+    }
+  ]
+}

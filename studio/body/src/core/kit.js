@@ -247,11 +247,11 @@ function arm(side, pose, finger, xr) {
     line([[e[0] + ox, e[1] + oy], [h[0] + ox, h[1] + oy]], C.cyan, 7); line([[e[0] - ox, e[1] - oy], [h[0] - ox, h[1] - oy]], C.cyan, 7);
     return;
   }
-  line([sh, e], C.skin, 50); line([e, h], C.skin, 44);
+  line([sh, e], _sk, 50); line([e, h], _sk, 44);
   if (_coat) { const wr = [lerp(e[0], h[0], 0.7), lerp(e[1], h[1], 0.7)]; line([sh, e, wr], COAT_D, 70); line([sh, e, wr], C.white, 60); }   // long lab-coat sleeve
   else line([sh, [lerp(sh[0], e[0], 0.55), lerp(sh[1], e[1], 0.55)]], _shirt[0], 72);       // short sleeve
-  if (finger != null) { ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(finger); rr(-11, -86, 22, 80, 11); ctx.fillStyle = C.skin; ctx.fill(); ctx.restore(); }
-  ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(ang); ell(6, 0, 34, 28, C.skin); ell(-2, -sx * 22, 15, 10, C.skin, -0.5 * sx); ctx.restore();
+  if (finger != null) { ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(finger); rr(-11, -86, 22, 80, 11); ctx.fillStyle = _sk; ctx.fill(); ctx.restore(); }
+  ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(ang); ell(6, 0, 34, 28, _sk); ell(-2, -sx * 22, 15, 10, _sk, -0.5 * sx); ctx.restore();
 }
 function torsoPath() {
   ctx.beginPath(); ctx.moveTo(-50, -214);
@@ -278,8 +278,8 @@ function head(o) {
   ctx.save(); ctx.translate(0, -350);
   const HC = o.hairCol || C.hair;
   ell(0, -34, 116, 94, HC);
-  for (const sd of [-1, 1]) { ell(sd * 104, 14, 22, 28, C.skin); ell(sd * 106, 14, 10, 15, C.skinShade); }
-  ell(0, 12, 102, 112, C.skin);
+  for (const sd of [-1, 1]) { ell(sd * 104, 14, 22, 28, _sk); ell(sd * 106, 14, 10, 15, C.skinShade); }
+  ell(0, 12, 102, 112, _sk);
   if (o.green > 0) { ctx.save(); ctx.beginPath(); ctx.ellipse(0, 12, 102, 112, 0, 0, TAU); ctx.clip(); ctx.globalAlpha = 0.55 * clamp(o.green); ell(0, 78, 120, 78, QUEASY_G); ctx.restore(); }   // queasy green tinge (lower face)
   if (o.blush > 0) { ctx.save(); ctx.globalAlpha = 0.13 * clamp(o.blush); ell(0, 34, 92, 86, C.red); ctx.restore(); }   // faint all-over flush
   // fringe with side part
@@ -325,7 +325,7 @@ function head(o) {
       ctx.restore();
       if (o.eyes !== 'closed') {
         const top = o.eyes === 'wide' ? -24 : -12, h = (o.eyes === 'wide' ? 12 : 6) + td * (o.eyes === 'wide' ? 16 : 10);
-        rr(sd * 40 - 28, top - 6, 56, h + 6, 6); ctx.fillStyle = C.skin; ctx.fill();
+        rr(sd * 40 - 28, top - 6, 56, h + 6, 6); ctx.fillStyle = _sk; ctx.fill();
         line([[sd * 40 - 20, top + h], [sd * 40 + 20, top + h]], C.ink, 6);
       }
     }
@@ -396,9 +396,11 @@ function headTears(o) {
  *   crying set: sad 0..1 (inner brows up), mouth 'sad' | 'bawl', cry 0..1 + ct (film time) tear streams, gush 0..1 + gushTo
  *   [dx, dy] cartoon tear fountains, stuffy 0..1 rosy nose,
  *   motion-sickness set: eyes 'spiral' (+ spin = film time), lookY 0..1 (eyes down at a phone), green 0..1 (queasy tinge),
- *   mouth 'wavy', sweats 0..1 (cold sweat drops, + ct), drool 0..1 (saliva drop at the mouth corner) }
+ *   mouth 'wavy', sweats 0..1 (cold sweat drops, + ct), drool 0..1 (saliva drop at the mouth corner),
+ *   burn 0..1 (sunburn set: face, neck, arms and hands turn sunburn pink-red) }
  */
-let _coat = false, _shirt = [C.shirt, C.shirtShade], _diaHi = 0;
+let _coat = false, _shirt = [C.shirt, C.shirtShade], _diaHi = 0, _sk = C.skin;
+const BURN_SK = "#E8836F";
 const BOOT = '#5A4030', CAP = '#7A5A3A', CAP_D = '#5A4030';
 /** denim overalls bib + straps over the shirt (the farmer look), in torso coords */
 function overallsBib() {
@@ -409,7 +411,7 @@ function overallsBib() {
 const COAT_D = '#DCD6CB';
 const QUEASY_G = '#9FD39A';
 export function man(o) {
-  const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR; _shirt = o.shirtCol ? [o.shirtCol, o.shirtShade || o.shirtCol] : [C.shirt, C.shirtShade];
+  const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR; _sk = o.burn > 0 ? mixHex(C.skin, BURN_SK, o.burn) : C.skin;   // burn 0..1: sunburnt skin (face, neck, arms) _shirt = o.shirtCol ? [o.shirtCol, o.shirtShade || o.shirtCol] : [C.shirt, C.shirtShade];
   const LEG = o.sit ? 170 : 440; _diaHi = o.diaHi || 0;
   ctx.save(); ctx.translate(o.x, o.y); ctx.scale(s, s);
   if (XR) {
@@ -426,14 +428,14 @@ export function man(o) {
       rr(-128, 180, 122, LEG, 40); ctx.fillStyle = C.pants; ctx.fill(); rr(6, 180, 122, LEG, 40); ctx.fill();
       rr(6, 180, 40, LEG, [0, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill();
     }
-    rr(-36, -250, 72, 60, 20); ctx.fillStyle = C.skin; ctx.fill();
+    rr(-36, -250, 72, 60, 20); ctx.fillStyle = _sk; ctx.fill();
   }
   arm(-1, o.armL || ARM.down, null, XR);
   if (XR) skeletonTorso(o.pulse || 0, o.lungs ?? (o.dia != null ? 0 : null), o.dia ?? null);
   else {
     torsoPath(); ctx.fillStyle = _shirt[0]; ctx.fill();
     ctx.save(); torsoPath(); ctx.clip(); ctx.beginPath(); ctx.moveTo(95, -220); ctx.quadraticCurveTo(70, 0, 100, 220); ctx.lineTo(200, 220); ctx.lineTo(200, -220); ctx.closePath(); ctx.fillStyle = _shirt[1]; ctx.fill(); ctx.restore();
-    ctx.beginPath(); ctx.ellipse(0, -214, 46, 26, 0, 0, Math.PI); ctx.fillStyle = C.skin; ctx.fill(); ctx.strokeStyle = _shirt[1]; ctx.lineWidth = 12; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(0, -214, 46, 26, 0, 0, Math.PI); ctx.fillStyle = _sk; ctx.fill(); ctx.strokeStyle = _shirt[1]; ctx.lineWidth = 12; ctx.stroke();
     if (_coat) labCoat();
     if (o.overalls) overallsBib();
   }
@@ -442,7 +444,7 @@ export function man(o) {
   arm(1, ra, o.finger ?? null, XR);
   if (o.holding) o.holding(ra.h[0] - 34, ra.h[1] - 14);
   if (o.inside) gum(o.inside[0], o.inside[1], 0.5, o.inside[2] || 0);
-  ctx.restore(); _coat = false; _shirt = [C.shirt, C.shirtShade];
+  ctx.restore(); _coat = false; _shirt = [C.shirt, C.shirtShade]; _sk = C.skin;
 }
 /** white lab coat over the torso (open V showing the blue tee), lapels, pocket + pen, ink stethoscope */
 function labCoat() {
@@ -4691,4 +4693,227 @@ export function sunSkinLens(x, y, r, { sun: sn = 1, burn = 0, peel = 0, sc = 1, 
       });
     }
   }, C.sky);
+}
+
+// ═════════════════════════ SUNBURN SET (2026-11-15-body-4 "sunburn") ═════════════════════════
+const SB_AIR = '#DDF0F8', SB_DERM = '#F3C7B3', SB_FRESH = '#F9D9C6', SB_POT_D = '#A85E3A';
+/** UV ray: a wavy ink-edged orange ray from (x0, y0) toward (x1, y1) with an arrow tip riding its front. p 0..1 = how far
+ *  the front has travelled, t = film time (the wave ripples along), a = alpha, w = core width */
+export function uvRay(x0, y0, x1, y1, p, t = 0, a = 1, w = 14) {
+  const q = clamp(p); if (q <= 0 || a <= 0) return;
+  const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, nx = -uy, ny = ux, Lq = L * q;
+  const n = Math.max(2, Math.round(Lq / 8)), pts = [];
+  for (let i = 0; i <= n; i++) { const d = Lq * i / n, amp = 15 * clamp(d / 40) * clamp((Lq - d - 20) / 50), wv = Math.sin(d * 0.075 - t * 14) * amp; pts.push([x0 + ux * d + nx * wv, y0 + uy * d + ny * wv]); }
+  const ex = x0 + ux * Lq, ey = y0 + uy * Lq;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  line(pts, C.ink, w + 12); line(pts, HEAT, w);
+  ctx.translate(ex, ey); ctx.rotate(Math.atan2(uy, ux)); ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(4, 0); ctx.lineTo(-30, -22); ctx.lineTo(-30, 22); ctx.closePath(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = HEAT; ctx.fill();
+  ctx.restore();
+}
+/** skin cutaway lens (side view), lens units r = 300: pale air on top, the skin surface at y -120, a thin top layer (the
+ *  one that dies and peels), the living layer with rounded cells, the pale-pink dermis with one blood vessel across at y 170.
+ *  o = { burn 0..1 reddens the skin, swell 0..1 bulges the surface up, widen 0..1 widens the vessel, flow = blood speed,
+ *  dead 0..1 turns the top layer pale (dead skin), fresh 0..1 grows a fresh new layer under it, peel 0..1 lifts the top layer
+ *  in 4 clean flakes that curl up at their free edge (flake 1 then drifts off and fades), settle 0..1 eases the remaining
+ *  flakes back down onto the skin, sc pop-in, t film time }.
+ *  skinCutAt(x, y, r, key, dx) = a canvas point on a layer (key: top | fresh | cells | vessel; dx in lens units) */
+export const SKC = { top: -103, fresh: -64, cells: -40, vessel: 170 };
+export const skinCutAt = (x, y, r, k, dx = 0) => [x + dx * r / 300, y + SKC[k] * r / 300];
+export function skinCutLens(x, y, r, { burn = 0, swell = 0, widen = 0, flow = 1, dead = 0, fresh = 0, peel = 0, settle = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  lens(x, y, r, sc, () => {
+    const u = r / 300; ctx.save(); ctx.scale(u, u); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const b = clamp(burn), sw = clamp(swell), ys = (xx) => -120 - sw * 46 * Math.max(0, 1 - (xx / 300) ** 2);
+    ctx.fillStyle = SB_AIR; ctx.fillRect(-330, -330, 660, 660);
+    const band = (f0, f1, xa = -330, xb = 330) => { ctx.beginPath(); ctx.moveTo(xa, f0(xa)); for (let xx = xa; xx < xb; xx += 15) ctx.lineTo(xx, f0(xx)); ctx.lineTo(xb, f0(xb)); ctx.lineTo(xb, f1(xb)); for (let xx = xb; xx > xa; xx -= 15) ctx.lineTo(xx, f1(xx)); ctx.lineTo(xa, f1(xa)); ctx.closePath(); };
+    // dermis + the blood vessel
+    band((xx) => ys(xx) + 110, () => 340); ctx.fillStyle = mixHex(SB_DERM, C.pinkLight, b * 0.7); ctx.fill();
+    const vr = lerp(30, 56, clamp(widen)), vy = SKC.vessel;
+    ctx.fillStyle = C.pinkDark; ctx.fillRect(-330, vy - vr - 16, 660, 2 * vr + 32);
+    ctx.fillStyle = C.pink; ctx.fillRect(-330, vy - vr - 9, 660, 2 * vr + 18);
+    ctx.fillStyle = BLOOD; ctx.fillRect(-330, vy - vr, 660, 2 * vr);
+    ctx.save(); ctx.beginPath(); ctx.rect(-330, vy - vr, 660, 2 * vr); ctx.clip();
+    const k = vr / 56;
+    for (let i = 0; i < 8; i++) {
+      const cx = ((rnd(i + 3) * 800 + t * flow * (150 + rnd(i) * 60)) % 800) - 400, cy = vy + (rnd(i + 20) - 0.5) * vr * 1.1;
+      ctx.save(); ctx.translate(cx, cy); ctx.rotate(rnd(i + 40) - 0.5); ell(0, 0, 30 * k, 20 * k, RBC_D); ell(0, 0, 26 * k, 16 * k, RBC); ell(0, 0, 11 * k, 6 * k, RBC_D); ctx.restore();
+    }
+    ctx.restore();
+    ctx.fillStyle = C.pinkLight; ctx.fillRect(-330, vy - vr - 8, 660, 5);
+    // living layer with cells
+    const skinCol = mixHex(C.skin, BURN_SK, b), cellCol = mixHex(C.skinShade, C.pinkDark, b * 0.6);
+    band((xx) => ys(xx) + 34, (xx) => ys(xx) + 110); ctx.fillStyle = skinCol; ctx.fill();
+    ctx.strokeStyle = cellCol; ctx.lineWidth = 5;
+    for (let row = 0; row < 2; row++) for (let xx = -330 + (row ? 32 : 0); xx <= 330; xx += 64) {
+      const cy = ys(xx) + (row ? 94 : 58); ctx.beginPath(); ctx.ellipse(xx, cy, 27, 15, 0, 0, TAU); ctx.stroke(); circle(xx + 3, cy, 5, cellCol);
+    }
+    ctx.beginPath(); for (let xx = -330; xx <= 330; xx += 15) { const yy = ys(xx) + 110 + Math.sin(xx * 0.035) * 5; xx > -330 ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy); } ctx.strokeStyle = cellCol; ctx.lineWidth = 6; ctx.stroke();
+    // fresh new layer growing under the top layer
+    const fr = clamp(fresh);
+    if (fr > 0) {
+      band((xx) => ys(xx) + 34, (xx) => ys(xx) + 34 + 44 * fr); ctx.fillStyle = SB_FRESH; ctx.fill();
+      ctx.beginPath(); for (let xx = -330; xx <= 330; xx += 15) { const yy = ys(xx) + 34 + 44 * fr; xx > -330 ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy); } ctx.strokeStyle = SKIN_HI; ctx.lineWidth = 4; ctx.stroke();
+    }
+    // the top layer: 4 flakes (pivot at the outer end, the free edge lifts)
+    const topCol = mixHex(skinCol, FV_FLAKE, clamp(dead)), edgeCol = mixHex(C.skinShade, FV_FLAKE_D, clamp(dead));
+    const X = [-330, -150, 0, 150, 330], pl = clamp(peel), gap = 5 * clamp(pl * 6);
+    for (let i = 0; i < 4; i++) {
+      const xa = X[i] + (i ? gap : 0), xb = X[i + 1] - (i < 3 ? gap : 0), dir = i < 2 ? 1 : -1;
+      const lift = clamp(pl * 1.7 - [0.05, 0.2, 0.35, 0.5][i]) * (i !== 1 ? 1 - 0.75 * clamp(settle) : 1), drift = i === 1 ? clamp((pl - 0.5) / 0.5) : 0;
+      const px = dir > 0 ? xa : xb, py = ys(px) + 17;
+      ctx.save();
+      if (lift > 0) {
+        const fx = dir > 0 ? xb : xa;   // shadow under the lifted free edge
+        ctx.save(); ctx.globalAlpha = 0.5 * lift * (1 - drift); ell(fx - dir * 40, ys(fx) + 36, 50, 8, edgeCol); ctx.restore();
+      }
+      ctx.translate(px + dir * drift * 40, py - drift * 190); ctx.rotate(-dir * (lift * 0.09 + drift * 0.5)); ctx.translate(-px, -py);
+      ctx.globalAlpha = 1 - clamp((drift - 0.55) / 0.45);
+      band((xx) => ys(xx) - 10 * lift * (Math.abs(xx - px) / 180) ** 2, (xx) => ys(xx) + 34 - 6 * lift * (Math.abs(xx - px) / 180) ** 2, xa, xb);
+      ctx.fillStyle = topCol; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = edgeCol; ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+  }, SB_AIR);
+}
+/** cartoon DNA ladder (vertical double helix, flat): two blue ink-edged strands twisting round each other, rungs in pink
+ *  and green. ~240x600 px at s = 1, origin = centre. brk 0..1 snaps the middle rung: its two halves droop apart with a small
+ *  red nick mark between them. t = film time (slow sway). Returns the break point [x, y] in canvas px */
+export function dnaLadder(x, y, s = 1, { brk = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return [x, y];
+  const S = s * sc, A = 110, f = 0.0105, bk = clamp(brk);
+  ctx.save(); ctx.translate(x, y); ctx.scale(S, S); ctx.rotate(Math.sin(t * 1.2) * 0.03); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const pts = (sg) => { const P = []; for (let yy = -300; yy <= 300; yy += 10) P.push([sg * A * Math.cos(yy * f), yy]); return P; };
+  line(pts(-1), C.ink, 34); line(pts(-1), C.shirtShade, 22);
+  for (let kk = -6; kk <= 6; kk++) {
+    const yy = kk * 45, xa = A * Math.cos(yy * f);
+    if (Math.abs(xa) < 16) continue;
+    const col = kk % 2 ? C.leaf : C.pink;
+    if (kk === 0 && bk > 0) {
+      const g = 22 * bk;
+      for (const sd of [-1, 1]) {
+        ctx.save(); ctx.translate(sd * xa, yy); ctx.rotate(sd * -0.32 * bk);
+        line([[0, 0], [-sd * (xa - g), 0]], C.ink, 28); line([[0, 0], [-sd * (xa - g), 0]], col, 16); ctx.restore();
+      }
+      ctx.save(); ctx.globalAlpha = bk;
+      for (const [an, l] of [[-1.25, 34], [-1.9, 30], [-0.6, 28]]) { const P = [[Math.cos(an) * 22, 4 + Math.sin(an) * 22], [Math.cos(an) * (22 + l), 4 + Math.sin(an) * (22 + l)]]; line(P, C.ink, 16); line(P, C.red, 8); }
+      ctx.restore();
+    } else { line([[xa, yy], [-xa, yy]], C.ink, 28); line([[xa, yy], [-xa, yy]], col, 16); }
+  }
+  line(pts(1), C.ink, 34); line(pts(1), C.shirt, 22);
+  ctx.globalAlpha = 0.5; line(pts(1).filter((p, i) => i % 1 === 0).map(([px, py]) => [px - 5, py]).slice(4, 20), C.white, 5); ctx.globalAlpha = 1;
+  ctx.restore();
+  return [x, y];
+}
+/** shower head (graphic, light grey with an ink outline): a pipe from the upper left into a round head facing down, cool
+ *  pale-blue drops falling from it (flow 0..1, they fall `fall` px). ~400x260 px at s = 1, origin = centre of the head's face.
+ *  sc pop-in, t film time */
+export function showerHead(x, y, s = 1, { flow = 0, t = 0, sc = 1, fall = 300 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const fl = clamp(flow);
+  if (fl > 0) for (let kk = 0; kk < 11; kk++) {
+    const uu = (t * 1.5 + rnd(kk + 7)) % 1, dx = -90 + kk * 18;
+    drop(dx * (1 + uu * 0.35), 40 + uu * fall, 0.34, 0, fl * Math.min(1, (1 - uu) * 4, uu * 10));
+  }
+  const P = [[-250, -220], [-60, -220], [0, -130]];
+  line(P, C.ink, 50); line(P, TIN, 34);
+  ctx.beginPath(); ctx.moveTo(-120, 0); ctx.quadraticCurveTo(-110, -120, 0, -122); ctx.quadraticCurveTo(110, -120, 120, 0); ctx.closePath();
+  ctx.lineWidth = 12; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = TIN; ctx.fill();
+  ell(-46, -72, 30, 12, C.white, -0.5);
+  rr(-132, -8, 264, 34, 17); ctx.lineWidth = 10; ctx.stroke(); ctx.fillStyle = TIN_D; ctx.fill();
+  for (let kk = 0; kk < 7; kk++) circle(-84 + kk * 28, 10, 5, C.ink);
+  ctx.restore();
+}
+/** potted aloe vera (graphic): terracotta pot, fat pointed green leaves fanning up with pale teeth dots. ~330x460 px at s = 1,
+ *  origin = pot rim centre (leaves above, pot below to +170). sc pop-in, t film time (gentle sway) */
+export function aloePlant(x, y, s = 1, { sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  const L = [[-0.95, 210], [0.95, 210], [-0.55, 280], [0.55, 280], [-0.18, 320], [0.2, 300]];
+  L.forEach(([an, len], i) => {
+    ctx.save(); ctx.translate(an * 30, -6); ctx.rotate(an * 0.75 + Math.sin(t * 1.5 + i) * 0.02);
+    const leaf = (w, l) => { ctx.beginPath(); ctx.moveTo(-w, 0); ctx.quadraticCurveTo(-w * 0.9, -l * 0.6, 0, -l); ctx.quadraticCurveTo(w * 0.9, -l * 0.6, w, 0); ctx.closePath(); };
+    leaf(36, len); ctx.fillStyle = LEAF_D; ctx.fill(); leaf(26, len - 14); ctx.fillStyle = C.leaf; ctx.fill();
+    for (let d = 0.25; d < 0.8; d += 0.18) for (const sd of [-1, 1]) circle(sd * 30 * (1 - d * 0.9), -len * d, 4, '#DDF0D8');
+    ctx.restore();
+  });
+  ctx.beginPath(); ctx.moveTo(-125, 20); ctx.lineTo(125, 20); ctx.lineTo(95, 170); ctx.quadraticCurveTo(92, 180, 80, 180); ctx.lineTo(-80, 180); ctx.quadraticCurveTo(-92, 180, -95, 170); ctx.closePath();
+  ctx.fillStyle = C.pot; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(60, 20); ctx.lineTo(125, 20); ctx.lineTo(95, 170); ctx.quadraticCurveTo(92, 180, 80, 180); ctx.lineTo(40, 180); ctx.closePath(); ctx.fillStyle = SB_POT_D; ctx.fill();
+  rr(-145, -14, 290, 48, 16); ctx.fillStyle = SB_POT_D; ctx.fill(); rr(-145, -14, 250, 40, 16); ctx.fillStyle = C.pot; ctx.fill();
+  ctx.restore();
+}
+/** "blisters" badge (clean, no gore): white disc, ink ring, a sunburnt skin strip across the lower half with two small
+ *  clear domed blisters (pale, ink edge, white glint). ~300 px at s = 1. sc pop-in */
+export function blisterBadge(x, y, s = 1, sc = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(-150, 40); for (let xx = -150; xx <= 150; xx += 10) ctx.lineTo(xx, 40 + Math.sin(xx * 0.02) * 6); ctx.lineTo(150, 160); ctx.lineTo(-150, 160); ctx.closePath();
+  ctx.fillStyle = mixHex(C.skin, BURN_SK, 0.85); ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = C.skinShade; ctx.stroke();
+  ctx.restore();
+  const dome = (cx, cy, rx, ry) => { ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, Math.PI, TAU); ctx.closePath(); ctx.fillStyle = '#FBF3EC'; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = C.ink; ctx.stroke(); ell(cx - rx * 0.4, cy - ry * 0.55, rx * 0.22, ry * 0.15, C.white, -0.4); };
+  dome(-24, 46, 66, 58); dome(68, 50, 32, 28);
+  ctx.restore();
+}
+/** pain-over-time chart (graphic card): white rounded card, ink axes with arrow ends, a red ink-edged curve that climbs to a
+ *  peak 70 % across, then eases down. p 0..1 draws it left to right (the peak is reached at p = 0.7). w x h px, origin =
+ *  card centre. Returns the peak point [x, y] in canvas px */
+export function painChart(x, y, w, h, { p = 1, sc = 1 } = {}) {
+  const ox = -w / 2 + 80, oy = h / 2 - 70, xm = w / 2 - 70, ytop = -h / 2 + 120;
+  const pt = (uu) => { const g = uu < 0.7 ? Math.sin(uu / 0.7 * Math.PI / 2) ** 1.6 : 1 - 0.38 * ((uu - 0.7) / 0.3) ** 1.3; return [ox + 20 + uu * (xm - ox - 70), oy - 20 - g * (oy - 20 - ytop)]; };
+  const pk = pt(0.7);
+  if (sc <= 0) return [x + pk[0], y + pk[1]];
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rr(-w / 2, -h / 2, w, h, 40); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke();
+  line([[ox, -h / 2 + 50], [ox, oy], [xm, oy]], C.ink, 10);
+  for (const [ax, ay, an] of [[ox, -h / 2 + 46, -Math.PI / 2], [xm + 4, oy, 0]]) { ctx.save(); ctx.translate(ax, ay); ctx.rotate(an); ctx.beginPath(); ctx.moveTo(10, 0); ctx.lineTo(-18, -16); ctx.lineTo(-18, 16); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore(); }
+  const q = clamp(p);
+  if (q > 0) {
+    const P = []; for (let i = 0; i <= 60 * q; i++) P.push(pt(i / 60)); P.push(pt(q));
+    line(P, C.ink, 28); line(P, C.red, 16);
+    const e = pt(q); circle(e[0], e[1], 20, C.ink); circle(e[0], e[1], 12, C.red);
+  }
+  ctx.restore();
+  return [x + pk[0] * sc, y + pk[1] * sc];
+}
+/** next-episode tease lens (losing your voice): front view of the lower face + neck on a pale background with a cutaway
+ *  window in the neck: the windpipe (pink tube, pale rings) and the voice box on top (darker pink, two pale vocal folds in a
+ *  V). whisper 0..1 purses the mouth small; strain 0..1 pinches the folds together, jitters the voice box and adds small red
+ *  strain zig-zags either side. Returns the mouth point [x, y] in canvas px */
+export function throatLens(x, y, r, { whisper = 0, strain = 0, sc = 1, t = 0, bg = '#FFF1E0' } = {}) {
+  const u = r / 300;
+  if (sc <= 0 || r <= 0) return [x, y - 150 * u];
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(u, u); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ell(0, 330, 330, 120, C.shirt); ctx.beginPath(); ctx.moveTo(-80, 214); ctx.quadraticCurveTo(0, 290, 80, 214); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+    rr(-105, -120, 210, 360, 50); ctx.fillStyle = C.skin; ctx.fill(); rr(55, -120, 50, 360, [0, 50, 50, 0]); ctx.fillStyle = C.skinShade; ctx.fill();
+    ell(0, -175, 200, 150, C.skin);
+    ctx.beginPath(); ctx.moveTo(-120, -60); ctx.quadraticCurveTo(0, -10, 120, -60); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 8; ctx.stroke();
+    const w = clamp(whisper);
+    ctx.beginPath(); ctx.moveTo(-26, -262); ctx.quadraticCurveTo(0, -244, 26, -262); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 9; ctx.stroke();   // nose tip
+    ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 120, -200, 34, 20, C.pink); ctx.globalAlpha = 1;
+    if (w > 0.5) { ell(0, -150, 30, 24, C.pinkDark); ell(0, -150, 13, 10, C.mouth); }   // pursed whisper lips
+    else { ctx.beginPath(); ctx.moveTo(-48, -160); ctx.quadraticCurveTo(0, -132, 48, -160); ctx.strokeStyle = C.mouth; ctx.lineWidth = 11; ctx.stroke(); }
+    const st = clamp(strain), jx = Math.sin(t * 46) * 4 * st;
+    rr(-78, 0, 156, 230, 40); ctx.fillStyle = C.mouth; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.pinkDark; ctx.stroke();
+    ctx.save(); rr(-78, 0, 156, 230, 40); ctx.clip();
+    rr(-36, 100, 72, 160, 18); ctx.fillStyle = C.pink; ctx.fill();
+    for (let yy = 116; yy < 240; yy += 26) line([[-30, yy], [30, yy]], C.pinkLight, 8);
+    ctx.translate(jx, 0);
+    rr(-60, 22, 120, 92, 28); ctx.fillStyle = C.pinkDark; ctx.fill(); rr(-52, 28, 104, 80, 24); ctx.fillStyle = C.pink; ctx.fill();
+    const sp = lerp(26, 6, st);
+    ctx.beginPath(); ctx.moveTo(-4, 38); ctx.lineTo(-sp - 6, 100); ctx.lineTo(sp + 6, 100); ctx.lineTo(4, 38); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill();
+    for (const sd of [-1, 1]) line([[sd * 6, 38], [sd * (sp + 8), 98]], C.gum, 12);
+    ctx.restore();
+    if (st > 0) {
+      ctx.save(); ctx.globalAlpha = st;
+      for (const sd of [-1, 1]) for (const dy of [-22, 22]) { const P = [[sd * 92, 66 + dy], [sd * 108, 56 + dy], [sd * 118, 72 + dy], [sd * 134, 60 + dy]]; line(P, C.ink, 14); line(P, C.red, 7); }
+      ctx.restore();
+    }
+    ctx.restore();
+  }, bg);
+  return [x, y - 150 * u * sc];
 }

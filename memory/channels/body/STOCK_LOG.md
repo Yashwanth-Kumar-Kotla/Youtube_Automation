@@ -31,3 +31,4 @@
 - 2026-11-15 03:57 · 2026-11-15-body-01 added · conf 0.7 · question+number-not-hunger-loop · What happens when your stomach growls?
 - 2026-11-15 04:33 · 2026-11-15-body-02 added · conf 0.7 · question+boring-culprit-reveal · What happens when you get a nosebleed?
 - 2026-11-15 04:48 · 2026-11-15-body-03 added · conf 0.7 · question+number-paradox · What happens when you get a fever?
+- 2026-11-15 13:33 · 2026-11-15-body-04 added · conf 0.7 · question+permanent-damage-reveal · What happens when you get a sunburn?
