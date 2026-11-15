@@ -658,8 +658,8 @@ export function fuelGauge(x, y, s, level) {
   ctx.beginPath(); ctx.arc(0, 0, 145, Math.PI, TAU); ctx.lineTo(145, 20); ctx.lineTo(-145, 20); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
   ctx.beginPath(); ctx.arc(0, 0, 118, Math.PI, Math.PI * 1.28); ctx.strokeStyle = C.red; ctx.lineWidth = 26; ctx.lineCap = 'butt'; ctx.stroke();
   for (let i = 0; i <= 4; i++) { const a = Math.PI + i * Math.PI / 4; line([[Math.cos(a) * 100, Math.sin(a) * 100], [Math.cos(a) * 132, Math.sin(a) * 132]], C.ink, 9); }
-  ctx.fillStyle = C.ink; ctx.font = '900 50px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('E', -98, -14); ctx.fillText('F', 98, -14);
+  ctx.fillStyle = C.ink; ctx.font = '900 44px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('E', -60, -36); ctx.fillText('F', 60, -36);   // inside the ticks, clear of the needle
   ctx.save(); ctx.rotate(Math.PI + clamp(level) * Math.PI); rr(-8, -9, 125, 18, 9); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
   circle(0, 0, 20, C.ink);
   ctx.restore();
@@ -1302,11 +1302,11 @@ export function saltGrain(x, y, s = 1, rot = 0, a = 1) {
 }
 
 /** water drop (pale blue teardrop, darker edge, white glint). ~50x70 px at s = 1, tip points along rot (0 = up) */
-export function drop(x, y, s = 1, rot = 0, a = 1) {
+export function drop(x, y, s = 1, rot = 0, a = 1, cols = null) {
   if (a <= 0 || s <= 0) return;
   ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
   const p = (k) => { ctx.beginPath(); ctx.moveTo(0, -40 * k); ctx.bezierCurveTo(14 * k, -18 * k, 26 * k, 0, 26 * k, 14 * k); ctx.arc(0, 14 * k, 26 * k, 0, Math.PI); ctx.bezierCurveTo(-26 * k, 0, -14 * k, -18 * k, 0, -40 * k); };
-  p(1.12); ctx.fillStyle = WATER_D; ctx.fill(); p(1); ctx.fillStyle = C.sky; ctx.fill();
+  p(1.12); ctx.fillStyle = cols ? cols[0] : WATER_D; ctx.fill(); p(1); ctx.fillStyle = cols ? cols[1] : C.sky; ctx.fill();   // cols = [edge, fill] (a red drop: [RED_D, C.red])
   ell(-9, 12, 6, 10, C.white, 0.3);
   ctx.restore();
 }
@@ -4082,15 +4082,24 @@ export function fixCard(kind, x, y, s = 1, { done = 0, sc = 1, t = 0 } = {}) {
 }
 /** cartoon stomach with a face (graphic, the next-episode tease): K.stomach + eyes and a grumbly mouth on its big curve;
  *  growl 0..1 = it shakes and swells + rumble lines either side. ~330 px at s = 1. sc = pop-in, t = film time */
-export function growlStomach(x, y, s = 1, { t = 0, growl = 0, sc = 1 } = {}) {
+export function growlStomach(x, y, s = 1, { t = 0, growl = 0, sc = 1, mood = 'n', squeeze = 0, rings = true } = {}) {
   if (sc <= 0 || s <= 0) return;
-  const g = clamp(growl), j = Math.sin(t * 44) * 5 * g;
-  ctx.save(); ctx.translate(x + j, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const g = clamp(growl), j = Math.sin(t * 44) * 5 * g, q = clamp(squeeze) * (0.5 + 0.5 * Math.sin(t * 9));
+  ctx.save(); ctx.translate(x + j, y); ctx.scale(s * sc * (1 - 0.1 * q), s * sc * (1 + 0.06 * q)); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   stomach(0, 0, 1.25, 0.25 * g * (0.5 + 0.5 * Math.sin(t * 18)));
+  // mood: 'n' (default, the grumpy growler) | 'happy' (raised brows, closed smile: content) | 'hungry' (sad brows, wavy mouth)
+  const happy = mood === 'happy', hungry = mood === 'hungry';
   for (const [ex, ey] of [[-74, 72], [-10, 98]]) { ell(ex, ey, 15, 19, C.ink); circle(ex + 5, ey - 7, 6, C.white); }
-  ctx.strokeStyle = C.ink; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(-96, 40); ctx.lineTo(-58, 52); ctx.moveTo(-28, 72); ctx.lineTo(6, 70); ctx.stroke();
-  ctx.save(); ctx.translate(52, 100); ctx.rotate(-0.35); ell(0, 0, 22, 8 + 10 * g * (0.5 + 0.5 * Math.sin(t * 22)), C.mouth); ctx.restore();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 9; ctx.beginPath();
+  if (happy) { ctx.moveTo(-94, 42); ctx.quadraticCurveTo(-76, 30, -58, 40); ctx.moveTo(-28, 70); ctx.quadraticCurveTo(-10, 60, 8, 70); }
+  else if (hungry) { ctx.moveTo(-96, 54); ctx.lineTo(-60, 42); ctx.moveTo(-28, 64); ctx.lineTo(6, 76); }
+  else { ctx.moveTo(-96, 40); ctx.lineTo(-58, 52); ctx.moveTo(-28, 72); ctx.lineTo(6, 70); }
+  ctx.stroke();
+  if (happy && g < 0.5) { ctx.save(); ctx.translate(48, 104); ctx.rotate(-0.35); ctx.beginPath(); ctx.moveTo(-24, -6); ctx.quadraticCurveTo(0, 16, 24, -6); ctx.strokeStyle = C.mouth; ctx.lineWidth = 9; ctx.stroke(); ctx.restore(); }
+  else if (hungry && g < 0.5) { ctx.save(); ctx.translate(48, 104); ctx.rotate(-0.35); ctx.beginPath(); for (let k = 0; k <= 8; k++) { const px = -24 + k * 6, py = Math.sin(k * 1.6) * 5; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.stroke(); ctx.restore(); }
+  else { ctx.save(); ctx.translate(52, 100); ctx.rotate(-0.35); ell(0, 0, 22, 8 + 10 * g * (0.5 + 0.5 * Math.sin(t * 22)), C.mouth); ctx.restore(); }
   ctx.restore();
+  if (!rings) return;
   if (g > 0) {
     ctx.save(); ctx.globalAlpha = g; ctx.strokeStyle = C.ink; ctx.lineCap = 'round';
     for (const sd of [-1, 1]) for (let k = 0; k < 3; k++) {
@@ -4099,4 +4108,211 @@ export function growlStomach(x, y, s = 1, { t = 0, growl = 0, sc = 1 } = {}) {
     }
     ctx.restore();
   }
+}
+
+// ═════════════════════════ GROWL SET (2026-11-15 "stomach growls") ═════════════════════════
+const PLATE = '#F7F4EE', PLATE_D = '#C9C2B5', BUN = '#E0A45E', BUN_D = '#C8834A', PATTY = '#7A4A32', LETTUCE = '#5BAE6A',
+  CAN = '#E0956B', CAN_D = '#C8734A', TIN = '#DCD6CB', TIN_D = '#B3AA9A', HORM = '#E0956B', HORM_D = '#C8734A',
+  COLON = '#D4637C', COLON_D = '#A3304A', LUMEN = '#B83A55', FOODB = '#C8834A', FOODB_D = '#9A5333', HEAT = '#E0956B';
+
+/** a pale-blue gas bubble (white disc, blue edge, glint). r px. a = alpha */
+export function gasBubble(x, y, r, a = 1) {
+  if (a <= 0 || r <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  circle(x, y, Math.max(0, r + 4), WATER_D); circle(x, y, Math.max(0, r), C.white); ell(x - r * 0.35, y - r * 0.35, Math.max(0, r * 0.28), Math.max(0, r * 0.16), C.sky, -0.6);
+  ctx.restore();
+}
+
+/** round wall clock (white face, ink rim with a darker shade, 12 ticks, ink hands). hour = time in hours (float: 1.5 =
+ *  half past one; the minute hand follows). from (hours) = a pale-blue wedge from `from` to `hour` (time passed), -1 = none.
+ *  ~2r+40 px wide. sc = pop-in */
+export function wallClock(x, y, r, { hour = 0, from = -1, sc = 1 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 22, C.ink); circle(0, 0, r + 6, C.watch); circle(0, 0, r, C.white);
+  if (from >= 0 && hour > from) {
+    const a0 = from / 12 * TAU - Math.PI / 2, a1 = hour / 12 * TAU - Math.PI / 2;
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, Math.max(0, r * 0.86), a0, a1); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill();
+  }
+  for (let i = 0; i < 12; i++) { ctx.save(); ctx.rotate(i * TAU / 12); rr(-6, -r + 14, 12, i % 3 === 0 ? r * 0.2 : r * 0.12, 6); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore(); }
+  const ha = hour / 12 * TAU, ma = (hour % 1) * TAU;
+  ctx.save(); ctx.rotate(ha); rr(-12, -r * 0.52, 24, r * 0.6, 12); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore();
+  ctx.save(); ctx.rotate(ma); rr(-8, -r * 0.78, 16, r * 0.86, 8); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore();
+  circle(0, 0, r * 0.09, C.ink); circle(0, 0, r * 0.04, C.white);
+  ell(-r * 0.45, -r * 0.55, r * 0.18, r * 0.07, C.sky, -0.7);
+  ctx.restore();
+}
+
+/** plate with a burger on it, side view (white oval plate, grey rim). eaten 0..1 bites the burger away from the right in
+ *  scalloped bites until only crumbs are left. ~460x300 px at s = 1, origin = plate centre. sc = pop-in */
+export function mealPlate(x, y, s = 1, { eaten = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const e = clamp(eaten);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  ell(0, 34, 230, 52, PLATE_D); ell(0, 22, 230, 50, PLATE); ell(0, 22, 150, 28, '#EEE9E0');
+  for (const [cx, cy, r] of [[-40, 30, 9], [30, 38, 7], [80, 26, 8], [-90, 22, 6], [0, 16, 6]]) if (e > 0.5) circle(cx, cy, r * clamp((e - 0.5) * 3), BUN_D);
+  if (e < 1) {
+    const cut = lerp(170, -170, e);
+    ctx.save(); ctx.beginPath(); ctx.moveTo(-400, -400); ctx.lineTo(cut, -400); ctx.lineTo(cut, -250);
+    for (let k = 0; k < 4; k++) { const y0 = -250 + k * 75; ctx.quadraticCurveTo(cut - 70, y0 + 37, cut, y0 + 75); }
+    ctx.lineTo(cut, 400); ctx.lineTo(-400, 400); ctx.closePath(); ctx.clip();
+    ell(0, 8, 150, 26, BUN_D); rr(-150, -22, 300, 34, 16); ctx.fillStyle = BUN; ctx.fill();          // bottom bun
+    rr(-160, -52, 320, 36, 18); ctx.fillStyle = PATTY; ctx.fill();                                    // patty
+    ctx.beginPath(); ctx.moveTo(-170, -56); for (let k = 0; k <= 10; k++) ctx.quadraticCurveTo(-170 + k * 34 - 17, -40, -170 + k * 34, -60); ctx.lineTo(170, -70); ctx.lineTo(-170, -70); ctx.closePath(); ctx.fillStyle = LETTUCE; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-160, -64); ctx.quadraticCurveTo(-160, -190, 0, -190); ctx.quadraticCurveTo(160, -190, 160, -64); ctx.closePath(); ctx.fillStyle = BUN_D; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-150, -70); ctx.quadraticCurveTo(-150, -184, 0, -184); ctx.quadraticCurveTo(140, -184, 146, -76); ctx.closePath(); ctx.fillStyle = BUN; ctx.fill();
+    for (const [sx, sy] of [[-70, -140], [-20, -160], [40, -150], [90, -120], [-100, -105], [10, -118]]) ell(sx, sy, 9, 5, C.white, 0.3);
+    ell(-80, -160, 34, 12, '#F2C489', -0.4);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** fizzy drink can (orange, darker side, white wave band, silver top + ring pull), no brand. fizz 0..1 = bubbles rising out of
+ *  the open top (loops, t = film time). ~180x330 px at s = 1, origin = can centre. sc = pop-in */
+export function sodaCan(x, y, s = 1, { t = 0, fizz: fz = 0, sc = 1, rot = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-90, -140, 180, 290, 26); ctx.fillStyle = CAN_D; ctx.fill(); rr(-90, -140, 140, 290, [26, 0, 0, 26]); ctx.fillStyle = CAN; ctx.fill();
+  ctx.save(); rr(-90, -140, 180, 290, 26); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(-100, 10); for (let k = 0; k <= 8; k++) ctx.quadraticCurveTo(-100 + k * 25 - 12, k % 2 ? -18 : 38, -100 + k * 25, 10); ctx.lineTo(100, 60); for (let k = 8; k >= 0; k--) ctx.quadraticCurveTo(-100 + k * 25 + 12, k % 2 ? 46 : 92, -100 + k * 25, 60); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.restore();
+  rr(-62, -100, 18, 200, 9); ctx.fillStyle = '#F2B48F'; ctx.fill();
+  ell(0, -146, 84, 22, TIN_D); ell(0, -152, 78, 18, TIN); rr(-82, -150, 164, 18, 8); ctx.fillStyle = TIN_D; ctx.fill(); ell(0, -158, 74, 16, TIN);
+  ell(18, -160, 26, 8, C.ink); rr(-28, -168, 40, 14, 7); ctx.fillStyle = TIN_D; ctx.fill();
+  rr(-82, 140, 164, 16, 8); ctx.fillStyle = TIN_D; ctx.fill();
+  ctx.restore();
+  if (fz > 0) fizz(x + 18 * s * sc, y - 170 * s * sc, 1.6 * s * sc, t, fz, { n: 9, spread: 70, rise: 110 });
+}
+
+/** the hunger messenger: a little round orange buddy with dot eyes + smile carrying a white envelope (a hormone, no jargon).
+ *  ~150 px wide at s = 1. sc = pop-in, t = film time (bob) */
+export function messenger(x, y, s = 1, { t = 0, sc = 1, flip = false } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 10) * 6 * s); ctx.scale(s * sc * (flip ? -1 : 1), s * sc);
+  circle(0, 0, 62, HORM_D); circle(-4, -4, 56, HORM); ell(-24, -28, 16, 9, '#F2B48F', -0.6);
+  for (const ex of [-18, 16]) { ell(ex, -10, 8, 11, C.ink); circle(ex + 3, -14, 3, C.white); }
+  ctx.beginPath(); ctx.moveTo(-14, 14); ctx.quadraticCurveTo(0, 26, 14, 14); ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.stroke();
+  ctx.save(); ctx.translate(58, 22); ctx.rotate(-0.15);
+  rr(-40, -28, 80, 56, 8); ctx.fillStyle = C.ink; ctx.fill(); rr(-34, -22, 68, 44, 5); ctx.fillStyle = C.white; ctx.fill();
+  line([[-32, -20], [0, 4], [32, -20]], C.ink, 5);
+  ctx.restore();
+  line([[30, 20], [44, 26]], HORM_D, 16);
+  ctx.restore();
+}
+
+// path helper: polyline → { at(u) [x, y, ang], pts }
+function pathOf(pts) {
+  const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const len = cum[cum.length - 1];
+  const at = (u) => { const d = clamp(u) * len; let i = 1; while (i < cum.length - 1 && cum[i] < d) i++; const a = pts[i - 1], b = pts[i], k = (d - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1); return [lerp(a[0], b[0], k), lerp(a[1], b[1], k), Math.atan2(b[1] - a[1], b[0] - a[0])]; };
+  return { pts, at, len };
+}
+const smooth = (P, n = 10) => {   // Catmull-Rom through P
+  const out = [];
+  for (let i = 0; i < P.length - 1; i++) {
+    const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+    for (let k = 0; k < n; k++) { const t = k / n, t2 = t * t, t3 = t2 * t;
+      out.push([0, 1].map((j) => 0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t2 + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t3))); }
+  }
+  out.push(P[P.length - 1]); return out;
+};
+const GUT_SI = pathOf(smooth([[150, -60], [170, 30], [120, 90], [-120, 90], [-150, 150], [-110, 200], [110, 200], [150, 255], [110, 305], [-110, 305], [-150, 350], [-80, 390], [160, 380], [215, 340]]));
+const GUT_LI = pathOf(smooth([[215, 340], [250, 220], [245, 30], [200, -2], [0, 6], [-200, -2], [-245, 30], [-250, 220], [-230, 400], [-110, 440], [-20, 470], [-5, 520]]));
+/** the gut map: esophagus + stomach (top) + small intestine coil inside the large-intestine frame. ~620x1000 px at s = 1,
+ *  origin = centre of the coil area (stomach above it). t = film time. squeeze 0..1 = muscle squeeze bands travelling along
+ *  both tubes + the stomach pulsing; bubbles 0..1 = gas bubbles riding along; food 0..1 = little brown food bits riding the
+ *  intestines; shakeLow 0..1 = the intestines rumble (jitter). Returns canvas points { stomach, low } (centres, for rings). */
+export const GUT_MAP = { stomach: [0, -300], low: [0, 220] };
+export function bellyGut(x, y, s = 1, { t = 0, squeeze = 0, bubbles = 0, food = 0, shakeLow = 0, sc = 1 } = {}) {
+  const out = { stomach: [x + GUT_MAP.stomach[0] * s, y + GUT_MAP.stomach[1] * s], low: [x + GUT_MAP.low[0] * s, y + GUT_MAP.low[1] * s] };
+  if (sc <= 0 || s <= 0) return out;
+  const q = clamp(squeeze), b = clamp(bubbles), f = clamp(food);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  line([[-60, -600], [-58, -480]], C.pinkDark, 50); line([[-60, -600], [-58, -480]], C.pink, 36);
+  stomach(-10, -330, 1.35, q * 0.5 * (0.5 + 0.5 * Math.sin(t * 8)));
+  const sj = clamp(shakeLow); ctx.save(); ctx.translate(Math.sin(t * 46) * 6 * sj, Math.cos(t * 39) * 3 * sj);
+  const tube = (P, w, edge, fill, hi) => {
+    const pth = () => { ctx.beginPath(); P.pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); };
+    pth(); ctx.strokeStyle = edge; ctx.lineWidth = w + 14; ctx.stroke(); pth(); ctx.strokeStyle = fill; ctx.lineWidth = w; ctx.stroke();
+    ctx.save(); ctx.translate(-w * 0.15, -w * 0.18); pth(); ctx.strokeStyle = hi; ctx.globalAlpha = 0.55; ctx.lineWidth = w * 0.22; ctx.stroke(); ctx.restore();
+  };
+  tube(GUT_LI, 86, COLON_D, COLON, C.pinkLight);
+  tube(GUT_SI, 54, C.pinkDark, C.pink, C.pinkLight);
+  const bands = (P, w, n, sp, col) => { if (q <= 0) return; ctx.save(); ctx.globalAlpha = q; for (let k = 0; k < n; k++) { const [px, py, a] = P.at(((t * sp + k / n) % 1 + 1) % 1), nx = -Math.sin(a), ny = Math.cos(a);
+    for (const o of [-7, 7]) line([[px + nx * (w / 2 + 6) + Math.cos(a) * o, py + ny * (w / 2 + 6) + Math.sin(a) * o], [px - nx * (w / 2 + 6) + Math.cos(a) * o, py - ny * (w / 2 + 6) + Math.sin(a) * o]], col, 9); } ctx.restore(); };
+  bands(GUT_SI, 54, 5, 0.12, C.pinkDark); bands(GUT_LI, 86, 4, 0.08, COLON_D);
+  const ride = (P, n, sp, fn) => { for (let k = 0; k < n; k++) { const u = ((t * sp + k / n + 0.04) % 1 + 1) % 1; const [px, py] = P.at(u); fn(px, py, k, Math.min(1, u * 12, (1 - u) * 12)); } };
+  if (b > 0) { ride(GUT_SI, 6, 0.12, (px, py, k, e) => gasBubble(px, py, 13, b * e)); ride(GUT_LI, 5, 0.08, (px, py, k, e) => gasBubble(px, py, 19, b * e)); }
+  if (f > 0) { const bit = (px, py, k, e, r) => { ctx.save(); ctx.globalAlpha = f * e; ell(px, py, r + 3, r * 0.8 + 3, FOODB_D, k); ell(px - 1, py - 2, r, r * 0.8, FOODB, k); ctx.restore(); };
+    ride(GUT_SI, 6, 0.12, (px, py, k, e) => bit(px, py, k, e, 13)); ride(GUT_LI, 5, 0.08, (px, py, k, e) => bit(px, py, k, e, 20)); }
+  ctx.restore();
+  ctx.restore();
+  return out;
+}
+
+/** gut close-up, cutaway: a horizontal tube across the screen at y (pink wall, darker channel inside). Squeeze waves travel
+ *  left → right (the wall pinches the channel shut where the muscle squeezes), pushing what's inside along: gas 0..1 = round
+ *  bubbles, fluid 0..1 = pale-blue fluid along the floor, food 0..1 = brown food bits. w = tube height, t = film time,
+ *  speed = how fast the waves travel (px/s = 260 * speed). Pure function of t */
+export function gutCut(y, t, { w = 360, squeeze = 1, gas = 0, fluid = 0, food = 0, speed = 1, a = 1 } = {}) {
+  const q = clamp(squeeze), span = 1700, gap = 560, X0 = -320;
+  const wavesX = []; for (let k = 0; k < 4; k++) wavesX.push(X0 + (((t * 260 * speed + k * gap) % (gap * 3)) + gap * 3) % (gap * 3) - 100);
+  const pinch = (x) => { let m = 0; for (const wx of wavesX) m = Math.max(m, Math.exp(-Math.pow((x - wx) / 95, 2))); return m * q; };
+  const wob = (x) => Math.sin(x * 0.006 + t * 0.8) * 10;
+  const H2 = w / 2, L = w * 0.29;
+  const edge = (sgn, hh) => { const pts = []; for (let x = -320; x <= 1400; x += 14) pts.push([x, y + wob(x) + sgn * hh(x)]); return pts; };
+  const outer = (x) => H2 * (1 - 0.16 * pinch(x)), inner = (x) => L * (1 - 0.86 * pinch(x));
+  const band = (hh, col) => { const top = edge(-1, hh), bot = edge(1, hh).reverse(); ctx.beginPath(); top.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); bot.forEach((p) => ctx.lineTo(p[0], p[1])); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); };
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  band((x) => outer(x) + 14, C.pinkDark); band(outer, C.pink);
+  band((x) => inner(x) + 12, C.pinkDark);
+  band(inner, LUMEN);
+  ctx.save(); const top = edge(-1, inner), bot = edge(1, inner).reverse(); ctx.beginPath(); top.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); bot.forEach((p) => ctx.lineTo(p[0], p[1])); ctx.closePath(); ctx.clip();
+  if (fluid > 0) { ctx.globalAlpha = clamp(a) * clamp(fluid); ctx.beginPath(); ctx.moveTo(-320, y + L + 40);
+    for (let x = -320; x <= 1400; x += 14) ctx.lineTo(x, y + wob(x) + L * 0.25 + Math.sin(x * 0.03 - t * 6) * 8); ctx.lineTo(1400, y + L + 40); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill();
+    ctx.beginPath(); for (let x = -320; x <= 1400; x += 14) { const py = y + wob(x) + L * 0.25 + Math.sin(x * 0.03 - t * 6) * 8; x === -320 ? ctx.moveTo(x, py) : ctx.lineTo(x, py); } ctx.strokeStyle = C.white; ctx.lineWidth = 6; ctx.globalAlpha *= 0.7; ctx.stroke(); ctx.globalAlpha = clamp(a); }
+  wavesX.forEach((wx, k) => {                       // the contents ride just ahead of each squeeze
+    const base = wx + 150;
+    if (gas > 0) for (let i = 0; i < 3; i++) { const bx = base + i * 70 + Math.sin(t * 5 + i + k) * 6, by = y + wob(bx) - L * 0.3 + (i % 2) * 34; gasBubble(bx, by, (i === 1 ? 30 : 22) * 0.9, clamp(gas) * clamp(a)); }
+    if (food > 0) for (let i = 0; i < 2; i++) { const fx = base + 40 + i * 90, fy = y + wob(fx) + 6 - i * 22; ctx.save(); ctx.globalAlpha = clamp(a) * clamp(food); ell(fx, fy, 34, 26, FOODB_D, k + i); ell(fx - 2, fy - 3, 30, 22, FOODB, k + i); ell(fx - 10, fy - 10, 9, 5, '#E0A45E', -0.5); ctx.restore(); }
+  });
+  ctx.restore();
+  for (const wx of wavesX) { const p = pinch(wx); if (p < 0.05) continue; ctx.save(); ctx.globalAlpha = clamp(a) * p;      // muscle ring marks at each squeeze
+    for (const o of [-26, 0, 26]) for (const sg of [-1, 1]) line([[wx + o, y + wob(wx) + sg * (inner(wx) + 22)], [wx + o, y + wob(wx) + sg * (outer(wx) - 18)]], C.pinkDark, 8);
+    ctx.restore(); }
+  ctx.restore();
+  return { wavesX, inner: (x) => [y + wob(x) - inner(x), y + wob(x) + inner(x)] };
+}
+
+/** front cartoon nose (skin, darker side shade, round tip, nostril wings, two nostrils). bleed 0..1 = one small clean red
+ *  drop grows under the left nostril (no gore). ~220x260 px at s = 1, origin = tip centre. sc = pop-in */
+export function cartoonNose(x, y, s = 1, { bleed = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(-30, -220); ctx.quadraticCurveTo(-46, -80, -70, -20); ctx.lineTo(70, -20); ctx.quadraticCurveTo(46, -80, 30, -220); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(14, -220); ctx.quadraticCurveTo(30, -90, 56, -30); ctx.lineTo(70, -20); ctx.quadraticCurveTo(46, -80, 30, -220); ctx.closePath(); ctx.fillStyle = C.skinShade; ctx.fill();
+  for (const sd of [-1, 1]) { ell(sd * 78, 30, 54, 46, C.skinShade); ell(sd * 74, 26, 48, 40, C.skin); }
+  ell(0, 6, 76, 70, C.skinShade); ell(-4, 0, 70, 64, C.skin); ell(-26, -26, 22, 12, '#F2CDB5', -0.5);
+  for (const sd of [-1, 1]) ell(sd * 40, 58, 20, 11, C.mouth, sd * 0.35);
+  if (bleed > 0) { const bl = clamp(bleed); drop(-40, 92 + 34 * bl, 0.62 * (0.4 + 0.6 * bl), 0, Math.min(1, bl * 3), [RED_D, C.red]); }
+  ctx.restore();
+}
+
+/** little radiator heater (white fins, grey shade, feet) with wavy orange warm-air lines rising (dry indoor air). heat 0..1,
+ *  t = film time. ~200x170 px at s = 1, origin = radiator centre. sc = pop-in */
+export function heater(x, y, s = 1, { heat = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  rr(-100, -10, 200, 20, 10); ctx.fillStyle = PLATE_D; ctx.fill();
+  for (let i = 0; i < 5; i++) { const fx = -96 + i * 40; rr(fx, -80, 34, 160, 17); ctx.fillStyle = PLATE_D; ctx.fill(); rr(fx, -80, 26, 160, 13); ctx.fillStyle = PLATE; ctx.fill(); }
+  for (const sd of [-1, 1]) { rr(sd * 70 - 12, 76, 24, 22, 6); ctx.fillStyle = TIN_D; ctx.fill(); }
+  const h = clamp(heat);
+  if (h > 0) for (let k = 0; k < 3; k++) {
+    const u = (t * 0.8 + k / 3) % 1, x0 = -60 + k * 60, y0 = -100 - u * 120;
+    ctx.save(); ctx.globalAlpha = h * Math.sin(u * Math.PI); ctx.beginPath();
+    for (let j = 0; j <= 12; j++) { const py = y0 - j * 8, px = x0 + Math.sin(j * 0.9 + t * 7 + k) * 12; j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.strokeStyle = HEAT; ctx.lineWidth = 12; ctx.stroke(); ctx.restore();
+  }
+  ctx.restore();
 }

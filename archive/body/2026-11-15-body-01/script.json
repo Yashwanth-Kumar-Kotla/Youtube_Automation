@@ -1,0 +1,64 @@
+{
+  "title": "What Happens When Your Stomach Growls?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic Health Essentials, 'Hunger Pangs' (stomach rumbling is the noise produced by the movement of gas and fluids in your digestive system; it's caused by the contraction of the muscles in your stomach and intestines; stomach rumbling can occur at any time, such as swallowing air, drinking carbonated beverages or having an empty stomach; hunger pangs are caused by contractions in the muscles of your stomach and intestines due to the release of the hormone ghrelin, the hunger hormone, when your stomach is empty; 'In most cases, hunger can set in as soon as two hours after your last meal'; if the noise is coming from the lower part of the abdomen, it may be the food is now passing through the small and large intestines): https://health.clevelandclinic.org/hunger-pangs",
+    "NIH MedlinePlus, 'Abdominal sounds' (abdominal sounds are the noises made by the intestines; most of the sounds you hear in your stomach and intestines are due to normal digestion; most bowel sounds are normal and simply mean that the gastrointestinal tract is working): https://medlineplus.gov/ency/article/003137.htm",
+    "Tease (next video): Cleveland Clinic, 'Nosebleed (Epistaxis)' ('The most common cause of nosebleeds is dry air'): https://my.clevelandclinic.org/health/diseases/13464-nosebleed-epistaxis"
+  ],
+  "lines": [
+    {
+      "text": "What happens when your stomach growls?",
+      "caps": "WHAT *HAPPENS WHEN | YOUR STOMACH *GROWLS?"
+    },
+    {
+      "text": "Hunger can kick in just two hours after you eat, but the growl isn't always hunger.",
+      "caps": "*HUNGER CAN KICK | IN JUST 2 *HOURS | AFTER YOU *EAT | BUT THE *GROWL | ISN'T ALWAYS *HUNGER"
+    },
+    {
+      "text": "That sound is gas and fluid on the move,",
+      "caps": "THAT *SOUND IS | *GAS AND FLUID | ON THE *MOVE"
+    },
+    {
+      "text": "pushed by the muscles of your stomach and intestines.",
+      "caps": "*PUSHED BY THE | *MUSCLES OF YOUR | STOMACH AND *INTESTINES"
+    },
+    {
+      "text": "An empty stomach sets off a hunger hormone,",
+      "caps": "AN *EMPTY STOMACH | *SETS OFF A | HUNGER *HORMONE"
+    },
+    {
+      "text": "and those squeezes become hunger pangs.",
+      "caps": "AND THOSE *SQUEEZES | BECOME HUNGER *PANGS"
+    },
+    {
+      "text": "But it can rumble at any time.",
+      "caps": "BUT IT CAN *RUMBLE | AT ANY *TIME"
+    },
+    {
+      "text": "Swallowed air or fizzy drinks do it too.",
+      "caps": "*SWALLOWED AIR | OR FIZZY *DRINKS | DO IT *TOO"
+    },
+    {
+      "text": "A rumble down low? Maybe just food passing through your intestines.",
+      "caps": "A *RUMBLE DOWN LOW? | MAYBE JUST *FOOD | PASSING THROUGH YOUR *INTESTINES"
+    },
+    {
+      "text": "Most of the time, it just means your gut's working.",
+      "caps": "MOST OF THE *TIME | IT JUST *MEANS | YOUR GUT'S *WORKING"
+    },
+    {
+      "text": "Next Body File: what happens when you get a nosebleed,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOU GET A *NOSEBLEED"
+    },
+    {
+      "text": "and why plain old dry air is the top cause.",
+      "caps": "AND WHY *PLAIN OLD | *DRY AIR IS | THE TOP *CAUSE"
+    }
+  ]
+}
