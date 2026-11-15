@@ -27,3 +27,4 @@
 - 2026-11-14 04:40 · 2026-11-14-body-03 added · conf 0.7 · question+hidden-place-number · What happens when you blush?
 - 2026-11-14 10:30 · 2026-11-14-body-04 added · conf 0.7 · question+senses-argue-loop · What happens when you get motion sickness?
 - 2026-11-14 19:57 · 2026-11-09-body-04 posted · conf 0.7 · {'posted': '2026-11-14', 'episode': 6, 'youtube': 'h9oHP8Kzp4A', 'tiktok': 'v_inbox_file~v2.7707775086169917454'}
+- 2026-11-15 03:32 · 2026-11-10-body-01 ready → scheduled · slot 0 on 2026-11-15, episode 7, manual upload

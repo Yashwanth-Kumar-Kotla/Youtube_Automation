@@ -1,9 +1,8 @@
 # STOCK: body (generated from state/stock/body.json; change it with `python -m pipeline.stock`)
-_Updated 2026-11-14 19:57 · ready 12/30 · threshold 0.4 · max age 42 d_
+_Updated 2026-11-15 03:32 · ready 11/30 · threshold 0.4 · max age 42 d_
 
 | id | status | conf | topic | cluster | hook pattern | format | length | made | playbook | research |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2026-11-10-body-01 | ready | 0.7 | What happens if you sneeze with your eyes open? | sneeze | question+old-myth-number | myth-bust | 39.0s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-10-body-02 | ready | 0.7 | What happens to your body in space without a suit? | space | question+instant-myth-bust | explainer | 41.0s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-10-body-03 | ready | 0.7 | What happens if your hiccups won't stop? | hiccups | question+record-number | true-story | 41.8s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-10-body-04 | ready | 0.7 | What happens when you get brain freeze? | brain | question+myth-bust | explainer | 35.4s | 2026-W46 | pb-87d1a129 | none |
@@ -16,4 +15,4 @@ _Updated 2026-11-14 19:57 · ready 12/30 · threshold 0.4 · max age 42 d_
 | 2026-11-14-body-03 | ready | 0.7 | What happens when you blush? | blood | question+hidden-place-number | explainer | 35.4s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-14-body-04 | ready | 0.7 | What happens when you get motion sickness? | balance | question+senses-argue-loop | explainer | 34.8s | 2026-W46 | pb-87d1a129 | none |
 
-Clusters in stock: balance ×1, blood ×1, brain ×1, ears ×1, hiccups ×1, muscles ×1, nerves ×1, skin ×1, sneeze ×1, space ×1, tears ×1, teeth ×1
+Clusters in stock: balance ×1, blood ×1, brain ×1, ears ×1, hiccups ×1, muscles ×1, nerves ×1, skin ×1, space ×1, tears ×1, teeth ×1

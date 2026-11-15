@@ -75,5 +75,17 @@
         "tiktok": "v_inbox_file~v2.7707775086169917454"
       }
     ]
+  },
+  "2026-11-15": {
+    "body": [
+      {
+        "slot": 0,
+        "id": "2026-11-10-body-01",
+        "date": "2026-11-15",
+        "episode": 7,
+        "manual": true,
+        "youtube": "g78reH63hFQ"
+      }
+    ]
   }
 }

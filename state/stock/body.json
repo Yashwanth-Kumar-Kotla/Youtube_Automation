@@ -257,9 +257,15 @@
    "research_file": "none",
    "length": 39.0,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "scheduled",
    "branch": "stock/body/2026-11-10-body-01",
-   "history": [],
+   "history": [
+    {
+     "at": "2026-11-15T03:32-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-15, episode 7, manual upload"
+    }
+   ],
    "description": "Closing your eyes during a sneeze is an automatic reflex, but with a lot of concentration you can keep them open, and they won't pop out. Each eye has six muscles, and a Texas A&M allergist says a sneeze is extremely unlikely to pop an eyeball out. The myth traces back to an 1882 newspaper story.\nNext Body File: what happens in space without a suit, and the NASA tester who felt his own spit boil.\nFollow Body Files for a new one every day.\n#bodyfiles #sneeze #eyes #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Sneezing: https://my.clevelandclinic.org/health/symptoms/sneezing\nCleveland Clinic, Eye Muscles: https://my.clevelandclinic.org/health/body/eye-muscles\nTexas A&M University (via ScienceDaily): https://www.sciencedaily.com/releases/2016/12/161209081007.htm\nGuinness World Records: https://www.guinnessworldrecords.com/world-records/447311-highest-equivalent-altitude-exposure-survived"
   },
   "2026-11-10-body-02": {
