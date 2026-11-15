@@ -1,0 +1,33 @@
+{
+ "title": "What Happens When You Get a Nosebleed?",
+ "description": "The most common cause of nosebleeds is dry air: it dries out the delicate tissue inside your nose until it gets crusty or cracked, and the tiny blood vessels there lie close to the surface. Most nosebleeds start at the front of the nose and usually aren't serious. To stop one, sit down, lean forward, and pinch the soft part of your nose just above your nostrils for 10 to 15 minutes while breathing through your mouth. If it lasts longer than that, get emergency help, and don't drive yourself.\nNext Body File: what happens when you get a fever, and why your muscles start shaking to warm you up.\nFollow Body Files for a new one every day.\n#bodyfiles #nosebleed #humanbody #health #firstaid #science #shorts\n\nSources:\nCleveland Clinic, Nosebleed (Epistaxis): https://my.clevelandclinic.org/health/diseases/13464-nosebleed-epistaxis\nNHS, Nosebleed: https://www.nhs.uk/conditions/nosebleed/\nCleveland Clinic, Chills: https://my.clevelandclinic.org/health/symptoms/21476-chills",
+ "hashtags": [
+  "#bodyfiles",
+  "#nosebleed",
+  "#humanbody",
+  "#health",
+  "#firstaid",
+  "#science",
+  "#shorts"
+ ],
+ "pinned_comment": "Where did your worst nosebleed hit you? In class, at work, in the middle of the night?",
+ "series": "Body Files",
+ "topic": "What happens when you get a nosebleed?",
+ "experiment_arm": "E1-B (hook without a number: no number in lines 1-2; '10 to 15 minutes' only appears in line 8); E4 tease_next",
+ "teases": "What happens when you get a fever?",
+ "topic_cluster": "nose",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the stomach growls video (2026-11-15-body-1) with 'and why plain old dry air is the top cause' (paid off in line 2 'the top cause? Plain old dry air.' and explained in lines 3-5)",
+ "hook_pattern": "question+boring-culprit-reveal",
+ "format": "explainer",
+ "id": "2026-11-15-body-02",
+ "channel": "body",
+ "made_at": "2026-11-15T04:33-06:00",
+ "made_week": "2026-W46",
+ "playbook_version": "pb-87d1a129",
+ "research_file": "none",
+ "length": 37.0,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-15-body-02",
+ "history": []
+}
