@@ -691,6 +691,39 @@
    "branch": "stock/body/2026-11-15-body-02",
    "history": [],
    "description": "The most common cause of nosebleeds is dry air: it dries out the delicate tissue inside your nose until it gets crusty or cracked, and the tiny blood vessels there lie close to the surface. Most nosebleeds start at the front of the nose and usually aren't serious. To stop one, sit down, lean forward, and pinch the soft part of your nose just above your nostrils for 10 to 15 minutes while breathing through your mouth. If it lasts longer than that, get emergency help, and don't drive yourself.\nNext Body File: what happens when you get a fever, and why your muscles start shaking to warm you up.\nFollow Body Files for a new one every day.\n#bodyfiles #nosebleed #humanbody #health #firstaid #science #shorts\n\nSources:\nCleveland Clinic, Nosebleed (Epistaxis): https://my.clevelandclinic.org/health/diseases/13464-nosebleed-epistaxis\nNHS, Nosebleed: https://www.nhs.uk/conditions/nosebleed/\nCleveland Clinic, Chills: https://my.clevelandclinic.org/health/symptoms/21476-chills"
+  },
+  "2026-11-15-body-03": {
+   "title": "What Happens When You Get a Fever?",
+   "hashtags": [
+    "#bodyfiles",
+    "#fever",
+    "#humanbody",
+    "#health",
+    "#immunesystem",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "What's the highest fever you've ever had, and did you get the shivers too?",
+   "series": "Body Files",
+   "topic": "What happens when you get a fever?",
+   "experiment_arm": "E1-A (hook with a number: line 2 'one hundred point four degrees', caption '100.4'); E4 tease_next",
+   "teases": "What happens when you get a sunburn?",
+   "topic_cluster": "immune",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the nosebleed video (2026-11-15-body-2) with 'and why your muscles start shaking to heat you up' (paid off in lines 3 and 6-9: shivering = muscles tightening and relaxing, which warms you up)",
+   "hook_pattern": "question+number-paradox",
+   "format": "explainer",
+   "id": "2026-11-15-body-03",
+   "channel": "body",
+   "made_at": "2026-11-15T04:48-06:00",
+   "made_week": "2026-W46",
+   "playbook_version": "pb-87d1a129",
+   "research_file": "none",
+   "length": 34.6,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-15-body-03",
+   "history": [],
+   "description": "Most providers call it a fever at 100.4 F (38 C). It happens when your brain's thermostat resets to a higher temperature, mostly in response to an infection, and many people feel chilled when they have one. Shivering makes your muscles contract and relax, and that movement warms your body. Get lots of rest and drink plenty of fluids (water is best). Adults should call a healthcare provider if a fever goes above 103 F (39.4 C) or lasts longer than about three to four days.\nNext Body File: what happens when you get a sunburn, and why your skin peels a few days later.\nFollow Body Files for a new one every day.\n#bodyfiles #fever #humanbody #health #immunesystem #science #shorts\n\nSources:\nCleveland Clinic, Fever: https://my.clevelandclinic.org/health/symptoms/10880-fever\nMerck Manual Consumer Version, Fever in Adults: https://www.merckmanuals.com/home/infections/biology-of-infectious-disease/fever-in-adults\nCleveland Clinic, Chills: https://my.clevelandclinic.org/health/symptoms/21476-chills\nNHS, High temperature (fever) in adults: https://www.nhs.uk/conditions/fever-in-adults/\nNHS, Sunburn: https://www.nhs.uk/conditions/sunburn/"
   }
  }
 }

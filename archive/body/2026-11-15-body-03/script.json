@@ -1,0 +1,74 @@
+{
+  "title": "What Happens When You Get a Fever?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Fever' ('Most providers say a fever is either 100.0 F (37.8 C) or 100.4 F (38 C)'; 'it can be a sign that your immune system has been activated, often to fight an infection'; 'Make sure you drink plenty of fluids and get plenty of rest'; call your healthcare provider if an adult's fever rises above 103 F (39.4 C), or if it lingers longer than about three to four days): https://my.clevelandclinic.org/health/symptoms/10880-fever",
+    "Merck Manual Consumer Version, 'Fever in Adults' ('Fever is an elevated body temperature that occurs when the body's thermostat (located in the hypothalamus in the brain) resets at a higher temperature, primarily in response to an infection'): https://www.merckmanuals.com/home/infections/biology-of-infectious-disease/fever-in-adults",
+    "Cleveland Clinic, 'Chills' ('Many people feel chilled when they have a fever'; 'Chills and fever often go together'; 'Chills are a sign that your body is trying to regulate its core temperature'; 'When you shiver, your muscles relax and contract. This involuntary movement warms your body'): https://my.clevelandclinic.org/health/symptoms/21476-chills",
+    "NHS, 'High temperature (fever) in adults' (a high temperature is usually 38C or above; 'If you feel hot, cold or shivery, you may have a high temperature'; 'get lots of rest'; 'drink plenty of fluids (water is best) to avoid dehydration'; get an urgent GP appointment or contact NHS 111 if it's not getting better or is getting worse): https://www.nhs.uk/conditions/fever-in-adults/",
+    "Tease (next video): NHS, 'Sunburn' (sunburnt skin may 'flake or peel – this usually happens a few days after you get sunburn'): https://www.nhs.uk/conditions/sunburn/"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get a fever?",
+      "caps": "WHAT *HAPPENS WHEN | YOU GET A *FEVER?"
+    },
+    {
+      "text": "Most doctors draw the line at one hundred point four degrees,",
+      "caps": "MOST *DOCTORS | DRAW THE *LINE | AT *100.4 DEGREES"
+    },
+    {
+      "text": "so why are you shivering like you're freezing?",
+      "caps": "SO *WHY ARE | YOU *SHIVERING | LIKE YOU'RE *FREEZING?"
+    },
+    {
+      "text": "When you're fighting off an infection,",
+      "caps": "WHEN YOU'RE *FIGHTING | OFF AN *INFECTION"
+    },
+    {
+      "text": "your brain's thermostat resets to a higher temperature.",
+      "caps": "YOUR BRAIN'S *THERMOSTAT | *RESETS TO A | HIGHER *TEMPERATURE"
+    },
+    {
+      "text": "Your body has to catch up,",
+      "caps": "YOUR *BODY HAS | TO *CATCH UP"
+    },
+    {
+      "text": "so your muscles start shaking.",
+      "caps": "SO YOUR *MUSCLES | START *SHAKING"
+    },
+    {
+      "text": "They tighten and relax, over and over,",
+      "caps": "THEY TIGHTEN AND *RELAX | *OVER AND OVER"
+    },
+    {
+      "text": "and that movement is what warms you up.",
+      "caps": "AND THAT *MOVEMENT | IS WHAT *WARMS YOU UP"
+    },
+    {
+      "text": "Rest up and drink plenty of water,",
+      "caps": "*REST UP AND | DRINK PLENTY OF *WATER"
+    },
+    {
+      "text": "and call a doctor if it tops one hundred and three",
+      "caps": "AND CALL A *DOCTOR | IF IT TOPS *103"
+    },
+    {
+      "text": "or drags on past three or four days.",
+      "caps": "OR *DRAGS ON PAST | 3 OR 4 *DAYS"
+    },
+    {
+      "text": "Next Body File: what happens when you get a sunburn,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOU GET A *SUNBURN"
+    },
+    {
+      "text": "and why your skin peels days later.",
+      "caps": "AND WHY YOUR *SKIN | *PEELS DAYS LATER"
+    }
+  ]
+}

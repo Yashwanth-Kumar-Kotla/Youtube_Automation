@@ -1,0 +1,14 @@
+{
+  "title": "What Happens When You Get a Fever?",
+  "description": "Most providers call it a fever at 100.4 F (38 C). It happens when your brain's thermostat resets to a higher temperature, mostly in response to an infection, and many people feel chilled when they have one. Shivering makes your muscles contract and relax, and that movement warms your body. Get lots of rest and drink plenty of fluids (water is best). Adults should call a healthcare provider if a fever goes above 103 F (39.4 C) or lasts longer than about three to four days.\nNext Body File: what happens when you get a sunburn, and why your skin peels a few days later.\nFollow Body Files for a new one every day.\n#bodyfiles #fever #humanbody #health #immunesystem #science #shorts\n\nSources:\nCleveland Clinic, Fever: https://my.clevelandclinic.org/health/symptoms/10880-fever\nMerck Manual Consumer Version, Fever in Adults: https://www.merckmanuals.com/home/infections/biology-of-infectious-disease/fever-in-adults\nCleveland Clinic, Chills: https://my.clevelandclinic.org/health/symptoms/21476-chills\nNHS, High temperature (fever) in adults: https://www.nhs.uk/conditions/fever-in-adults/\nNHS, Sunburn: https://www.nhs.uk/conditions/sunburn/",
+  "hashtags": ["#bodyfiles", "#fever", "#humanbody", "#health", "#immunesystem", "#science", "#shorts"],
+  "pinned_comment": "What's the highest fever you've ever had, and did you get the shivers too?",
+  "series": "Body Files",
+  "topic": "What happens when you get a fever?",
+  "experiment_arm": "E1-A (hook with a number: line 2 'one hundred point four degrees', caption '100.4'); E4 tease_next",
+  "teases": "What happens when you get a sunburn?",
+  "topic_cluster": "immune",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the nosebleed video (2026-11-15-body-2) with 'and why your muscles start shaking to heat you up' (paid off in lines 3 and 6-9: shivering = muscles tightening and relaxing, which warms you up)",
+  "hook_pattern": "question+number-paradox",
+  "format": "explainer"
+}

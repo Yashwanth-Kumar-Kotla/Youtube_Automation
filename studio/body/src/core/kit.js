@@ -4566,3 +4566,129 @@ export function pinchFingers(x, y, s = 1, { gap = 400, reach = 700 } = {}) {
   }
   ctx.restore();
 }
+
+// ═════════════════════════ FEVER SET (2026-11-15-body-3 "fever") ═════════════════════════
+const FV_COLD = '#7EC3E0', FV_COLD_D = '#5AA8CC', FV_FLAKE = '#F8E6DA', FV_FLAKE_D = '#E2C2AE', FV_BURN = '#EE8E8E';
+/** the HERO wrapped in a light-blue blanket (shoulders to knees, hands holding it shut under the chin). o = man() options
+ *  (face: eyes, brow, sad, sweats, look...; arms are hidden under the blanket). shiver 0..1 shakes him with ink shake lines
+ *  either side; chatter 0..1 swaps the mouth for chattering teeth. t = film time. Same origin/scale as man() */
+export function blanketHero(o, { shiver = 0, chatter = 0, t = 0 } = {}) {
+  const s = o.s || 1, sh = clamp(shiver), dx = Math.sin(t * 46) * 7 * sh * s;
+  if (sh > 0) { ctx.save(); ctx.translate(o.x, o.y); ctx.scale(s, s); ctx.globalAlpha = sh;
+    for (const sd of [-1, 1]) for (let k = 0; k < 3; k++) { const ph = (Math.sin(t * 20 + k * 1.7) + 1) / 2;
+      line([[sd * (250 + k * 6), -200 + k * 150], [sd * (300 + k * 6 + ph * 16), -170 + k * 150]], C.ink, 14); }
+    ctx.restore(); }
+  const ch = clamp(chatter);
+  man({ ...o, x: o.x + dx, arm: ARM.down, armL: ARM.down, mouth: ch > 0.5 ? 'none' : o.mouth });
+  ctx.save(); ctx.translate(o.x + dx, o.y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const P = (k) => { ctx.beginPath(); ctx.moveTo(-70 * k, -228); ctx.quadraticCurveTo(-200 * k, -215, -212 * k, -120); ctx.lineTo(-228 * k, 380);
+    ctx.quadraticCurveTo(0, 450, 228 * k, 380); ctx.lineTo(212 * k, -120); ctx.quadraticCurveTo(200 * k, -215, 70 * k, -228); ctx.quadraticCurveTo(0, -196, -70 * k, -228); ctx.closePath(); };
+  P(1.04); ctx.fillStyle = BLANKET_D; ctx.fill();
+  P(1); ctx.fillStyle = BLANKET; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-30, -204); ctx.quadraticCurveTo(-10, 100, 26, 420); ctx.strokeStyle = BLANKET_D; ctx.lineWidth = 12; ctx.stroke();   // front flap edge
+  for (const [x0, y0, x1, y1] of [[-150, -40, -160, 330], [130, 0, 150, 340]]) line([[x0, y0], [x1, y1]], BLANKET_D, 9);   // folds
+  for (const sd of [-1, 1]) { ell(sd * 30, -186, 32, 27, C.skinShade); ell(sd * 30, -189, 28, 23, C.skin); }   // hands holding it shut
+  if (ch > 0.5) {   // chattering teeth (head-local mouth at y -274)
+    const j = Math.sin(t * 40) * 3;
+    rr(-28, -290 + j, 56, 26, 7); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.mouth; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-28, -277 + j); for (let i = 1; i <= 7; i++) ctx.lineTo(-28 + i * 8, -277 + j + (i % 2 ? -5 : 5)); ctx.stroke();
+  }
+  ctx.restore();
+}
+/** angle (rad) on a thermostatDial for a level 0..1 (0 = coldest, bottom-left; 1 = hottest, bottom-right) */
+export const dialAng = (level) => lerp(Math.PI * 0.75, Math.PI * 2.25, clamp(level));
+/** the brain's thermostat (graphic): white dial face, ink rim, a cold-to-hot track (blue, pink, red), ticks, a big grip
+ *  knob with an ink pointer at `level` 0..1. ~2*(r+24) px at s = 1 (r = 190). sc = pop-in */
+export function thermostatDial(x, y, s = 1, { level = 0.4, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'butt';
+  circle(0, 0, 214, C.ink); circle(0, 0, 196, C.white);
+  const segs = [[0, 0.45, FV_COLD], [0.45, 0.62, C.pinkLight], [0.62, 1, C.red]];
+  for (const [a, b, col] of segs) { ctx.beginPath(); ctx.arc(0, 0, 160, dialAng(a), dialAng(b)); ctx.strokeStyle = col; ctx.lineWidth = 36; ctx.stroke(); }
+  for (let i = 0; i <= 10; i++) { const an = dialAng(i / 10); line([[Math.cos(an) * 186, Math.sin(an) * 186], [Math.cos(an) * (i % 5 ? 178 : 170), Math.sin(an) * (i % 5 ? 178 : 170)]], C.ink, 6); }
+  ell(-70, -120, 40, 14, C.sky, -0.6);
+  circle(0, 0, 118, C.ink); circle(0, 0, 106, PLATE_D); circle(-4, -4, 98, PLATE);
+  for (let i = 0; i < 16; i++) { const an = i * TAU / 16; line([[Math.cos(an) * 88, Math.sin(an) * 88], [Math.cos(an) * 100, Math.sin(an) * 100]], PLATE_D, 8); }
+  const an = dialAng(level);
+  ctx.save(); ctx.rotate(an); rr(-4, -16, 92, 32, 16); ctx.fillStyle = C.ink; ctx.fill(); circle(70, 0, 9, C.red); ctx.restore();
+  circle(0, 0, 22, C.ink);
+  ctx.restore();
+}
+/** dashed ink line across a thermometer() tube at `level` (the "line" doctors draw). p 0..1 draws it left to right */
+export function thermoMark(x, y, s, level, p = 1) {
+  const q = clamp(p); if (q <= 0) return;
+  const yy = thermoY(y, s, level), x0 = x - 120 * s, x1 = lerp(x0, x + 140 * s, q);
+  ctx.save(); ctx.setLineDash([26 * s, 16 * s]); ctx.lineCap = 'butt';
+  line([[x0, yy], [x1, yy]], C.ink, 14 * s); ctx.restore();
+}
+/** shake lines: three short flickering ink ticks on each side of a box centred at (x, y), half-size rx x ry. a = alpha */
+export function shakeLines(x, y, rx, ry, t, a = 1, w = 12) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  for (const sd of [-1, 1]) for (let k = -1; k <= 1; k++) { const ph = (Math.sin(t * 20 + k * 1.9 + sd) + 1) / 2;
+    line([[x + sd * rx, y + k * ry * 0.7 - 14], [x + sd * (rx + 34 + ph * 14), y + k * ry * 0.7 + 14]], C.ink, w); }
+  ctx.restore();
+}
+/** warm air: wavy orange lines (dark edge) rising from a base span centred at (x, y), w px wide. a = alpha, t = film time */
+export function warmWaves(x, y, w, t, a = 1, { n = 4, h = 220, s = 1 } = {}) {
+  if (a <= 0) return;
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (let k = 0; k < n; k++) {
+    const u = (t * 0.9 + k / n * 0.6 + (k % 2) * 0.3) % 1, x0 = x - w / 2 + (k + 0.5) * w / n, y0 = y - u * h * 0.6;
+    ctx.globalAlpha = clamp(a) * Math.sin(u * Math.PI);
+    ctx.beginPath(); for (let j = 0; j <= 12; j++) { const py = y0 - j * h / 26, px = x0 + Math.sin(j * 0.9 + t * 7 + k) * 14 * s; j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.strokeStyle = CAN_D; ctx.lineWidth = 20 * s; ctx.stroke(); ctx.strokeStyle = HEAT; ctx.lineWidth = 12 * s; ctx.stroke();
+  }
+  ctx.restore();
+}
+/** small wooden bedside table, origin = top centre, ~220x260 px at s = 1 */
+export function nightstand(x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  for (const sd of [-1, 1]) { rr(sd * 86 - 14, 20, 28, 240, 8); ctx.fillStyle = WOOD_D; ctx.fill(); }
+  rr(-100, 40, 200, 110, 12); ctx.fillStyle = WOOD; ctx.fill(); rr(-30, 84, 60, 16, 8); ctx.fillStyle = WOOD_D; ctx.fill();
+  rr(-120, 0, 240, 40, 14); ctx.fillStyle = WOOD; ctx.fill(); rr(-120, 26, 240, 14, [0, 0, 14, 14]); ctx.fillStyle = WOOD_D; ctx.fill();
+  ctx.restore();
+}
+/** glass() with an ink outline so the pale glass reads on the cream wall. Same args as glass() (rot not supported) */
+export function outlinedGlass(x, y, s, fill = 0.7, t = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.beginPath(); ctx.moveTo(-96, -126); ctx.lineTo(96, -126); ctx.lineTo(78, 112); ctx.quadraticCurveTo(76, 128, 58, 128); ctx.lineTo(-58, 128); ctx.quadraticCurveTo(-76, 128, -78, 112); ctx.closePath();
+  ctx.fillStyle = C.ink; ctx.lineJoin = 'round'; ctx.fill(); ctx.restore();
+  glass(x, y, s, fill, t);
+}
+/** next-episode tease lens (sunburn): sky with a sun top-left over a patch of skin (lower part, rounded top like a shoulder).
+ *  sun 0..1 pops the sun in; burn 0..1 tints the skin pink; peel 0..1 lifts a few clean pale cartoon flakes that curl up
+ *  (the last two drift off). r = lens radius, sc = pop-in, t = film time. Draw it with lens()-style framing (ink rim) */
+export function sunSkinLens(x, y, r, { sun: sn = 1, burn = 0, peel = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  lens(x, y, r, sc, () => {
+    const k = r / 220;
+    ctx.fillStyle = C.sky; ctx.fillRect(-r - 10, -r - 10, 2 * r + 20, 2 * r + 20);
+    if (sn > 0) { ctx.save(); ctx.translate(-70 * k, -105 * k); ctx.scale(sn, sn); sun(0, 0, 0.44 * k, t); ctx.restore(); }
+    const top = (xx) => 10 * k + (xx / (r + 20)) ** 2 * 70 * k;
+    const skin = () => { ctx.beginPath(); ctx.moveTo(-r - 20, top(-r - 20)); for (let xx = -r - 20; xx <= r + 20; xx += 10) ctx.lineTo(xx, top(xx)); ctx.lineTo(r + 20, r + 20); ctx.lineTo(-r - 20, r + 20); ctx.closePath(); };
+    skin(); ctx.fillStyle = C.skinShade; ctx.fill();
+    ctx.save(); ctx.translate(0, 12 * k); skin(); ctx.restore(); ctx.fillStyle = C.skin; ctx.fill();
+    const b = clamp(burn);
+    if (b > 0) { ctx.save(); ctx.globalAlpha = 0.85 * b; ctx.translate(0, 12 * k); skin(); ctx.fillStyle = FV_BURN; ctx.fill(); ctx.restore(); }
+    ell(-60 * k, 52 * k, 50 * k, 12 * k, SKIN_HI_H, -0.1);
+    const pl = clamp(peel);
+    if (pl > 0) {
+      const F = [[-120, 78, -0.2, 0], [0, 128, 0.15, 0.1], [105, 92, 0.25, 0.2], [20, 52, -0.1, 0.32], [-90, 160, 0.1, 0.42]];
+      F.forEach(([fx, fy, rot, d], i) => {
+        const q = clamp((pl - d) / 0.5); if (q <= 0) return;
+        const drift = i >= 3 ? eoK(clamp((pl - d - 0.3) / 0.4)) : 0;
+        const px = (fx + drift * 30 + Math.sin(t * 3 + i) * 4 * drift) * k, py = (fy - drift * 120) * k;
+        ctx.save(); ctx.translate(px, py); ctx.rotate(rot + drift * 0.6); ctx.scale(1.6, 1.6);
+        ctx.globalAlpha = 1 - clamp(drift * 1.4 - 0.4);
+        ell(0, 6 * k, 30 * k, 9 * k, C.skinShade);                                   // little gap under the lifted flake
+        ctx.save(); ctx.scale(1, lerp(1, 0.55, q)); ctx.rotate(-0.35 * q);
+        ctx.beginPath(); ctx.moveTo(-32 * k, 0); ctx.quadraticCurveTo(-6 * k, -22 * k - 16 * q * k, 30 * k, -6 * k - 20 * q * k); ctx.quadraticCurveTo(12 * k, 6 * k, -32 * k, 0); ctx.closePath();
+        ctx.fillStyle = FV_FLAKE_D; ctx.fill(); ctx.lineWidth = 3 * k; ctx.strokeStyle = FV_FLAKE_D; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-28 * k, -2 * k); ctx.quadraticCurveTo(-6 * k, -20 * k - 16 * q * k, 26 * k, -8 * k - 20 * q * k); ctx.quadraticCurveTo(8 * k, -2 * k, -28 * k, -2 * k); ctx.closePath();
+        ctx.fillStyle = FV_FLAKE; ctx.fill();
+        ctx.restore(); ctx.restore();
+      });
+    }
+  }, C.sky);
+}
