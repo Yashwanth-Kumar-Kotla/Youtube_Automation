@@ -29,3 +29,4 @@
 - 2026-11-14 19:57 · 2026-11-09-body-04 posted · conf 0.7 · {'posted': '2026-11-14', 'episode': 6, 'youtube': 'h9oHP8Kzp4A', 'tiktok': 'v_inbox_file~v2.7707775086169917454'}
 - 2026-11-15 03:32 · 2026-11-10-body-01 ready → scheduled · slot 0 on 2026-11-15, episode 7, manual upload
 - 2026-11-15 03:57 · 2026-11-15-body-01 added · conf 0.7 · question+number-not-hunger-loop · What happens when your stomach growls?
+- 2026-11-15 04:33 · 2026-11-15-body-02 added · conf 0.7 · question+boring-culprit-reveal · What happens when you get a nosebleed?

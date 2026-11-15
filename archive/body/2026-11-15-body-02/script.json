@@ -1,0 +1,60 @@
+{
+  "title": "What Happens When You Get a Nosebleed?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Nosebleed (Epistaxis)' ('The most common cause of nosebleeds is dry air'; dry environments include 'Heated indoor spaces'; 'Dry air causes your nasal membrane (the delicate tissue inside your nose) to dry out and become crusty or cracked', which makes it more likely to bleed when rubbed, picked or blown; the nose's many small blood vessels 'lie close to the inner surface of your nose'; the anterior nosebleed starts at the front of the nose: 'This is the most common type of epistaxis and usually isn't serious'; first aid: 'Sit up straight with your head slightly forward', breathe through your mouth, pinch the soft sides of your nose just above your nostrils; go to the ER if you can't stop it after more than 15 to 20 minutes of pinching; 'Have someone drive you to the nearest emergency room or call 911'): https://my.clevelandclinic.org/health/diseases/13464-nosebleed-epistaxis",
+    "NHS, 'Nosebleed' ('Nosebleeds are not usually a sign of anything serious'; common causes: picking your nose, blowing your nose too hard, the inside of your nose being too dry; stop it: sit down and lean forward with your head tilted forward, pinch your nose just above your nostrils for 10 to 15 minutes, breathe through your mouth; go to A&E if the nosebleed lasts longer than 10 to 15 minutes; don't drive yourself): https://www.nhs.uk/conditions/nosebleed/",
+    "Tease (next video): Cleveland Clinic, 'Chills' ('Shivering causes your muscles to contract and relax, which warms up your body'; 'Many people feel chilled when they have a fever'): https://my.clevelandclinic.org/health/symptoms/21476-chills"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get a nosebleed?",
+      "caps": "WHAT *HAPPENS WHEN | YOU GET A *NOSEBLEED?"
+    },
+    {
+      "text": "It looks scary, but the top cause? Plain old dry air.",
+      "caps": "IT LOOKS *SCARY | BUT THE TOP *CAUSE? | PLAIN OLD *DRY AIR"
+    },
+    {
+      "text": "Your nose is packed with tiny blood vessels near the surface,",
+      "caps": "YOUR *NOSE IS | PACKED WITH *TINY | BLOOD *VESSELS | NEAR THE *SURFACE"
+    },
+    {
+      "text": "and dry, heated rooms leave that surface crusty and cracked,",
+      "caps": "AND DRY, *HEATED ROOMS | LEAVE THAT *SURFACE | CRUSTY AND *CRACKED"
+    },
+    {
+      "text": "so one pick, rub or hard blow, and it bleeds.",
+      "caps": "SO ONE *PICK | RUB OR HARD *BLOW | AND IT *BLEEDS"
+    },
+    {
+      "text": "Most start up front and usually aren't serious.",
+      "caps": "MOST START UP *FRONT | AND USUALLY AREN'T *SERIOUS"
+    },
+    {
+      "text": "To stop one, sit up and lean slightly forward,",
+      "caps": "TO *STOP ONE | *SIT UP AND | LEAN SLIGHTLY *FORWARD"
+    },
+    {
+      "text": "then pinch the soft part above your nostrils for ten to fifteen minutes.",
+      "caps": "THEN *PINCH THE | *SOFT PART ABOVE | YOUR *NOSTRILS FOR | 10 TO 15 *MINUTES"
+    },
+    {
+      "text": "Still bleeding after that? Get emergency help. Don't drive yourself.",
+      "caps": "STILL *BLEEDING AFTER THAT? | GET *EMERGENCY HELP | DON'T *DRIVE YOURSELF"
+    },
+    {
+      "text": "Next Body File: what happens when you get a fever,",
+      "caps": "NEXT *BODY FILE | WHAT *HAPPENS WHEN | YOU GET A *FEVER"
+    },
+    {
+      "text": "and why your muscles start shaking to heat you up.",
+      "caps": "AND *WHY YOUR | MUSCLES START *SHAKING | TO *HEAT YOU UP"
+    }
+  ]
+}

@@ -1995,9 +1995,10 @@ export function pressureGauge(x, y, s = 1, level = 1, sc = 1) {
   ctx.restore();
 }
 
-/** countdown timer (stopwatch look): red wedge = time left (frac 0..1, empties clockwise), big number + unit ("SEC" / "MIN") in the middle.
+/** countdown timer (stopwatch look): red wedge = time left (frac 0..1, empties clockwise), big number + unit ("SEC" / "MIN") in the middle
+ *  (size = number font px: use ~84 for a range like "10–15").
  *  ~560 px wide at s = 1 (crown top -330). sc = pop-in */
-export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1, unit = 'SEC') {
+export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1, unit = 'SEC', size = 150) {
   if (sc <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
   rr(-40, -330, 80, 60, 14); ctx.fillStyle = C.watch; ctx.fill();
@@ -2008,7 +2009,7 @@ export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1, unit = 'SE
   for (let i = 0; i < 12; i++) { ctx.save(); ctx.rotate(i * Math.PI / 6); rr(-6, -232, 12, i % 3 === 0 ? 40 : 24, 6); ctx.fillStyle = C.watch; ctx.fill(); ctx.restore(); }
   circle(0, 0, 138, C.watch); circle(0, 0, 126, C.white);
   ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.font = '900 150px Inter'; ctx.fillText(text, 0, -14); ctx.font = '900 44px Inter'; ctx.letterSpacing = '4px'; ctx.fillText(unit, 4, 78); ctx.letterSpacing = '0px';
+  ctx.font = `900 ${size}px Inter`; ctx.fillText(text, 0, -14); ctx.font = '900 44px Inter'; ctx.letterSpacing = '4px'; ctx.fillText(unit, 4, 78); ctx.letterSpacing = '0px';
   ctx.restore();
 }
 
@@ -4286,24 +4287,30 @@ export function gutCut(y, t, { w = 360, squeeze = 1, gas = 0, fluid = 0, food = 
 }
 
 /** front cartoon nose (skin, darker side shade, round tip, nostril wings, two nostrils). bleed 0..1 = one small clean red
- *  drop grows under the left nostril (no gore). ~220x260 px at s = 1, origin = tip centre. sc = pop-in */
-export function cartoonNose(x, y, s = 1, { bleed = 0, sc = 1, t = 0 } = {}) {
+ *  drop grows under the left nostril (no gore). squeeze 0..1 presses the wings in (pinch). ~220x260 px at s = 1, origin = tip centre. sc = pop-in */
+export function cartoonNose(x, y, s = 1, { bleed = 0, sc = 1, t = 0, squeeze = 0 } = {}) {
   if (sc <= 0 || s <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   ctx.beginPath(); ctx.moveTo(-30, -220); ctx.quadraticCurveTo(-46, -80, -70, -20); ctx.lineTo(70, -20); ctx.quadraticCurveTo(46, -80, 30, -220); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
   ctx.beginPath(); ctx.moveTo(14, -220); ctx.quadraticCurveTo(30, -90, 56, -30); ctx.lineTo(70, -20); ctx.quadraticCurveTo(46, -80, 30, -220); ctx.closePath(); ctx.fillStyle = C.skinShade; ctx.fill();
-  for (const sd of [-1, 1]) { ell(sd * 78, 30, 54, 46, C.skinShade); ell(sd * 74, 26, 48, 40, C.skin); }
+  const q = clamp(squeeze), wx = 1 - 0.25 * q, ww = 1 - 0.3 * q;   // squeeze 0..1: wings pressed in (a pinch), nostrils narrow
+  for (const sd of [-1, 1]) { ell(sd * 78 * wx, 30, 54 * ww, 46, C.skinShade); ell(sd * 74 * wx, 26, 48 * ww, 40, C.skin); }
   ell(0, 6, 76, 70, C.skinShade); ell(-4, 0, 70, 64, C.skin); ell(-26, -26, 22, 12, '#F2CDB5', -0.5);
-  for (const sd of [-1, 1]) ell(sd * 40, 58, 20, 11, C.mouth, sd * 0.35);
+  for (const sd of [-1, 1]) ell(sd * 40 * (1 - 0.2 * q), 58, 20 * (1 - 0.45 * q), 11, C.mouth, sd * 0.35);
   if (bleed > 0) { const bl = clamp(bleed); drop(-40, 92 + 34 * bl, 0.62 * (0.4 + 0.6 * bl), 0, Math.min(1, bl * 3), [RED_D, C.red]); }
   ctx.restore();
 }
 
 /** little radiator heater (white fins, grey shade, feet) with wavy orange warm-air lines rising (dry indoor air). heat 0..1,
  *  t = film time. ~200x170 px at s = 1, origin = radiator centre. sc = pop-in */
-export function heater(x, y, s = 1, { heat = 0, t = 0, sc = 1 } = {}) {
+export function heater(x, y, s = 1, { heat = 0, t = 0, sc = 1, edge = false } = {}) {
   if (sc <= 0 || s <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  if (edge) {   // ink outline so the pale fins read on the cream wall / a light lens (edge: true)
+    ctx.fillStyle = C.ink; rr(-108, -18, 216, 36, 16); ctx.fill();
+    for (let i = 0; i < 5; i++) { rr(-104 + i * 40, -88, 42, 176, 21); ctx.fill(); }
+    for (const sd of [-1, 1]) { rr(sd * 70 - 18, 70, 36, 34, 10); ctx.fill(); }
+  }
   rr(-100, -10, 200, 20, 10); ctx.fillStyle = PLATE_D; ctx.fill();
   for (let i = 0; i < 5; i++) { const fx = -96 + i * 40; rr(fx, -80, 34, 160, 17); ctx.fillStyle = PLATE_D; ctx.fill(); rr(fx, -80, 26, 160, 13); ctx.fillStyle = PLATE; ctx.fill(); }
   for (const sd of [-1, 1]) { rr(sd * 70 - 12, 76, 24, 22, 6); ctx.fillStyle = TIN_D; ctx.fill(); }
@@ -4313,6 +4320,249 @@ export function heater(x, y, s = 1, { heat = 0, t = 0, sc = 1 } = {}) {
     ctx.save(); ctx.globalAlpha = h * Math.sin(u * Math.PI); ctx.beginPath();
     for (let j = 0; j <= 12; j++) { const py = y0 - j * 8, px = x0 + Math.sin(j * 0.9 + t * 7 + k) * 12; j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
     ctx.strokeStyle = HEAT; ctx.lineWidth = 12; ctx.stroke(); ctx.restore();
+  }
+  ctx.restore();
+}
+
+// ═════════════════════════ NOSEBLEED SET (2026-11-15-body-2 "nosebleed") ═════════════════════════
+const NB_AIR = '#EAF5FA', NB_CRUST = '#E2B98C', NB_CRUST_D = '#C4946A', NB_DEEP = '#D4637C', NB_CAV = '#F7C9D0';
+/** draw the first p (0..1) of a polyline (by point count, smooth enough for short curves) */
+function partLine(P, p, col, w) {
+  const q = clamp(p); if (q <= 0) return;
+  const n = (P.length - 1) * q, i = Math.floor(n), f = n - i, pts = P.slice(0, i + 1);
+  if (i < P.length - 1) pts.push([lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f)]);
+  if (pts.length > 1) line(pts, col, w);
+}
+// cavity outline (lens units, r = 300) + the vessel lines that run just inside its lining, and the front patch
+const NS_CAV = [[-150, -120], [-60, -150], [10, -120], [70, -40], [120, 40], [128, 92], [80, 108], [-20, 112], [-150, 104]];
+const NS_VES = [
+  [[-140, -100], [-60, -128], [4, -100], [56, -36], [100, 30]],
+  [[-140, 88], [-60, 92], [10, 94], [70, 92], [104, 76]],
+  [[-60, -128], [-50, -96], [-70, -70]], [[4, -100], [-6, -70], [14, -52]], [[56, -36], [36, -20], [50, 4]],
+  [[-60, 92], [-50, 66], [-70, 50]], [[10, 94], [20, 68], [0, 56]],
+];
+const NS_FRONT = [[[78, 30], [96, 48], [86, 70], [104, 84]], [[66, 56], [84, 62], [92, 86]], [[100, 40], [112, 60], [106, 80]], [[70, 80], [88, 76], [96, 96]]];
+export const NOSE_FRONT = [92, 64];   // front patch centre (lens units, r = 300)
+/** SIDE VIEW lens of the nose (profile facing right, big nose) cut open: the pink nasal cavity with fine red blood vessels
+ *  running just inside its lining. vessels 0..1 draws them in; front 0..1 = yellow ring round the front patch (dense
+ *  vessels just inside the nostril: where most nosebleeds start); r = lens radius; sc = pop-in. Point: NOSE_FRONT * r / 300 */
+export function noseSideLens(x, y, r, { vessels = 1, front = 0, sc = 1, t = 0, bg = '#FFF1E0' } = {}) {
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const face = () => { ctx.beginPath(); ctx.moveTo(-340, -340); ctx.lineTo(-80, -340); ctx.quadraticCurveTo(-20, -280, -40, -190);
+      ctx.bezierCurveTo(10, -120, 120, -20, 172, 56); ctx.quadraticCurveTo(200, 104, 158, 128); ctx.quadraticCurveTo(110, 142, 70, 134);
+      ctx.quadraticCurveTo(40, 150, 36, 180); ctx.lineTo(50, 236); ctx.quadraticCurveTo(70, 262, 52, 290); ctx.lineTo(46, 340); ctx.lineTo(-340, 340); ctx.closePath(); };
+    face(); ctx.fillStyle = C.skin; ctx.fill();
+    ctx.save(); face(); ctx.clip(); ell(-260, -330, 220, 90, C.hair, 0.1); ctx.restore();
+    // nose wing + nostril
+    ctx.beginPath(); ctx.arc(70, 92, 52, -0.2 * Math.PI, 0.75 * Math.PI); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 12; ctx.stroke();
+    ell(112, 132, 30, 8, C.mouth, -0.1);
+    // eye, brow, cheek, smile
+    ell(-120, -150, 13, 17, C.ink); circle(-115, -156, 5, C.white);
+    ctx.beginPath(); ctx.moveTo(-160, -200); ctx.quadraticCurveTo(-125, -214, -88, -204); ctx.strokeStyle = C.hair; ctx.lineWidth = 12; ctx.stroke();
+    ctx.globalAlpha = 0.3; ell(-60, 30, 40, 22, C.pink); ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.moveTo(10, 266); ctx.quadraticCurveTo(30, 278, 44, 268); ctx.strokeStyle = C.mouth; ctx.lineWidth = 9; ctx.stroke();
+    // the cut: cavity (pale pink) inside a pink lining band
+    const cav = () => { ctx.beginPath(); NS_CAV.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py))); ctx.closePath(); };
+    cav(); ctx.lineWidth = 34; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ctx.lineWidth = 22; ctx.strokeStyle = C.pink; ctx.stroke(); ctx.fillStyle = NB_CAV; ctx.fill();
+    for (const [cx, cy, rx, ry] of [[-70, -40, 70, 18], [-60, 30, 80, 18]]) { ell(cx, cy, rx, ry, C.pink, -0.08); ell(cx, cy - 4, rx - 14, ry - 8, C.pinkLight, -0.08); }   // soft folds inside
+    const v = clamp(vessels), pulse = 1 + 0.12 * Math.sin(t * 6);
+    NS_VES.forEach((P, i) => partLine(P, v * 1.6 - (i > 1 ? 0.5 : 0), C.red, (i > 1 ? 5 : 7) * pulse));
+    NS_FRONT.forEach((P, i) => partLine(P, v * 1.8 - 0.6 - i * 0.08, C.red, 5 * pulse));
+    if (front > 0) hiRing(NOSE_FRONT[0], NOSE_FRONT[1], 64, 56, front);
+    ctx.restore();
+  }, bg);
+}
+
+/** CROSS-SECTION lens of the nose lining: air on top, the thin moist surface (pale pink, white shine) over pink tissue,
+ *  red blood vessels running just under the surface with tiny branches up to it (cells drift along: t). dry 0..1 turns
+ *  the surface tan and crusty (flakes, no shine); crack 0..1 opens three little cracks; bleed 0..1 = one small clean red
+ *  drop beads up out of the middle crack. r = lens radius, sc = pop-in. NB_SURF(xu) = surface height (lens units, r = 300) */
+export const NB_SURF = (xu) => -40 + Math.sin(xu * 0.025) * 8;
+const NB_CRACKS = [-160, 10, 170];
+export function liningLens(x, y, r, { dry = 0, crack = 0, bleed = 0, sc = 1, t = 0 } = {}) {
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const d = clamp(dry), k = clamp(crack);
+    ctx.fillStyle = NB_AIR; ctx.fillRect(-320, -320, 640, 640);
+    const surf = (off = 0) => { ctx.beginPath(); ctx.moveTo(-320, 330); for (let xu = -320; xu <= 320; xu += 10) ctx.lineTo(xu, NB_SURF(xu) + off); ctx.lineTo(320, 330); ctx.closePath(); };
+    surf(); ctx.fillStyle = C.pink; ctx.fill();
+    surf(150); ctx.fillStyle = NB_DEEP; ctx.fill();
+    // vessels just under the surface + branches up to it
+    const VY = [22, 64, 118], cell = '#A81E2D';
+    VY.forEach((vy, i) => {
+      const P = []; for (let xu = -330; xu <= 330; xu += 15) P.push([xu, vy + Math.sin(xu * 0.02 + i * 2) * 10]);
+      line(P, cell, i === 2 ? 30 : 24); line(P, C.red, i === 2 ? 22 : 16);
+      for (let j = 0; j < 6; j++) { const u = (t * 0.25 + j / 6 + i * 0.13) % 1, xu = -330 + u * 660; ell(xu, vy + Math.sin(xu * 0.02 + i * 2) * 10, 8, 5, cell); }
+    });
+    for (const bx of [-230, -100, 90, 230]) line([[bx, 22 + Math.sin(bx * 0.02) * 10], [bx + 14, 0], [bx + 6, NB_SURF(bx) + 18]], C.red, 6);
+    // the surface layer: moist pale pink → dry tan crust
+    ctx.beginPath(); for (let xu = -320; xu <= 320; xu += 10) { const yy = NB_SURF(xu); xu === -320 ? ctx.moveTo(xu, yy) : ctx.lineTo(xu, yy); }
+    const band = () => { ctx.lineWidth = 30; ctx.stroke(); };
+    ctx.strokeStyle = C.pinkLight; band();
+    if (d > 0) { ctx.save(); ctx.globalAlpha = d; ctx.strokeStyle = NB_CRUST; band(); ctx.restore(); }
+    if (d < 1) { ctx.save(); ctx.globalAlpha = 1 - d; for (const sx of [-220, -40, 140]) line([[sx, NB_SURF(sx) - 6], [sx + 50, NB_SURF(sx + 50) - 6]], C.white, 7); ctx.restore(); }
+    if (d > 0) for (let i = 0; i < 9; i++) {   // crusty flakes curling up off the surface
+      const fx = -280 + i * 70 + rnd(i + 3) * 20, fy = NB_SURF(fx) - 14, a = d * clamp(d * 3 - i * 0.15);
+      if (a <= 0) continue; ctx.save(); ctx.globalAlpha = a; ctx.translate(fx, fy); ctx.rotate((rnd(i) - 0.5) * 0.8);
+      ctx.beginPath(); ctx.moveTo(-18, 6); ctx.lineTo(-8, -10); ctx.lineTo(14, -8); ctx.lineTo(20, 6); ctx.closePath(); ctx.fillStyle = NB_CRUST_D; ctx.fill(); ctx.restore();
+    }
+    if (k > 0) for (const cx of NB_CRACKS) {   // little cracks: dark V notches into the dry surface
+      const sy = NB_SURF(cx) - 16, dep = 46 * k, w = 20 * k;
+      ctx.beginPath(); ctx.moveTo(cx - w, sy); ctx.lineTo(cx - 4, sy + dep * 0.6); ctx.lineTo(cx + 2, sy + dep); ctx.lineTo(cx + 6, sy + dep * 0.5); ctx.lineTo(cx + w, sy); ctx.closePath();
+      ctx.fillStyle = C.mouth; ctx.fill();
+    }
+    const b = clamp(bleed);
+    if (b > 0) drop(NB_CRACKS[1], NB_SURF(NB_CRACKS[1]) - 40 - 26 * b, 0.55 + 0.45 * b, 0, Math.min(1, b * 3), [RED_D, C.red]);
+    ctx.restore();
+  }, NB_AIR);
+}
+
+/** "what sets it off" icon: light-blue disc, ink ring, a small front nose + the action. kind 'pick' (index finger pushing up
+ *  at a nostril) | 'rub' (finger rubbing sideways under the nose, little double arrow) | 'blow' (tissue under the nose,
+ *  puff lines). act 0..1 animates the action (loop it with t), sc = pop-in. ~280 px wide at s = 1 */
+export function causeIcon(kind, x, y, s = 1, { act = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  circle(0, 0, 140, C.ink); circle(0, 0, 126, '#DCEFF7');
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 126, 0, TAU); ctx.clip();
+  cartoonNose(0, -6, 0.46, {});
+  const a = clamp(act);
+  if (kind === 'pick') {
+    const ty = 24 + (1 - a) * 40;
+    rr(-38, ty, 30, 200, 15); ctx.fillStyle = C.skinShade; ctx.fill(); rr(-36, ty, 26, 200, 13); ctx.fillStyle = C.skin; ctx.fill();
+    ell(-23, ty + 16, 9, 11, SKIN_HI);
+    ell(-24, ty + 120, 44, 40, C.skinShade); ell(-26, ty + 116, 40, 36, C.skin);
+  } else if (kind === 'rub') {
+    const dx = Math.sin(t * 14) * 22 * a;
+    rr(-40 + dx, 40, 220, 30, 15); ctx.fillStyle = C.skinShade; ctx.fill(); rr(-40 + dx, 42, 220, 26, 13); ctx.fillStyle = C.skin; ctx.fill();
+    ell(-24 + dx, 55, 11, 8, SKIN_HI);
+    ell(150 + dx, 62, 50, 40, C.skinShade); ell(146 + dx, 58, 46, 36, C.skin);
+    ctx.save(); ctx.globalAlpha = a; line([[-60, 100], [40, 100]], C.ink, 9);
+    for (const [px, sd] of [[-60, -1], [40, 1]]) line([[px - sd * 16, 88], [px, 100], [px - sd * 16, 112]], C.ink, 9); ctx.restore();
+  } else {   // blow: tissue under the nose, puff lines out to the sides
+    tissue(0, 86, 0.62, 0);
+    ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = C.ink; ctx.lineWidth = 8;
+    for (const sd of [-1, 1]) for (let k = 0; k < 2; k++) { const r0 = 64 + k * 26 + ((t * 2) % 1) * 10; ctx.beginPath(); ctx.arc(0, 50, r0, sd > 0 ? -0.55 : Math.PI + 0.15, sd > 0 ? -0.15 : Math.PI + 0.55); ctx.stroke(); }
+    ctx.restore();
+  }
+  ctx.restore(); ctx.restore();
+}
+
+/** SIDE VIEW of the hero sitting on a wooden chair, facing right (first-aid posture). Origin = hip on the seat; head top
+ *  ≈ -575, feet ≈ +330 at s = 1. lean (rad, + = forward) tips the upper body forward from the hip (head follows a bit more);
+ *  pinch 0..1 brings his right hand up to pinch the soft part of his nose; drop 0..1 = one small clean red drop under the
+ *  nose. eyes 'n' | 'wide' | 'closed', mouth 'flat' | 'smile' | 'o' | 'sad', brow 0..1 */
+const NB_WOOD = '#B5653F', NB_WOOD_D = '#9A5333', NB_BOOT = '#5A4030';
+export function sideSitter(x, y, s = 1, { lean = 0, pinch = 0, drop: dr = 0, eyes = 'n', mouth = 'flat', brow = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // chair: back post, seat, two legs
+  rr(-150, -300, 30, 600, 14); ctx.fillStyle = NB_WOOD_D; ctx.fill();
+  rr(-150, -300, 30, 120, 14); ctx.fillStyle = NB_WOOD; ctx.fill();
+  for (const lx of [-140, 100]) { rr(lx, 50, 26, 280, 10); ctx.fillStyle = NB_WOOD_D; ctx.fill(); }
+  rr(-160, 26, 300, 36, 14); ctx.fillStyle = NB_WOOD; ctx.fill(); rr(-160, 50, 300, 12, [0, 0, 14, 14]); ctx.fillStyle = NB_WOOD_D; ctx.fill();
+  // legs: thigh forward, shin down, shoe
+  line([[-20, -30], [200, -30]], C.pantsShade, 124); line([[-20, -36], [200, -36]], C.pants, 112);
+  line([[200, -30], [214, 296]], C.pantsShade, 108); line([[194, -30], [208, 296]], C.pants, 96);
+  ell(252, 312, 72, 30, NB_BOOT);
+  // upper body, tipped forward round the hip
+  ctx.save(); ctx.translate(0, -40); ctx.rotate(lean);
+  const p = clamp(pinch);
+  const SH = [6, -300], H0 = [150, -30], H1 = [124, -420], E0 = [40, -150], E1 = [118, -230];
+  const E = [lerp(E0[0], E1[0], p), lerp(E0[1], E1[1], p)], Hd = [lerp(H0[0], H1[0], p), lerp(H0[1], H1[1], p)];
+  rr(-82, -340, 164, 350, [64, 64, 30, 30]); ctx.fillStyle = C.shirt; ctx.fill();
+  rr(-82, -340, 54, 350, [64, 0, 0, 30]); ctx.fillStyle = C.shirtShade; ctx.fill();
+  rr(-26, -390, 52, 70, 16); ctx.fillStyle = C.skin; ctx.fill();
+  // head (tilts a little more than the body)
+  ctx.save(); ctx.translate(4, -380); ctx.rotate(lean * 0.35); ctx.translate(0, -100);
+  ell(0, 0, 98, 104, C.skin);
+  ctx.beginPath(); ctx.ellipse(-8, -24, 104, 86, 0, Math.PI * 0.82, Math.PI * 2.04); ctx.quadraticCurveTo(40, -60, -30, -40); ctx.quadraticCurveTo(-70, -10, -98, 30); ctx.closePath(); ctx.fillStyle = C.hair; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-50, -98); ctx.quadraticCurveTo(10, -116, 60, -90); ctx.strokeStyle = C.hairHi; ctx.lineWidth = 9; ctx.stroke();
+  ell(-26, 12, 20, 27, C.skin); ell(-24, 12, 9, 14, C.skinShade);
+  ctx.beginPath(); ctx.moveTo(92, -6); ctx.quadraticCurveTo(128, 30, 120, 40); ctx.quadraticCurveTo(110, 50, 94, 44); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();   // nose
+  ell(104, 44, 8, 4, C.skinShade);
+  const br = brow * 12;
+  if (eyes === 'wide') { ell(58, -14, 15, 19, C.white); ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.stroke(); circle(63, -12, 9, C.ink); circle(66, -16, 3.5, C.white); }
+  else if (eyes === 'closed') { ctx.beginPath(); ctx.arc(58, -14, 12, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); }
+  else { ell(60, -12, 10, 13, C.ink); circle(63, -16, 3.5, C.white); }
+  ctx.beginPath(); ctx.moveTo(36, -42 - br); ctx.quadraticCurveTo(58, -54 - br, 80, -46 - br); ctx.strokeStyle = C.hair; ctx.lineWidth = 11; ctx.stroke();
+  ctx.globalAlpha = 0.3; ell(46, 28, 22, 13, C.pink); ctx.globalAlpha = 1;
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.beginPath();
+  if (mouth === 'smile') { ctx.moveTo(66, 70); ctx.quadraticCurveTo(84, 80, 96, 66); ctx.stroke(); }
+  else if (mouth === 'o') { ctx.closePath(); ell(84, 74, 12, 16, C.mouth); }
+  else if (mouth === 'sad') { ctx.moveTo(66, 78); ctx.quadraticCurveTo(82, 66, 96, 76); ctx.stroke(); }
+  else { ctx.moveTo(70, 74); ctx.lineTo(96, 72); ctx.stroke(); }
+  if (dr > 0) drop(128, 62 + 18 * clamp(dr), 0.34 * (0.5 + 0.5 * clamp(dr)), 0, Math.min(1, dr * 3), [RED_D, C.red]);
+  ctx.restore();
+  // right arm (near side, drawn over the face when pinching)
+  line([SH, E], C.skin, 46); line([SH, [lerp(SH[0], E[0], 0.5), lerp(SH[1], E[1], 0.5)]], C.shirtShade, 74); line([SH, [lerp(SH[0], E[0], 0.45), lerp(SH[1], E[1], 0.45)]], C.shirt, 66);
+  line([E, Hd], C.skin, 42);
+  const ang = Math.atan2(Hd[1] - E[1], Hd[0] - E[0]);
+  ctx.save(); ctx.translate(Hd[0], Hd[1]); ctx.rotate(ang); ell(4, 0, 34, 28, C.skinShade); ell(2, -2, 31, 25, C.skin);
+  if (p > 0.6) { ctx.globalAlpha = clamp((p - 0.6) * 3); rr(10, -40, 52, 22, 11); ctx.fillStyle = C.skin; ctx.fill(); rr(10, 18, 44, 22, 11); ctx.fill(); ell(54, -29, 8, 6, SKIN_HI); ctx.globalAlpha = 1; }   // index over the nose, thumb below
+  ctx.restore();
+  ctx.restore();
+  ctx.restore();
+}
+
+/** emergency beacon light (graphic): ink base, red dome with a light shine, red rays blinking when on (0..1, t = film time).
+ *  ~240 px wide at s = 1, origin = base centre. sc = pop-in */
+export function siren(x, y, s = 1, { on = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  const o = clamp(on), blink = o * (0.55 + 0.45 * Math.sin(t * 16));
+  if (blink > 0) { ctx.save(); ctx.globalAlpha = blink; for (const an of [-2.6, -2.1, -1.57, -1.04, -0.54]) line([[Math.cos(an) * 150, -80 + Math.sin(an) * 150], [Math.cos(an) * 200, -80 + Math.sin(an) * 200]], C.red, 18); ctx.restore(); }
+  ctx.beginPath(); ctx.moveTo(-100, 0); ctx.lineTo(-100, -80); ctx.arc(0, -80, 100, Math.PI, TAU); ctx.lineTo(100, 0); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-86, 0); ctx.lineTo(-86, -80); ctx.arc(0, -80, 86, Math.PI, TAU); ctx.lineTo(86, 0); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill();
+  rr(-60, -150, 26, 110, 13); ctx.fillStyle = '#F29AA7'; ctx.fill();
+  rr(-130, -6, 260, 50, 16); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.restore();
+}
+
+/** a cartoon figure (NOT the hero: ginger hair) bundled under a pale-blue blanket, only the face out, hands holding the
+ *  blanket shut; chattering teeth. shiver 0..1 shakes it with ink shake lines either side (t = film time). Origin = bottom
+ *  centre of the blanket, ~330x470 px at s = 1. sc = pop-in */
+const NBB_HAIR = '#C8734A', NBB_HAIR_D = '#A85E3A', NBB_BLK = '#BFE3F2', NBB_BLK_D = '#8FC0D8';
+export function blanketBuddy(x, y, s = 1, { shiver = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const sh = clamp(shiver), dx = Math.sin(t * 46) * 6 * sh;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (sh > 0) { ctx.save(); ctx.globalAlpha = sh; for (const sd of [-1, 1]) for (let k = 0; k < 3; k++) { const ph = (Math.sin(t * 20 + k) + 1) / 2;
+    line([[sd * (190 + k * 4), -330 + k * 90], [sd * (222 + k * 4 + ph * 10), -300 + k * 90]], C.ink, 12); } ctx.restore(); }
+  ctx.translate(dx, 0);
+  // blanket mound with a hood round the face
+  ctx.beginPath(); ctx.moveTo(-165, 0); ctx.quadraticCurveTo(-180, -240, -120, -330); ctx.quadraticCurveTo(0, -470, 120, -330); ctx.quadraticCurveTo(180, -240, 165, 0); ctx.closePath();
+  ctx.fillStyle = NBB_BLK_D; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-150, 0); ctx.quadraticCurveTo(-166, -236, -110, -322); ctx.quadraticCurveTo(0, -452, 110, -322); ctx.quadraticCurveTo(166, -236, 150, 0); ctx.closePath();
+  ctx.fillStyle = NBB_BLK; ctx.fill();
+  line([[-60, -150], [-70, -10]], NBB_BLK_D, 8); line([[70, -160], [80, -10]], NBB_BLK_D, 8);
+  // face in the hood
+  ell(0, -300, 84, 82, NBB_BLK_D);
+  ell(0, -296, 74, 74, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.ellipse(0, -296, 74, 74, 0, 0, TAU); ctx.clip(); ell(0, -372, 90, 40, NBB_HAIR); ell(30, -366, 40, 22, NBB_HAIR_D); ctx.restore();
+  for (const sd of [-1, 1]) { ell(sd * 26, -300, 8, 11, C.ink); circle(sd * 26 + 3, -304, 3, C.white); }
+  ctx.strokeStyle = NBB_HAIR_D; ctx.lineWidth = 8;
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 12, -324); ctx.lineTo(sd * 40, -318); ctx.stroke(); }   // worried brows (inner ends up)
+  ctx.globalAlpha = 0.35; for (const sd of [-1, 1]) ell(sd * 44, -270, 14, 8, C.pink); ctx.globalAlpha = 1;
+  rr(-24, -264, 48, 22, 6); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.mouth; ctx.stroke();   // chattering teeth
+  ctx.beginPath(); ctx.moveTo(-24, -253); for (let i = 1; i <= 6; i++) ctx.lineTo(-24 + i * 8, -253 + (i % 2 ? -5 : 5)); ctx.stroke();
+  // hands holding the blanket shut under the chin
+  for (const sd of [-1, 1]) { ell(sd * 22, -196, 26, 22, C.skinShade); ell(sd * 22, -198, 23, 19, C.skin); }
+  ctx.restore();
+}
+
+/** pinch close-up fingers (front view, for a big cartoonNose): ONLY an index finger (from the lower left) and a thumb (from
+ *  the lower right) reaching in diagonally; the rest of the hand is off-frame (use inside a lens). Pads meet round (x, y)
+ *  with `gap` px between their inner edges; the space under the nostrils stays clear. s = scale (finger ~70 px wide at 1) */
+export function pinchFingers(x, y, s = 1, { gap = 400, reach = 700 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  for (const sd of [-1, 1]) {
+    const w = sd < 0 ? 66 : 76, tx = sd * (gap / 2 / s + w / 2), a = sd < 0 ? 0.95 : 0.85;   // index lower-left, thumb lower-right
+    const B = [tx + sd * Math.cos(a) * reach, Math.sin(a) * reach];
+    line([[tx, 0], B], C.skinShade, w + 12); line([[tx, 0], B], C.skin, w);
+    ell(tx + sd * 6, -4, w * 0.24, w * 0.3, SKIN_HI, sd * 0.6);   // nail
+    const k = [tx + sd * Math.cos(a) * 150, Math.sin(a) * 150];
+    line([[k[0] - sd * 18, k[1] + 14], [k[0] + sd * 10, k[1] - 16]], C.skinShade, 6);   // knuckle crease
   }
   ctx.restore();
 }
