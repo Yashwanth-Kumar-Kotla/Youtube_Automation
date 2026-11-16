@@ -45,6 +45,7 @@ channels:
       enabled: true
       mode: draft              # draft until the TikTok app passes review, then: direct
       post_hour_local: 19     # TikTok post hour (the analyst tunes this from data)
+      auto_draft_since: "2026-11-16"   # owner request: every video stocked on/after this date goes to the TikTok inbox right away (tiktok-auto-drafts workflow)
     scout_queries: ["what happens if body", "what happens to your body", "human body facts shorts"]
     reddit_subs: [todayilearned, askscience, NoStupidQuestions, AskDocs]
     # sketch fallback (run.py) settings

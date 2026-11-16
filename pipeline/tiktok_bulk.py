@@ -27,6 +27,17 @@ def main() -> int:
     privacy = opt("privacy", None)
     record = opt("record", "yes") != "no"          # a test post must not stop the publisher sending it later
     ids = [i for i in lines if i and ":" not in i]
+    if os.environ.get("TIKTOK_AUTO"):      # auto: every stocked video made on/after config auto_draft_since, oldest first
+        import yaml
+        cfg = yaml.safe_load(open(os.path.join(ROOT, "config.yaml")))
+        since = str(cfg["channels"][ch]["tiktok"].get("auto_draft_since", "") or "")
+        if not since:
+            print("auto_draft_since not set; nothing to do")
+            return 0
+        vv = stock.load(ch)["videos"]
+        ids = sorted((i for i, v in vv.items() if v.get("status") in ("ready", "scheduled") and v.get("branch")
+                      and str(v.get("made_at", ""))[:10] >= since), key=lambda i: vv[i].get("made_at", ""))
+        mode, privacy, record = "draft", None, True
     print(f"mode: {mode}  privacy: {privacy or 'default'}  record: {record}")
     sent = state.load("tiktok_drafts.json", {})
     posts = state.load("posts.json", {})
