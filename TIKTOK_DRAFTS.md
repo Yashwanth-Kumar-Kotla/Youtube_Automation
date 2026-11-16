@@ -60,3 +60,28 @@ Pinned comment: Did you know about the milk trick before this? Have you ever chi
 What Happens When Your Ears Pop? #bodyfiles #ears #humanbody #science #shorts #healthfacts
 ```
 Pinned comment: What's your go-to trick for popping your ears on a plane: gum, yawning, or something weirder?
+
+# Drafts sent 2026-11-16
+## What Happens When Your Stomach Growls?  (`2026-11-15-body-01`)
+```
+What Happens When Your Stomach Growls? #bodyfiles #stomachgrowling #hungry #humanbody #digestion #science
+```
+Pinned comment: Be honest: when was the loudest your stomach ever growled? Silent exam, meeting, first date?
+
+## What Happens When You Get a Nosebleed?  (`2026-11-15-body-02`)
+```
+What Happens When You Get a Nosebleed? #bodyfiles #nosebleed #humanbody #health #firstaid #science
+```
+Pinned comment: Where did your worst nosebleed hit you? In class, at work, in the middle of the night?
+
+## What Happens When You Get a Fever?  (`2026-11-15-body-03`)
+```
+What Happens When You Get a Fever? #bodyfiles #fever #humanbody #health #immunesystem #science
+```
+Pinned comment: What's the highest fever you've ever had, and did you get the shivers too?
+
+## What Happens When You Get a Sunburn?  (`2026-11-15-body-04`)
+```
+What Happens When You Get a Sunburn? #bodyfiles #sunburn #skin #humanbody #health #science
+```
+Pinned comment: What's the worst sunburn you've ever had, and did you peel days later?

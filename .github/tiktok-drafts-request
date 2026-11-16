@@ -1,3 +1,6 @@
-# one-off test (owner request): auto-post #11 publicly
-mode: direct
-2026-11-10-body-05
+# owner request 2026-11-16: send the 4 newest videos to the TikTok inbox as drafts
+mode: draft
+2026-11-15-body-01
+2026-11-15-body-02
+2026-11-15-body-03
+2026-11-15-body-04
