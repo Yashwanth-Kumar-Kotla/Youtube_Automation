@@ -1,10 +1,10 @@
 {
-  "updated": "2026-11-15T22:46:57+00:00",
+  "updated": "2026-11-16T03:06:56+00:00",
   "videos": [
     {
       "id": "2026-11-09-body-01",
       "title": "What Happens If You Hold Your Pee Too Long?",
-      "caption": "What Happens If You Hold Your Pee Too Long? #bodyfiles #bladder #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens If You Hold Your Pee Too Long? #bodyfiles #bladder #humanbody #science #shorts",
       "length": 40.0,
       "status": "scheduled",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-09-body-01/2026-11-09-body-01.jpg",
@@ -14,7 +14,7 @@
     {
       "id": "2026-11-09-body-02",
       "title": "What Happens If You Get Struck by Lightning?",
-      "caption": "What Happens If You Get Struck by Lightning? #bodyfiles #lightning #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens If You Get Struck by Lightning? #bodyfiles #lightning #humanbody #science #shorts",
       "length": 43.5,
       "status": "scheduled",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-09-body-02/2026-11-09-body-02.jpg",
@@ -22,29 +22,9 @@
       "approved": false
     },
     {
-      "id": "2026-11-10-body-01",
-      "title": "What Happens If You Sneeze With Your Eyes Open?",
-      "caption": "What Happens If You Sneeze With Your Eyes Open? #bodyfiles #sneeze #eyes #humanbody #science #shorts",
-      "length": 39.0,
-      "status": "scheduled",
-      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-01/2026-11-10-body-01.jpg",
-      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-01/2026-11-10-body-01.mp4",
-      "approved": false
-    },
-    {
-      "id": "2026-11-10-body-02",
-      "title": "What Happens to Your Body in Space Without a Suit?",
-      "caption": "What Happens to Your Body in Space Without a Suit? #bodyfiles #space #nasa #humanbody #science #shorts",
-      "length": 41.0,
-      "status": "ready",
-      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-02/2026-11-10-body-02.jpg",
-      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-02/2026-11-10-body-02.mp4",
-      "approved": false
-    },
-    {
       "id": "2026-11-10-body-03",
       "title": "What Happens If Your Hiccups Won't Stop?",
-      "caption": "What Happens If Your Hiccups Won't Stop? #bodyfiles #hiccups #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens If Your Hiccups Won't Stop? #bodyfiles #hiccups #humanbody #science #shorts",
       "length": 41.8,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-03/2026-11-10-body-03.jpg",
@@ -54,7 +34,7 @@
     {
       "id": "2026-11-10-body-04",
       "title": "What Happens When You Get Brain Freeze?",
-      "caption": "What Happens When You Get Brain Freeze? #bodyfiles #brainfreeze #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens When You Get Brain Freeze? #bodyfiles #brainfreeze #humanbody #science #shorts",
       "length": 35.4,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-04/2026-11-10-body-04.jpg",
@@ -64,7 +44,7 @@
     {
       "id": "2026-11-10-body-05",
       "title": "What Happens When You Get Goosebumps?",
-      "caption": "What Happens When You Get Goosebumps? #bodyfiles #goosebumps #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens When You Get Goosebumps? #bodyfiles #goosebumps #humanbody #science #shorts",
       "length": 33.2,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-05/2026-11-10-body-05.jpg",
@@ -74,7 +54,7 @@
     {
       "id": "2026-11-10-body-06",
       "title": "What Happens When Your Foot Falls Asleep?",
-      "caption": "What Happens When Your Foot Falls Asleep? #bodyfiles #pinsandneedles #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens When Your Foot Falls Asleep? #bodyfiles #pinsandneedles #humanbody #science #shorts",
       "length": 34.9,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-06/2026-11-10-body-06.jpg",
@@ -84,7 +64,7 @@
     {
       "id": "2026-11-10-body-07",
       "title": "What Happens If You Knock Out a Tooth?",
-      "caption": "What Happens If You Knock Out a Tooth? #bodyfiles #teeth #firstaid #humanbody #science #shorts",
+      "caption": "What Happens If You Knock Out a Tooth? #bodyfiles #teeth #firstaid #humanbody #science",
       "length": 33.1,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-07/2026-11-10-body-07.jpg",
@@ -94,7 +74,7 @@
     {
       "id": "2026-11-10-body-08",
       "title": "What Happens When Your Ears Pop?",
-      "caption": "What Happens When Your Ears Pop? #bodyfiles #ears #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens When Your Ears Pop? #bodyfiles #ears #humanbody #science #shorts",
       "length": 36.4,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-08/2026-11-10-body-08.jpg",
@@ -104,7 +84,7 @@
     {
       "id": "2026-11-14-body-01",
       "title": "What Happens When You Get a Charley Horse?",
-      "caption": "What Happens When You Get a Charley Horse? #bodyfiles #charleyhorse #musclecramp #humanbody #science #shorts",
+      "caption": "What Happens When You Get a Charley Horse? #bodyfiles #charleyhorse #musclecramp #humanbody #science",
       "length": 34.5,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-01/2026-11-14-body-01.jpg",
@@ -114,7 +94,7 @@
     {
       "id": "2026-11-14-body-02",
       "title": "What Happens When You Cry?",
-      "caption": "What Happens When You Cry? #bodyfiles #crying #tears #humanbody #science #shorts",
+      "caption": "What Happens When You Cry? #bodyfiles #crying #tears #humanbody #science",
       "length": 36.7,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-02/2026-11-14-body-02.jpg",
@@ -124,7 +104,7 @@
     {
       "id": "2026-11-14-body-03",
       "title": "What Happens When You Blush?",
-      "caption": "What Happens When You Blush? #bodyfiles #blushing #humanbody #science #shorts #healthfacts",
+      "caption": "What Happens When You Blush? #bodyfiles #blushing #humanbody #science #shorts",
       "length": 35.4,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-03/2026-11-14-body-03.jpg",
@@ -134,7 +114,7 @@
     {
       "id": "2026-11-14-body-04",
       "title": "What Happens When You Get Motion Sickness?",
-      "caption": "What Happens When You Get Motion Sickness? #bodyfiles #motionsickness #carsick #humanbody #science #shorts",
+      "caption": "What Happens When You Get Motion Sickness? #bodyfiles #motionsickness #carsick #humanbody #science",
       "length": 34.8,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-14-body-04/2026-11-14-body-04.jpg",
@@ -144,7 +124,7 @@
     {
       "id": "2026-11-15-body-01",
       "title": "What Happens When Your Stomach Growls?",
-      "caption": "What Happens When Your Stomach Growls? #bodyfiles #stomachgrowling #hungry #humanbody #digestion #science",
+      "caption": "What Happens When Your Stomach Growls? #bodyfiles #stomachgrowling #hungry #humanbody #digestion",
       "length": 36.1,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-01/2026-11-15-body-01.jpg",
@@ -154,7 +134,7 @@
     {
       "id": "2026-11-15-body-02",
       "title": "What Happens When You Get a Nosebleed?",
-      "caption": "What Happens When You Get a Nosebleed? #bodyfiles #nosebleed #humanbody #health #firstaid #science",
+      "caption": "What Happens When You Get a Nosebleed? #bodyfiles #nosebleed #humanbody #health #firstaid",
       "length": 37.0,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-02/2026-11-15-body-02.jpg",
@@ -164,7 +144,7 @@
     {
       "id": "2026-11-15-body-03",
       "title": "What Happens When You Get a Fever?",
-      "caption": "What Happens When You Get a Fever? #bodyfiles #fever #humanbody #health #immunesystem #science",
+      "caption": "What Happens When You Get a Fever? #bodyfiles #fever #humanbody #health #immunesystem",
       "length": 34.6,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-03/2026-11-15-body-03.jpg",
@@ -174,7 +154,7 @@
     {
       "id": "2026-11-15-body-04",
       "title": "What Happens When You Get a Sunburn?",
-      "caption": "What Happens When You Get a Sunburn? #bodyfiles #sunburn #skin #humanbody #health #science",
+      "caption": "What Happens When You Get a Sunburn? #bodyfiles #sunburn #skin #humanbody #health",
       "length": 37.2,
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-04/2026-11-15-body-04.jpg",
