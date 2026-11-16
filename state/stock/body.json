@@ -347,7 +347,7 @@
    "research_file": "none",
    "length": 41.8,
    "confidence": 0.75,
-   "status": "scheduled",
+   "status": "posted",
    "branch": "stock/body/2026-11-10-body-03",
    "history": [
     {
@@ -360,9 +360,18 @@
      "at": "2026-11-16T03:50-06:00",
      "status": "ready->scheduled",
      "why": "slot 0 on 2026-11-16, episode 8, manual upload"
+    },
+    {
+     "at": "2026-11-16T14:32-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
     }
    ],
-   "description": "A hiccup is a spasm of your diaphragm, the muscle below your lungs, followed by your vocal cords snapping shut: that's the \"hic\". Most bouts last a few minutes; hiccups lasting more than 48 hours are called persistent, and Cleveland Clinic and the NHS say to see a doctor if they go past two days. Experts haven't found a proven hiccup cure. Charles Osborne started hiccuping after a fall while hanging a hog in 1922 and didn't stop until 1990: 20 to 40 times a minute, an estimated 430 million hiccups. He married twice and had eight children.\nNext Body File: what happens when you get brain freeze, and the tongue trick that helps it thaw.\nFollow Body Files for a new one every day.\n#bodyfiles #hiccups #humanbody #science #shorts #healthfacts #worldrecord\n\nSources:\nCleveland Clinic, Hiccups: https://my.clevelandclinic.org/health/symptoms/17672-hiccups\nCleveland Clinic, Diaphragm: https://my.clevelandclinic.org/health/body/21578-diaphragm\nNHS, Hiccups: https://www.nhs.uk/conditions/hiccups/\nGuinness World Records: https://www.guinnessworldrecords.com/world-records/67619-longest-attack-of-hiccups\nSmithsonian Magazine: https://www.smithsonianmag.com/history/the-curious-case-of-charles-osborne-who-hiccuped-for-68-years-straight-180980232/\nCleveland Clinic, Brain Freeze: https://my.clevelandclinic.org/health/diseases/21478-brain-freeze"
+   "description": "A hiccup is a spasm of your diaphragm, the muscle below your lungs, followed by your vocal cords snapping shut: that's the \"hic\". Most bouts last a few minutes; hiccups lasting more than 48 hours are called persistent, and Cleveland Clinic and the NHS say to see a doctor if they go past two days. Experts haven't found a proven hiccup cure. Charles Osborne started hiccuping after a fall while hanging a hog in 1922 and didn't stop until 1990: 20 to 40 times a minute, an estimated 430 million hiccups. He married twice and had eight children.\nNext Body File: what happens when you get brain freeze, and the tongue trick that helps it thaw.\nFollow Body Files for a new one every day.\n#bodyfiles #hiccups #humanbody #science #shorts #healthfacts #worldrecord\n\nSources:\nCleveland Clinic, Hiccups: https://my.clevelandclinic.org/health/symptoms/17672-hiccups\nCleveland Clinic, Diaphragm: https://my.clevelandclinic.org/health/body/21578-diaphragm\nNHS, Hiccups: https://www.nhs.uk/conditions/hiccups/\nGuinness World Records: https://www.guinnessworldrecords.com/world-records/67619-longest-attack-of-hiccups\nSmithsonian Magazine: https://www.smithsonianmag.com/history/the-curious-case-of-charles-osborne-who-hiccuped-for-68-years-straight-180980232/\nCleveland Clinic, Brain Freeze: https://my.clevelandclinic.org/health/diseases/21478-brain-freeze",
+   "posted": "2026-11-16",
+   "episode": 8,
+   "youtube": "qZuIGfHwJ4A",
+   "manual": true
   },
   "2026-11-10-body-04": {
    "title": "What Happens When You Get Brain Freeze?",
