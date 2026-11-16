@@ -1,10 +1,6 @@
-mode: direct
-Traceback (most recent call last):
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 46, in main
-    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 78, in upload
-    raise RuntimeError(f"TikTok init failed: {j}")
-RuntimeError: TikTok init failed: {'error': {'code': 'unaudited_client_can_only_post_to_private_accounts', 'message': 'Please review our integration guidelines at https://developers.tiktok.com/doc/content-sharing-guidelines/', 'log_id': '2026111322075923DDEE93C27C7D2D7FF5'}}
-stopped at 2026-11-10-body-05; the rest can be sent by re-running
-6 drafts recorded in state/tiktok_drafts.json
+mode: draft  privacy: default  record: True
+draft sent 2026-11-15-body-01 -> v_inbox_file~v2.7708587132002387982  (What Happens When Your Stomach Growls?)
+draft sent 2026-11-15-body-02 -> v_inbox_file~v2.7708587132002486286  (What Happens When You Get a Nosebleed?)
+draft sent 2026-11-15-body-03 -> v_inbox_file~v2.7708587170978154509  (What Happens When You Get a Fever?)
+draft sent 2026-11-15-body-04 -> v_inbox_file~v2.7708587203072591886  (What Happens When You Get a Sunburn?)
+10 drafts recorded in state/tiktok_drafts.json
