@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T06:24:14+00:00",
+  "updated": "2026-11-16T10:03:46+00:00",
   "videos": [
     {
       "id": "2026-11-09-body-01",
@@ -26,7 +26,7 @@
       "title": "What Happens If Your Hiccups Won't Stop?",
       "caption": "What Happens If Your Hiccups Won't Stop? #bodyfiles #hiccups #humanbody #science #shorts",
       "length": 41.8,
-      "status": "ready",
+      "status": "scheduled",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-03/2026-11-10-body-03.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-10-body-03/2026-11-10-body-03.mp4",
       "approved": false
@@ -159,6 +159,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-04/2026-11-15-body-04.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-15-body-04/2026-11-15-body-04.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-16-body-01",
+      "title": "What Happens When You Lose Your Voice?",
+      "caption": "What Happens When You Lose Your Voice? #bodyfiles #laryngitis #voice #throat #humanbody",
+      "length": 38.0,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-16-body-01/2026-11-16-body-01.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-16-body-01/2026-11-16-body-01.mp4",
       "approved": false
     }
   ]
