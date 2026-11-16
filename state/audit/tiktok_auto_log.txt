@@ -1,2 +1,3 @@
 mode: draft  privacy: default  record: True
-10 drafts recorded in state/tiktok_drafts.json
+draft sent 2026-11-16-body-01 -> v_inbox_file~v2.7708707726599407629  (What Happens When You Lose Your Voice?)
+11 drafts recorded in state/tiktok_drafts.json
