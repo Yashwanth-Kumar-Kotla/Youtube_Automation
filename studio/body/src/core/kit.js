@@ -4882,8 +4882,8 @@ export function painChart(x, y, w, h, { p = 1, sc = 1 } = {}) {
 /** next-episode tease lens (losing your voice): front view of the lower face + neck on a pale background with a cutaway
  *  window in the neck: the windpipe (pink tube, pale rings) and the voice box on top (darker pink, two pale vocal folds in a
  *  V). whisper 0..1 purses the mouth small; strain 0..1 pinches the folds together, jitters the voice box and adds small red
- *  strain zig-zags either side. Returns the mouth point [x, y] in canvas px */
-export function throatLens(x, y, r, { whisper = 0, strain = 0, sc = 1, t = 0, bg = '#FFF1E0' } = {}) {
+ *  strain zig-zags either side. shout 0..1 (> 0.5) = wide open shouting mouth. Returns the mouth point [x, y] in canvas px */
+export function throatLens(x, y, r, { whisper = 0, strain = 0, shout = 0, sc = 1, t = 0, bg = '#FFF1E0' } = {}) {
   const u = r / 300;
   if (sc <= 0 || r <= 0) return [x, y - 150 * u];
   lens(x, y, r, sc, () => {
@@ -4896,6 +4896,7 @@ export function throatLens(x, y, r, { whisper = 0, strain = 0, sc = 1, t = 0, bg
     ctx.beginPath(); ctx.moveTo(-26, -262); ctx.quadraticCurveTo(0, -244, 26, -262); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 9; ctx.stroke();   // nose tip
     ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * 120, -200, 34, 20, C.pink); ctx.globalAlpha = 1;
     if (w > 0.5) { ell(0, -150, 30, 24, C.pinkDark); ell(0, -150, 13, 10, C.mouth); }   // pursed whisper lips
+    else if (shout > 0.5) { ell(0, -146, 58, 46, C.mouth); ell(0, -122, 34, 15, C.pink); rr(-38, -186, 76, 14, 6); ctx.fillStyle = C.white; ctx.fill(); }   // wide open shout (2026-11-16)
     else { ctx.beginPath(); ctx.moveTo(-48, -160); ctx.quadraticCurveTo(0, -132, 48, -160); ctx.strokeStyle = C.mouth; ctx.lineWidth = 11; ctx.stroke(); }
     const st = clamp(strain), jx = Math.sin(t * 46) * 4 * st;
     rr(-78, 0, 156, 230, 40); ctx.fillStyle = C.mouth; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.pinkDark; ctx.stroke();
@@ -4916,4 +4917,182 @@ export function throatLens(x, y, r, { whisper = 0, strain = 0, sc = 1, t = 0, bg
     ctx.restore();
   }, bg);
   return [x, y - 150 * u * sc];
+}
+
+// ═════════════════════════ VOICE SET (2026-11-16 "lose your voice") ═════════════════════════
+/** hand clutching the front of the throat (hoarse, mid-croak), RIGHT arm */
+ARM.throat = { e: [215, -40], h: [34, -214] };
+const FOLD_SW = '#F6C3C6', FOLD_SW_D = '#D98A96', CAN_E = '#1E2A44', CAN_E_D = '#151E33', CAN_E_HI = '#33456B';
+
+/** the vocal cords from above (macro, flat): pink throat ring, two pale folds in a V, the dark gap between them.
+ *  o = { gap 0..1 (1 = open breathing V, 0 = shut together), swell 0..1 (folds puff up fat and pink, gap narrows),
+ *  buzz 0..1 (fold edges flutter fast + small white motion ticks), rough 0..1 (the flutter goes uneven: left and right out of
+ *  step, jerky), t = film time }. ~520x600 px at s = 1. Origin = centre of the gap. Returns nothing */
+export function cordsView(x, y, s, { gap = 1, swell = 0, buzz = 0, rough = 0, t = 0 } = {}) {
+  if (s <= 0) return;
+  const sw = clamp(swell), bz = clamp(buzz), rg = clamp(rough);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ell(0, 0, 260, 300, C.pinkDark); ell(0, -6, 240, 280, mixHex(C.pink, C.red, sw * 0.22));
+  ell(-120, -170, 50, 26, C.pinkLight, -0.5);
+  const fl = (sd) => {   // per-side flutter, -1..1
+    if (bz <= 0) return 0;
+    const ph = sd > 0 ? rg * 2.3 : 0, jerk = 1 - rg * 0.6 * (0.5 + 0.5 * Math.sin(t * 17 + sd));
+    return bz * Math.sin(t * 88 + ph) * jerk;
+  };
+  const base = lerp(8, 118, clamp(gap)) * (1 - 0.4 * sw);
+  const spL = Math.max(0, base + 26 * fl(-1)), spR = Math.max(0, base + 26 * fl(1));
+  // dark airway gap
+  if (spL + spR > 2) { ctx.beginPath(); ctx.moveTo(0, -200); ctx.lineTo(-spL, 200); ctx.quadraticCurveTo(0, 228, spR, 200); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); }
+  const fw = 62 + 46 * sw, bulge = 34 * sw;
+  for (const sd of [-1, 1]) {
+    const sp = sd < 0 ? spL : spR, bx = sd * sp;
+    const fold = (inset, w) => {
+      ctx.beginPath(); ctx.moveTo(sd * inset * 0.3, -212 + inset);
+      ctx.quadraticCurveTo(lerp(0, bx, 0.5) - sd * bulge, 0, bx + sd * inset * 0.2, 202 - inset);
+      ctx.lineTo(bx + sd * (w - inset), 196 - inset);
+      ctx.quadraticCurveTo(lerp(sd * 40, bx + sd * w, 0.5) + sd * bulge * 0.8, 0, sd * (46 + 20 * sw - inset), -196 + inset); ctx.closePath();
+    };
+    fold(0, fw); ctx.fillStyle = mixHex(C.gumEdge, FOLD_SW_D, sw); ctx.fill();
+    fold(6, fw * 0.6); ctx.fillStyle = mixHex(C.gum, FOLD_SW, sw); ctx.fill();
+    ell(bx + sd * fw * 0.62, 220, 46 + 10 * sw, 30, C.pinkLight);
+    if (bz > 0) {   // white flutter ticks beside each fold
+      ctx.save(); ctx.globalAlpha = bz * 0.85;
+      for (const yy of [-90, 10, 110]) { const xx = lerp(0, bx, (yy + 212) / 414) + sd * (fw + 30); line([[xx, yy - 26], [xx + sd * 14, yy], [xx, yy + 26]], C.white, 7); }
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+
+/** x-ray magnifier lens on the vocal cords: ink rim + cyan ring, x-ray navy inside with a faint cyan grid, cordsView inside.
+ *  o = cordsView options + { sc (pop-in), label 0..1 = the tiny cyan "HUNDREDS OF BUZZES/SEC" label under the lens with a
+ *  hairline to the left fold (the rewatch detail, Cleveland Clinic) }. Returns the lens bottom-left rim point [x, y] (sc = 1) */
+export function cordsLens(x, y, r, o = {}) {
+  const { sc = 1, label = 0 } = o;
+  if (sc <= 0 || r <= 0) return [x - r * 0.7, y + r * 0.7];
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 22, C.ink); circle(0, 0, r + 12, C.cyan);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  ctx.fillStyle = C.xnavy; ctx.fillRect(-r - 10, -r - 10, 2 * r + 20, 2 * r + 20);
+  ctx.globalAlpha = 0.12; ctx.strokeStyle = C.cyan; ctx.lineWidth = 2;
+  for (let k = -r; k <= r; k += 60) { ctx.beginPath(); ctx.moveTo(k, -r); ctx.lineTo(k, r); ctx.moveTo(-r, k); ctx.lineTo(r, k); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  cordsView(0, -r * 0.04, r / 330, o);
+  ctx.restore();
+  if (label > 0) {
+    const ly = r + 58, k = r / 330;
+    ctx.save(); ctx.globalAlpha = clamp(label); line([[-40 * k, 120 * k], [-r * 0.32, r + 10]], C.cyan, 4); ctx.restore();
+    pill('HUNDREDS OF BUZZES/SEC', 0, ly, 24, C.cyan, C.xnavy, clamp(label));
+  }
+  ctx.restore();
+  return [x - r * 0.7, y + r * 0.7];
+}
+
+/** guess option pill: yellow letter disc + white pill with ink text (letter "A", text "WHISPER"). o = { sc (pop-in), check 0..1
+ *  (green check badge pops on the right end), dim 0..1 (fades it back: the wrong option), hi 0..1 (yellow rim flash + small
+ *  bounce, the moment it is spoken) }. The check sits just right of the pill (allow ~size*1.4 px). Origin = pill centre. Returns the pill width */
+export function abPill(letter, text, x, y, size, { sc = 1, check = 0, dim = 0, hi = 0 } = {}) {
+  if (sc <= 0) return 0;
+  ctx.save(); ctx.translate(x, y); const k = sc * (1 + 0.08 * clamp(hi)); ctx.scale(k, k);
+  ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '2px';
+  const tw = ctx.measureText(text).width, h = size * 1.7, w = h + tw + size * 0.9;
+  ctx.globalAlpha = 1 - 0.55 * clamp(dim);
+  if (hi > 0) { rr(-w / 2 - 16, -h / 2 - 16, w + 32, h + 32, h / 2 + 16); ctx.fillStyle = C.yellow; ctx.fill(); }
+  rr(-w / 2 - 7, -h / 2 - 7, w + 14, h + 14, h / 2 + 7); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-w / 2, -h / 2, w, h, h / 2); ctx.fillStyle = C.white; ctx.fill();
+  circle(-w / 2 + h / 2, 0, h / 2 - 7, C.yellow);
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(letter, -w / 2 + h / 2, size * 0.05);
+  ctx.textAlign = 'left'; ctx.fillText(text, -w / 2 + h + size * 0.2, size * 0.05);
+  ctx.letterSpacing = '0px'; ctx.globalAlpha = 1;
+  if (check > 0) checkMark(w / 2 + size * 0.55, 0, size / 70, clamp(check));
+  ctx.restore();
+  return w * sc;
+}
+
+/** croak marks: three short jagged ink zig-zags fanning out from a hoarse mouth. dir 1 = to the right, -1 = left.
+ *  a = alpha, t = film time (they jitter), col = stroke colour (C.white on the x-ray navy) */
+export function croakLines(x, y, s = 1, t = 0, a = 1, dir = 1, col = C.ink) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(dir * s, s); ctx.globalAlpha = clamp(a);
+  for (const k of [-1, 0, 1]) {
+    const ang = k * 0.42, P = [];
+    for (let i = 0; i <= 5; i++) { const r = 30 + i * 22, off = (i % 2 ? 1 : -1) * (10 + 3 * Math.sin(t * 31 + k * 2 + i)); P.push([Math.cos(ang) * r - Math.sin(ang) * off, Math.sin(ang) * r + Math.cos(ang) * off]); }
+    line(P, col, 10);
+  }
+  ctx.restore();
+}
+
+/** a voice drawn as a sound wave (graphic), centred at x, y, w wide, amplitude h. o = { rough 0..1 (jagged, uneven, turns
+ *  red: raspy), fade 0..1 (amplitude dies away + breaks into dashes: the voice vanishing), t, a }. Ink edge under the colour */
+export function voiceWave(x, y, w, h, { rough = 0, fade = 0, t = 0, a = 1 } = {}) {
+  if (a <= 0) return;
+  const rg = clamp(rough), fd = clamp(fade), N = 48, P = [];
+  for (let i = 0; i <= N; i++) {
+    const u = i / N, env = Math.sin(u * Math.PI) * (1 - fd);
+    const smooth = Math.sin(u * 22 - t * 9), jag = (rnd(i + Math.floor(t * 14) * 7) * 2 - 1);
+    P.push([x - w / 2 + u * w, y + h * env * lerp(smooth, jag * 1.1, rg)]);
+  }
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  if (fd > 0.05) ctx.setLineDash([lerp(60, 8, fd), lerp(0, 26, fd)]);
+  line(P, C.ink, 22); line(P, rg > 0.5 ? C.red : C.white, 11);
+  ctx.restore();
+}
+
+/** a cold virus (graphic): round green ball with knobbed spikes, darker shade, grumpy dot-eyed face. ~200 px at s = 1.
+ *  sc = pop-in, t = film time (slow spin of the spikes + bob) */
+export function virus(x, y, s = 1, { t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * 6); ctx.scale(s * sc, s * sc);
+  ctx.save(); ctx.rotate(t * 0.5);
+  for (let i = 0; i < 10; i++) { const a = i * TAU / 10; line([[Math.cos(a) * 70, Math.sin(a) * 70], [Math.cos(a) * 104, Math.sin(a) * 104]], GERM_D, 12); circle(Math.cos(a) * 108, Math.sin(a) * 108, 15, GERM_D); circle(Math.cos(a) * 108, Math.sin(a) * 108, 9, GERM_L); }
+  ctx.restore();
+  circle(0, 0, 84, GERM_D); circle(-5, -5, 76, GERM); ell(-30, -40, 24, 11, GERM_L, -0.6);
+  for (const sd of [-1, 1]) { circle(sd * 26, -2, 13, C.white); circle(sd * 26, 0, 7, C.ink); line([[sd * 42, -26], [sd * 12, -18]], C.ink, 7); }
+  ctx.beginPath(); ctx.moveTo(-20, 34); ctx.quadraticCurveTo(0, 22, 20, 34); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke();
+  ctx.restore();
+}
+
+/** concert stage background (real world, night): ink backdrop, two swinging yellow spotlight beams, a row of small bulbs,
+ *  dark stage floor from y = floorY. beat 0..1 brightens the beams. t = film time */
+export function stageBg(t, { beat = 0, floorY = 1180 } = {}) {
+  fillAll(C.ink);
+  for (const [bx, ph] of [[180, 0], [900, 1.7]]) {
+    const ang = Math.sin(t * 1.6 + ph) * 0.28 + (bx < 540 ? 0.35 : -0.35);
+    ctx.save(); ctx.translate(bx, -60); ctx.rotate(ang); ctx.globalAlpha = 0.16 + 0.12 * clamp(beat);
+    ctx.beginPath(); ctx.moveTo(-30, 0); ctx.lineTo(30, 0); ctx.lineTo(260, 1400); ctx.lineTo(-260, 1400); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+    ctx.restore();
+    rr(bx - 46, -60, 92, 70, 14); ctx.fillStyle = '#3A3A42'; ctx.fill();
+  }
+  for (let i = 0; i < 12; i++) { const bx = 60 + i * 87, by = 120 + Math.sin(i * 0.9) * 14; circle(bx, by, 12, (i + Math.floor(t * 4)) % 3 ? C.yellow : C.pinkLight); }
+  ctx.fillStyle = C.pantsShade; ctx.fillRect(-300, floorY, W + 600, H);
+  ctx.fillStyle = C.pants; ctx.fillRect(-300, floorY, W + 600, 26);
+}
+
+/** work desk (front view, wood) with the back of an open laptop (grey, white dot logo) and a white mug with steam.
+ *  Origin = desk-top centre, ~860 px wide at s = 1. Draw it after a seated hero so it hides his legs. t = film time */
+export function workDesk(x, y, s = 1, { t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-250, -250, 300, 230, 18); ctx.fillStyle = '#9A9A9F'; ctx.fill(); rr(-240, -240, 280, 210, 12); ctx.fillStyle = '#B9B9BE'; ctx.fill(); circle(-100, -135, 18, C.white);
+  rr(-270, -26, 340, 22, 8); ctx.fillStyle = '#9A9A9F'; ctx.fill();
+  rr(190, -110, 110, 110, [10, 10, 26, 26]); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(190, -110, 86, 110, [10, 0, 0, 26]); ctx.fillStyle = C.white; ctx.fill();
+  ctx.beginPath(); ctx.arc(300, -56, 34, -1.3, 1.3); ctx.strokeStyle = C.white; ctx.lineWidth = 16; ctx.stroke();
+  ctx.save(); ctx.globalAlpha = 0.6; for (const dx of [215, 255]) { const P = []; for (let k = 0; k <= 8; k++) P.push([dx + Math.sin(k * 0.9 + t * 4 + dx) * 10, -130 - k * 12]); line(P, C.white, 9); } ctx.restore();
+  rr(-430, 0, 860, 44, 10); ctx.fillStyle = WOOD; ctx.fill(); rr(-430, 30, 860, 14, [0, 0, 10, 10]); ctx.fillStyle = WOOD_D; ctx.fill();
+  rr(-410, 44, 820, 520, 0); ctx.fillStyle = WOOD_D; ctx.fill(); rr(-390, 44, 780, 520, 0); ctx.fillStyle = WOOD; ctx.fill();
+  rr(-60, 110, 120, 22, 11); ctx.fillStyle = WOOD_D; ctx.fill();
+  ctx.restore();
+}
+
+/** next-episode tease: a tall slim energy-drink can (dark navy-blue, darker side, light highlight stripe, yellow lightning
+ *  bolt, silver lid with ring pull). No brand. ~150x340 px at s = 1. Origin = can centre. sc = pop-in, rot tilts it */
+export function energyCan(x, y, s = 1, { sc = 1, rot = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-80, -160, 160, 330, 22); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-74, -154, 148, 318, 18); ctx.fillStyle = CAN_E_D; ctx.fill(); rr(-74, -154, 112, 318, [18, 0, 0, 18]); ctx.fillStyle = CAN_E; ctx.fill();
+  rr(-56, -120, 14, 250, 7); ctx.fillStyle = CAN_E_HI; ctx.fill();
+  lightningBolt(-6, -110, 0.42, 1, 0.08);
+  ell(0, -160, 76, 18, TIN_D); ell(0, -166, 70, 15, TIN); ell(14, -170, 22, 6, C.ink); rr(-26, -176, 36, 12, 6); ctx.fillStyle = TIN_D; ctx.fill();
+  rr(-74, 160, 148, 14, 7); ctx.fillStyle = TIN_D; ctx.fill();
+  ctx.restore();
 }

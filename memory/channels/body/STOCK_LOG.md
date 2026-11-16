@@ -37,3 +37,4 @@
 - 2026-11-15 19:36 · 2026-11-10-body-01 posted · conf 0.7 · {'posted': '2026-11-15', 'episode': 7, 'youtube': 'g78reH63hFQ', 'tiktok': 'v_inbox_file~v2.7707775038876174350'}
 - 2026-11-15 21:06 · 2026-11-10-body-02 posted · conf 0.7 · {'posted': '2026-11-15', 'youtube': 'BP5po4kYxe0', 'note': 'uploaded by owner; recorded from Studio screenshot'}
 - 2026-11-16 03:50 · 2026-11-10-body-03 ready → scheduled · slot 0 on 2026-11-16, episode 8, manual upload
+- 2026-11-16 04:03 · 2026-11-16-body-01 added · conf 0.7 · question+ab-guess · What happens when you lose your voice?

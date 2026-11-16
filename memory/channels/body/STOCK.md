@@ -1,5 +1,5 @@
 # STOCK: body (generated from state/stock/body.json; change it with `python -m pipeline.stock`)
-_Updated 2026-11-16 03:50 · ready 13/30 · threshold 0.4 · max age 42 d_
+_Updated 2026-11-16 04:03 · ready 14/30 · threshold 0.4 · max age 42 d_
 
 | id | status | conf | topic | cluster | hook pattern | format | length | made | playbook | research |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -16,5 +16,6 @@ _Updated 2026-11-16 03:50 · ready 13/30 · threshold 0.4 · max age 42 d_
 | 2026-11-15-body-01 | ready | 0.7 | What happens when your stomach growls? | gut | question+number-not-hunger-loop | explainer | 36.1s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-15-body-02 | ready | 0.7 | What happens when you get a nosebleed? | nose | question+boring-culprit-reveal | explainer | 37.0s | 2026-W46 | pb-87d1a129 | none |
 | 2026-11-15-body-04 | ready | 0.7 | What happens when you get a sunburn? | sun | question+permanent-damage-reveal | explainer | 37.2s | 2026-W46 | pb-87d1a129 | research/2026-W46.md |
+| 2026-11-16-body-01 | ready | 0.7 | What happens when you lose your voice? | throat | question+ab-guess | guess-reveal | 38.0s | 2026-W47 | pb-bdd55284 | research/2026-W46.md |
 
-Clusters in stock: balance ×1, blood ×1, brain ×1, ears ×1, gut ×1, immune ×1, muscles ×1, nerves ×1, nose ×1, skin ×1, sun ×1, tears ×1, teeth ×1
+Clusters in stock: balance ×1, blood ×1, brain ×1, ears ×1, gut ×1, immune ×1, muscles ×1, nerves ×1, nose ×1, skin ×1, sun ×1, tears ×1, teeth ×1, throat ×1

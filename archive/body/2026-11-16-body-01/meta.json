@@ -1,0 +1,22 @@
+{
+  "title": "What Happens When You Lose Your Voice?",
+  "description": "Send this to the friend who whispers all day when they lose their voice.\nLaryngitis is when your voice box or vocal cords become irritated or swollen, usually from a virus like a cold, but yelling and overusing your voice can do it too. Swollen cords can't vibrate properly, so your voice goes hoarse or disappears. The NHS says to speak as little as possible and not to talk loudly or whisper, because both strain your voice, and to drink plenty of fluids. It usually clears up on its own within 1 to 2 weeks; see a doctor if it hasn't improved after 2 weeks or keeps coming back, and get urgent help if it's very painful to swallow or hard to breathe.\nNext Body File: energy drinks, where some cans pack six times the caffeine of others.\nFollow Body Files for a new one every day.\n#bodyfiles #laryngitis #voice #throat #humanbody #health #science #shorts\n\nSources:\nNHS, Laryngitis: https://www.nhs.uk/conditions/laryngitis/\nCleveland Clinic, Laryngitis: https://my.clevelandclinic.org/health/diseases/22268-laryngitis\nCleveland Clinic, Vocal Cords: https://my.clevelandclinic.org/health/body/24456-vocal-cords\nFDA, Spilling the Beans: How Much Caffeine Is Too Much?: https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much",
+  "hashtags": ["#bodyfiles", "#laryngitis", "#voice", "#throat", "#humanbody", "#health", "#science", "#shorts"],
+  "pinned_comment": "Lost your voice: A) whisper or B) barely talk? Which one saves it? Answer before you rewatch.",
+  "series": "Body Files",
+  "topic": "What happens when you lose your voice?",
+  "experiment_arm": "E1-B (hook without a number: lines 1-2 have no number, line 2 is the whisper-vs-barely-talk guess; 'hundreds of times a second' first appears in line 3); E4 tease_next",
+  "teases": "What happens when you drink an energy drink?",
+  "topic_cluster": "throat",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the sunburn video (2026-11-15-body-4) with 'and why whispering makes it worse' (paid off in lines 8-10: whispering still works the cords, NHS says it strains your voice like shouting, so B: barely talk)",
+  "hook_pattern": "question+ab-guess",
+  "first_frame": "hero-mid-action (hero clutching his throat mid-croak, x-ray cyan throat with the two vocal cords visible, A WHISPER / B BARELY TALK pills popping in)",
+  "format": "guess-reveal",
+  "engagement": {
+    "guess": "A whisper vs B barely talk (answer: B, barely talk; NHS: 'do not talk loudly or whisper – both strain your voice', 'speak as little as possible')",
+    "relatable": "Ever screamed through a whole concert, then croaked at work the next morning? Same swelling, from yelling.",
+    "rehook_line": 7,
+    "rewatch_detail": "In the opening x-ray, a tiny label on the vocal cords reads 'hundreds of buzzes/sec' (Cleveland Clinic), and the cords are already slightly pink and puffy in frame 1, so the swelling is there before it's explained; at the whisper reveal, the same cords visibly still close together.",
+    "loop": "Final shot cuts back to the frame-1 framing: the hero holding his throat with the x-ray cords and the A/B pills, now with a check on B, so the replay lands on the same image without the check."
+  }
+}

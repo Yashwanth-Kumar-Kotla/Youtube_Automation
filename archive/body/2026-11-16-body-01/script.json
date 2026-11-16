@@ -1,0 +1,69 @@
+{
+  "title": "What Happens When You Lose Your Voice?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NHS, 'Laryngitis' ('Laryngitis is when your voice box or vocal cords in the throat become irritated or swollen'; symptoms: hoarse voice, sometimes losing your voice; 'usually happens when you have an infection from a virus, such as cold or flu', also constant throat clearing, long-lasting coughing; usually goes away within 1 to 2 weeks; 'try to speak as little as possible'; 'do not talk loudly or whisper – both strain your voice'; drink plenty of fluids; see a GP if symptoms do not improve after 2 weeks or keep coming back; 111 if very painful or hard to swallow, 999 for difficulty breathing): https://www.nhs.uk/conditions/laryngitis/",
+    "Cleveland Clinic, 'Laryngitis' (inflammation of the larynx/voice box; 'swelling and inflammation affect how your vocal cords vibrate. They distort the sounds your vocal cords make, so your voice sounds weak or hoarse'; causes include common cold viruses and 'Overuse injuries or trauma (like overusing your voice, screaming, yelling or singing)', e.g. cheering 'at a concert or sports event'; 'Let your voice rest as much as you can'; 'Don't whisper, as even that can aggravate your symptoms'; acute symptoms last three to seven days, more than three weeks = chronic; talk to a provider if it lasts longer than a week or two): https://my.clevelandclinic.org/health/diseases/22268-laryngitis",
+    "Cleveland Clinic, 'Vocal Cords' ('Your vocal cords are two bands of muscle inside your voice box'; 'Your vocal cords may vibrate hundreds of times per second'; vocal cords come together for whispering, and spending too much time whispering can strain them): https://my.clevelandclinic.org/health/body/24456-vocal-cords",
+    "Tease (next video): FDA, 'Spilling the Beans: How Much Caffeine Is Too Much?' (energy drinks: '54 to 328 milligrams of caffeine per 16 fluid ounces', about a sixfold range; 400 mg a day not generally associated with negative effects for most adults; too much caffeine: increased heart rate, palpitations): https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you lose your voice?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *LOSE | YOUR *VOICE?"
+    },
+    {
+      "text": "To save it, should you whisper, or barely talk? Guess.",
+      "caps": "TO *SAVE IT | SHOULD YOU *WHISPER, | OR BARELY *TALK? | *GUESS"
+    },
+    {
+      "text": "Your vocal cords buzz hundreds of times a second.",
+      "caps": "YOUR VOCAL *CORDS | *BUZZ HUNDREDS | OF TIMES A *SECOND"
+    },
+    {
+      "text": "A cold swells them, so they can't vibrate cleanly,",
+      "caps": "A COLD *SWELLS THEM | SO THEY *CAN'T | *VIBRATE CLEANLY"
+    },
+    {
+      "text": "and your voice goes raspy, or vanishes.",
+      "caps": "AND YOUR *VOICE | GOES *RASPY | OR *VANISHES"
+    },
+    {
+      "text": "Ever screamed through a whole concert,",
+      "caps": "EVER *SCREAMED | THROUGH A *WHOLE | *CONCERT"
+    },
+    {
+      "text": "then croaked at work the next morning? Same swelling, from yelling.",
+      "caps": "THEN *CROAKED | AT *WORK THE | NEXT *MORNING? | SAME *SWELLING | FROM *YELLING"
+    },
+    {
+      "text": "But here's the weird part: whispering still works those cords,",
+      "caps": "BUT *HERE'S THE | *WEIRD PART | *WHISPERING STILL | WORKS THOSE *CORDS"
+    },
+    {
+      "text": "and the NHS says it strains your voice, like shouting.",
+      "caps": "AND THE *NHS | SAYS IT *STRAINS | YOUR *VOICE | LIKE *SHOUTING"
+    },
+    {
+      "text": "So it's B: barely talk, and sip water.",
+      "caps": "SO IT'S *B | BARELY *TALK | AND SIP *WATER"
+    },
+    {
+      "text": "Still hoarse after two weeks? See a doctor.",
+      "caps": "STILL *HOARSE | AFTER *2 WEEKS? | SEE A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: energy drinks,",
+      "caps": "NEXT *BODY FILE | ENERGY *DRINKS"
+    },
+    {
+      "text": "where some cans pack six times the caffeine.",
+      "caps": "WHERE SOME *CANS | PACK *6 TIMES | THE *CAFFEINE"
+    }
+  ]
+}
