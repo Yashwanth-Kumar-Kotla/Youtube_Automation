@@ -4,7 +4,8 @@ Source: owner-provided screenshots of YouTube Studio Insights. Use as data for t
 ## Channel (Shorts)
 - Views 5.1K (48-hour views 5,003); engaged views 2.8K; watch time 23.1 h; likes 87 (~1.7% of views); subscribers +14 (total 10 on overview card).
 - **Stayed to watch 56.2% / swiped away 43.8%** (channel average, "How viewers engaged").
-- Traffic: Shorts feed 94.5%.
+- Traffic: Shorts feed 94.5%, YouTube search 3.3%, channel pages 1.0%, other YouTube features 0.7%, direct/unknown 0.3%.
+- Views chart: two spikes (one mid-Nov, one Nov 14), flat between: views come in bursts when a Short gets tested, not a steady climb.
 - Audience: new viewers 99%, casual 0%, regular 0%; watch time from subscribers 0.2%.
 - Monthly audience 657.
 
