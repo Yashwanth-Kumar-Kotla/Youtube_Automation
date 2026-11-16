@@ -28,3 +28,17 @@ Source: owner-provided screenshots of YouTube Studio Insights. Use as data for t
 - Audience skews older than the BIBLE's 13–35 (35–44 is the biggest bucket) plus a large 13–17 group: keep it family-safe, relatable to adults (work, parenting, travel), not kid-framed.
 - 37% of watch time is on tablet/TV: on-screen text and diagrams must read on big screens too (already fine at our sizes).
 - Per-video "stayed to watch" is still needed (Studio → Content → Shorts → each video → Analytics) to compare hook patterns (E1).
+
+## Per-video (owner screenshots, 2026-11-15 ~9:05 PM CT, "since published")
+| Video (stock id) | Len | Views | Stayed | Likes | Subs | Watch h | Notes |
+|---|---|---|---|---|---|---|---|
+| Hold pee (2026-11-09-body-01, 06QOx0awTm0), question+number | 0:41 | 1.7K | **59.7%** | 22 | +1 | 8.8 | Only one still growing: 526 views in last 48 h, 54 from YouTube search. Long tail. |
+| Struck by lightning (2026-11-09-body-02, ydfZSZtqBrI), question+mystery-souvenir | 0:44 | 1.2K | 57.4% | 30 (2.5%, best) | +4 | 6.0 | One-day burst (~360/h peak), then flat. |
+| Don't sleep 11 days (2026-11-08 ep1, SiJ_gjDgDRc), number hook | 0:42 | 1.2K | 55.3% | 20 | **+9 (best)** | 6.1 | Burst then flat (17 views/48 h). Channel pages are its main source now. |
+| Drink too much water (2026-11-09-body-03, JE-zKZZTRrM), question+number | 0:38 | 1.1K | 54.0% | 16 | +1 | 3.7 | Retention curve falls hardest in the first ~10 s (line 2 is a dosage setup, no tension). Burst then flat. |
+| Crack knuckles (2026-11-09-body-04, h9oHP8Kzp4A), question+myth-loop | 0:44 | 645 in ~3 h | 50.6% (early) | 9 | +1 | 2.4 | Still in its first burst; 29 views from "other YouTube features". |
+
+Reading (n=5, weak but consistent): stayed % orders the long tail. 59.7% (pee) kept being pushed, 54–57% got one ~1.1–1.2K burst and stopped.
+The threshold for continued distribution looks like ~60% stayed. The hooks that held best open a tension in line 2 ("holds about two cups",
+"some get a weird souvenir"); water's line 2 is a recipe ("chug about a gallon...") and lost viewers fastest.
+Subs come from the story with a human stake (11 days awake), likes from the surprising-survival angle (lightning). All are 38–44 s: aim <40.
