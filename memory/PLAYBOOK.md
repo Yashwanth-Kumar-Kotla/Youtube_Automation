@@ -22,7 +22,8 @@ _Last updated: 2026-11-15 (W46 review: own data still thin, 4 YouTube Shorts wit
   visual, never an empty room or a slow pan. Likes ~1.7% of views; 99% of viewers are new, so every video must work for a stranger.
 - Per video (n=5): only hold-pee (59.7% stayed) kept getting pushed after day 1; 54–57% got one ~1.1K burst and stopped. Treat ~60%
   as the line to clear. Line 2 must add tension or the guess (pee: "holds about two cups", lightning: "some get a weird souvenir"),
-  never a setup or recipe (water: "Chug about a gallon in an hour or two" lost the most viewers in the first 10 s).
+  never a setup or recipe (water: "Chug about a gallon in an hour or two" lost the most viewers in the first 10 s), and never
+  the answer (space: "Spoiler, you don't explode" → 48.8%, worst; sneeze: an 1882 newspaper claim → 59.3%).
 - Audience: US 75%; ages 35–44 (30%), 13–17 (28%), 25–34 (24%). Relatable beats should fit adults (work, travel, parenting, gym)
   without excluding teens. 37% of watch time is on tablet/TV.
 

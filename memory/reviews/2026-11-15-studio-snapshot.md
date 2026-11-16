@@ -36,9 +36,14 @@ Source: owner-provided screenshots of YouTube Studio Insights. Use as data for t
 | Struck by lightning (2026-11-09-body-02, ydfZSZtqBrI), question+mystery-souvenir | 0:44 | 1.2K | 57.4% | 30 (2.5%, best) | +4 | 6.0 | One-day burst (~360/h peak), then flat. |
 | Don't sleep 11 days (2026-11-08 ep1, SiJ_gjDgDRc), number hook | 0:42 | 1.2K | 55.3% | 20 | **+9 (best)** | 6.1 | Burst then flat (17 views/48 h). Channel pages are its main source now. |
 | Drink too much water (2026-11-09-body-03, JE-zKZZTRrM), question+number | 0:38 | 1.1K | 54.0% | 16 | +1 | 3.7 | Retention curve falls hardest in the first ~10 s (line 2 is a dosage setup, no tension). Burst then flat. |
-| Crack knuckles (2026-11-09-body-04, h9oHP8Kzp4A), question+myth-loop | 0:44 | 645 in ~3 h | 50.6% (early) | 9 | +1 | 2.4 | Still in its first burst; 29 views from "other YouTube features". |
+| Crack knuckles (2026-11-09-body-04, h9oHP8Kzp4A), question+myth-loop | 0:44 | 645 in ~3 h | 50.6% (early) | 9 | +1 | 2.4 | Posted 2026-11-15 6 PM (owner); still in its first burst. |
+| Sneeze eyes open (2026-11-10-body-01, g78reH63hFQ), question+old-myth-number | 0:39 | 716 in ~3 h | **59.3%** (early) | 11 | 0 | 3.0 | Posted 2026-11-15 6 PM. Line 2 = 1882 newspaper story (tension). Fastest of the three. |
+| Space without a suit (2026-11-10-body-02, BP5po4kYxe0), question+instant-myth-bust | 0:42 | 581 in ~3 h | **48.8%** (early, worst) | 14 | +3 | 2.3 | Posted 2026-11-15 6 PM. Line 2 spoils the answer ("you don't explode") so there's no reason to stay. Not in posts.json. |
 
-Reading (n=5, weak but consistent): stayed % orders the long tail. 59.7% (pee) kept being pushed, 54–57% got one ~1.1–1.2K burst and stopped.
+Note: the last three (knuckles, sneeze, space) were all posted 2026-11-15 ~6 PM per the owner.
+Reading (n=7, weak but consistent): stayed % orders the long tail. 59.7% (pee) kept being pushed, 54–57% got one ~1.1–1.2K burst and stopped.
 The threshold for continued distribution looks like ~60% stayed. The hooks that held best open a tension in line 2 ("holds about two cups",
 "some get a weird souvenir"); water's line 2 is a recipe ("chug about a gallon...") and lost viewers fastest.
 Subs come from the story with a human stake (11 days awake), likes from the surprising-survival angle (lightning). All are 38–44 s: aim <40.
+
+Space confirms it: an instant myth-bust in line 2 gives away the answer → lowest stayed (48.8%). Never answer the hook before the last 30%.
