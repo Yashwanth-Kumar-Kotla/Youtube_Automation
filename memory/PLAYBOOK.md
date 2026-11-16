@@ -17,6 +17,12 @@ _Last updated: 2026-11-15 (W46 review: own data still thin, 4 YouTube Shorts wit
 - 30-45 s target. The last line loops back to the first.
 - Captions: 1-3 words, one highlighted keyword.
 
+## Baseline to beat (YouTube Studio, 28 days to 2026-11-15, reviews/2026-11-15-studio-snapshot.md)
+- Stayed to watch 56.2% / swiped away 43.8%. Target ≥65% stayed: frame 1 must show the premise AND the guess options or the strangest
+  visual, never an empty room or a slow pan. Likes ~1.7% of views; 99% of viewers are new, so every video must work for a stranger.
+- Audience: US 75%; ages 35–44 (30%), 13–17 (28%), 25–34 (24%). Relatable beats should fit adults (work, travel, parenting, gym)
+  without excluding teens. 37% of watch time is on tablet/TV.
+
 ## Engagement (owner, 2026-11-16: several Shorts reach ~1k views, then stall → they need comments, rewatches and full watches)
 Every video has all five beats. They cost no extra length (target stays 30-40 s; aim under 40).
 1. **Guess beat (first 4 s):** line 2 makes the viewer commit to an answer before the reveal. Two concrete options, e.g. "Is it
