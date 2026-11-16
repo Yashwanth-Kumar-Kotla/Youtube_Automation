@@ -36,3 +36,4 @@
 - 2026-11-15 13:37 · 2026-11-15-body-03 conf 0.7 → 0.75 · W46 review: research/2026-W46 topic #7 (catch a virus, flu season) had the highest engagement in the scout sample (3.87% likes, 11.5 comments per 10k views) and NH flu season covers this video's posting window (~early Dec). Capped at +0.05: fewer than 5 posted videos have stats.
 - 2026-11-15 19:36 · 2026-11-10-body-01 posted · conf 0.7 · {'posted': '2026-11-15', 'episode': 7, 'youtube': 'g78reH63hFQ', 'tiktok': 'v_inbox_file~v2.7707775038876174350'}
 - 2026-11-15 21:06 · 2026-11-10-body-02 posted · conf 0.7 · {'posted': '2026-11-15', 'youtube': 'BP5po4kYxe0', 'note': 'uploaded by owner; recorded from Studio screenshot'}
+- 2026-11-16 03:50 · 2026-11-10-body-03 ready → scheduled · slot 0 on 2026-11-16, episode 8, manual upload
