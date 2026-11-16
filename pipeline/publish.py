@@ -176,7 +176,10 @@ def run(dry: bool = False) -> int:
                             stock.mark_posted(ch, v["id"], {"posted": today, "episode": rec["episode"], "youtube": rec["youtube"], "manual": True})
                             stock.delete_branch(v["branch"])
                         continue
-            need_tt = tt_on and not (rec or {}).get("tiktok") and tt_t <= n < tt_t + timedelta(hours=4)
+            # Drafts can land any time that day (the owner chooses when to post), so in draft mode send on the first
+            # publisher run of the day; GitHub's hourly timer often skips the evening window. Direct posts keep the window.
+            tt_draft = c.get("tiktok", {}).get("mode", "draft") == "draft"
+            need_tt = tt_on and not (rec or {}).get("tiktok") and (tt_draft or tt_t <= n < tt_t + timedelta(hours=4))
             if not (need_yt or need_tt):
                 continue
             if rec is None:
