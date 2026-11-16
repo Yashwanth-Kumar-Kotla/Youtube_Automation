@@ -7,7 +7,7 @@
 | 2026-11-12 | 4 | What happens if you get struck by lightning? | ydfZSZtqBrI | v_inbox_file~v2.7707456855953524749 | E1-B (hook without a number: no number in lines 1-2); E4 tease_next |  |  |  |  |  | 2026-11-09-body-02 | pb-87d1a129 | question+mystery-souvenir |
 | 2026-11-13 | 5 | What happens if you drink too much water? | JE-zKZZTRrM | v_inbox_file~v2.7707775041915799566 | E1-A (hook with a number: 'about a gallon in an hour or two' in line 2); E4 tease_next |  |  |  |  |  | 2026-11-09-body-03 | pb-87d1a129 | question+number |
 | 2026-11-14 | 6 | What happens if you crack your knuckles every day? | h9oHP8Kzp4A | v_inbox_file~v2.7707775086169917454 | E1-B (hook without a number: lines 1-2 have no number; 'fifty years' only appears later in line 11); E4 tease_next |  |  |  |  |  | 2026-11-09-body-04 | pb-87d1a129 | question+myth-loop |
-| 2026-11-15 | 7 | What happens if you sneeze with your eyes open? | g78reH63hFQ |  | E1-A (hook with a number: line 2 'In eighteen eighty-two', caption '1882'); E4 tease_next |  |  |  |  |  | 2026-11-10-body-01 | pb-87d1a129 | question+old-myth-number |
+| 2026-11-15 | 7 | What happens if you sneeze with your eyes open? | g78reH63hFQ | v_inbox_file~v2.7707775038876174350 | E1-A (hook with a number: line 2 'In eighteen eighty-two', caption '1882'); E4 tease_next |  |  |  |  |  | 2026-11-10-body-01 | pb-87d1a129 | question+old-myth-number |
 
 Notes:
 - 2026-11-08 ep 1: API upload bDqwxXxyJOI stays private (API audit pending; kept as audit evidence). The public copy SiJ_gjDgDRc was uploaded by hand on 2026-11-08 ~7 PM CT and is the one tracked for stats.
