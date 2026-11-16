@@ -22,6 +22,11 @@ the newest file in memory/research/, the last 10 rows of memory/channels/<channe
      "teases" and move it to the top of BACKLOG "Up next" marked (promised). Make the tease a mini-hook: one vivid detail, not just the title.
    - `series_cta`: the last line is the series CTA from the BIBLE (no specific next topic).
    Never put an episode number in the video or the title. Put the sources in "sources".
+   Engagement (PLAYBOOK "Engagement", every video): line 2 is the GUESS beat (two concrete options the viewer picks before the reveal;
+   the answer lands in the last 30%), one RELATABLE "you've felt this" line mid-video, a RE-HOOK turn line at ~50%, and keep it under
+   40 s. The pinned comment asks the guess question with both options. Both options and the answer must be sourced facts.
+   Record meta.json "engagement": {"guess": "A vs B (answer: X)", "relatable": "<line>", "rehook_line": <line index>,
+   "rewatch_detail": "<idea for the director>", "loop": "<how the last image echoes frame 1>"}.
 4. Write <dir>/meta.json with: title (the hook question, under 70 chars, NO episode number: the publisher adds "| <series> #N"
    when it posts), description (fact line, a series CTA, sources), hashtags[5-8], pinned_comment, topic, experiment_arm, and the
    stock tags: topic_cluster (one short word), topic_source ("backlog #<rank>: <why it was chosen>"), hook_pattern (a short name for

@@ -17,6 +17,23 @@ _Last updated: 2026-11-15 (W46 review: own data still thin, 4 YouTube Shorts wit
 - 30-45 s target. The last line loops back to the first.
 - Captions: 1-3 words, one highlighted keyword.
 
+## Engagement (owner, 2026-11-16: several Shorts reach ~1k views, then stall → they need comments, rewatches and full watches)
+Every video has all five beats. They cost no extra length (target stays 30-40 s; aim under 40).
+1. **Guess beat (first 4 s):** line 2 makes the viewer commit to an answer before the reveal. Two concrete options, e.g. "Is it
+   your stomach or your brain? Guess." On screen: two pills "A ..." / "B ..." pop on the options. The answer lands in the last 30%
+   with the right pill getting a check. The guess question is the video's main open loop.
+2. **Relatable beat:** one "you've felt this" line in the middle ("Ever had your stomach growl in a silent room?"). Specific, not generic.
+3. **Re-hook at ~50%:** a line starting with a turn ("But here's the weird part...", "And that's not even the strangest bit")
+   plus a clear visual change (new scene or a zoom into a new place). Never let 2 calm lines run back to back.
+4. **Rewatch detail:** one small on-screen detail that rewards a second look (a tiny sourced label, a background gag, a hidden
+   object that matters later). Only sourced facts in text.
+5. **Loop ending:** the final image cuts back toward frame 1 (same framing/object), so the replay feels seamless. The tease line stays last.
+- **Comments:** the pinned comment is the guess question with its two options ("A or B? Answer before you rewatch"), or an
+  "which one are you" question. One on-screen "COMMENT A OR B" pill may appear for ~1 s during the reveal, never voiced, never in the
+  first 3 s. Never "like and subscribe", never "comment below for part 2", never fake urgency (YouTube treats that as engagement bait).
+- **Shares:** the description's first line may be a share prompt tied to the topic ("Send this to the friend who never drinks water").
+- Log in meta.json: `engagement: {guess: "A vs B", relatable: "...", rehook_line: <n>, rewatch_detail: "...", loop: "..."}`.
+
 ## Subscribe beat
 - The series name is on the end card and in the title (the publisher appends "| Body Files #N" when it posts).
 - Ending hook (config `ending`): `tease_next` = the final line teases the NEXT video with one vivid detail ("Next Body File: what
