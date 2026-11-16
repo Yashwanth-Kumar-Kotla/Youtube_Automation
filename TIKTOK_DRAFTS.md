@@ -85,3 +85,10 @@ Pinned comment: What's the highest fever you've ever had, and did you get the sh
 What Happens When You Get a Sunburn? #bodyfiles #sunburn #skin #humanbody #health #science
 ```
 Pinned comment: What's the worst sunburn you've ever had, and did you peel days later?
+
+# 2026-11-16 captions (TikTok allows 5 hashtags — use these)
+- Stomach growls: `What Happens When Your Stomach Growls? #bodyfiles #stomachgrowling #humanbody #digestion #fyp`
+- Nosebleed: `What Happens When You Get a Nosebleed? #bodyfiles #nosebleed #humanbody #firstaid #fyp`
+- Fever: `What Happens When You Get a Fever? #bodyfiles #fever #humanbody #immunesystem #fyp`
+- Sunburn: `What Happens When You Get a Sunburn? #bodyfiles #sunburn #humanbody #skincare #fyp`
+_Older entries above list 6 hashtags; keep only the first 5 when you paste them._

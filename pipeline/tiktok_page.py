@@ -17,7 +17,7 @@ RAW = f"https://raw.githubusercontent.com/{REPO}"
 
 
 def caption(v: dict) -> str:
-    tags = [h.lstrip("#").replace(" ", "") for h in v.get("hashtags", [])][:6]
+    tags = [h.lstrip("#").replace(" ", "") for h in v.get("hashtags", [])][:5]
     return f"{v.get('title', '')} " + " ".join(f"#{t}" for t in tags)
 
 

@@ -55,7 +55,7 @@ def main() -> int:
         try:
             with tempfile.TemporaryDirectory() as tmp:
                 download(v["branch"], tmp)
-                tags = [h.lstrip("#").replace(" ", "") for h in v.get("hashtags", [])][:6]
+                tags = [h.lstrip("#").replace(" ", "") for h in v.get("hashtags", [])][:5]
                 cap = f"{v.get('title', '')} " + " ".join(f"#{t}" for t in tags)
                 pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode, privacy)
             if record:

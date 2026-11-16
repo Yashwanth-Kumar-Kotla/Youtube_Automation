@@ -229,7 +229,7 @@ def run(dry: bool = False) -> int:
                 if need_tt:
                     try:
                         from . import tiktok
-                        cap = f"{v['title']} " + " ".join(f"#{t}" for t in tags[:6])
+                        cap = f"{v['title']} " + " ".join(f"#{t}" for t in tags[:5])
                         pre = state.load("tiktok_drafts.json", {}).get(v["id"])  # already sent by tiktok_bulk/approval
                         tmode = c["tiktok"].get("mode", "draft")
                         ok = state.load("tiktok/approved.json", {}).get(v["id"]) if tmode == "direct" else None
@@ -287,7 +287,7 @@ def write_post_today(posts: dict) -> None:
                         "**Title** (paste exactly; the publisher matches on it)", "```", title, "```",
                         "**Description**", "```", v.get("description", "") + ("\n\n#shorts" if "#shorts" not in v.get("description", "").lower() else ""), "```",
                         "**Tags**", "```", tags, "```",
-                        "**TikTok caption**", "```", f"{v['title']} " + " ".join("#" + h.lstrip("#") for h in v.get("hashtags", [])[:5]) + " #fyp", "```",
+                        "**TikTok caption**", "```", f"{v['title']} " + " ".join("#" + h.lstrip("#") for h in v.get("hashtags", [])[:4]) + " #fyp", "```",
                         "**Pinned comment** (the publisher posts it for you on YouTube; on TikTok paste it yourself)", "```", v.get("pinned_comment", ""), "```", ""]
     if not pending:
         out.append("Nothing to upload right now.")
