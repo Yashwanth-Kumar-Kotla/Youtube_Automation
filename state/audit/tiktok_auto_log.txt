@@ -1,0 +1,2 @@
+mode: draft  privacy: default  record: True
+10 drafts recorded in state/tiktok_drafts.json
