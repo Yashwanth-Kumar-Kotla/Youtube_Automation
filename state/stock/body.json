@@ -74,7 +74,7 @@
    "research_file": "none",
    "length": 40.0,
    "confidence": 0.7,
-   "status": "scheduled",
+   "status": "posted",
    "branch": "stock/body/2026-11-09-body-01",
    "history": [
     {
@@ -91,9 +91,17 @@
      "at": "2026-11-11T00:35-06:00",
      "status": "ready->scheduled",
      "why": "slot 0 on 2026-11-11, episode 3, manual upload"
+    },
+    {
+     "at": "2026-11-16T19:36-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
     }
    ],
-   "description": "Your bladder holds about two cups, and nerves in its wall start nagging your brain long before it's full. If you suddenly can't pee at all, see a doctor right away.\nNext Body File: what happens if you get struck by lightning, and why it can paint a fern on your skin.\nFollow Body Files for a new one every day.\n#bodyfiles #bladder #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/body/25010-bladder\nNIDDK (NIH): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/15427-urinary-retention\nColumbiaDoctors: https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine\nHarvard Health: https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long"
+   "description": "Your bladder holds about two cups, and nerves in its wall start nagging your brain long before it's full. If you suddenly can't pee at all, see a doctor right away.\nNext Body File: what happens if you get struck by lightning, and why it can paint a fern on your skin.\nFollow Body Files for a new one every day.\n#bodyfiles #bladder #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic: https://my.clevelandclinic.org/health/body/25010-bladder\nNIDDK (NIH): https://www.niddk.nih.gov/health-information/urologic-diseases/urinary-tract-how-it-works\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/15427-urinary-retention\nColumbiaDoctors: https://www.columbiadoctors.org/news/can-your-bladder-burst-holding-your-urine\nHarvard Health: https://www.health.harvard.edu/staying-healthy/you-dont-say-can-your-bladder-burst-from-holding-it-too-long",
+   "posted": "2026-11-10",
+   "youtube": "06QOx0awTm0",
+   "note": "already in posts.json; stock status was stale"
   },
   "2026-11-09-body-02": {
    "title": "What Happens If You Get Struck by Lightning?",
@@ -122,16 +130,24 @@
    "research_file": "none",
    "length": 43.5,
    "confidence": 0.7,
-   "status": "scheduled",
+   "status": "posted",
    "branch": "stock/body/2026-11-09-body-02",
    "history": [
     {
      "at": "2026-11-12T05:25-06:00",
      "status": "ready->scheduled",
      "why": "slot 0 on 2026-11-12, episode 4, manual upload"
+    },
+    {
+     "at": "2026-11-16T19:36-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
     }
    ],
-   "description": "About 9 in 10 people struck by lightning survive, and the fern-like Lichtenberg figures some get are not burns: they fade within hours. If someone is struck, they're safe to touch, so call 911 and start CPR.\nNext Body File: what happens if you drink too much water, and why it can make your brain swell.\nFollow Body Files for a new one every day.\n#bodyfiles #lightning #humanbody #science #shorts #healthfacts\n\nSources:\nNWS (NOAA): https://www.weather.gov/safety/lightning-temperature\nNWS (NOAA): https://www.weather.gov/safety/lightning-odds\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC5253516/\nNWS (NOAA): https://www.weather.gov/safety/lightning-medical\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC10329080/\nNWS (NOAA): https://www.weather.gov/media/safety/Dr_Lightning_Guide-Victims.pdf\nNWS (NOAA): https://www.weather.gov/safety/lightning\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia"
+   "description": "About 9 in 10 people struck by lightning survive, and the fern-like Lichtenberg figures some get are not burns: they fade within hours. If someone is struck, they're safe to touch, so call 911 and start CPR.\nNext Body File: what happens if you drink too much water, and why it can make your brain swell.\nFollow Body Files for a new one every day.\n#bodyfiles #lightning #humanbody #science #shorts #healthfacts\n\nSources:\nNWS (NOAA): https://www.weather.gov/safety/lightning-temperature\nNWS (NOAA): https://www.weather.gov/safety/lightning-odds\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC5253516/\nNWS (NOAA): https://www.weather.gov/safety/lightning-medical\nNIH PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC10329080/\nNWS (NOAA): https://www.weather.gov/media/safety/Dr_Lightning_Guide-Victims.pdf\nNWS (NOAA): https://www.weather.gov/safety/lightning\nCleveland Clinic: https://my.clevelandclinic.org/health/diseases/17762-hyponatremia",
+   "posted": "2026-11-12",
+   "youtube": "ydfZSZtqBrI",
+   "note": "already in posts.json; stock status was stale"
   },
   "2026-11-09-body-03": {
    "title": "What Happens If You Drink Too Much Water?",
@@ -845,6 +861,49 @@
    "branch": "stock/body/2026-11-16-body-01",
    "history": [],
    "description": "Send this to the friend who whispers all day when they lose their voice.\nLaryngitis is when your voice box or vocal cords become irritated or swollen, usually from a virus like a cold, but yelling and overusing your voice can do it too. Swollen cords can't vibrate properly, so your voice goes hoarse or disappears. The NHS says to speak as little as possible and not to talk loudly or whisper, because both strain your voice, and to drink plenty of fluids. It usually clears up on its own within 1 to 2 weeks; see a doctor if it hasn't improved after 2 weeks or keeps coming back, and get urgent help if it's very painful to swallow or hard to breathe.\nNext Body File: energy drinks, where some cans pack six times the caffeine of others.\nFollow Body Files for a new one every day.\n#bodyfiles #laryngitis #voice #throat #humanbody #health #science #shorts\n\nSources:\nNHS, Laryngitis: https://www.nhs.uk/conditions/laryngitis/\nCleveland Clinic, Laryngitis: https://my.clevelandclinic.org/health/diseases/22268-laryngitis\nCleveland Clinic, Vocal Cords: https://my.clevelandclinic.org/health/body/24456-vocal-cords\nFDA, Spilling the Beans: How Much Caffeine Is Too Much?: https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much"
+  },
+  "2026-11-16-body-02": {
+   "title": "What Happens When You Drink an Energy Drink?",
+   "hashtags": [
+    "#bodyfiles",
+    "#energydrink",
+    "#caffeine",
+    "#heart",
+    "#humanbody",
+    "#health",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "Five hours after an energy drink: A) a quarter of the caffeine left or B) half? Answer before you rewatch.",
+   "series": "Body Files",
+   "topic": "What happens when you drink an energy drink?",
+   "experiment_arm": "E1-A (hook with a number: line 2 'Five hours later'); E4 tease_next",
+   "teases": "What happens if you hold your breath too long?",
+   "topic_cluster": "heart",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the lose-your-voice video (work/2026-11-16-body-1) with 'energy drinks, where some cans pack six times the caffeine' (paid off in line index 2: 'Some cans: fifty-four milligrams. Others: three twenty-eight.', FDA range per 16 fl oz)",
+   "hook_pattern": "question+timeline-guess",
+   "first_frame": "hero-mid-action (hero mid-sip of a plain unbranded can, x-ray cyan body with yellow caffeine dots pouring in, wall clock at 0:00; A A QUARTER / B HALF pills pop on the spoken options at 4.2 s / 5.5 s)",
+   "format": "timeline",
+   "engagement": {
+    "guess": "A a quarter left vs B half left, five hours later (answer: B, half; Cleveland Clinic: caffeine half-life is five hours)",
+    "relatable": "Ever had one on a late drive, then lay awake?",
+    "rehook_line": 6,
+    "answer_line": 9,
+    "rewatch_detail": "The wall clock from frame 1 stays in the corner of every timeline shot and jumps 0:00 → 0:15 → 0:45 → 5:00 on the spoken time stamps; on the two cans in line 3 a tiny label reads 'per 16 fl oz · FDA', and the 5:00 answer frame keeps exactly every other dot of frame 1. Only sourced numbers on screen.",
+    "loop": "Final shot cuts back to the frame-1 framing: hero holding the same unbranded can under the clock with the A/B pills, now with a check on B and half the yellow dots still in the x-ray body; the replay lands on the same image at 0:00 with all the dots."
+   },
+   "id": "2026-11-16-body-02",
+   "channel": "body",
+   "made_at": "2026-11-16T04:12-06:00",
+   "made_week": "2026-W47",
+   "playbook_version": "pb-bdd55284",
+   "research_file": "research/2026-W46.md",
+   "length": 38.0,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-16-body-02",
+   "history": [],
+   "description": "Send this to the coworker who calls an energy drink 'lunch'.\nEnergy drinks range from 54 to 328 mg of caffeine per 16 fluid ounces (FDA), about six times apart. You can feel caffeine within about 15 minutes, it's absorbed within about 45, and with a half-life of about five hours, half is still in you five hours later. Too much can mean jitters, a racing heart and lost sleep. The FDA cites 400 mg a day for most adults, and medical experts advise against energy drinks for children and teens. A preliminary 2026 AHA conference abstract (not peer-reviewed) found heart events mentioned more often in FDA adverse-event reports involving caffeine and stimulant products; it shows an association, not proof, and not your personal risk. Questions about your heart? See a doctor.\nNext Body File: holding your breath, and why the urge to breathe isn't about oxygen.\nFollow Body Files for a new one every day.\n#bodyfiles #energydrink #caffeine #heart #humanbody #health #science #shorts\n\nSources:\nFDA, Spilling the Beans: How Much Caffeine Is Too Much?: https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much\nCleveland Clinic, How To Quit Caffeine: https://health.clevelandclinic.org/how-to-quit-caffeine\nCleveland Clinic, How To Get Caffeine Out of Your System: https://health.clevelandclinic.org/how-to-get-caffeine-out-of-your-system\nHarvard T.H. Chan School of Public Health, The Nutrition Source, Caffeine: https://nutritionsource.hsph.harvard.edu/caffeine/\nAmerican Heart Association newsroom (Scientific Sessions 2026 abstract): https://newsroom.heart.org/news/energy-drinks-stimulant-products-linked-to-cardiac-arrest-heart-attack-in-young-adults\nDAN Europe Alert Diver, breath-hold diving incidents: https://alertdiver.eu/en_US/articles/dan-begins-reporting-on-incident-collection-of-breath-hold-diving/"
   }
  }
 }

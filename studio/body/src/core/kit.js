@@ -12,6 +12,7 @@ export function gum(x, y, s, rot = 0, sx = 1, sy = 1) {
   ctx.restore();
 }
 
+
 /** the J-shaped stomach (flat, pink, highlight). s = scale; pulse 0..1 swells it */
 function stomachPath() {
   ctx.beginPath(); ctx.moveTo(-30, -110);
@@ -19,6 +20,7 @@ function stomachPath() {
   ctx.bezierCurveTo(-80, 120, 40, 120, 90, 60);
   ctx.bezierCurveTo(120, 25, 110, -10, 95, -20);
 }
+
 export function stomach(x, y, s, pulse = 0) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   stomachPath(); ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 92 + pulse * 14; ctx.stroke();
@@ -26,8 +28,10 @@ export function stomach(x, y, s, pulse = 0) {
   ctx.save(); ctx.translate(-8, -8); stomachPath(); ctx.strokeStyle = C.pinkLight; ctx.globalAlpha = 0.7; ctx.lineWidth = 22; ctx.stroke(); ctx.restore();
   ctx.restore();
 }
+
 /** the stomach's top opening in local units (where the esophagus joins), for a stomach drawn at (x, y, s) */
 export const stomachTop = (x, y, s) => [x - 30 * s, y - 110 * s];
+
 
 /** flat heart icon. beat 0..1 scales it up */
 export function heart(x, y, s, beat = 0) {
@@ -37,6 +41,7 @@ export function heart(x, y, s, beat = 0) {
   ell(-48, -52, 22, 12, C.pinkLight, -0.6);
   ctx.restore();
 }
+
 
 /** stopwatch. ang = hand angle in radians */
 export function stopwatch(x, y, s, ang) {
@@ -50,6 +55,7 @@ export function stopwatch(x, y, s, ang) {
   ctx.restore();
 }
 
+
 /** tear-off calendar card: big number + word under it. Card is 600x680 at s = 1 */
 export function calendar(x, y, s, big, small, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
@@ -62,6 +68,7 @@ export function calendar(x, y, s, big, small, rot = 0) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ GRAPHICS ═════════════════════════
 /** dark rounded label ("GUM BASE"). sc animates the pop */
 export function pill(text, x, y, size, bg = C.ink, fg = C.white, sc = 1) {
@@ -73,12 +80,14 @@ export function pill(text, x, y, size, bg = C.ink, fg = C.white, sc = 1) {
   ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 0, size * 0.05);
   ctx.letterSpacing = '0px'; ctx.restore();
 }
+
 /** label with a pointer line down to a target point */
 export function tag(text, x, y, tx, ty, size = 60, sc = 1) {
   if (sc <= 0) return;
   ctx.save(); ctx.globalAlpha = clamp(sc); line([[x, y], [tx, ty]], C.ink, 8); ctx.restore();
   pill(text, x, y, size, C.ink, C.white, sc);
 }
+
 /** the danger X (red, ink outline). a = alpha, thin = stroke width multiplier (0.5 = thinner X, shows what's under it) */
 export function redX(x, y, s, a = 1, thin = 1) {
   if (a <= 0) return;
@@ -86,6 +95,7 @@ export function redX(x, y, s, a = 1, thin = 1) {
   for (const [w, c] of [[96 * thin, C.ink], [72 * thin, C.red]]) { ctx.strokeStyle = c; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(-230, -230); ctx.lineTo(230, 230); ctx.moveTo(230, -230); ctx.lineTo(-230, 230); ctx.stroke(); }
   ctx.restore();
 }
+
 /** flat red arrow pointing along ang (radians). len in px */
 export function arrow(x, y, len, ang = 0, a = 1) {
   if (a <= 0) return;
@@ -94,6 +104,7 @@ export function arrow(x, y, len, ang = 0, a = 1) {
   ctx.lineTo(len / 2 - 110, 80); ctx.lineTo(len / 2 - 110, 28); ctx.lineTo(-len / 2, 28); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill();
   ctx.restore();
 }
+
 /** red warning triangle with "!" */
 export function warning(x, y, s) {
   if (s <= 0) return;
@@ -103,6 +114,7 @@ export function warning(x, y, s) {
   rr(-14, -60, 28, 110, 14); ctx.fillStyle = C.white; ctx.fill(); circle(0, 82, 17, C.white);
   ctx.restore();
 }
+
 /** "enzyme" chomper: pink pac-man. open = mouth angle (rad), flip = face left */
 export function chomper(x, y, r, open, flip) {
   ctx.save(); ctx.translate(x, y); if (flip) ctx.scale(-1, 1);
@@ -110,6 +122,7 @@ export function chomper(x, y, r, open, flip) {
   ctx.lineWidth = 6; ctx.strokeStyle = C.pinkDark; ctx.stroke(); circle(r * 0.15, -r * 0.5, r * 0.13, C.ink);
   ctx.restore();
 }
+
 /** impact burst (yellow rays) */
 export function burst(x, y, s, a) {
   if (a <= 0) return;
@@ -117,11 +130,13 @@ export function burst(x, y, s, a) {
   for (let i = 0; i < 8; i++) { const an = i * Math.PI / 4; ctx.beginPath(); ctx.moveTo(Math.cos(an) * 30 * s, Math.sin(an) * 30 * s); ctx.lineTo(Math.cos(an) * 80 * s, Math.sin(an) * 80 * s); ctx.stroke(); }
   ctx.restore();
 }
+
 /** horizontal speed lines trailing left of (x, y) */
 export function speedLines(x, y, a) {
   if (a <= 0) return;
   ctx.save(); ctx.globalAlpha = a; for (let i = 0; i < 5; i++) line([[x - 80 - i * 20, y - 60 + i * 30], [x - 260 - i * 40, y - 60 + i * 30]], C.ink, 10); ctx.restore();
 }
+
 /** three "shock" strokes around a point (head reaction) */
 export function shockLines(x, y, r, a) {
   if (a <= 0) return;
@@ -129,6 +144,7 @@ export function shockLines(x, y, r, a) {
   for (const an of [-2.4, -Math.PI / 2, -0.75]) line([[x + Math.cos(an) * r, y + Math.sin(an) * r], [x + Math.cos(an) * (r + 70), y + Math.sin(an) * (r + 70)]], C.ink, 14);
   ctx.restore();
 }
+
 
 // ═════════════════════════ BACKGROUNDS ═════════════════════════
 /** (A) real world: a simple room with a window, framed picture, plant and floor */
@@ -144,6 +160,7 @@ export function room() {
   for (const [x, y, r] of [[130, 1170, -0.5], [170, 1140, 0], [210, 1170, 0.5], [150, 1110, -0.2], [195, 1105, 0.25]]) ell(x, y, 26, 62, C.leaf, r);
   rr(110, 1200, 120, 130, 14); ctx.fillStyle = C.pot; ctx.fill();
 }
+
 /** (B) x-ray: navy film with a cyan grid and a sweeping scan line */
 export function xray(t) {
   fillAll(C.navy);
@@ -154,6 +171,7 @@ export function xray(t) {
   ctx.globalAlpha = 0.1; ctx.fillStyle = C.cyan; ctx.fillRect(-300, sy, W + 600, 70);
   ctx.globalAlpha = 0.25; ctx.fillRect(-300, sy + 66, W + 600, 6); ctx.globalAlpha = 1;
 }
+
 /** (C) inside the stomach: wobbling pink wall, folds, acid pool (acid = 0..1 strength), rising bubbles */
 export function insideStomach(t, acid = 1) {
   fillAll(C.stomachBg);
@@ -179,6 +197,7 @@ export function insideStomach(t, acid = 1) {
   }
   ctx.restore();
 }
+
 
 // ═════════════════════════ INTESTINE ═════════════════════════
 /** serpentine gut path (5 rows) filling the upper screen; returns { pts, at(u) -> [x, y, angle], draw() } */
@@ -208,6 +227,7 @@ export function makeGut({ L = 210, R = 870, r = 100, y0 = 320, rows = 5 } = {}) 
   };
   return { pts, at, draw };
 }
+
 /** a straight gut segment across the screen at y (close-up). Returns nothing; draw blockages on top */
 export function gutTube(y, t = 0, width = 300) {
   const tube = () => { ctx.beginPath(); for (let x = -150; x <= 1230; x += 20) { const yy = y + Math.sin(x * 0.006 + t * 0.5) * 20; x === -150 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); } };
@@ -216,6 +236,7 @@ export function gutTube(y, t = 0, width = 300) {
   tube(); ctx.strokeStyle = C.pink; ctx.lineWidth = width; ctx.stroke();
   tube(); ctx.strokeStyle = C.pinkLight; ctx.globalAlpha = 0.5; ctx.lineWidth = width * 0.2; ctx.stroke(); ctx.globalAlpha = 1;
 }
+
 
 // ═════════════════════════ CHARACTER ═════════════════════════
 // One hero: flat man, blue tee, navy pants. Origin = chest centre; at s = 1 he is ~950 px tall (head top -480, feet +620).
@@ -227,11 +248,15 @@ export const ARM = {
   wave: { e: [250, -120], h: [300, -330] },
   hip: { e: [250, 20], h: [150, 110] },
 };
+
 export const armPose = (a, b, t) => ({ e: [lerp(a.e[0], b.e[0], t), lerp(a.e[1], b.e[1], t)], h: [lerp(a.h[0], b.h[0], t), lerp(a.h[1], b.h[1], t)] });
+
 /** mouth position in the man's local coords (for things going in / out of the mouth) */
 export const MOUTH = [0, -272];
+
 /** points along the food path in local coords: mouth -> throat -> stomach top -> inside stomach */
 export const FOOD_PATH = [[0, -262], [0, -200], [-4, -80], [-12, 58]];
+
 
 function arm(side, pose, finger, xr) {
   const sx = side, sh = [140 * sx, -170], e = [pose.e[0] * sx, pose.e[1]], h = [pose.h[0] * sx, pose.h[1]];
@@ -253,11 +278,13 @@ function arm(side, pose, finger, xr) {
   if (finger != null) { ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(finger); rr(-11, -86, 22, 80, 11); ctx.fillStyle = _sk; ctx.fill(); ctx.restore(); }
   ctx.save(); ctx.translate(h[0], h[1]); ctx.rotate(ang); ell(6, 0, 34, 28, _sk); ell(-2, -sx * 22, 15, 10, _sk, -0.5 * sx); ctx.restore();
 }
+
 function torsoPath() {
   ctx.beginPath(); ctx.moveTo(-50, -214);
   ctx.bezierCurveTo(-130, -214, -162, -196, -164, -120); ctx.lineTo(-140, 192); ctx.quadraticCurveTo(-138, 210, -120, 210);
   ctx.lineTo(120, 210); ctx.quadraticCurveTo(138, 210, 140, 192); ctx.lineTo(164, -120); ctx.bezierCurveTo(162, -196, 130, -214, 50, -214); ctx.closePath();
 }
+
 function skeletonTorso(pulse, lungSq = null, dia = null) {
   ctx.save(); torsoPath(); ctx.clip();
   ctx.fillStyle = C.xnavy; ctx.fillRect(-170, -220, 340, 440);
@@ -274,6 +301,7 @@ function skeletonTorso(pulse, lungSq = null, dia = null) {
   ctx.restore();
   ctx.save(); ctx.globalAlpha = 0.8; torsoPath(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 7; ctx.stroke(); ctx.restore();
 }
+
 function head(o) {
   ctx.save(); ctx.translate(0, -350);
   const HC = o.hairCol || C.hair;
@@ -363,8 +391,10 @@ function head(o) {
   if (m === 'grin') { ctx.beginPath(); ctx.moveTo(-34, 66); ctx.quadraticCurveTo(0, 112, 34, 66); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); rr(-26, 66, 52, 12, 4); ctx.fillStyle = C.white; ctx.fill(); }
   ctx.restore();
 }
+
 // ── tears on the hero's face (crying set, 2026-11-14 "crying") ──
 const TEAR_D = '#7EC3E0', SKIN_HI_H = '#F2CDB5';
+
 /** head-local tears: o.cry 0..1 = pale-blue pools on the lower lids + streams down the cheeks with drops rolling (o.ct = film
  *  time); o.gush 0..1 = playful cartoon fountains arcing out sideways from both eyes, o.gushTo = [dx, dy] arc end (head units) */
 function headTears(o) {
@@ -388,6 +418,7 @@ function headTears(o) {
   }
   ctx.restore();
 }
+
 /**
  * The hero. o = { x, y, s, arm (pose), finger (rad or null), eyes, mouth, chew, brow, smirk, frown, look (-1..1),
  *   xray (bool: whole body becomes x-ray, head stays normal), pulse (stomach swell 0..1),
@@ -400,16 +431,22 @@ function headTears(o) {
  *   burn 0..1 (sunburn set: face, neck, arms and hands turn sunburn pink-red) }
  */
 let _coat = false, _shirt = [C.shirt, C.shirtShade], _diaHi = 0, _sk = C.skin;
+
 const BURN_SK = "#E8836F";
+
 const BOOT = '#5A4030', CAP = '#7A5A3A', CAP_D = '#5A4030';
+
 /** denim overalls bib + straps over the shirt (the farmer look), in torso coords */
 function overallsBib() {
   rr(-96, -96, 192, 306, [26, 26, 0, 0]); ctx.fillStyle = C.pants; ctx.fill(); rr(40, -96, 56, 306, [0, 26, 0, 0]); ctx.fillStyle = C.pantsShade; ctx.fill();
   rr(-50, -40, 100, 60, 10); ctx.fillStyle = C.pantsShade; ctx.fill();
   for (const sd of [-1, 1]) { line([[sd * 76, -90], [sd * 112, -206]], C.pants, 30); circle(sd * 72, -78, 11, C.yellow); }
 }
+
 const COAT_D = '#DCD6CB';
+
 const QUEASY_G = '#9FD39A';
+
 export function man(o) {
   const s = o.s || 1, XR = !!o.xray; _coat = !!o.coat && !XR; _sk = o.burn > 0 ? mixHex(C.skin, BURN_SK, o.burn) : C.skin;   // burn 0..1: sunburnt skin (face, neck, arms) _shirt = o.shirtCol ? [o.shirtCol, o.shirtShade || o.shirtCol] : [C.shirt, C.shirtShade];
   const LEG = o.sit ? 170 : 440; _diaHi = o.diaHi || 0;
@@ -446,6 +483,7 @@ export function man(o) {
   if (o.inside) gum(o.inside[0], o.inside[1], 0.5, o.inside[2] || 0);
   ctx.restore(); _coat = false; _shirt = [C.shirt, C.shirtShade]; _sk = C.skin;
 }
+
 /** white lab coat over the torso (open V showing the blue tee), lapels, pocket + pen, ink stethoscope */
 function labCoat() {
   ctx.save(); torsoPath(); ctx.clip();
@@ -462,22 +500,29 @@ function labCoat() {
   ctx.beginPath(); ctx.moveTo(-38, -60); ctx.quadraticCurveTo(0, -30, 38, -60); ctx.moveTo(38, -60); ctx.quadraticCurveTo(60, 10, 40, 50); ctx.stroke();
   circle(40, 62, 20, C.ink); circle(40, 62, 13, C.gumEdge);
 }
+
 /** the doctor of the knuckle story: a man() in a white lab coat with grey hair + round glasses (not the hero) */
 export function doctor(o) { man({ hairCol: '#B9B2A6', glasses: true, ...o, coat: true }); }
+
 /** follow FOOD_PATH: u 0..1 → [x, y] in the man's local coords */
 export function foodAt(u) {
   const P = FOOD_PATH, n = P.length - 1, k = clamp(u) * n, i = Math.min(n - 1, Math.floor(k)), f = k - i;
   return [lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f)];
 }
 
+
 // ═════════════════════════ HAND (knuckle video) ═════════════════════════
 // Back of a RIGHT hand, fingers up, pinky on the right. Origin = palm centre; at s = 1 the hand is ~620 px tall.
 const FINGERS = [ // [knuckle x, knuckle y, length, wrist x]  index → pinky
   [-105, -100, 270, -58], [-35, -112, 300, -20], [35, -104, 280, 20], [105, -80, 215, 58]];
+
 const WRIST_Y = 200;
+
 const fingerPts = (f) => { const [kx, ky, len] = f; return [[kx, ky], [kx * 1.06, ky - len * 0.45], [kx * 1.1, ky - len * 0.75], [kx * 1.12, ky - len]]; };
+
 /** knuckle (metacarpal head) position of finger i (0 index .. 3 pinky) in the hand's local coords */
 export const knuckleAt = (i) => [FINGERS[i][0], FINGERS[i][1]];
+
 
 /** flat skin hand. puff 0..1 swells it (balloon), bruise 0..1 reddens it, splint 0..1 slides a splint on (pinky side) */
 export function handSkin(x, y, s, { puff = 0, bruise = 0, splint = 0, rot = 0, sleeve = C.shirt } = {}) {
@@ -509,6 +554,7 @@ export function handSkin(x, y, s, { puff = 0, bruise = 0, splint = 0, rot = 0, s
   }
   ctx.restore();
 }
+
 
 /** x-ray hand bones (cyan on navy). glow 0..1 lights the knuckles yellow, crack 0..1 draws the pinky break,
  *  heal 0..1 grows new bone (callus) over the crack, hot 0..1 pulses a red ring on the pinky knuckle */
@@ -547,8 +593,10 @@ export function handBones(x, y, s, { glow = 0, crack = 0, heal = 0, hot = 0, t =
   }
   ctx.restore();
 }
+
 /** where the boxer's fracture sits, in canvas coords, for a handBones drawn at (x, y, s) */
 export const fractureAt = (x, y, s) => { const [kx, ky, , wx] = FINGERS[3]; return [x + lerp(wx, kx, 0.72) * s, y + lerp(WRIST_Y, ky, 0.72) * s]; };
+
 
 /** a fist seen from the knuckle side: four knuckle bumps on top. sink 0..1 drops the pinky knuckle out of sight.
  *  rot rotates the whole fist (e.g. -PI/2 = knuckles facing right, for a punch) */
@@ -563,6 +611,7 @@ export function fistSide(x, y, s, { sink = 0, rot = 0, squash = 0 } = {}) {
   kx.forEach((k, i) => { if (i < 3 || sink < 0.5) ell(k - 14, -78 + (i === 3 ? sink * 80 : 0), 20, 10, C.white + '66'); });
   ctx.restore();
 }
+
 
 /** brick wall (flat). face 0..1 fades in a smug little face */
 export function brickWall(x, y, w, h, face = 0) {
@@ -584,14 +633,17 @@ export function brickWall(x, y, w, h, face = 0) {
 /** extra arm pose for the hero: straight punch to the right */
 ARM.punch = { e: [300, -150], h: [470, -160] };
 
+
 // ═════════════════════════ SLEEP SET (2026-11-08 "11 days without sleep") ═════════════════════════
 const WOOD = '#B5653F', WOOD_D = '#9A5333', BLANKET = '#BFE3F2', BLANKET_D = '#9DCBE0', RED_D = '#A81E2D', SMOKE = '#C9C2B5';
+
 
 /** just the hero's head (same drawing as man()), face centre at (x, y). rot tilts it (-PI/2 = lying, top to the left).
  *  o = the man() face options: eyes, mouth, brow, smirk, frown, look, tired */
 export function heroHead(x, y, s, o = {}, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.translate(0, 338); head(o); ctx.restore();
 }
+
 
 /** side-view bed: headboard on the left, pillow, blanket. Origin = mattress top centre, ~800 px wide at s = 1.
  *  sleeper: face options for the hero lying in it (null = empty bed). breathe 0..1 lifts the blanket */
@@ -611,6 +663,7 @@ export function bed(x, y, s, { sleeper = null, breathe = 0 } = {}) {
   ctx.restore();
 }
 
+
 /** floating "Z z z" (sleep). a = alpha, t = film time */
 export function zzz(x, y, t, a = 1, size = 90) {
   if (a <= 0) return;
@@ -623,6 +676,7 @@ export function zzz(x, y, t, a = 1, size = 90) {
   }
 }
 
+
 /** night version of room(): dimmed walls, dark window with a moon */
 export function nightRoom() {
   room();
@@ -632,6 +686,7 @@ export function nightRoom() {
   for (const [sx, sy] of [[680, 300], [720, 560], [880, 520], [660, 470]]) circle(sx, sy, 5, C.gum);
   ctx.fillStyle = '#6E7A86'; ctx.fillRect(772, 252, 14, 396); ctx.fillRect(622, 442, 316, 14);
 }
+
 
 /** flat side-view brain (pink, darker rim, folds, highlight). wob 0..1 = jiggle, t = film time */
 export function brain(x, y, s, { t = 0, wob = 0 } = {}) {
@@ -653,6 +708,7 @@ export function brain(x, y, s, { t = 0, wob = 0 } = {}) {
   ctx.restore();
 }
 
+
 /** fuel gauge dial (graphic: white face, ink rim). level 0 (E, red zone) .. 1 (F) */
 export function fuelGauge(x, y, s, level) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -667,6 +723,7 @@ export function fuelGauge(x, y, s, level) {
   ctx.restore();
 }
 
+
 /** grey fume puffs rising from (x, y). a = alpha */
 export function fumes(x, y, t, a = 1) {
   if (a <= 0) return;
@@ -678,6 +735,7 @@ export function fumes(x, y, t, a = 1) {
   }
 }
 
+
 /** battery (graphic). level 0..1: cells fill yellow, red when low */
 export function battery(x, y, s, level) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -687,6 +745,7 @@ export function battery(x, y, s, level) {
   for (let i = 0; i < 4; i++) { const f = clamp(lv * 4 - i); if (f > 0) { rr(-134 + i * 69, -54, 60 * f, 108, 10); ctx.fillStyle = col; ctx.fill(); } }
   ctx.restore();
 }
+
 
 /** faint hallucination "ghost": wobbly white blob with dot eyes. a = alpha (keep it faint, 0.3-0.6) */
 export function ghost(x, y, s, a, t = 0) {
@@ -700,6 +759,7 @@ export function ghost(x, y, s, a, t = 0) {
   ctx.restore();
 }
 
+
 /** white speech bubble (graphic), tail toward (tx, ty) */
 export function bubble(x, y, w, h, tx, ty, sc = 1) {
   if (sc <= 0) return;
@@ -710,6 +770,7 @@ export function bubble(x, y, w, h, tx, ty, sc = 1) {
   ctx.fillStyle = C.white; shape(); ctx.fill(); tail(); ctx.fill();
   ctx.restore();
 }
+
 /** tangled scribble (a "tongue twister" knot). p 0..1 = how much of it is drawn */
 export function tangle(x, y, s, p, col = C.ink) {
   if (p <= 0) return;
@@ -717,6 +778,7 @@ export function tangle(x, y, s, p, col = C.ink) {
   for (let i = 0; i <= n * clamp(p); i++) { const u = i / n; pts.push([x + s * (lerp(-170, 170, u) + 55 * Math.cos(u * TAU * 4.5)), y + s * (48 * Math.sin(u * TAU * 4.5) + 18 * Math.sin(u * TAU * 1.3))]); }
   if (pts.length > 1) line(pts, col, 13 * s);
 }
+
 
 /** horseshoe magnet (red, darker shade, silver tips). Opening points up at rot = 0 */
 export function magnet(x, y, s, rot = 0) {
@@ -728,6 +790,7 @@ export function magnet(x, y, s, rot = 0) {
   for (const sd of [-1, 1]) { rr(sd * 110 - 52, -210, 104, 96, 8); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(sd * 110 - 52, -210, 104, 30, [8, 8, 0, 0]); ctx.fillStyle = C.white; ctx.fill(); }
   ctx.restore();
 }
+
 
 /** series end-card badge: ink pill with a yellow folder icon + text (series name only: "BODY FILES") */
 export function filesBadge(text, x, y, size, sc = 1) {
@@ -742,6 +805,7 @@ export function filesBadge(text, x, y, size, sc = 1) {
   ctx.fillStyle = C.white; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(text, fx + ic + size * 0.4, size * 0.05);
   ctx.letterSpacing = '0px'; ctx.restore();
 }
+
 /** small pulsing red "+ FOLLOW" pill. sc = pop-in, t = film time */
 export function followPill(x, y, sc, t, size = 46) {
   if (sc <= 0) return;
@@ -751,6 +815,7 @@ export function followPill(x, y, sc, t, size = 46) {
 // ═════════════════════════ MAGNET SET (2026-11-08 "swallow a magnet") ═════════════════════════
 /** hand on the belly (rubbing a sore tummy), for the RIGHT arm */
 ARM.belly = { e: [205, 30], h: [70, 95] };
+
 
 /** small bar magnet: red N half + silver S half, ink-free flat look. ~140x60 px at s = 1.
  *  face: { look (-1..1), mad (bool) } adds dot eyes on the red half (the "hunting" magnets). xr = x-ray film look (white).
@@ -777,6 +842,7 @@ export function barMagnet(x, y, s, rot = 0, { face = null, xr = false, flip = fa
   ctx.restore();
 }
 
+
 /** close-up of two neighbouring gut loops (horizontal tubes at yA, yB, width w). pull 0..1 drags both walls toward
  *  each other around x = cx until they touch in the middle (the magnet pinch). Returns { a(x), b(x) } = tube centre ys. */
 export function gutPair(yA, yB, t, pull = 0, { cx = 540, w = 250 } = {}) {
@@ -794,12 +860,14 @@ export function gutPair(yA, yB, t, pull = 0, { cx = 540, w = 250 } = {}) {
   return { a, b, meet };
 }
 
+
 /** red "pinch" ring at a point (flat outline, pulses with p 0..1). Danger marker, no gore */
 export function pinchRing(x, y, rx, ry, p, a = 1) {
   if (a <= 0) return;
   ctx.save(); ctx.globalAlpha = a; ctx.beginPath(); ctx.ellipse(x, y, rx * (1 + p * 0.1), ry * (1 + p * 0.1), 0, 0, TAU);
   ctx.setLineDash([34, 20]); ctx.lineDashOffset = -p * 60; ctx.strokeStyle = C.red; ctx.lineWidth = 14; ctx.stroke(); ctx.setLineDash([]); ctx.restore();
 }
+
 
 /** belly-ache swirls (three little ink spirals around a point). a = alpha, t = film time */
 export function ache(x, y, t, a = 1) {
@@ -813,6 +881,7 @@ export function ache(x, y, t, a = 1) {
   ctx.restore();
 }
 
+
 /** doctor's clipboard with a red medical cross. Board ~420x560 at s = 1. p 0..1 writes the lines */
 export function clipboard(x, y, s, p = 1, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
@@ -824,11 +893,13 @@ export function clipboard(x, y, s, p = 1, rot = 0) {
   ctx.restore();
 }
 
+
 /** lightbox with an x-ray film: ink frame, navy film clipped inside; inner(t) draws the film contents */
 export function lightbox(x, y, w, h, t, inner) {
   rr(x, y, w, h, 40); ctx.fillStyle = C.ink; ctx.fill();
   ctx.save(); rr(x + 28, y + 28, w - 56, h - 56, 24); ctx.clip(); xray(t); if (inner) inner(); ctx.restore();
 }
+
 
 /** cartoon bladder balloon: pink balloon with two thin tubes (ureters) on top, a short neck below, yellow fill inside.
  *  fill 0..1 = how full (it also grows), wob = jiggle 0..1, t = film time. ~360 px tall at fill 0.5, s = 1 */
@@ -851,8 +922,10 @@ export function bladder(x, y, s, fill = 0.5, { t = 0, wob = 0 } = {}) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ BLADDER SET (2026-11-09 "hold your pee too long") ═════════════════════════
 const MUSCLE_D = '#A8445A', GERM = C.leaf, GERM_D = '#468F55', GERM_L = '#8ED19A', STORM = '#6E7A86', STORM_D = '#5A6573';
+
 
 /** glass measuring cup (front view, handle on the right, pour spout top-left, red scale marks + "1 CUP" line).
  *  Pale water inside up to fill 0..1 (liq = liquid colour). ~300x320 px at s = 1 */
@@ -874,6 +947,7 @@ export function measuringCup(x, y, s, fill = 1, t = 0, liq = C.sky) {
   ctx.restore();
 }
 
+
 /** the room() window turned stormy: grey sky, a storm cloud and (bolt 0..1 alpha) a small lightning bolt, all OUTSIDE
  *  behind the glass. Call right after room(). t = film time */
 export function stormWindow(t, bolt = 0, flash = 0) {
@@ -886,6 +960,7 @@ export function stormWindow(t, bolt = 0, flash = 0) {
   ctx.fillStyle = C.white; ctx.fillRect(772, 252, 14, 396); ctx.fillRect(622, 442, 316, 14);
 }
 
+
 /** "pause" badge (white disc, ink ring, two ink bars). sc = pop-in */
 export function pauseIcon(x, y, s, sc = 1) {
   if (sc <= 0) return;
@@ -894,6 +969,7 @@ export function pauseIcon(x, y, s, sc = 1) {
   rr(-52, -60, 34, 120, 10); ctx.fillStyle = C.ink; ctx.fill(); rr(18, -60, 34, 120, 10); ctx.fill();
   ctx.restore();
 }
+
 
 /** a nerve: pink cord along pts (canvas coords), with a yellow signal blip at p 0..1 (p outside 0..1 = no blip).
  *  draw = how much of the cord is drawn 0..1 */
@@ -910,6 +986,7 @@ export function nerve(pts, p = -1, drawn = 1) {
   }
   return at;
 }
+
 
 /** bladder neck close-up: a pink tube going DOWN from (x, y), len px, with two sphincter ring muscles.
  *  sq 0..1 = the rings clamp the tube shut; a = ring alpha (pop them in); flow 0..1 = yellow pee in the channel */
@@ -939,8 +1016,10 @@ export function sphincters(x, y, s, sq = 0, { a = 1, len = 600, flow = 1 } = {})
   }
   ctx.restore();
 }
+
 /** canvas y of sphincter ring i (0 upper, 1 lower) for sphincters drawn at (y, s, len) */
 export const sphincterY = (y, s, i, len = 600) => y + len * (i ? 0.66 : 0.33) * s;
+
 
 /** a friendly-mischievous bacterium: green capsule, wiggly tails, dot eyes, grin. ~130x60 px at s = 1 */
 export function bacterium(x, y, s, rot = 0, t = 0, sc = 1) {
@@ -955,6 +1034,7 @@ export function bacterium(x, y, s, rot = 0, t = 0, sc = 1) {
   ctx.beginPath(); ctx.moveTo(18, 12); ctx.quadraticCurveTo(32, 22, 48, 10); ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.stroke();
   ctx.restore();
 }
+
 
 /** (D) inside the bladder: deep pink, a wobbling lighter wall, soft wall folds, a yellow pee pool from y = level */
 export function insideBladder(t, level = 1100) {
@@ -975,6 +1055,7 @@ export function insideBladder(t, level = 1100) {
   ctx.restore();
 }
 
+
 /** white toilet, front view (tank, seat, bowl, base). Origin = seat centre; ~420 px tall at s = 1 */
 export function toilet(x, y, s, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
@@ -989,6 +1070,7 @@ export function toilet(x, y, s, rot = 0) {
   ctx.restore();
 }
 
+
 /** flat storm cloud (grey, darker belly). ~520x260 px at s = 1 */
 export function stormCloud(x, y, s, t = 0) {
   ctx.save(); ctx.translate(x + Math.sin(t * 1.3) * 8, y); ctx.scale(s, s);
@@ -1000,6 +1082,7 @@ export function stormCloud(x, y, s, t = 0) {
   ctx.restore();
 }
 
+
 /** yellow lightning bolt with an ink outline (graphic). Top at (x, y), ~520 px long at s = 1. a = alpha */
 export function lightningBolt(x, y, s, a = 1, rot = 0) {
   if (a <= 0) return;
@@ -1009,6 +1092,7 @@ export function lightningBolt(x, y, s, a = 1, rot = 0) {
   ctx.beginPath(); ctx.moveTo(50, 20); ctx.lineTo(-30, 200); ctx.strokeStyle = C.white; ctx.globalAlpha = a * 0.7; ctx.lineWidth = 10; ctx.lineCap = 'round'; ctx.stroke();
   ctx.restore();
 }
+
 
 /** round skin patch (magnifier view) with a branching fern-like Lichtenberg pattern drawn in pink. p 0..1 grows it.
  *  r = patch radius. Not a burn, not a wound: a soft pink pattern on skin */
@@ -1036,14 +1120,17 @@ export function fernPatch(x, y, r, p = 1) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ LIGHTNING SET (2026-11-09 "struck by lightning") ═════════════════════════
 const SKY = '#34405A', SKY_D = '#26314A', SLATE = '#2B3A55', SLATE_L = '#3D4F6E', SUN_D = '#F2B807', GLASS = '#DCEFF7';
+
 
 /** THE room for every real-world shot of the channel: room() with the plant and the picture painted out (they sat
  *  behind the hero). Window stays at x 600-960, y 230-670. Add stormWindow(t, ...) after it for bad weather */
 export function home() {
   room(); ctx.fillStyle = C.bg; ctx.fillRect(80, 1040, 200, 320); ctx.fillRect(90, 310, 240, 190);
 }
+
 
 /** (E) outdoor storm: slate sky, darker ground from y = ground. flash 0..1 lightens it (the strike) */
 export function skyBg(t, flash = 0, ground = 1160) {
@@ -1052,6 +1139,7 @@ export function skyBg(t, flash = 0, ground = 1160) {
   ctx.quadraticCurveTo(540, ground - 50, W + 300, ground + 30); ctx.lineTo(W + 300, H + 300); ctx.closePath(); ctx.fill();
   if (flash > 0) { ctx.save(); ctx.globalAlpha = 0.45 * clamp(flash); fillAll(C.white); ctx.restore(); }
 }
+
 
 /** wavy heat rings around a point (the air heating up). p 0..1 = how far they spread, t = film time */
 export function heatRings(x, y, p, t, a = 1) {
@@ -1067,6 +1155,7 @@ export function heatRings(x, y, p, t, a = 1) {
   ctx.restore();
 }
 
+
 /** flat sun (yellow disc, darker ring, rotating rays). ~300 px wide at s = 1 */
 export function sun(x, y, s, t = 0) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(t * 0.6);
@@ -1075,6 +1164,7 @@ export function sun(x, y, s, t = 0) {
   circle(0, 0, 110, SUN_D); circle(-4, -4, 98, C.yellow); ell(-40, -44, 30, 14, C.white + '99', -0.6);
   ctx.restore();
 }
+
 
 /** big thermometer (graphic: white tube, ink outline, red bulb + mercury). level 0..1. ~880 px tall at s = 1 */
 export function thermometer(x, y, s, level = 0) {
@@ -1087,8 +1177,10 @@ export function thermometer(x, y, s, level = 0) {
   ell(-24, 370, 22, 30, C.pinkLight, -0.4); rr(-36, -390, 14, 200, 7); ctx.fillStyle = C.gum; ctx.fill();
   ctx.restore();
 }
+
 /** canvas y of a thermometer level, for a thermometer drawn at (y, s) */
 export const thermoY = (y, s, level) => y + lerp(340, -400, clamp(level)) * s;
+
 
 /** gift box (blue, yellow ribbon + bow). open 0..1 lifts and tips the lid off. ~340x330 px at s = 1. wob jiggles */
 export function giftBox(x, y, s, open = 0, t = 0, wob = 0) {
@@ -1104,6 +1196,7 @@ export function giftBox(x, y, s, open = 0, t = 0, wob = 0) {
   ctx.restore();
 }
 
+
 /** simple person icon (head + rounded body), ~110x240 px at s = 1. col = body/head fill */
 export function personIcon(x, y, s, col = C.shirt, sc = 1) {
   if (sc <= 0) return;
@@ -1112,6 +1205,7 @@ export function personIcon(x, y, s, col = C.shirt, sc = 1) {
   ell(-16, -98, 14, 8, C.white + '55', -0.5);
   ctx.restore();
 }
+
 
 /** heartbeat trace across width w centred at (x, y). flat 0..1 flattens it; col = line colour; t = film time */
 export function ecg(x, y, w, t, flat = 0, col = C.cyan) {
@@ -1128,6 +1222,7 @@ export function ecg(x, y, w, t, flat = 0, col = C.cyan) {
   line(pts, C.ink, 22); line(pts, col, 12);
 }
 
+
 // flat person SILHOUETTE (a generic "someone", not the hero), A-pose. Origin = chest centre; head top -470, feet +640.
 // right-side SKIN contour, ~10 px outside the shape: head arc → neck → shoulder → outside of the arm → round the hand →
 // inside of the arm → armpit → hip → outside of the leg → foot (mirrored for the left side)
@@ -1135,6 +1230,7 @@ const SIL_L = (() => { const P = []; for (let a = -90; a <= 55; a += 12) P.push(
   P.push([50, -262], [110, -250], [179, -224], [254, -14], [277, 144]);
   for (let a = 10; a <= 190; a += 30) P.push([238 + 46 * Math.cos(a * Math.PI / 180), 165 + 46 * Math.sin(a * Math.PI / 180)]);
   P.push([195, 156], [176, 14], [160, -30], [160, 190], [138, 215], [138, 612], [124, 648], [100, 650]); return P; })();
+
 /** silhouette. trace 0..1 runs a glowing current over the SKIN outline from the head to the feet (both sides),
  *  glow 0..1 keeps the whole outline lit. Shoulder point for a helping hand: silShoulder() */
 export function silhouette(x, y, s, { trace = 0, glow = 0, t = 0 } = {}) {
@@ -1157,8 +1253,10 @@ export function silhouette(x, y, s, { trace = 0, glow = 0, t = 0 } = {}) {
   }
   ctx.restore();
 }
+
 /** canvas point of the silhouette's right shoulder (screen right), for silhouette(x, y, s) */
 export const silShoulder = (x, y, s) => [x + 150 * s, y - 225 * s];
+
 
 /** a fern-like Lichtenberg branch pattern (soft red lines, NOT a burn) from (x0, y0) along ang, len px. p 0..1 grows */
 export function fernTree(x0, y0, ang, len, w, p = 1, seed = 1) {
@@ -1178,6 +1276,7 @@ export function fernTree(x0, y0, ang, len, w, p = 1, seed = 1) {
   ctx.restore();
 }
 
+
 /** a bare forearm reaching right (sleeve at the left, hand at the right), skin with a soft underside shade.
  *  fern 0..1 grows a red Lichtenberg fern on the skin, fade 0..1 fades it away. Hand fingertips at x + 600 s */
 export function forearm(x, y, s, { fern = 0, fade = 0 } = {}) {
@@ -1196,12 +1295,14 @@ export function forearm(x, y, s, { fern = 0, fade = 0 } = {}) {
   ctx.restore();
 }
 
+
 /** a helping arm reaching in from (fromX, fromY) to the hand point (hx, hy): blue sleeve + skin forearm + hand */
 export function reachArm(fromX, fromY, hx, hy, s = 1) {
   const mx = lerp(fromX, hx, 0.45), my = lerp(fromY, hy, 0.45);
   line([[fromX, fromY], [hx, hy]], C.skin, 60 * s); line([[fromX, fromY], [mx, my]], C.shirt, 84 * s);
   ell(hx, hy, 46 * s, 34 * s, C.skin, Math.atan2(hy - fromY, hx - fromX)); ell(hx + 6 * s, hy + 16 * s, 26 * s, 10 * s, C.skinShade, 0.2);
 }
+
 
 /** smartphone (ink body, white screen, big number, green call button). text = shown digits, ring 0..1 wiggles + rings */
 export function phone(x, y, s, text = '911', ring = 0, t = 0) {
@@ -1219,6 +1320,7 @@ export function phone(x, y, s, text = '911', ring = 0, t = 0) {
   }
 }
 
+
 /** CPR icon: a heart with two stacked hands pressing on it. press 0..1 pushes the hands down and squashes the heart */
 export function cprIcon(x, y, s, press = 0) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -1232,11 +1334,13 @@ export function cprIcon(x, y, s, press = 0) {
   for (const sd of [-1, 1]) K_arrowDown(sd * 190, -40 + dy * 0.5, p);
   ctx.restore();
 }
+
 function K_arrowDown(x, y, a) {
   ctx.save(); ctx.globalAlpha = 0.35 + 0.65 * a; ctx.translate(x, y);
   ctx.beginPath(); ctx.moveTo(-18, -60); ctx.lineTo(18, -60); ctx.lineTo(18, 0); ctx.lineTo(42, 0); ctx.lineTo(0, 50); ctx.lineTo(-42, 0); ctx.lineTo(-18, 0); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill();
   ctx.restore();
 }
+
 
 /** tall glass water jug / pitcher (handle right, spout top-left), pale blue water up to fill 0..1. ~330x400 px at s = 1.
  *  Origin = jug centre. Next-episode tease prop: nobody drinks from it on screen */
@@ -1257,8 +1361,10 @@ export function waterJug(x, y, s, fill = 0.8, t = 0) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ WATER SET (2026-11-09 "drink too much water") ═════════════════════════
 const BLOOD = '#B83A55', BLOOD_D = '#A3304A', RBC = '#D62839', RBC_D = '#A81E2D', WATER_D = '#7EC3E0', BONE = '#F7F4EE', BONE_D = '#DCD3C3';
+
 
 /** plain drinking glass (tumbler, no text), pale blue water up to fill 0..1. Origin = glass centre, ~170x230 px at s = 1.
  *  rot tilts it (drinking). Safe to put in the hero's hand with man({ holding }) */
@@ -1279,6 +1385,7 @@ export function glass(x, y, s, fill = 0.7, t = 0, rot = 0, liq = C.sky) {
   ctx.restore();
 }
 
+
 /** salt shaker (white body, grey shade, silver cap with holes). Origin = body centre, ~200x330 px at s = 1. rot tilts it.
  *  sil = a colour draws it as a flat silhouette instead (mystery beat before the reveal) */
 export function saltShaker(x, y, s, rot = 0, sil = null) {
@@ -1295,6 +1402,7 @@ export function saltShaker(x, y, s, rot = 0, sil = null) {
   ell(-52, -20, 12, 40, C.gum, 0); ctx.restore();
 }
 
+
 /** one salt (sodium) grain: little white cube with a shaded side. ~30 px at s = 1. a = alpha */
 export function saltGrain(x, y, s = 1, rot = 0, a = 1) {
   if (a <= 0 || s <= 0) return;
@@ -1302,6 +1410,7 @@ export function saltGrain(x, y, s = 1, rot = 0, a = 1) {
   rr(-15, -15, 30, 30, 6); ctx.fillStyle = BONE_D; ctx.fill(); rr(-15, -15, 24, 24, 6); ctx.fillStyle = C.white; ctx.fill();
   ctx.restore();
 }
+
 
 /** water drop (pale blue teardrop, darker edge, white glint). ~50x70 px at s = 1, tip points along rot (0 = up) */
 export function drop(x, y, s = 1, rot = 0, a = 1, cols = null) {
@@ -1313,6 +1422,7 @@ export function drop(x, y, s = 1, rot = 0, a = 1, cols = null) {
   ctx.restore();
 }
 
+
 /** slim flat arrow in any colour (water flow = C.sky, pressure = C.red). len px, w = shaft width */
 export function flowArrow(x, y, len, ang = 0, a = 1, col = C.sky, w = 22, edge = null) {
   if (a <= 0) return;
@@ -1322,6 +1432,7 @@ export function flowArrow(x, y, len, ang = 0, a = 1, col = C.sky, w = 22, edge =
   ctx.lineJoin = 'round'; p(); ctx.lineWidth = 10; ctx.strokeStyle = edge || (col === C.sky ? WATER_D : RBC_D); ctx.stroke(); ctx.fillStyle = col; ctx.fill();
   ctx.restore();
 }
+
 
 /** (F) inside a blood vessel, macro: deep pink-red with soft darker blobs and drifting red blood cells. t = film time */
 export function insideBlood(t) {
@@ -1333,6 +1444,7 @@ export function insideBlood(t) {
     ell(0, 0, 54, 40, RBC); ell(0, 0, 26, 18, RBC_D); ctx.restore();
   }
 }
+
 
 /** a round body cell (soft pink, light rim, nucleus, glint). r = radius px. swell 0..1 puffs it up (+45%), stretches the
  *  rim and shows blue water inside. Returns the drawn radius */
@@ -1348,6 +1460,7 @@ export function cell(x, y, r, { swell = 0, t = 0, wob = 0 } = {}) {
   ctx.restore();
   return R;
 }
+
 
 /** balance scale (ink graphic): post, beam, two pans. Left pan holds salt grains, right pan a water drop.
  *  tilt in rad (+ = right side down). ~520x420 px at s = 1, origin = beam pivot */
@@ -1366,6 +1479,7 @@ export function balance(x, y, s, tilt = 0) {
   ctx.restore();
 }
 
+
 /** kidney (deep red bean, darker rim, pink highlight, ureter leaving the inner notch). flip = mirror (notch on the left).
  *  ~260x380 px at s = 1. kidneyHilum gives the notch point in canvas coords */
 export function kidney(x, y, s, flip = false) {
@@ -1377,7 +1491,9 @@ export function kidney(x, y, s, flip = false) {
   ell(-50, -110, 34, 16, C.pinkLight, -0.9);
   ctx.restore();
 }
+
 export const kidneyHilum = (x, y, s, flip = false) => [x + (flip ? -1 : 1) * 52 * s, y];
+
 
 /** speed gauge (graphic, no numbers): ink dial, green → yellow → red arc, red needle. level 0..1 (1 = red end). */
 export function speedGauge(x, y, s, level = 0, sc = 1) {
@@ -1391,6 +1507,7 @@ export function speedGauge(x, y, s, level = 0, sc = 1) {
   circle(0, 0, 24, C.ink);
   ctx.restore();
 }
+
 
 /** side-view skull outline for the x-ray film (cyan outline on dark film, face on the LEFT to match brain()).
  *  Holds brain(x, y, s * 0.92) with room to swell. ~760x700 px at s = 1 */
@@ -1408,6 +1525,7 @@ export function skull(x, y, s) {
   ctx.restore();
 }
 
+
 /** red pressure arrows pushing OUT from inside an ellipse (rx, ry) toward its rim. p 0..1 = strength (alpha + push), t pulses */
 export function pressureArrows(x, y, rx, ry, p, t = 0, angs = [-2.6, -1.57, -0.55, 0.25, -3.4]) {
   if (p <= 0) return;
@@ -1417,6 +1535,7 @@ export function pressureArrows(x, y, rx, ry, p, t = 0, angs = [-2.6, -1.57, -0.5
     flowArrow(x + Math.cos(an) * rx * d, y + Math.sin(an) * ry * d, 120, an, clamp(p * 1.4), C.red, 20);
   }
 }
+
 
 /** symptom badge: white disc with an ink ring and a simple icon. kind 'head' (red ache zigzags) | 'sick' (green queasy face)
  *  | 'confused' (swirl + ?) | 'seizure' (brain with yellow spark lines). ~300 px wide at s = 1. sc = pop-in */
@@ -1444,6 +1563,7 @@ export function symptom(kind, x, y, s, sc = 1, t = 0) {
   ctx.restore();
 }
 
+
 /** endurance athlete icon: personIcon with a red headband and a white race bib (no number). sc = pop-in */
 export function athleteIcon(x, y, s, sc = 1, col = C.shirt) {
   if (sc <= 0) return;
@@ -1453,6 +1573,7 @@ export function athleteIcon(x, y, s, sc = 1, col = C.shirt) {
   rr(-36, 14, 72, 58, 10); ctx.fillStyle = C.white; ctx.fill(); rr(-26, 30, 52, 10, 5); ctx.fillStyle = C.red; ctx.fill(); rr(-26, 48, 34, 8, 4); ctx.fillStyle = C.gumEdge; ctx.fill();
   ctx.restore();
 }
+
 
 /** knuckle joint magnifier (graphic): ink lens ring + handle, inside two rounded bone ends with a pale fluid gap and a gas
  *  bubble forming. bubble 0..1 grows it, pop 0..1 bursts it. r = lens radius. sc = pop-in */
@@ -1474,8 +1595,10 @@ export function jointLens(x, y, r, { bubble = 0, pop = 0, t = 0 } = {}, sc = 1) 
   ctx.restore();
 }
 
+
 // ═════════════════════════ KNUCKLE SET (2026-11-09 "crack your knuckles every day") ═════════════════════════
 const FLUID = '#F7E7A8', FLUID_D = '#E9D488', CYAN_D = '#3BB2CA', GLASS_G = '#5BAE6A', GLASS_GD = '#468F55', CORK = '#C8734A', CORK_D = '#A85E3A';
+
 
 /** clean knuckle-joint cutaway for the x-ray film, lying SIDEWAYS: hand bone (round head) from the left, finger bone
  *  (shallow cup) from the right, white cartilage caps, a pink capsule full of pale joint fluid.
@@ -1533,10 +1656,14 @@ export function jointCutaway(x, y, s, { gap = 0, gas = 0, gather = 0, bubble = 0
   }
   ctx.restore();
 }
+
 const WATER_D_K = '#7EC3E0';
+
 const eioK = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
 /** canvas half-width of the jointCutaway at (s, gap): handy to keep the bone ends inside the frame */
 export const jointHalfW = (s, gap = 0) => (65 * clamp(gap) + 330 + 40 + 64) * s;
+
 
 /** green bottle with a cork (flat, darker shade, white glint). pop 0..1 shoots the cork up-right, spinning.
  *  corkA 0..1 = cork alpha (fade it out while it is still flying so it never hangs mid-air).
@@ -1558,8 +1685,10 @@ export function bottle(x, y, s, pop = 0, corkA = 1) {
   if (p > 0 && p < 1) { ctx.save(); ctx.globalAlpha = 1 - p; for (let i = 0; i < 5; i++) circle(-30 + i * 15 + Math.sin(i * 2) * 10, -330 - p * 90 - (i % 2) * 24, Math.max(0, 14 + p * 16 - i * 2), C.white); ctx.restore(); }
   ctx.restore();
 }
+
 /** where the cork is (canvas) for bottle(x, y, s, pop) */
 export const corkAt = (x, y, s, pop = 0) => { const p = clamp(pop); return [x + p * 260 * s, y + (-330 - p * 300 + p * p * 120) * s]; };
+
 
 /** green check badge (ink ring, green disc, white tick). sc = pop-in. ~120 px wide at s = 1 */
 export function checkMark(x, y, s = 1, sc = 1) {
@@ -1570,6 +1699,7 @@ export function checkMark(x, y, s = 1, sc = 1) {
   ctx.restore();
 }
 
+
 /** a stack of three fanned study clipboards (bigger studies). p 0..1 deals them in one by one */
 export function studyStack(x, y, s, p = 1) {
   [[-0.16, -70, 20], [0.12, 70, 10], [0, 0, 0]].forEach(([rot, dx, dy], i) => {
@@ -1577,7 +1707,9 @@ export function studyStack(x, y, s, p = 1) {
     clipboard(x + dx * s, y + dy * s + (1 - eoK(k)) * -260 * s, s, 1, rot);
   });
 }
+
 const eoK = (t) => 1 - Math.pow(1 - t, 3);
+
 
 /** "see a doctor" badge: white disc, ink ring, a person icon with a white coat collar and a red cross. sc = pop-in */
 export function doctorBadge(x, y, s = 1, sc = 1) {
@@ -1589,6 +1721,7 @@ export function doctorBadge(x, y, s = 1, sc = 1) {
   rr(-10, 46, 20, 50, 4); ctx.fillStyle = C.red; ctx.fill(); rr(-25, 61, 50, 20, 4); ctx.fill();
   ctx.restore();
 }
+
 
 /** next-episode tease: a cartoon face mid-sneeze in a white badge. Eyes stay squeezed SHUT (the reflex).
  *  p 0..1: 0 = "ah-" (head back, mouth open), 1 = "-choo" (head forward, soft white puffs out to the right). sc = pop-in */
@@ -1624,6 +1757,7 @@ export function sneezeBadge(x, y, s = 1, p = 0, t = 0, sc = 1) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ SNEEZE SET (2026-11-10 "sneeze with your eyes open") ═════════════════════════
 const PAPER = '#EFE6CF', PAPER_D = '#DDD0AF', PAPER_L = '#F8F2E2', PAPER_INK = '#8C8270', DUST = '#9C8F7A', DUST_D = '#7E7260',
   SPACE = '#26314A', VISOR = '#34405A', HELMET_D = '#DCD6CB';
@@ -1631,6 +1765,7 @@ const PAPER = '#EFE6CF', PAPER_D = '#DDD0AF', PAPER_L = '#F8F2E2', PAPER_INK = '
 /** extra arm poses for the hero: fists at the chest (keeps the hands high in close-ups), finger on the chin (thinking) */
 ARM.chest = { e: [200, 20], h: [70, -70] };
 ARM.chin = { e: [215, -30], h: [52, -205] };
+
 
 /** pink lungs + windpipe (flat, darker rim, light highlight), in the hero's torso coords. Origin = between the lungs.
  *  sq 0..1 squeezes them (the sneeze blast pushes the air out). ~290x300 px at s = 1. Used by man({ xray, lungs }) */
@@ -1652,6 +1787,7 @@ export function lungs(x, y, s, sq = 0) {
   ctx.restore();
 }
 
+
 /** soft sneeze spray: pale blue puffs flying out from (x, y) along dir (1 = right, -1 = left). p 0..1: they fly, grow and
  *  fade out completely by p = 1 (nothing hangs mid-air). d0 = start distance, reach = travel (px at s = 1), ang rotates the lane */
 export function sneezeSpray(x, y, s, p, dir = 1, { d0 = 60, reach = 300, ang = 0 } = {}) {
@@ -1664,6 +1800,7 @@ export function sneezeSpray(x, y, s, p, dir = 1, { d0 = 60, reach = 300, ang = 0
     ctx.save(); ctx.globalAlpha = 0.9 * (1 - ph); circle(px, py, r, C.sky); circle(px - r * 0.3, py - r * 0.3, r * 0.35, C.white); ctx.restore();
   }
 }
+
 
 /** an old 1882 newspaper (cream paper, masthead, date line, headline, a picture box + text columns). ~680x880 at s = 1.
  *  rot/sc: spin-in. head 0..1 pops the headline in (placeholder grey bars before it). year 0..1 marks "1882" in yellow.
@@ -1716,6 +1853,7 @@ export function newspaper(x, y, s, { rot = 0, sc = 1, head = 1, year = 0, lady =
   ctx.restore();
 }
 
+
 /** simple front-view eye diagram in a round skin window (ink ring): brow, white eye, blue iris, upper lid.
  *  lid 0 (open) .. 1 (shut, lashes down). look -1..1 moves the iris. Disc radius 330 px at s = 1 */
 export function eyeFront(x, y, s, { lid = 0, look = 0 } = {}) {
@@ -1744,8 +1882,10 @@ export function eyeFront(x, y, s, { lid = 0, look = 0 } = {}) {
   ctx.beginPath(); ctx.arc(0, 0, 330, 0, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 16; ctx.stroke();
   ctx.restore();
 }
+
 /** canvas y of the eyeFront lid edge at its middle (where things bounce off a shut lid) */
 export const eyeLidY = (y, s, lid = 1) => y + s * (10 + (lerp(-230, 230, clamp(lid)) - 10) / 2);
+
 
 /** an irritant dust speck (grey-brown fluffy clump). ~50 px at s = 1. a = alpha */
 export function dust(x, y, s = 1, rot = 0, a = 1) {
@@ -1755,6 +1895,7 @@ export function dust(x, y, s = 1, rot = 0, a = 1) {
   line([[18, 8], [32, 16]], DUST_D, 4); line([[-20, 10], [-30, 22]], DUST_D, 4);
   ctx.restore();
 }
+
 
 /** clean side-view eyeball diagram: white eyeball (cornea + blue iris on the LEFT), off-white optic nerve to the back
  *  (right), six pink eye muscles from the ball to the back anchor (4 straight + 2 oblique, one through a pulley).
@@ -1797,6 +1938,7 @@ export function eyeMuscles(x, y, s, { n = 6, tug = 0, t = 0 } = {}) {
   ctx.restore();
 }
 
+
 /** rubber stamp (graphic): coloured double border + text, slightly rotated. text may hold "\n". sc = slam-in scale */
 export function stamp(text, x, y, size, rot = -0.12, sc = 1, col = C.red) {
   if (sc <= 0) return;
@@ -1810,6 +1952,7 @@ export function stamp(text, x, y, size, rot = -0.12, sc = 1, col = C.red) {
   ctx.fillStyle = col; rows.forEach((r, i) => ctx.fillText(r, 0, (i - (rows.length - 1) / 2) * size * 1.1 + size * 0.05));
   ctx.letterSpacing = '0px'; ctx.restore();
 }
+
 
 /** "staying put" badge: white disc, ink ring, an open eye + a yellow padlock. lock 0..1 drops the shackle shut. ~300 px at s = 1 */
 export function lockBadge(x, y, s = 1, sc = 1, lock = 1) {
@@ -1831,6 +1974,7 @@ export function lockBadge(x, y, s = 1, sc = 1, lock = 1) {
   ctx.restore();
   ctx.restore();
 }
+
 
 /** next-episode tease (space without a suit): dark space disc with stars, ink ring, a white space helmet with a navy
  *  visor; boil 0..1 shows a small water droplet beside it with bubbles rising and popping in a loop (t = film time).
@@ -1860,9 +2004,11 @@ export function helmetBadge(x, y, s = 1, sc = 1, t = 0, boil = 0) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ SPACE SET (2026-11-10 "your body in space without a suit") ═════════════════════════
 const NIGHT = '#141E33', STEEL = '#C3C8CF', STEEL_D = '#A7AEB8', STEEL_L = '#DDE1E6', WALL = '#D9DCE0', HOSE = '#5A6573', HOSE_L = '#8A95A0',
   BREAD = '#F7D88A', CRUST = '#C8734A', SUIT_D = '#DCD6CB';
+
 
 /** (G) deep space: night navy, twinkling stars, a blue planet low in the frame (behind the caption). planet 0 hides it */
 export function spaceBg(t, { planet = 1 } = {}) {
@@ -1880,6 +2026,7 @@ export function spaceBg(t, { planet = 1 } = {}) {
   }
 }
 
+
 /** tiny friendly bubbles rising from (x, y) and popping, in a loop (fizz / boiling). s = scale, a = alpha, t = film time.
  *  spread = start width, rise = how high they go (px at s = 1). Nothing hangs: each bubble fades out at the top */
 export function fizz(x, y, s, t, a = 1, { n = 6, spread = 40, rise = 120, seed = 0 } = {}) {
@@ -1893,6 +2040,7 @@ export function fizz(x, y, s, t, a = 1, { n = 6, spread = 40, rise = 120, seed =
     ctx.restore();
   }
 }
+
 
 /** THE TEST FIGURE (never the hero): a friendly off-white mannequin with a yellow/ink crash-test target on the chest.
  *  Origin = chest centre, ~1140 px tall at s = 1 (head top -507, feet +640), like man().
@@ -1953,9 +2101,12 @@ export function dummy(o) {
   ctx.restore();
   ctx.restore();
 }
+
 /** canvas point of the dummy's mouth / face centre (rot = 0) */
 export const dummyMouth = (x, y, s) => [x, y - 323 * s];
+
 export const dummyFace = (x, y, s) => [x, y - 385 * s];
+
 
 /** cartoon explosion (graphic): yellow spiky star with an ink outline, red inner star, "BOOM" in white. ~520 px at s = 1 */
 export function boom(x, y, s = 1, sc = 1, t = 0) {
@@ -1969,6 +2120,7 @@ export function boom(x, y, s = 1, sc = 1, t = 0) {
   ctx.restore();
 }
 
+
 /** "tough skin" shield (graphic): ink outline, green shield, light highlight, white tick. ~300x330 px at s = 1. sc = pop-in */
 export function shieldBadge(x, y, s = 1, sc = 1) {
   if (sc <= 0) return;
@@ -1981,6 +2133,7 @@ export function shieldBadge(x, y, s = 1, sc = 1) {
   line([[-56, 6], [-14, 50], [62, -42]], C.white, 30);
   ctx.restore();
 }
+
 
 /** pressure dial (graphic): ink rim, white face, ticks, a red zone at the low end with a "0", ink needle.
  *  level 1 = normal air pressure (needle up-right), 0 = vacuum (needle on 0). ~340 px at s = 1. sc = pop-in */
@@ -1996,6 +2149,7 @@ export function pressureGauge(x, y, s = 1, level = 1, sc = 1) {
   circle(0, 0, 24, C.ink); circle(0, 0, 10, C.gumEdge);
   ctx.restore();
 }
+
 
 /** countdown timer (stopwatch look): red wedge = time left (frac 0..1, empties clockwise), big number + unit ("SEC" / "MIN") in the middle
  *  (size = number font px: use ~84 for a range like "10–15").
@@ -2015,6 +2169,7 @@ export function countdown(x, y, s = 1, frac = 1, text = '12', sc = 1, unit = 'SE
   ctx.restore();
 }
 
+
 /** an "O2" oxygen bubble (pale blue disc, darker rim, ink O + small 2). ~120 px at s = 1. a = alpha */
 export function o2Bubble(x, y, s = 1, a = 1) {
   if (a <= 0 || s <= 0) return;
@@ -2024,9 +2179,11 @@ export function o2Bubble(x, y, s = 1, a = 1) {
   ctx.restore();
 }
 
+
 /** (H) inside the vacuum chamber: riveted steel panels, a porthole up top, a pressure gauge (left) and the suit-hose port
  *  (left wall, chamberPort). level = the wall gauge (1 normal, 0 vacuum). t = film time */
 export const chamberPort = [120, 800];
+
 export function chamberRoom(t = 0, level = 1) {
   fillAll(WALL);
   for (let i = -1; i < 7; i++) { rr(i * 180 - 30, 110, 164, 1260, 22); ctx.fillStyle = STEEL_L; ctx.fill(); for (const yy of [150, 1330]) for (const k of [24, 140]) circle(i * 180 - 30 + k, yy, 7, STEEL_D); }
@@ -2039,6 +2196,7 @@ export function chamberRoom(t = 0, level = 1) {
   rr(chamberPort[0] - 70, chamberPort[1] - 70, 110, 140, 18); ctx.fillStyle = STEEL_D; ctx.fill(); rr(chamberPort[0] - 70, chamberPort[1] - 70, 96, 128, 16); ctx.fillStyle = STEEL; ctx.fill();
   circle(chamberPort[0], chamberPort[1], 30, HOSE);
 }
+
 
 /** the 1966 suit tester (not the hero): white pressure suit with knee/elbow rings, a chest control box (no logos), boots,
  *  gloves, and a round helmet with a clear visor showing his face (ginger hair). Origin = chest centre, ~1170 px tall at s = 1.
@@ -2089,8 +2247,10 @@ export function suitTester(o) {
     }
   }
 }
+
 /** canvas centre of the suit tester's face (in the helmet) */
 export const testerFace = (x, y, s) => [x, y - 364 * s];
+
 
 /** the vacuum chamber seen from outside: a tall steel tank on legs, riveted bands, a big porthole (inside() draws what you
  *  see through it, in the chamber's local coords: origin = tank centre, porthole centre (0, -90), radius 200), a pump pipe
@@ -2109,8 +2269,10 @@ export function chamber(x, y, s, { level = 1, inside = null } = {}) {
   pressureGauge(170, 260, 0.42, level);
   ctx.restore();
 }
+
 /** canvas point of the chamber pipe's open end (right side), for chamber(x, y, s) */
 export const chamberPipe = (x, y, s) => [x + 730 * s, y - 348 * s];
+
 
 /** red lunchbox (graphic): open 0..1 tips the lid back and lifts a sandwich out (bread, lettuce, tomato). ~400x330 px at s = 1 */
 export function lunchbox(x, y, s = 1, open = 0, sc = 1) {
@@ -2132,6 +2294,7 @@ export function lunchbox(x, y, s = 1, open = 0, sc = 1) {
   ctx.restore();
 }
 
+
 /** "home" badge: white disc, ink ring, a little house (red roof, blue walls, yellow door). ~300 px at s = 1. sc = pop-in */
 export function homeBadge(x, y, s = 1, sc = 1) {
   if (sc <= 0) return;
@@ -2143,6 +2306,7 @@ export function homeBadge(x, y, s = 1, sc = 1) {
   ctx.restore();
 }
 
+
 /** red map pin (graphic): teardrop with a darker rim and a white dot; tip at (x, y). ~150x200 px at s = 1. sc = pop-in */
 export function mapPin(x, y, s = 1, sc = 1) {
   if (sc <= 0) return;
@@ -2152,6 +2316,7 @@ export function mapPin(x, y, s = 1, sc = 1) {
   circle(0, -125, 28, C.white); ell(-34, -150, 12, 20, C.pinkLight, 0.5);
   ctx.restore();
 }
+
 
 /** next-episode tease (hiccups): white disc, ink ring, pink lungs over a dome-shaped diaphragm muscle.
  *  jolt 0..1 snaps the diaphragm down (the hiccup spasm). ~300 px at s = 1. sc = pop-in */
@@ -2167,6 +2332,7 @@ export function hiccupBadge(x, y, s = 1, sc = 1, jolt = 0) {
   ctx.restore();
   ctx.restore();
 }
+
 /** "HIC!" bubble (graphic): white disc with an ink ring and ink text. ~200 px at s = 1. sc = pop-in, a = alpha */
 export function hicBubble(x, y, s = 1, sc = 1, a = 1, rot = 0) {
   if (sc <= 0 || a <= 0) return;
@@ -2176,9 +2342,11 @@ export function hicBubble(x, y, s = 1, sc = 1, a = 1, rot = 0) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ HICCUP SET (2026-11-10 "hiccups that won't stop") ═════════════════════════
 const PIG = '#F29AA7', PIG_D = '#E57A8A', PIG_S = '#F7B8C2', BARN = '#B5653F', BARN_D = '#9A5333', ROOF = '#7E3F28',
   GRASS = '#7CC487', GRASS_D = '#5BAE6A', GOLD_D = '#F2B807', SLUSH = '#BFE3F2', SLUSH_D = '#9DCBE0';
+
 
 /** the diaphragm: thick pink dome muscle under the lungs, in the hero's torso coords (origin = chest centre).
  *  j 0..1 = the spasm (dome snaps down and flattens). hi 0..1 = yellow glow behind it (the "this one" highlight).
@@ -2191,6 +2359,7 @@ export function diaphragm(x, y, s, j = 0, hi = 0) {
   dome(C.pinkDark, 36); dome(C.pink, 26); dome(C.pinkLight, 7, -6);
   ctx.restore();
 }
+
 
 /** the vocal cords seen from above (macro view, flat): pink throat ring, two pale folds in a V, dark gap between them.
  *  close 0..1 snaps the folds shut (the "hic"). ~520x600 px at s = 1. Origin = centre of the gap */
@@ -2210,6 +2379,7 @@ export function vocalCords(x, y, s, close = 0) {
   }
   ctx.restore();
 }
+
 
 /** cartoon farm hog (side view, faces right): pink body, darker shade, snout, curly tail. ~420x270 px at s = 1.
  *  Origin = body centre. o = { rot, kick (0..1 leg wiggle), t, happy (smile), wide (surprised eye) } */
@@ -2232,6 +2402,7 @@ export function hog(x, y, s, { rot = 0, kick = 0, t = 0, happy = 1, wide = false
   ctx.restore();
 }
 
+
 /** (I) a simple old-timey farm (Nebraska, 1922): pale sky, two clouds, a wooden barn on the right, a fence, green field
  *  from y ≈ ground. Keep people/hogs standing on y ≈ ground + 40 */
 export function farmBg(t = 0, ground = 1080) {
@@ -2251,6 +2422,7 @@ export function farmBg(t = 0, ground = 1080) {
   for (const fy of [ground - 180, ground - 100]) { rr(-300, fy, 900, 22, 8); ctx.fillStyle = BARN; ctx.fill(); }
 }
 
+
 /** Charles Osborne (the true story): the man() figure as a 1920s farmer: rust shirt, denim overalls, flat cap, mustache.
  *  old: true = grey hair + mustache (1990). sit: true = sitting on the ground (after the fall). Same options as man() */
 export function farmer(o) {
@@ -2258,6 +2430,7 @@ export function farmer(o) {
 }
 /** both hands in front of the chest at belly height (carrying something big): use for arm + armL */
 ARM.carry = { e: [200, 10], h: [96, -10] };
+
 
 /** two interlocked gold wedding rings (flat yellow, darker rim, a tiny white gem). ~330x220 px at s = 1. sc = pop-in */
 export function weddingRings(x, y, s = 1, sc = 1) {
@@ -2269,6 +2442,7 @@ export function weddingRings(x, y, s = 1, sc = 1) {
   ctx.beginPath(); ctx.arc(-58, 10, 92, 3.6, 4.2); ctx.strokeStyle = C.white; ctx.globalAlpha = 0.7; ctx.lineWidth = 7; ctx.stroke(); ctx.globalAlpha = 1;
   ctx.restore();
 }
+
 
 /** hiccup-rate dial (stopwatch look): big text in the middle, a small unit word under it, a red dot running round the rim
  *  at angle ang (rad). ~560 px wide at s = 1 (crown top -330). text/unit can be '' (shown on their spoken word). sc = pop-in */
@@ -2286,6 +2460,7 @@ export function hicMeter(x, y, s = 1, text = '', unit = '', sc = 1, ang = 0) {
   ctx.restore();
 }
 
+
 /** a six-armed snowflake (flat strokes). r = arm length */
 export function snowflake(x, y, r, col = C.white, w = 10, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round';
@@ -2296,6 +2471,7 @@ export function snowflake(x, y, r, col = C.white, w = 10, rot = 0) {
   }
   ctx.restore();
 }
+
 /** "frost" badge: white disc, ink ring, a pale-blue snowflake turning slowly. ~200 px at s = 1. sc = pop-in */
 export function frostBadge(x, y, s = 1, sc = 1, t = 0) {
   if (sc <= 0) return;
@@ -2304,6 +2480,7 @@ export function frostBadge(x, y, s = 1, sc = 1, t = 0) {
   snowflake(0, 0, 62, SLUSH_D, 14, t * 0.4); snowflake(0, 0, 62, C.sky, 7, t * 0.4);
   ctx.restore();
 }
+
 /** next-episode tease (brain freeze): the flat brain() with a snowy cap and icicles. frost 0..1 grows the snow,
  *  melt 0..1 shrinks it and lets drops fall (the "thaw"); t = film time. ~540x560 px at s = 1 */
 export function frostBrain(x, y, s, { t = 0, frost = 1, melt = 0 } = {}) {
@@ -2321,6 +2498,7 @@ export function frostBrain(x, y, s, { t = 0, frost = 1, melt = 0 } = {}) {
     drop(x + [-70, 60, 176][i] * s, y + ([-192, -218, -128][i] + 60 + ph * 140) * s, 0.9, 0, a);
   }
 }
+
 /** slushie cup: white cup with red stripes, a pale-blue slush dome with ice chunks and a red straw. ~340x620 px at s = 1
  *  (straw top ≈ -380, cup bottom +250). sc = pop-in, t = film time (sparkles) */
 export function slushCup(x, y, s = 1, sc = 1, t = 0) {
@@ -2340,8 +2518,10 @@ export function slushCup(x, y, s = 1, sc = 1, t = 0) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ BRAIN FREEZE SET (2026-11-10 "brain freeze") ═════════════════════════
 const CONE = '#E3A857', CONE_D = '#C98B3F', CAT = '#E0956B', CAT_D = '#C8734A', CREAM = '#F7F4EE', SKIN_HI = '#F2CDB5';
+
 
 /** ice-cream cone (waffle cone + one pink scoop). Origin = the GRIP point on the cone (so it sits in a hand);
  *  scoop centre at (0, -120), cone tip at (0, +120). rot turns it round the grip. bite 0..1 takes a round bite out of the scoop.
@@ -2362,6 +2542,7 @@ export function iceCone(x, y, s = 1, rot = 0, bite = 0) {
   ctx.restore();
 }
 
+
 /** a spoon (side view) holding a pink scoop: bowl at the origin, handle off to the right. a = scoop alpha (0 = empty spoon) */
 export function scoopSpoon(x, y, s = 1, scoop = 1) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -2371,6 +2552,7 @@ export function scoopSpoon(x, y, s = 1, scoop = 1) {
   ctx.restore();
 }
 
+
 /** SIDE CUTAWAY of the hero's head (facing right): skin profile, hair, a cut through the skull showing the brain,
  *  the open mouth with the palate (roof of the mouth, pink band), tongue and throat. Origin ≈ middle of the face/jaw.
  *  ~670x830 px at s = 1 (head top ≈ -400, the shirt runs off the bottom). Points: HC.* (local) / hcPt(x, y, s, key).
@@ -2379,8 +2561,11 @@ export function scoopSpoon(x, y, s = 1, scoop = 1) {
  *        (ice cream lump in the mouth, local coords), t } */
 export const HC = { palate: [175, 8], forehead: [246, -205], brain: [-20, -205], lips: [292, 58], tongue: [180, 80], neck: [10, 330],
   nerve: [[248, -40], [180, -58], [110, -78], [44, -100], [8, -118]], nerveF: [[238, -200], [160, -165], [80, -132], [8, -118]] };
+
 export const hcPt = (x, y, s, k) => [x + HC[k][0] * s, y + HC[k][1] * s];
+
 export const hcPath = (x, y, s, k) => HC[k].map(([px, py]) => [x + px * s, y + py * s]);
+
 function headCutPath() {
   ctx.beginPath(); ctx.moveTo(-110, 440); ctx.lineTo(-125, 210);
   ctx.bezierCurveTo(-300, 150, -330, -110, -255, -260); ctx.bezierCurveTo(-170, -420, 130, -440, 225, -300);
@@ -2389,6 +2574,7 @@ function headCutPath() {
   ctx.quadraticCurveTo(304, 84, 292, 104); ctx.quadraticCurveTo(306, 170, 270, 196); ctx.quadraticCurveTo(170, 222, 95, 232);
   ctx.lineTo(80, 440); ctx.closePath();
 }
+
 export function headCut(x, y, s, o = {}) {
   const chill = clamp(o.chill || 0), up = clamp(o.tongue || 0), t = o.t || 0;
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -2437,6 +2623,7 @@ export function headCut(x, y, s, o = {}) {
   ctx.restore();
 }
 
+
 /** blood vessel close-up: a horizontal tube right across the frame (no visible ends) at height y, inner radius r.
  *  Red blood cells drift along it (flow = speed, 0 = still). warm 0..1 tints the wall lighter */
 export function vessel(y, r, t = 0, flow = 1) {
@@ -2453,6 +2640,7 @@ export function vessel(y, r, t = 0, flow = 1) {
   ctx.restore();
   ctx.fillStyle = C.pinkLight; ctx.fillRect(-300, y - R - 16, W + 600, 8);
 }
+
 
 /** cartoon brain character: brain() with big eyes, a smirk and a little pink arm that points along ang (radians).
  *  point 0..1 = arm reach. ~560 px wide at s = 1. look -1..1 moves the pupils */
@@ -2481,6 +2669,7 @@ export function brainBuddy(x, y, s, { t = 0, point = 0, ang = Math.PI, look = -1
   ctx.restore();
 }
 
+
 /** pain zap: short red zigzag strokes (ink edged) radiating from a point, flickering. sc = pop-in, t = film time */
 export function painZap(x, y, s = 1, sc = 1, t = 0, angs = [-2.5, -1.57, -0.64, 0.3, 2.85]) {
   if (sc <= 0) return;
@@ -2494,6 +2683,7 @@ export function painZap(x, y, s = 1, sc = 1, t = 0, angs = [-2.5, -1.57, -0.64, 
   circle(0, 0, 20, C.ink); circle(0, 0, 13, C.red);
   ctx.restore();
 }
+
 
 /** round skin patch close-up (lens): ink ring, skin, little hairs. bumps 0..1 raises goosebumps and stands the hairs up
  *  (stand 0..1, if given, stands the hairs on its own clock).
@@ -2517,6 +2707,7 @@ export function skinPatch(x, y, r, { bumps = 0, stand = null, t = 0, sc = 1 } = 
   ctx.restore();
   ctx.restore();
 }
+
 
 /** cute cartoon cat sitting (front view, orange). puff 0..1 = fur puffs up (spiky outline, bushy tail, big eyes, tiny "o"
  *  hiss mouth). ~320x420 px at s = 1, origin = body centre (paws at +160, ear tips at -265). sc = pop-in, t = film time */
@@ -2561,7 +2752,9 @@ export function cat(x, y, s = 1, { puff = 0, t = 0, sc = 1 } = {}) {
 // ═════════════════════════ GOOSEBUMPS SET (2026-11-10-body-5) ═════════════════════════
 /** right forearm held up across the chest (looking at your own arm) */
 ARM.look = { e: [205, 30], h: [30, -60] };
+
 const MOUSE = '#F2EFE8', MOUSE_D = '#D6D0C4', BEDDING = '#E9D9A8', BEDDING_D = '#D2BD82', AIR = '#DCEFF7', DERMIS = '#F2CDB5';
+
 
 /** cartoon toggle switch (the fight-or-flight switch): white plate, ink edge, ON/OFF labels, a lever with a red knob.
  *  on 0..1 flips the lever from OFF (down) to ON (up), ON label turns red. ~340x500 px at s = 1. sc = pop-in */
@@ -2583,6 +2776,7 @@ export function toggleSwitch(x, y, s = 1, { on = 0, sc = 1 } = {}) {
   ctx.restore();
 }
 
+
 /** spooky-but-cute "BOO!" sign: wooden board on a stick with a little white ghost peeking over it. ~360x420 px at s = 1,
  *  origin = board centre. sc = pop-in, t = film time (gentle wobble) */
 export function booSign(x, y, s = 1, sc = 1, t = 0) {
@@ -2601,6 +2795,7 @@ export function booSign(x, y, s = 1, sc = 1, t = 0) {
   ctx.lineWidth = 20; ctx.strokeStyle = C.ink; ctx.strokeText('BOO!', 0, -4); ctx.fillStyle = C.white; ctx.fillText('BOO!', 0, -4);
   ctx.restore();
 }
+
 
 /** skin cutaway lens with ONE hair in its follicle and the tiny muscle at its base (arrector pili), side view.
  *  r = lens radius px. o = { pull 0..1 (muscle squeezes: hair stands up, a bump rises), t, sc (pop-in),
@@ -2665,6 +2860,7 @@ export function follicleLens(x, y, r, o = {}) {
   return pts;
 }
 
+
 /** side-view skin lens with a row of hairs: stand 0..1 raises the hairs, bumps 0..1 pops goosebumps round them,
  *  heat 0..1 shows little warm shimmer strokes between the hairs, trap 0..1 tints that warm layer.
  *  r = lens radius px, sc = pop-in, t = film time. Returns { surfY, tipY } in screen px */
@@ -2702,6 +2898,7 @@ export function skinSideLens(x, y, r, { stand = 0, bumps = 0, heat = 0, trap = 0
   return out;
 }
 
+
 /** clear lab box (cage) with a steel grid lid and soft bedding. ~640x480 px at s = 1, origin = centre.
  *  frost 0..1 = frosty corners + icicles, snow 0..1 = flakes falling inside, inner(x0) draws the occupant (in screen px,
  *  before the front glass), t = film time */
@@ -2735,6 +2932,7 @@ export function coldBox(x, y, s = 1, { t = 0, frost = 0, snow = 0, inner = null 
   ctx.restore();
 }
 
+
 /** cute white lab mouse sitting, side view, facing right. ~340x230 px at s = 1, origin = body centre (feet at +88).
  *  o = { t, shiver 0..1, eyes 'n' | 'closed' | 'wide', smile (bool), sc (pop-in), flip (face left) } */
 export function labMouse(x, y, s = 1, { t = 0, shiver = 0, eyes = 'n', smile = true, sc = 1, flip = false } = {}) {
@@ -2755,6 +2953,7 @@ export function labMouse(x, y, s = 1, { t = 0, shiver = 0, eyes = 'n', smile = t
   ell(70, 40, 24, 16, MOUSE_D); ell(110, 52, 14, 9, C.pinkLight);
   ctx.restore();
 }
+
 
 /** cartoon bare foot (side view, toes right) under a navy trouser cuff, with a sleepy little face. wake 0..1 opens its eyes.
  *  pale 0..1 = numb (skin goes grey-lilac), wide = big round awake eyes, mouth null (smile) | 'o' | 'wavy' (tingly grimace).
@@ -2781,6 +2980,7 @@ export function sleepyFoot(x, y, s = 1, { t = 0, sc = 1, wake = 0, pale = 0, mou
   ctx.restore();
 }
 
+
 /** three still "Z z z" letters stepping up-right, gently bobbing (sleep), for tight layouts (zzz() floats far). a = alpha */
 export function zzzStill(x, y, t, a = 1, size = 70) {
   if (a <= 0) return;
@@ -2792,6 +2992,7 @@ export function zzzStill(x, y, t, a = 1, size = 70) {
   ctx.restore();
 }
 
+
 /** yellow 4-point sparkle with an ink edge. r = radius px, sc = scale */
 export function sparkle4(x, y, r, sc = 1, rot = 0) {
   if (sc <= 0 || r <= 0) return;
@@ -2800,6 +3001,7 @@ export function sparkle4(x, y, r, sc = 1, rot = 0) {
   ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = 9; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.yellow; ctx.fill();
   ctx.restore();
 }
+
 /** a sewing pin icon (yellow round head, steel shaft pointing down at rot = 0, ~50x120 px at s = 1). sc = pop-in */
 export function pinIcon(x, y, s = 1, rot = 0, sc = 1) {
   if (sc <= 0) return;
@@ -2807,6 +3009,7 @@ export function pinIcon(x, y, s = 1, rot = 0, sc = 1) {
   line([[0, 0], [0, 92]], C.ink, 16); line([[0, 4], [0, 88]], STEEL, 8); circle(0, 0, 25, C.ink); circle(0, 0, 18, C.yellow); circle(-6, -6, 5, C.white);
   ctx.restore();
 }
+
 /** a sewing needle icon (steel, eye at the top, point down at rot = 0, ~20x160 px at s = 1, origin = middle). sc = pop-in */
 export function needleIcon(x, y, s = 1, rot = 0, sc = 1) {
   if (sc <= 0) return;
@@ -2815,6 +3018,7 @@ export function needleIcon(x, y, s = 1, rot = 0, sc = 1) {
   ctx.lineWidth = 8; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = STEEL; ctx.fill(); ell(0, -50, 3.5, 11, C.ink);
   ctx.restore();
 }
+
 /** "pins and needles" icons: items = [[x, y, 'pin' | 'needle' | 'spark', rot, sc]] in screen px; they jiggle (tingle) with t.
  *  Purely symbolic icons floating beside the body part: nothing touches anything */
 export function tingles(items, t, s = 1) {
@@ -2827,8 +3031,10 @@ export function tingles(items, t, s = 1) {
   });
 }
 
+
 // ═════════════════════════ FOOT-ASLEEP SET (2026-11-10 "foot falls asleep") ═════════════════════════
 const NUMB = '#C9C3D3', NUMB_D = '#AFA8BC', SOFA = '#C8734A', SOFA_D = '#A85E3A', SOFA_L = '#D98C63';
+
 /** hex colour mix a -> b by k (flat tone between two palette colours) */
 function mixHex(a, b, k) {
   const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
@@ -2836,10 +3042,12 @@ function mixHex(a, b, k) {
 }
 /** hands resting on the knees (cross-legged sitting), RIGHT arm */
 ARM.knee = { e: [215, 40], h: [238, 236] };
+
 /** cross-legged legs for man({ cross: true }) (front view, sitting, local coords): thighs out to the knees, shins crossing,
  *  bare feet poking out sideways. The screen-right foot's shin lies UNDER the other one.
  *  CROSS.pinch = where the top shin presses on it, CROSS.foot = that foot (the one that falls asleep), CROSS.seat = bottom of the legs */
 export const CROSS = { pinch: [0, 366], foot: [232, 392], seat: 440 };
+
 function bareFoot(x, y, dir) {
   ctx.save(); ctx.translate(x, y); ctx.scale(dir, 1);
   ell(18, 8, 66, 36, C.skin); circle(74, -2, 26, C.skin); circle(56, -22, 16, C.skin);
@@ -2847,6 +3055,7 @@ function bareFoot(x, y, dir) {
   ell(84, -12, 8, 6, SKIN_HI, -0.4);
   ctx.restore();
 }
+
 function crossLegs() {
   line([[-62, 220], [-250, 330]], C.pants, 124); line([[62, 220], [250, 330]], C.pants, 124);
   line([[-250, 340], [150, 392]], C.pantsShade, 108);                 // back shin (left knee -> right ankle)
@@ -2855,6 +3064,7 @@ function crossLegs() {
   line([[250, 340], [-150, 392]], C.pants, 108);                      // front shin on top: the weight
   line([[230, 312], [-120, 360]], '#2A3656', 14);                    // flat light edge
 }
+
 /** flat sofa (terracotta). y = seat top, x = centre, ~860 px wide at s = 1. Draw BEFORE the sitter; nothing in front */
 export function sofa(x, y, s = 1) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -2867,6 +3077,7 @@ export function sofa(x, y, s = 1) {
   rr(-350, 70, 700, 130, 24); ctx.fillStyle = SOFA; ctx.fill(); rr(-350, 160, 700, 40, [0, 0, 24, 24]); ctx.fillStyle = SOFA_D; ctx.fill();
   ctx.restore();
 }
+
 /** pinch icon: two chunky red arrowheads (ink edge) squeezing toward (x, y) from above and below. p 0..1 squeezes them in */
 export function pinchIcon(x, y, s = 1, p = 1, sc = 1) {
   if (sc <= 0) return;
@@ -2879,6 +3090,7 @@ export function pinchIcon(x, y, s = 1, p = 1, sc = 1) {
   }
   ctx.restore();
 }
+
 /** cutaway lens of the lower leg (side view): ink ring, skin, a pink nerve running left (toward the brain) to right
  *  (toward the foot). The other leg's shin (navy) presses down from the top: squash 0..1 flattens the nerve under it.
  *  flow = film-time phase of the yellow signal blips (-1 = none); block 0..1 = blips stop and fizzle at the pinch.
@@ -2915,6 +3127,7 @@ export function nerveLens(x, y, r, { squash = 0, flow = -1, block = 0, glow = 0,
   ctx.restore();
   return out;
 }
+
 /** feeling badge: white disc with an ink ring and an icon. kind 'tingle' (yellow sparkles + buzz strokes) | 'prickle' (pins)
  *  | 'burn' (a flat flame symbol: red + yellow, no skin, no injury). ~300 px wide at s = 1. sc = pop-in, t = film time */
 export function feelBadge(kind, x, y, s = 1, sc = 1, t = 0) {
@@ -2933,6 +3146,7 @@ export function feelBadge(kind, x, y, s = 1, sc = 1, t = 0) {
   }
   ctx.restore();
 }
+
 /** cartoon tooth (molar, two roots) with a happy face: white, gumEdge outline, dot eyes + smile. NO blood, never in a mouth.
  *  ~260x320 px at s = 1, origin = crown centre. wink = closes the right eye; sc = pop-in, t = film time (gentle bob) */
 export function tooth(x, y, s = 1, { t = 0, sc = 1, wink = false } = {}) {
@@ -2948,19 +3162,24 @@ export function tooth(x, y, s = 1, { t = 0, sc = 1, wink = false } = {}) {
   ctx.beginPath(); ctx.moveTo(-24, -8); ctx.quadraticCurveTo(0, 14, 24, -8); ctx.strokeStyle = C.mouth; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
   ctx.restore();
 }
+
 /** glass of milk: glass() filled with white milk. ~170x230 px at s = 1 */
 export function milkGlass(x, y, s = 1, fill = 0.75, t = 0) { glass(x, y, s, fill, t, 0, C.white); }
+
 
 // ═════════════════════════ TOOTH SET (2026-11-10 "knock out a tooth") ═════════════════════════
 // The cartoon molar shape (crown on top, two roots) shared by tooth(), toothX(), gumBed() and dentistBadge().
 // Local coords: crown centre at the origin, crown top ≈ -150, crown/root line (gum line) ≈ +30, root tips ≈ +160.
 const ROOT = '#EFE6CF', ROOT_D = '#DDD0AF', SOCKET = '#A8445A', SPIT = '#F3EFE6', MILKY = '#F7F4EE';
+
 function toothPath() {
   ctx.beginPath(); ctx.moveTo(-110, -90); ctx.bezierCurveTo(-110, -150, -50, -150, -30, -128); ctx.quadraticCurveTo(0, -110, 30, -128);
   ctx.bezierCurveTo(50, -150, 110, -150, 110, -90); ctx.bezierCurveTo(112, -10, 90, 40, 80, 90); ctx.bezierCurveTo(70, 170, 30, 170, 24, 110);
   ctx.quadraticCurveTo(16, 60, 0, 60); ctx.quadraticCurveTo(-16, 60, -24, 110); ctx.bezierCurveTo(-30, 170, -70, 170, -80, 90); ctx.bezierCurveTo(-90, 40, -112, -10, -110, -90); ctx.closePath();
 }
+
 const bez3 = (p, u) => { const v = 1 - u; return [0, 1].map((k) => v * v * v * p[0][k] + 3 * v * v * u * p[1][k] + 3 * v * u * u * p[2][k] + u * u * u * p[3][k]); };
+
 /** anchor points + outward normals along the root surface (both roots), for the fiber strands */
 const ROOT_PTS = (() => {
   const out = [];
@@ -2972,6 +3191,7 @@ const ROOT_PTS = (() => {
   }
   return out.map(([px, py], i) => { const cx = Math.sign(px) * 52, cy = 108, dx = px - cx, dy = py - cy, l = Math.hypot(dx, dy) || 1; return [px, py, dx / l, dy / l, i]; });
 })();
+
 function toothFace(face) {
   if (!face) return;
   if (face === 'wow') {
@@ -2985,6 +3205,7 @@ function toothFace(face) {
   }
   ctx.globalAlpha = 0.35; ell(-64, -6, 16, 9, C.pink); ell(64, -6, 16, 9, C.pink); ctx.globalAlpha = 1;
 }
+
 /** the knocked-out tooth, all options (no blood ever). Same molar as tooth(): white crown, cream root (below the gum line).
  *  o = { face: 'smile' | 'wow' | 'wink' | null, cut 0..1 (cutaway: pink pulp chamber + root canals), fibers 0..1 (fine pink
  *  fiber strands grow out of the root surface: the periodontal ligament), glow 0..1 (flat yellow halo under the fibers),
@@ -3023,6 +3244,7 @@ export function toothX(x, y, s = 1, o = {}) {
   toothFace(o.face);
   ctx.restore();
 }
+
 /** gum cross-section diagram (no blood): a pink gum band with two neighbour teeth (roots showing, cutaway) and an empty
  *  dark-pink socket in the middle. inner() draws the main tooth in the bed's local coords (toothX(0, -lift, 1, ...): lift 0
  *  = seated). ~860x420 px at s = 1; origin = the seated tooth's crown centre, gum from y +20 to +270 */
@@ -3038,8 +3260,10 @@ export function gumBed(x, y, s = 1, { inner = null, t = 0 } = {}) {
   if (inner) inner();
   ctx.restore();
 }
+
 /** canvas point of a gumBed's socket centre (where the main tooth's crown centre sits when seated) */
 export const socketAt = (x, y, s = 1, lift = 0) => [x, y - lift * s];
+
 /** a cartoon hand pinching something between thumb and index finger (back of the hand, flat skin, blue sleeve). The
  *  fingertips meet round (x, y) with `gap` px between them (local, before s); the arm runs off along `rot` (default -PI/2 =
  *  straight up, fingers pointing down, index on the left, thumb on the right). The arm is 2000 px long so it always leaves
@@ -3058,6 +3282,7 @@ export function pinchHand(x, y, s = 1, { rot = -Math.PI / 2, gap = 200 } = {}) {
   ell(250, -50, 46, 20, SKIN_HI, -0.4);
   ctx.restore();
 }
+
 /** scrubbing brush (wooden block, cream bristles pointing down at rot = 0). ~300x150 px at s = 1 */
 export function scrubBrush(x, y, s = 1, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
@@ -3066,6 +3291,7 @@ export function scrubBrush(x, y, s = 1, rot = 0) {
   ell(-80, -50, 46, 9, '#D98C63', -0.05);
   ctx.restore();
 }
+
 /** kitchen tap (flat steel), seen from the side: wall plate on the left, spout curving down to its mouth at (x, y).
  *  flow 0..1 = water stream length (len px at 1), t = film time (wobble). ~330x260 px at s = 1 */
 export function tap(x, y, s = 1, flow = 0, t = 0, len = 320) {
@@ -3083,6 +3309,7 @@ export function tap(x, y, s = 1, flow = 0, t = 0, len = 320) {
   rr(-176, -232, 22, 60, 8); ctx.fillStyle = STEEL_D; ctx.fill(); rr(-220, -252, 110, 34, 16); ctx.fillStyle = C.shirt; ctx.fill(); rr(-214, -250, 60, 12, 6); ctx.fillStyle = '#7FB0EA'; ctx.fill();
   ctx.restore();
 }
+
 /** round magnifier lens (graphic): ink ring, light inside, clipped; inner() draws in the lens' local coords (origin = centre,
  *  1 unit = 1 px at sc = 1). bg = inside colour */
 export function lens(x, y, r, sc = 1, inner = null, bg = C.white) {
@@ -3094,6 +3321,7 @@ export function lens(x, y, r, sc = 1, inner = null, bg = C.white) {
   ctx.beginPath(); ctx.arc(0, 0, r + 8, 0, TAU); ctx.lineWidth = 18; ctx.strokeStyle = C.ink; ctx.stroke();
   ctx.restore();
 }
+
 /** compact fridge (white, light-grey side shade, freezer door on top). open 0..1 swings the main door open (hinge on the
  *  left), showing a pale blue inside with shelves (shelf tops at local y, default [150]); inner() draws the contents in local coords.
  *  ~420x760 px at s = 1, origin = centre */
@@ -3115,6 +3343,7 @@ export function fridge(x, y, s = 1, open = 0, inner = null, shelves = [150]) {
     for (const hy of [-130, 320]) { rr(-206, hy, 22, 34, 6); ctx.fillStyle = STEEL_D; ctx.fill(); } }   // hinges
   ctx.restore();
 }
+
 /** milk carton (white, blue gable top, "MILK" in blue). ~160x330 px at s = 1, origin = centre */
 export function milkCarton(x, y, s = 1, rot = 0) {
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
@@ -3126,6 +3355,7 @@ export function milkCarton(x, y, s = 1, rot = 0) {
   ell(-4, 112, 40, 22, C.sky);
   ctx.restore();
 }
+
 /** a glass of milk with something IN it: neutral glass (no blue), opaque milk, inner() draws the submerged thing in the glass' local coords
  *  (origin = glass centre, ~150x210 px inner space at s = 1), then the milk goes over it, semi-opaque, with a white surface.
  *  fill 0..1 = milk level, milk 0..1 = how opaque the milk looks over the thing (0.45 default) */
@@ -3144,6 +3374,7 @@ export function milkDunk(x, y, s = 1, fill = 0.8, t = 0, inner = null, milk = 0.
   ctx.restore();
   ctx.restore();
 }
+
 /** small paper cup (white, pink band) with a frothy off-white liquid (saliva) + little bubbles at the top. inner() draws what sits in it
  *  (local coords, origin = cup centre; the rim is at y = -85), drawn between the back rim and the cup front so it pokes out
  *  of the top. ~190x190 px at s = 1. sc = pop-in */
@@ -3159,6 +3390,7 @@ export function smallCup(x, y, s = 1, sc = 1, inner = null) {
   ctx.beginPath(); ctx.moveTo(-92, -85); ctx.quadraticCurveTo(0, -60, 92, -85); ctx.strokeStyle = C.gumEdge; ctx.lineWidth = 8; ctx.stroke();
   ctx.restore();
 }
+
 /** "see a dentist" badge: white disc, ink ring, a smiling cartoon tooth + a red medical cross (no person, no tools).
  *  ~300 px at s = 1. sc = pop-in */
 export function dentistBadge(x, y, s = 1, sc = 1, t = 0) {
@@ -3169,6 +3401,7 @@ export function dentistBadge(x, y, s = 1, sc = 1, t = 0) {
   ctx.save(); ctx.translate(74, -62); circle(0, 0, 40, C.white); rr(-12, -32, 24, 64, 5); ctx.fillStyle = C.red; ctx.fill(); rr(-32, -12, 64, 24, 5); ctx.fill(); ctx.restore();
   ctx.restore();
 }
+
 /** comic "POP!" star (graphic): yellow spiky star, ink outline, ink text. ~380 px at s = 1. sc = pop-in */
 export function popStar(x, y, s = 1, sc = 1, t = 0, text = 'POP!') {
   if (sc <= 0) return;
@@ -3178,6 +3411,7 @@ export function popStar(x, y, s = 1, sc = 1, t = 0, text = 'POP!') {
   ctx.font = '900 92px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.ink; ctx.fillText(text, 0, 6);
   ctx.restore();
 }
+
 /** flat airliner icon (graphic), side view facing right: white body + ink outline, blue tail and wing, sky-blue windows.
  *  ~420x200 px at s = 1. rot tilts it (negative = climbing). sc = pop-in */
 export function airplane(x, y, s = 1, rot = 0, sc = 1) {
@@ -3193,10 +3427,12 @@ export function airplane(x, y, s = 1, rot = 0, sc = 1) {
   poly([[-30, 12], [50, 12], [-20, 96], [-64, 96]], C.shirt);
   ctx.restore();
 }
+
 /** next-episode tease (ears pop): a round lens with a side-view head (facing right) cut open to show the ear, the throat
  *  and the thin tube linking them (eustachian tube). tube 0..1 = flat yellow glow along the tube; flow = film-time phase of
  *  air bubbles running along it (-1 = none); ear / throat 0..1 = yellow rings on them. r = lens radius. sc = pop-in */
 export const EAR = { ear: [-70, -20], mid: [-16, -6], naso: [96, 22], throat: [70, 200] };
+
 export function earCut(x, y, r, { tube = 0, flow = -1, ear = 0, throat = 0, sc = 1, t = 0 } = {}) {
   lens(x, y, r, sc, () => {
     ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -3240,13 +3476,17 @@ ARM.ear = { e: [250, -150], h: [150, -330] };
 ARM.stretch = { e: [230, -250], h: [200, -470] };
 /** arm held out level, hand to the side (pass finger: Math.PI / 2 to point sideways) */
 ARM.side = { e: [250, -60], h: [330, -60] };
+
 const MUF = '#A79E90';
+
 const EZ = { drum: -150, pocket: [-15, -20, 140, 135], tube: [[70, 95], [120, 160], [160, 205], [215, 240]], throatX: 260 };
+
 const polyAt = (P, u) => {
   const L = []; let tot = 0; for (let i = 1; i < P.length; i++) { const l = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); L.push(l); tot += l; }
   let d = clamp(u) * tot; for (let i = 0; i < L.length; i++) { if (d <= L[i] || i === L.length - 1) { const f = clamp(d / L[i]); return [lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f)]; } d -= L[i]; }
   return P[P.length - 1];
 };
+
 /** sound waves (graphic): three arcs travelling out from (x, y) along ang, fading in and out (never pop).
  *  muffle 0..1 turns them grey, wobbly and fainter (muffled hearing). size scales the reach (~220 px at 1). t = film time */
 export function soundWaves(x, y, ang, t, a = 1, muffle = 0, size = 1) {
@@ -3262,6 +3502,7 @@ export function soundWaves(x, y, ang, t, a = 1, muffle = 0, size = 1) {
   }
   ctx.restore();
 }
+
 /** little wooden speaker (prop): box with a darker side, two ink cones that thump with beat 0..1. ~200x280 px at s = 1. sc = pop-in */
 export function speaker(x, y, s = 1, sc = 1, beat = 0) {
   if (sc <= 0) return;
@@ -3271,6 +3512,7 @@ export function speaker(x, y, s = 1, sc = 1, beat = 0) {
   circle(-12, 50, 62 + 3 * beat, C.ink); circle(-12, 50, 26 + 6 * beat, '#3A3A42'); ell(-30, 30, 10, 6, C.white + '55', -0.6);
   ctx.restore();
 }
+
 /** middle-ear close-up lens (side cut, outside on the LEFT): the ear canal (outside air, pale blue) ends at the eardrum
  *  (pink membrane); behind it the middle-ear pocket of air (pale blue) with the tiny ear bones; from the pocket's lower
  *  right the tube (eustachian) runs down to the throat (pink passage, right). Air is always pale blue.
@@ -3324,6 +3566,7 @@ export function earZoom(x, y, r, o = {}) {
   }, C.skin);
   return out;
 }
+
 /** light sky background (flat): pale blue with flat white clouds drifting left (t = film time) */
 export function planeSky(t) {
   fillAll(C.sky);
@@ -3332,6 +3575,7 @@ export function planeSky(t) {
     ell(cx, cy, 120 * s, 46 * s, C.white); ell(cx - 50 * s, cy - 26 * s, 60 * s, 44 * s, C.white); ell(cx + 40 * s, cy - 34 * s, 70 * s, 52 * s, C.white);
   }
 }
+
 
 // ═════════════════════════ CALF CRAMP SET (tease for "charley horse") ═════════════════════════
 /** lower-leg cutaway lens (side view, foot pointing right): rolled-up trouser at the top, shin, and the calf muscle
@@ -3371,6 +3615,7 @@ export function calfLens(x, y, r, { clench = 0, ring = 0, sc = 1, t = 0 } = {}) 
   }, C.bg);
   return out;
 }
+
 /** knot icon (graphic): a red rope tied in a loop, ink edge, with little squeeze strokes. tight 0..1 cinches the loop
  *  smaller and the strokes grow. ~340x200 px at s = 1. sc = pop-in */
 export function knotIcon(x, y, s = 1, tight = 0, sc = 1) {
@@ -3385,10 +3630,12 @@ export function knotIcon(x, y, s = 1, tight = 0, sc = 1) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ CHARLEY HORSE SET (2026-11-14 "charley horse") ═════════════════════════
 /** night version of home() (THE channel room, same layout): dimmed walls, dark window with a crescent moon + stars.
  *  MOON = the moon's centre (screen px) */
 export const MOON = [860, 340];
+
 export function nightHome() {
   home();
   ctx.save(); ctx.globalAlpha = 0.55; fillAll(C.navy); ctx.restore();
@@ -3397,6 +3644,7 @@ export function nightHome() {
   for (const [sx, sy] of [[680, 300], [720, 560], [880, 520], [660, 470]]) circle(sx, sy, 5, C.gum);
   ctx.fillStyle = '#6E7A86'; ctx.fillRect(772, 252, 14, 396); ctx.fillRect(622, 442, 316, 14);
 }
+
 
 /** big side view of the hero's lower leg from OUTSIDE (skin, no cutaway): rolled-up trouser at the top, foot pointing right,
  *  the calf bulging on the LEFT (back of the leg). flex 0..1 pulls the toes up toward the shin (the calf stretch);
@@ -3428,6 +3676,7 @@ export function legClose(x, y, s, { flex = 0, clench = 0, t = 0 } = {}) {
   return out;
 }
 
+
 /** muscle close-up (graphic, side view): a pink bundle of 5 fibres with darker cross-stripes, white tendons out to two bone
  *  anchors at x ± w/2. sq 0..1 = the squeeze: the bundle gets shorter and fatter, its stripes bunch up and the tendons pull
  *  long (slight shiver above 0.5). ~w x 400 px. Returns the bundle's half-length in px */
@@ -3450,6 +3699,7 @@ export function fiberBundle(x, y, w, sq = 0, t = 0) {
   return hl;
 }
 
+
 /** little vertical lower-leg icon (skin, foot pointing right, navy cuff) for badges, in local px at s = 1 (~180x240).
  *  puff 0..1 = swollen calf, col = skin colour, dashed = ink dashed outline (numb) */
 function legIcon(puff = 0, col = C.skin, dashed = false) {
@@ -3460,6 +3710,7 @@ function legIcon(puff = 0, col = C.skin, dashed = false) {
   if (dashed) { ctx.setLineDash([16, 12]); ctx.lineWidth = 8; ctx.strokeStyle = C.ink; leg(); ctx.stroke(); ctx.setLineDash([]); }
   rr(-66 - p * 16, -124, 118 + p * 26, 40, 12); ctx.fillStyle = C.pants; ctx.fill();
 }
+
 /** "when to see a doctor" symptom badges (white disc, ink ring, like symptom()): 'often' = a red knot inside a circular
  *  repeat arrow (frequent cramps), 'swell' = a puffy lower leg with small red out-arrows, 'numb' = a pale lower leg with a
  *  dashed outline. ~300 px at s = 1, sc = pop-in, t = film time */
@@ -3488,11 +3739,13 @@ export function crampBadge(kind, x, y, s = 1, sc = 1, t = 0) {
   ctx.restore();
 }
 
+
 /** next-episode tease (crying): round lens on a face close-up, front view: the hero's eye (upper left: blue iris, brow), a nose
  *  (lower right) and the tear duct, a thin pink tube from the eye's inner corner down beside the nose into the nostril.
  *  tear 0..1 = a pale-blue tear wells on the lower lid (0..0.5) and rolls down the cheek (0.5..1); flow = film-time phase of
  *  tear drops running down the duct into the nose (-1 = none); nose 0..1 = yellow ring round the nose; sc = pop-in */
 const seg01 = (v, a, b) => clamp((v - a) / (b - a));
+
 export function tearLens(x, y, r, { tear = 0, flow = -1, nose = 0, sc = 1, t = 0 } = {}) {
   if (sc <= 0 || r <= 0) return;
   const k = r / 300, E = [-118, -96];
@@ -3532,12 +3785,14 @@ export function tearLens(x, y, r, { tear = 0, flow = -1, nose = 0, sc = 1, t = 0
 /** hand holding something at chest height (a tissue) / up at the nose (dabbing it). RIGHT arm */
 ARM.chest = { e: [210, 40], h: [70, -60] };
 ARM.nose = { e: [215, -60], h: [50, -222] };   // tissue just under the nose
+
 /** yellow highlight ring (ink edge) round a point. a = alpha / pop */
 export function hiRing(x, y, rx, ry, a = 1, rot = 0) {
   if (a <= 0 || rx <= 0 || ry <= 0) return;
   ctx.save(); ctx.globalAlpha = clamp(a); ctx.beginPath(); ctx.ellipse(x, y, Math.max(0, rx), Math.max(0, ry), rot, 0, TAU);
   ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 14; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore();
 }
+
 /** tear gland: a pink lobed cluster (~240x150 px at s = 1). dashed = ink dashed outline (it sits BEHIND the skin) */
 export function glandIcon(x, y, s = 1, rot = 0, a = 1, dashed = true) {
   if (a <= 0 || s <= 0) return;
@@ -3549,13 +3804,16 @@ export function glandIcon(x, y, s = 1, rot = 0, a = 1, dashed = true) {
   if (dashed) { ctx.setLineDash([16, 12]); ctx.lineWidth = 6; ctx.strokeStyle = C.ink; ctx.beginPath(); ctx.ellipse(0, 6, 122, 74, 0, 0, TAU); ctx.stroke(); ctx.setLineDash([]); }
   ctx.restore();
 }
+
 /** big front-view diagram of ONE eye (the hero's left eye: nose bridge on the LEFT = inner corner, temple on the RIGHT =
  *  outer corner) in a round skin window (ink ring, radius 330 at s = 1). The tear gland sits behind the UPPER OUTSIDE corner
  *  (gland 0..1, dashed = behind the skin), tiny ducts drip onto the eye. flow = film-time phase of tear drops running from the
  *  gland across the eye to the drain hole at the inner corner (-1 = none); ring 0..1 = yellow ring on the gland; punct 0..1 =
  *  yellow ring on the drain hole; lid 0..1 blink; look -1..1 iris. GLAND_EYE = local points (scale by s) */
 export const GLAND_EYE = { gland: [168, -150], punct: [-206, 74] };
+
 const GE_FLOW = [[176, -84], [180, 6], [130, 70], [0, 122], [-130, 112], [-206, 74]];
+
 export function glandEye(x, y, s, { gland = 1, ring = 0, flow = -1, lid = 0, punct = 0, look = 0, n = 4, t = 0 } = {}) {
   const Lc = clamp(lid), G = GLAND_EYE.gland, PU = GLAND_EYE.punct;
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -3599,6 +3857,7 @@ export function glandEye(x, y, s, { gland = 1, ring = 0, flow = -1, lid = 0, pun
   ctx.restore();
 }
 
+
 /** side-view head cutaway (facing right) in a round lens of radius r: the eye, the TEAR DUCT (pink tube) running from the eye
  *  down into the nose, the nose cavity and, at the back of the nose, the throat going down. Tear drops travel the path
  *  eye → duct → nose → back of nose → throat (TC_U marks: ductEnd, back, throat). flow = film-time phase (-1 = none),
@@ -3606,10 +3865,15 @@ export function glandEye(x, y, s, { gland = 1, ring = 0, flow = -1, lid = 0, pun
  *  lid 0..1 = blink, cry 0..1 = crying (eye shut, tear on the cheek, sad mouth). gland 0..1 = small gland above the eye.
  *  tcPt(x, y, r, [lx, ly]) / tcAt(x, y, r, u) give screen points (sc = 1) */
 export const TC = { eye: [128, -98], duct: [154, -50], nose: [150, -6], back: [70, 12], throat: [62, 200] };
+
 const TC_PATH = [[150, -86], [160, -44], [164, -6], [120, 6], [72, 14], [66, 90], [62, 200], [60, 330]];
+
 export const TC_U = { ductEnd: 0.165, back: 0.357, throat: 0.736 };
+
 export const tcPt = (x, y, r, p) => [x + p[0] * r / 300, y + p[1] * r / 300];
+
 export const tcAt = (x, y, r, u) => tcPt(x, y, r, polyAt(TC_PATH, u));
+
 export function tearCut(x, y, r, { duct = 0, back = 0, throat = 0, flow = -1, n = 3, speed = 1, from = 0, reach = TC_U.back, lid = 0, cry = 0, gland = 0, sc = 1, t = 0 } = {}) {
   if (sc <= 0 || r <= 0) return;
   lens(x, y, r, sc, () => {
@@ -3652,6 +3916,7 @@ export function tearCut(x, y, r, { duct = 0, back = 0, throat = 0, flow = -1, n 
   }, '#DCEFF7');
 }
 
+
 /** tiny molecule icon for what's IN an emotional tear (graphic, ink edge, ~150 px at s = 1). kind 'stress' = red hexagon
  *  ring with jittery zig-zags; 'calm' = two leaf-green linked hexagon rings (natural painkiller). sc = pop-in */
 export function tearMolecule(kind, x, y, s = 1, sc = 1, rot = 0, t = 0) {
@@ -3671,6 +3936,7 @@ export function tearMolecule(kind, x, y, s = 1, sc = 1, rot = 0, t = 0) {
   ctx.restore();
 }
 
+
 /** a white paper tissue (soft wavy top, grey fold lines), ~150x150 px at s = 1 */
 export function tissue(x, y, s = 1, rot = 0) {
   if (s <= 0) return;
@@ -3681,6 +3947,7 @@ export function tissue(x, y, s = 1, rot = 0) {
   line([[-30, -52], [-22, 58]], C.gumEdge, 6); line([[26, -48], [22, 60]], C.gumEdge, 6);
   ctx.restore();
 }
+
 
 /** next-episode tease (blushing): round lens with a cartoon face (NOT the hero: brown bob, green tee), neck and upper chest
  *  (scoop neckline). blush 0..1 = rosy cheeks; spread 0..1 = flat red bands fill down the neck (0..0.6) then the upper chest
@@ -3717,11 +3984,14 @@ export function blushLens(x, y, r, { blush = 0, spread = 0, sc = 1, t = 0 } = {}
   }, '#DCEFF7');
 }
 
+
 // ═════════════════════════ BLUSHING SET (2026-11-14 "blush") ═════════════════════════
 // hero face option: man({ blush 0..1 }) = red cheeks + white hatch glints + faint all-over flush; sweat 0..1 = awkward drop at the temple
 const BB_HAIR = '#7A5A3A', BB_HAIR_D = '#5A4030', BB_TEE_D = '#4E9A5C', BB_COLLAR = '#86C892';
+
 /** BUST points (local, scale by s): screen-right cheek, neck middle, upper chest (inside the open collar) */
 export const BUST = { cheek: [78, -204], neck: [0, -60], chest: [0, 92] };
+
 /** front-view bust of the "diagram person" (NOT the hero: brown bob, green button-up shirt with a collar), same look as
  *  blushLens. Origin = neck base, head top ≈ -405, shirt runs down past +1400 (let it leave the frame). cheek / neck / chest 0..1 =
  *  flat red flush on each place (gently pulsing). peek 0..1 = the collar opens a little wider (tasteful V, collarbone level) to
@@ -3767,11 +4037,13 @@ export function blushBust(x, y, s = 1, { cheek = 0, neck = 0, chest = 0, peek = 
   ctx.restore();
 }
 
+
 /** a face in a round lens (radius r) for skin-tone comparisons. tone 'light' (palette skin, short brown hair, blue tee) or
  *  'deep' (deep brown skin, short black curls, yellow-ochre tee). flush 0..1 = the blush on the cheeks: light skin turns red,
  *  deep skin turns a deeper, darker shade (not red). Shy smile; look -1..1. bg = lens colour; sc = pop-in */
 const TF = { light: { skin: C.skin, shade: C.skinShade, hair: C.hair, flush: C.red, fa: 0.62, tee: C.shirt, teeD: C.shirtShade },
   deep: { skin: '#8D5A3C', shade: '#704328', hair: '#1E1612', flush: '#4A1F1A', fa: 0.6, tee: '#E0A53A', teeD: '#C68C28' } };
+
 export function toneFace(x, y, r, { tone = 'light', flush = 0, look = 0, t = 0, sc = 1, bg = '#FFF1B8' } = {}) {
   if (sc <= 0 || r <= 0) return;
   const P = TF[tone] || TF.light;
@@ -3797,6 +4069,7 @@ export function toneFace(x, y, r, { tone = 'light', flush = 0, look = 0, t = 0, 
     ctx.restore();
   }, bg);
 }
+
 /** flat love heart graphic (red, ink outline, light glint), ~220 px wide at s = 1. beat 0..1 swells it. sc = pop-in */
 export function loveHeart(x, y, s = 1, sc = 1, beat = 0, rot = 0) {
   if (sc <= 0 || s <= 0) return;
@@ -3806,6 +4079,7 @@ export function loveHeart(x, y, s = 1, sc = 1, beat = 0, rot = 0) {
   ell(-58, -62, 24, 13, C.pinkLight, -0.6);
   ctx.restore();
 }
+
 
 // ═════════════════════════ MOTION SICKNESS TEASE (2026-11-14 "blush" → next) ═════════════════════════
 /** small boat icon on rolling waves (graphic, ink outline): red hull, white cabin with sky windows, yellow flag. Rocks + bobs
@@ -3830,6 +4104,7 @@ export function seaBoat(x, y, s = 1, { t = 0, sc = 1, rock = 1 } = {}) {
   }
   ctx.restore();
 }
+
 /** queasy cartoon face badge (NOT the hero): round face in an ink ring, pale green tinge on the lower face, woozy wavy eyes,
  *  worried brows, wobbly mouth, and a drop of saliva at the mouth corner (drool 0..1 grows it and lets it slide a little).
  *  Little wobble marks either side. Nothing gross. ~320 px at s = 1. sc = pop-in, t = film time */
@@ -3851,9 +4126,12 @@ export function queasyFace(x, y, s = 1, { t = 0, drool = 0, sc = 1 } = {}) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ MOTION SICKNESS SET (2026-11-14-body-4 "motion sickness") ═════════════════════════
 const CAR = '#E0956B', CAR_D = '#C8734A', CAR_DK = '#A85E3A', SEAT = '#5A4A44', SEAT_D = '#4A3A34', TYRE = '#2A2A30', HUB = '#C9C2B5', ARCH = '#3A3A42';
+
 const FIELD = '#D5E6B5', HILL = '#A9D08E', ROAD = '#8A8A92', ROAD_D = '#74747C', LEAF_D = '#4E9A5C', MS_SKIN_HI = '#F2CDB5';
+
 /** (G) road trip outside, full frame: sky, drifting clouds, rolling hills on the horizon, a field with roadside trees and a
  *  road with dashes, all scrolling to the RIGHT (the car drives left). horizon / road = canvas y. speed scales the scroll.
  *  beforeTrees() draws after the field, before the trees (a sun on the horizon); dashes: false drops the lane dashes;
@@ -3878,9 +4156,12 @@ export function roadScene(t, { horizon = 700, road = 1500, speed = 1, beforeTree
   ctx.fillStyle = ROAD; ctx.fillRect(-300, road, W + 600, 260); ctx.fillStyle = ROAD_D; ctx.fillRect(-300, road, W + 600, 18);
   if (dashes) for (let i = 0; i < 7; i++) { const x = ((i * 240 + t * 900 * speed) % 1680) - 300; rr(x, road + 110, 130, 16, 8); ctx.fillStyle = C.white; ctx.fill(); }
 }
+
 /** where a passenger sits in the car (local units): man({ ...carSeat(x, y, s, 'back' | 'front'), sit: true }) */
 export const CAR_SEAT = { back: [190, -215], front: [-170, -215] };
+
 export const carSeat = (x, y, s, k) => ({ x: x + CAR_SEAT[k][0] * s, y: y + CAR_SEAT[k][1] * s, s: 0.45 * s });
+
 /** the car's seats (draw BEFORE the passengers, then carBody over them). Side cutaway, car faces LEFT. origin = door sill
  *  line under the B-pillar; ~1070 px wide, roof at -495, windows -460..-225 (sill), wheel centres at y +40 (r 98) at s = 1 */
 export function carInside(x, y, s) {
@@ -3889,7 +4170,9 @@ export function carInside(x, y, s) {
   rr(-290, -410, 220, 430, 50); ctx.fillStyle = SEAT; ctx.fill(); rr(-290, -410, 60, 430, [50, 0, 0, 50]); ctx.fillStyle = SEAT_D; ctx.fill();
   ctx.restore();
 }
+
 const CAR_WF = [[-360, -225], [-226, -460], [-20, -460], [-20, -225]], CAR_WB = [[20, -225], [20, -460], [228, -460], [362, -225]];
+
 /** the car body (side cutaway, faces LEFT) with open window holes so the seats + passengers show. glassF / glassB 0..1 =
  *  how far the front / back window glass is up (0 = rolled all the way down). t = film time (wheels turn).
  *  handles: false hides the door handles (close-ups where they'd sit in the caption zone) */
@@ -3926,6 +4209,7 @@ export function carBody(x, y, s, { t = 0, glassF = 1, glassB = 1, spin = 1, hand
   }
   ctx.restore();
 }
+
 /** small phone with the screen to camera (a red play button on it: watching a video). ~300x560 at s = 1 */
 export function phoneSmall(x, y, s = 1, rot = 0) {
   if (s <= 0) return;
@@ -3935,6 +4219,7 @@ export function phoneSmall(x, y, s = 1, rot = 0) {
   rr(-90, 120, 180, 20, 10); ctx.fillStyle = C.white; ctx.fill(); rr(-90, 120, 80, 20, 10); ctx.fillStyle = C.red; ctx.fill();
   ctx.restore();
 }
+
 /** a sense as a little cartoon character (graphic, ink outlined): kind 'eye' (eyeball, blue iris) | 'ear' (skin ear with a
  *  face) | 'mouth' (pink lips, floating eyes above). Stubby ink legs + arms. ~280 px wide at s = 1, origin = body centre.
  *  o = { talk 0..1 (mouth open, animate it), mood 'n' | 'mad' | 'smug' | 'shock' | 'calm', look -1..1, arm 0..1 (right
@@ -3999,6 +4284,7 @@ export function senseBuddy(kind, x, y, s = 1, { t = 0, talk = 0, mood = 'n', loo
   if (raised > 0) limb(1, raised);   // a raised arm goes in front of the body so it always reads
   ctx.restore();
 }
+
 /** speech bubble with a word (or text '#scribble' = an angry ink scribble + red "!"). Tail points at (tx, ty). sc = pop-in */
 export function textBubble(text, x, y, w, h, tx, ty, sc = 1, size = 84, col = C.ink) {
   if (sc <= 0) return;
@@ -4008,6 +4294,7 @@ export function textBubble(text, x, y, w, h, tx, ty, sc = 1, size = 84, col = C.
   else { ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '2px'; ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 0, size * 0.06); ctx.letterSpacing = '0px'; }
   ctx.restore();
 }
+
 /** tall level tube (graphic): white tube, ink rim, pale-blue liquid at level 0..1 with a wavy top + rising bubbles, a dashed
  *  ink mark line at mark 0..1. ~200x640 px at s = 1. Returns the mark's canvas y */
 export function levelTube(x, y, s = 1, { level = 0.3, mark = 0.3, t = 0, sc = 1 } = {}) {
@@ -4025,13 +4312,15 @@ export function levelTube(x, y, s = 1, { level = 0.3, mark = 0.3, t = 0, sc = 1 
   ctx.restore();
   return my;
 }
+
 /** age icon (graphic person, NOT the hero): origin = between the feet. kid: big head, short body (~560 px tall), orange tee;
  *  adult: ~800 px tall, slate shirt. queasy 0..1 = green tinge, wavy eyes + mouth and a wobble. sc = pop-in */
-export function ageIcon(x, y, s = 1, { kid = false, queasy = 0, t = 0, sc = 1 } = {}) {
+export function ageIcon(x, y, s = 1, { kid = false, queasy = 0, t = 0, sc = 1, shirt = null } = {}) {
   if (sc <= 0 || s <= 0) return;
   const q = clamp(queasy);
   ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 3.2) * 0.05 * q); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  const [legH, bodyT, bodyW, hy, hr, col, colD] = kid ? [120, -330, 190, -440, 108, '#E0956B', '#C8734A'] : [270, -580, 240, -700, 98, '#5A6B8C', '#4A5A78'];
+  let [legH, bodyT, bodyW, hy, hr, col, colD] = kid ? [120, -330, 190, -440, 108, '#E0956B', '#C8734A'] : [270, -580, 240, -700, 98, '#5A6B8C', '#4A5A78'];
+  if (shirt) [col, colD] = shirt;
   for (const lx of [-1, 1]) { rr(lx < 0 ? -bodyW * 0.38 : 6, -legH - 10, bodyW * 0.32, legH + 10, 24); ctx.fillStyle = C.pants; ctx.fill(); ell(lx * bodyW * 0.24, -4, bodyW * 0.2, 14, C.ink); }
   for (const sd of [-1, 1]) { rr(sd * (bodyW / 2 + 8) - 22, bodyT + 20, 44, (kid ? 170 : 250), 22); ctx.fillStyle = C.skin; ctx.fill(); rr(sd * (bodyW / 2 + 8) - 26, bodyT + 16, 52, 70, 22); ctx.fillStyle = col; ctx.fill(); }
   rr(-bodyW / 2, bodyT, bodyW, -legH - bodyT, [bodyW * 0.35, bodyW * 0.35, 16, 16]); ctx.fillStyle = col; ctx.fill();
@@ -4053,8 +4342,10 @@ export function ageIcon(x, y, s = 1, { kid = false, queasy = 0, t = 0, sc = 1 } 
   ctx.stroke();
   ctx.restore();
 }
+
 /** top of an ageIcon's head (canvas y) */
 export const ageIconTop = (y, s, kid = false) => y + (kid ? -440 - 108 * 1.16 : -700 - 98 * 1.16) * s;
+
 /** one tip card (graphic): white rounded card, ink rim, an icon: 'phone' (phone + arrow down: put away) | 'front' (little car,
  *  a head in the front window) | 'horizon' (sun on the horizon line) | 'window' (window, glass half down, wind lines).
  *  done 0..1 pops a green check on its corner. ~200 px at s = 1. sc = pop-in */
@@ -4083,6 +4374,7 @@ export function fixCard(kind, x, y, s = 1, { done = 0, sc = 1, t = 0 } = {}) {
   ctx.restore();
   if (done > 0) checkMark(x + 82 * s * sc, y + 82 * s * sc, 0.6 * s * sc, clamp(done) <= 0 ? 0 : done);
 }
+
 /** cartoon stomach with a face (graphic, the next-episode tease): K.stomach + eyes and a grumbly mouth on its big curve;
  *  growl 0..1 = it shakes and swells + rumble lines either side. ~330 px at s = 1. sc = pop-in, t = film time */
 export function growlStomach(x, y, s = 1, { t = 0, growl = 0, sc = 1, mood = 'n', squeeze = 0, rings = true } = {}) {
@@ -4113,10 +4405,12 @@ export function growlStomach(x, y, s = 1, { t = 0, growl = 0, sc = 1, mood = 'n'
   }
 }
 
+
 // ═════════════════════════ GROWL SET (2026-11-15 "stomach growls") ═════════════════════════
 const PLATE = '#F7F4EE', PLATE_D = '#C9C2B5', BUN = '#E0A45E', BUN_D = '#C8834A', PATTY = '#7A4A32', LETTUCE = '#5BAE6A',
   CAN = '#E0956B', CAN_D = '#C8734A', TIN = '#DCD6CB', TIN_D = '#B3AA9A', HORM = '#E0956B', HORM_D = '#C8734A',
   COLON = '#D4637C', COLON_D = '#A3304A', LUMEN = '#B83A55', FOODB = '#C8834A', FOODB_D = '#9A5333', HEAT = '#E0956B';
+
 
 /** a pale-blue gas bubble (white disc, blue edge, glint). r px. a = alpha */
 export function gasBubble(x, y, r, a = 1) {
@@ -4125,6 +4419,7 @@ export function gasBubble(x, y, r, a = 1) {
   circle(x, y, Math.max(0, r + 4), WATER_D); circle(x, y, Math.max(0, r), C.white); ell(x - r * 0.35, y - r * 0.35, Math.max(0, r * 0.28), Math.max(0, r * 0.16), C.sky, -0.6);
   ctx.restore();
 }
+
 
 /** round wall clock (white face, ink rim with a darker shade, 12 ticks, ink hands). hour = time in hours (float: 1.5 =
  *  half past one; the minute hand follows). from (hours) = a pale-blue wedge from `from` to `hour` (time passed), -1 = none.
@@ -4145,6 +4440,7 @@ export function wallClock(x, y, r, { hour = 0, from = -1, sc = 1 } = {}) {
   ell(-r * 0.45, -r * 0.55, r * 0.18, r * 0.07, C.sky, -0.7);
   ctx.restore();
 }
+
 
 /** plate with a burger on it, side view (white oval plate, grey rim). eaten 0..1 bites the burger away from the right in
  *  scalloped bites until only crumbs are left. ~460x300 px at s = 1, origin = plate centre. sc = pop-in */
@@ -4171,6 +4467,7 @@ export function mealPlate(x, y, s = 1, { eaten = 0, sc = 1 } = {}) {
   ctx.restore();
 }
 
+
 /** fizzy drink can (orange, darker side, white wave band, silver top + ring pull), no brand. fizz 0..1 = bubbles rising out of
  *  the open top (loops, t = film time). ~180x330 px at s = 1, origin = can centre. sc = pop-in */
 export function sodaCan(x, y, s = 1, { t = 0, fizz: fz = 0, sc = 1, rot = 0 } = {}) {
@@ -4188,6 +4485,7 @@ export function sodaCan(x, y, s = 1, { t = 0, fizz: fz = 0, sc = 1, rot = 0 } = 
   if (fz > 0) fizz(x + 18 * s * sc, y - 170 * s * sc, 1.6 * s * sc, t, fz, { n: 9, spread: 70, rise: 110 });
 }
 
+
 /** the hunger messenger: a little round orange buddy with dot eyes + smile carrying a white envelope (a hormone, no jargon).
  *  ~150 px wide at s = 1. sc = pop-in, t = film time (bob) */
 export function messenger(x, y, s = 1, { t = 0, sc = 1, flip = false } = {}) {
@@ -4204,6 +4502,7 @@ export function messenger(x, y, s = 1, { t = 0, sc = 1, flip = false } = {}) {
   ctx.restore();
 }
 
+
 // path helper: polyline → { at(u) [x, y, ang], pts }
 function pathOf(pts) {
   const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
@@ -4211,6 +4510,7 @@ function pathOf(pts) {
   const at = (u) => { const d = clamp(u) * len; let i = 1; while (i < cum.length - 1 && cum[i] < d) i++; const a = pts[i - 1], b = pts[i], k = (d - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1); return [lerp(a[0], b[0], k), lerp(a[1], b[1], k), Math.atan2(b[1] - a[1], b[0] - a[0])]; };
   return { pts, at, len };
 }
+
 const smooth = (P, n = 10) => {   // Catmull-Rom through P
   const out = [];
   for (let i = 0; i < P.length - 1; i++) {
@@ -4220,13 +4520,17 @@ const smooth = (P, n = 10) => {   // Catmull-Rom through P
   }
   out.push(P[P.length - 1]); return out;
 };
+
 const GUT_SI = pathOf(smooth([[150, -60], [170, 30], [120, 90], [-120, 90], [-150, 150], [-110, 200], [110, 200], [150, 255], [110, 305], [-110, 305], [-150, 350], [-80, 390], [160, 380], [215, 340]]));
+
 const GUT_LI = pathOf(smooth([[215, 340], [250, 220], [245, 30], [200, -2], [0, 6], [-200, -2], [-245, 30], [-250, 220], [-230, 400], [-110, 440], [-20, 470], [-5, 520]]));
+
 /** the gut map: esophagus + stomach (top) + small intestine coil inside the large-intestine frame. ~620x1000 px at s = 1,
  *  origin = centre of the coil area (stomach above it). t = film time. squeeze 0..1 = muscle squeeze bands travelling along
  *  both tubes + the stomach pulsing; bubbles 0..1 = gas bubbles riding along; food 0..1 = little brown food bits riding the
  *  intestines; shakeLow 0..1 = the intestines rumble (jitter). Returns canvas points { stomach, low } (centres, for rings). */
 export const GUT_MAP = { stomach: [0, -300], low: [0, 220] };
+
 export function bellyGut(x, y, s = 1, { t = 0, squeeze = 0, bubbles = 0, food = 0, shakeLow = 0, sc = 1 } = {}) {
   const out = { stomach: [x + GUT_MAP.stomach[0] * s, y + GUT_MAP.stomach[1] * s], low: [x + GUT_MAP.low[0] * s, y + GUT_MAP.low[1] * s] };
   if (sc <= 0 || s <= 0) return out;
@@ -4253,6 +4557,7 @@ export function bellyGut(x, y, s = 1, { t = 0, squeeze = 0, bubbles = 0, food = 
   ctx.restore();
   return out;
 }
+
 
 /** gut close-up, cutaway: a horizontal tube across the screen at y (pink wall, darker channel inside). Squeeze waves travel
  *  left → right (the wall pinches the channel shut where the muscle squeezes), pushing what's inside along: gas 0..1 = round
@@ -4288,6 +4593,7 @@ export function gutCut(y, t, { w = 360, squeeze = 1, gas = 0, fluid = 0, food = 
   return { wavesX, inner: (x) => [y + wob(x) - inner(x), y + wob(x) + inner(x)] };
 }
 
+
 /** front cartoon nose (skin, darker side shade, round tip, nostril wings, two nostrils). bleed 0..1 = one small clean red
  *  drop grows under the left nostril (no gore). squeeze 0..1 presses the wings in (pinch). ~220x260 px at s = 1, origin = tip centre. sc = pop-in */
 export function cartoonNose(x, y, s = 1, { bleed = 0, sc = 1, t = 0, squeeze = 0 } = {}) {
@@ -4302,6 +4608,7 @@ export function cartoonNose(x, y, s = 1, { bleed = 0, sc = 1, t = 0, squeeze = 0
   if (bleed > 0) { const bl = clamp(bleed); drop(-40, 92 + 34 * bl, 0.62 * (0.4 + 0.6 * bl), 0, Math.min(1, bl * 3), [RED_D, C.red]); }
   ctx.restore();
 }
+
 
 /** little radiator heater (white fins, grey shade, feet) with wavy orange warm-air lines rising (dry indoor air). heat 0..1,
  *  t = film time. ~200x170 px at s = 1, origin = radiator centre. sc = pop-in */
@@ -4326,8 +4633,10 @@ export function heater(x, y, s = 1, { heat = 0, t = 0, sc = 1, edge = false } = 
   ctx.restore();
 }
 
+
 // ═════════════════════════ NOSEBLEED SET (2026-11-15-body-2 "nosebleed") ═════════════════════════
 const NB_AIR = '#EAF5FA', NB_CRUST = '#E2B98C', NB_CRUST_D = '#C4946A', NB_DEEP = '#D4637C', NB_CAV = '#F7C9D0';
+
 /** draw the first p (0..1) of a polyline (by point count, smooth enough for short curves) */
 function partLine(P, p, col, w) {
   const q = clamp(p); if (q <= 0) return;
@@ -4335,16 +4644,21 @@ function partLine(P, p, col, w) {
   if (i < P.length - 1) pts.push([lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f)]);
   if (pts.length > 1) line(pts, col, w);
 }
+
 // cavity outline (lens units, r = 300) + the vessel lines that run just inside its lining, and the front patch
 const NS_CAV = [[-150, -120], [-60, -150], [10, -120], [70, -40], [120, 40], [128, 92], [80, 108], [-20, 112], [-150, 104]];
+
 const NS_VES = [
   [[-140, -100], [-60, -128], [4, -100], [56, -36], [100, 30]],
   [[-140, 88], [-60, 92], [10, 94], [70, 92], [104, 76]],
   [[-60, -128], [-50, -96], [-70, -70]], [[4, -100], [-6, -70], [14, -52]], [[56, -36], [36, -20], [50, 4]],
   [[-60, 92], [-50, 66], [-70, 50]], [[10, 94], [20, 68], [0, 56]],
 ];
+
 const NS_FRONT = [[[78, 30], [96, 48], [86, 70], [104, 84]], [[66, 56], [84, 62], [92, 86]], [[100, 40], [112, 60], [106, 80]], [[70, 80], [88, 76], [96, 96]]];
+
 export const NOSE_FRONT = [92, 64];   // front patch centre (lens units, r = 300)
+
 /** SIDE VIEW lens of the nose (profile facing right, big nose) cut open: the pink nasal cavity with fine red blood vessels
  *  running just inside its lining. vessels 0..1 draws them in; front 0..1 = yellow ring round the front patch (dense
  *  vessels just inside the nostril: where most nosebleeds start); r = lens radius; sc = pop-in. Point: NOSE_FRONT * r / 300 */
@@ -4376,12 +4690,15 @@ export function noseSideLens(x, y, r, { vessels = 1, front = 0, sc = 1, t = 0, b
   }, bg);
 }
 
+
 /** CROSS-SECTION lens of the nose lining: air on top, the thin moist surface (pale pink, white shine) over pink tissue,
  *  red blood vessels running just under the surface with tiny branches up to it (cells drift along: t). dry 0..1 turns
  *  the surface tan and crusty (flakes, no shine); crack 0..1 opens three little cracks; bleed 0..1 = one small clean red
  *  drop beads up out of the middle crack. r = lens radius, sc = pop-in. NB_SURF(xu) = surface height (lens units, r = 300) */
 export const NB_SURF = (xu) => -40 + Math.sin(xu * 0.025) * 8;
+
 const NB_CRACKS = [-160, 10, 170];
+
 export function liningLens(x, y, r, { dry = 0, crack = 0, bleed = 0, sc = 1, t = 0 } = {}) {
   lens(x, y, r, sc, () => {
     ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -4420,6 +4737,7 @@ export function liningLens(x, y, r, { dry = 0, crack = 0, bleed = 0, sc = 1, t =
   }, NB_AIR);
 }
 
+
 /** "what sets it off" icon: light-blue disc, ink ring, a small front nose + the action. kind 'pick' (index finger pushing up
  *  at a nostril) | 'rub' (finger rubbing sideways under the nose, little double arrow) | 'blow' (tissue under the nose,
  *  puff lines). act 0..1 animates the action (loop it with t), sc = pop-in. ~280 px wide at s = 1 */
@@ -4451,11 +4769,13 @@ export function causeIcon(kind, x, y, s = 1, { act = 0, sc = 1, t = 0 } = {}) {
   ctx.restore(); ctx.restore();
 }
 
+
 /** SIDE VIEW of the hero sitting on a wooden chair, facing right (first-aid posture). Origin = hip on the seat; head top
  *  ≈ -575, feet ≈ +330 at s = 1. lean (rad, + = forward) tips the upper body forward from the hip (head follows a bit more);
  *  pinch 0..1 brings his right hand up to pinch the soft part of his nose; drop 0..1 = one small clean red drop under the
  *  nose. eyes 'n' | 'wide' | 'closed', mouth 'flat' | 'smile' | 'o' | 'sad', brow 0..1 */
 const NB_WOOD = '#B5653F', NB_WOOD_D = '#9A5333', NB_BOOT = '#5A4030';
+
 export function sideSitter(x, y, s = 1, { lean = 0, pinch = 0, drop: dr = 0, eyes = 'n', mouth = 'flat', brow = 0, t = 0 } = {}) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   // chair: back post, seat, two legs
@@ -4507,6 +4827,7 @@ export function sideSitter(x, y, s = 1, { lean = 0, pinch = 0, drop: dr = 0, eye
   ctx.restore();
 }
 
+
 /** emergency beacon light (graphic): ink base, red dome with a light shine, red rays blinking when on (0..1, t = film time).
  *  ~240 px wide at s = 1, origin = base centre. sc = pop-in */
 export function siren(x, y, s = 1, { on = 0, t = 0, sc = 1 } = {}) {
@@ -4521,10 +4842,12 @@ export function siren(x, y, s = 1, { on = 0, t = 0, sc = 1 } = {}) {
   ctx.restore();
 }
 
+
 /** a cartoon figure (NOT the hero: ginger hair) bundled under a pale-blue blanket, only the face out, hands holding the
  *  blanket shut; chattering teeth. shiver 0..1 shakes it with ink shake lines either side (t = film time). Origin = bottom
  *  centre of the blanket, ~330x470 px at s = 1. sc = pop-in */
 const NBB_HAIR = '#C8734A', NBB_HAIR_D = '#A85E3A', NBB_BLK = '#BFE3F2', NBB_BLK_D = '#8FC0D8';
+
 export function blanketBuddy(x, y, s = 1, { shiver = 0, t = 0, sc = 1 } = {}) {
   if (sc <= 0 || s <= 0) return;
   const sh = clamp(shiver), dx = Math.sin(t * 46) * 6 * sh;
@@ -4553,6 +4876,7 @@ export function blanketBuddy(x, y, s = 1, { shiver = 0, t = 0, sc = 1 } = {}) {
   ctx.restore();
 }
 
+
 /** pinch close-up fingers (front view, for a big cartoonNose): ONLY an index finger (from the lower left) and a thumb (from
  *  the lower right) reaching in diagonally; the rest of the hand is off-frame (use inside a lens). Pads meet round (x, y)
  *  with `gap` px between their inner edges; the space under the nostrils stays clear. s = scale (finger ~70 px wide at 1) */
@@ -4569,8 +4893,10 @@ export function pinchFingers(x, y, s = 1, { gap = 400, reach = 700 } = {}) {
   ctx.restore();
 }
 
+
 // ═════════════════════════ FEVER SET (2026-11-15-body-3 "fever") ═════════════════════════
 const FV_COLD = '#7EC3E0', FV_COLD_D = '#5AA8CC', FV_FLAKE = '#F8E6DA', FV_FLAKE_D = '#E2C2AE', FV_BURN = '#EE8E8E';
+
 /** the HERO wrapped in a light-blue blanket (shoulders to knees, hands holding it shut under the chin). o = man() options
  *  (face: eyes, brow, sad, sweats, look...; arms are hidden under the blanket). shiver 0..1 shakes him with ink shake lines
  *  either side; chatter 0..1 swaps the mouth for chattering teeth. t = film time. Same origin/scale as man() */
@@ -4597,8 +4923,10 @@ export function blanketHero(o, { shiver = 0, chatter = 0, t = 0 } = {}) {
   }
   ctx.restore();
 }
+
 /** angle (rad) on a thermostatDial for a level 0..1 (0 = coldest, bottom-left; 1 = hottest, bottom-right) */
 export const dialAng = (level) => lerp(Math.PI * 0.75, Math.PI * 2.25, clamp(level));
+
 /** the brain's thermostat (graphic): white dial face, ink rim, a cold-to-hot track (blue, pink, red), ticks, a big grip
  *  knob with an ink pointer at `level` 0..1. ~2*(r+24) px at s = 1 (r = 190). sc = pop-in */
 export function thermostatDial(x, y, s = 1, { level = 0.4, sc = 1 } = {}) {
@@ -4616,6 +4944,7 @@ export function thermostatDial(x, y, s = 1, { level = 0.4, sc = 1 } = {}) {
   circle(0, 0, 22, C.ink);
   ctx.restore();
 }
+
 /** dashed ink line across a thermometer() tube at `level` (the "line" doctors draw). p 0..1 draws it left to right */
 export function thermoMark(x, y, s, level, p = 1) {
   const q = clamp(p); if (q <= 0) return;
@@ -4623,6 +4952,7 @@ export function thermoMark(x, y, s, level, p = 1) {
   ctx.save(); ctx.setLineDash([26 * s, 16 * s]); ctx.lineCap = 'butt';
   line([[x0, yy], [x1, yy]], C.ink, 14 * s); ctx.restore();
 }
+
 /** shake lines: three short flickering ink ticks on each side of a box centred at (x, y), half-size rx x ry. a = alpha */
 export function shakeLines(x, y, rx, ry, t, a = 1, w = 12) {
   if (a <= 0) return;
@@ -4631,6 +4961,7 @@ export function shakeLines(x, y, rx, ry, t, a = 1, w = 12) {
     line([[x + sd * rx, y + k * ry * 0.7 - 14], [x + sd * (rx + 34 + ph * 14), y + k * ry * 0.7 + 14]], C.ink, w); }
   ctx.restore();
 }
+
 /** warm air: wavy orange lines (dark edge) rising from a base span centred at (x, y), w px wide. a = alpha, t = film time */
 export function warmWaves(x, y, w, t, a = 1, { n = 4, h = 220, s = 1 } = {}) {
   if (a <= 0) return;
@@ -4643,6 +4974,7 @@ export function warmWaves(x, y, w, t, a = 1, { n = 4, h = 220, s = 1 } = {}) {
   }
   ctx.restore();
 }
+
 /** small wooden bedside table, origin = top centre, ~220x260 px at s = 1 */
 export function nightstand(x, y, s = 1) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -4651,6 +4983,7 @@ export function nightstand(x, y, s = 1) {
   rr(-120, 0, 240, 40, 14); ctx.fillStyle = WOOD; ctx.fill(); rr(-120, 26, 240, 14, [0, 0, 14, 14]); ctx.fillStyle = WOOD_D; ctx.fill();
   ctx.restore();
 }
+
 /** glass() with an ink outline so the pale glass reads on the cream wall. Same args as glass() (rot not supported) */
 export function outlinedGlass(x, y, s, fill = 0.7, t = 0) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
@@ -4658,6 +4991,7 @@ export function outlinedGlass(x, y, s, fill = 0.7, t = 0) {
   ctx.fillStyle = C.ink; ctx.lineJoin = 'round'; ctx.fill(); ctx.restore();
   glass(x, y, s, fill, t);
 }
+
 /** next-episode tease lens (sunburn): sky with a sun top-left over a patch of skin (lower part, rounded top like a shoulder).
  *  sun 0..1 pops the sun in; burn 0..1 tints the skin pink; peel 0..1 lifts a few clean pale cartoon flakes that curl up
  *  (the last two drift off). r = lens radius, sc = pop-in, t = film time. Draw it with lens()-style framing (ink rim) */
@@ -4695,8 +5029,10 @@ export function sunSkinLens(x, y, r, { sun: sn = 1, burn = 0, peel = 0, sc = 1, 
   }, C.sky);
 }
 
+
 // ═════════════════════════ SUNBURN SET (2026-11-15-body-4 "sunburn") ═════════════════════════
 const SB_AIR = '#DDF0F8', SB_DERM = '#F3C7B3', SB_FRESH = '#F9D9C6', SB_POT_D = '#A85E3A';
+
 /** UV ray: a wavy ink-edged orange ray from (x0, y0) toward (x1, y1) with an arrow tip riding its front. p 0..1 = how far
  *  the front has travelled, t = film time (the wave ripples along), a = alpha, w = core width */
 export function uvRay(x0, y0, x1, y1, p, t = 0, a = 1, w = 14) {
@@ -4711,6 +5047,7 @@ export function uvRay(x0, y0, x1, y1, p, t = 0, a = 1, w = 14) {
   ctx.beginPath(); ctx.moveTo(4, 0); ctx.lineTo(-30, -22); ctx.lineTo(-30, 22); ctx.closePath(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = HEAT; ctx.fill();
   ctx.restore();
 }
+
 /** skin cutaway lens (side view), lens units r = 300: pale air on top, the skin surface at y -120, a thin top layer (the
  *  one that dies and peels), the living layer with rounded cells, the pale-pink dermis with one blood vessel across at y 170.
  *  o = { burn 0..1 reddens the skin, swell 0..1 bulges the surface up, widen 0..1 widens the vessel, flow = blood speed,
@@ -4719,7 +5056,9 @@ export function uvRay(x0, y0, x1, y1, p, t = 0, a = 1, w = 14) {
  *  flakes back down onto the skin, sc pop-in, t film time }.
  *  skinCutAt(x, y, r, key, dx) = a canvas point on a layer (key: top | fresh | cells | vessel; dx in lens units) */
 export const SKC = { top: -103, fresh: -64, cells: -40, vessel: 170 };
+
 export const skinCutAt = (x, y, r, k, dx = 0) => [x + dx * r / 300, y + SKC[k] * r / 300];
+
 export function skinCutLens(x, y, r, { burn = 0, swell = 0, widen = 0, flow = 1, dead = 0, fresh = 0, peel = 0, settle = 0, sc = 1, t = 0 } = {}) {
   if (sc <= 0 || r <= 0) return;
   lens(x, y, r, sc, () => {
@@ -4776,6 +5115,7 @@ export function skinCutLens(x, y, r, { burn = 0, swell = 0, widen = 0, flow = 1,
     ctx.restore();
   }, SB_AIR);
 }
+
 /** cartoon DNA ladder (vertical double helix, flat): two blue ink-edged strands twisting round each other, rungs in pink
  *  and green. ~240x600 px at s = 1, origin = centre. brk 0..1 snaps the middle rung: its two halves droop apart with a small
  *  red nick mark between them. t = film time (slow sway). Returns the break point [x, y] in canvas px */
@@ -4805,6 +5145,7 @@ export function dnaLadder(x, y, s = 1, { brk = 0, t = 0, sc = 1 } = {}) {
   ctx.restore();
   return [x, y];
 }
+
 /** shower head (graphic, light grey with an ink outline): a pipe from the upper left into a round head facing down, cool
  *  pale-blue drops falling from it (flow 0..1, they fall `fall` px). ~400x260 px at s = 1, origin = centre of the head's face.
  *  sc pop-in, t film time */
@@ -4825,6 +5166,7 @@ export function showerHead(x, y, s = 1, { flow = 0, t = 0, sc = 1, fall = 300 } 
   for (let kk = 0; kk < 7; kk++) circle(-84 + kk * 28, 10, 5, C.ink);
   ctx.restore();
 }
+
 /** potted aloe vera (graphic): terracotta pot, fat pointed green leaves fanning up with pale teeth dots. ~330x460 px at s = 1,
  *  origin = pot rim centre (leaves above, pot below to +170). sc pop-in, t film time (gentle sway) */
 export function aloePlant(x, y, s = 1, { sc = 1, t = 0 } = {}) {
@@ -4844,6 +5186,7 @@ export function aloePlant(x, y, s = 1, { sc = 1, t = 0 } = {}) {
   rr(-145, -14, 290, 48, 16); ctx.fillStyle = SB_POT_D; ctx.fill(); rr(-145, -14, 250, 40, 16); ctx.fillStyle = C.pot; ctx.fill();
   ctx.restore();
 }
+
 /** "blisters" badge (clean, no gore): white disc, ink ring, a sunburnt skin strip across the lower half with two small
  *  clear domed blisters (pale, ink edge, white glint). ~300 px at s = 1. sc pop-in */
 export function blisterBadge(x, y, s = 1, sc = 1) {
@@ -4858,6 +5201,7 @@ export function blisterBadge(x, y, s = 1, sc = 1) {
   dome(-24, 46, 66, 58); dome(68, 50, 32, 28);
   ctx.restore();
 }
+
 /** pain-over-time chart (graphic card): white rounded card, ink axes with arrow ends, a red ink-edged curve that climbs to a
  *  peak 70 % across, then eases down. p 0..1 draws it left to right (the peak is reached at p = 0.7). w x h px, origin =
  *  card centre. Returns the peak point [x, y] in canvas px */
@@ -4879,6 +5223,7 @@ export function painChart(x, y, w, h, { p = 1, sc = 1 } = {}) {
   ctx.restore();
   return [x + pk[0] * sc, y + pk[1] * sc];
 }
+
 /** next-episode tease lens (losing your voice): front view of the lower face + neck on a pale background with a cutaway
  *  window in the neck: the windpipe (pink tube, pale rings) and the voice box on top (darker pink, two pale vocal folds in a
  *  V). whisper 0..1 purses the mouth small; strain 0..1 pinches the folds together, jitters the voice box and adds small red
@@ -4922,7 +5267,9 @@ export function throatLens(x, y, r, { whisper = 0, strain = 0, shout = 0, sc = 1
 // ═════════════════════════ VOICE SET (2026-11-16 "lose your voice") ═════════════════════════
 /** hand clutching the front of the throat (hoarse, mid-croak), RIGHT arm */
 ARM.throat = { e: [215, -40], h: [34, -214] };
+
 const FOLD_SW = '#F6C3C6', FOLD_SW_D = '#D98A96', CAN_E = '#1E2A44', CAN_E_D = '#151E33', CAN_E_HI = '#33456B';
+
 
 /** the vocal cords from above (macro, flat): pink throat ring, two pale folds in a V, the dark gap between them.
  *  o = { gap 0..1 (1 = open breathing V, 0 = shut together), swell 0..1 (folds puff up fat and pink, gap narrows),
@@ -4964,6 +5311,7 @@ export function cordsView(x, y, s, { gap = 1, swell = 0, buzz = 0, rough = 0, t 
   ctx.restore();
 }
 
+
 /** x-ray magnifier lens on the vocal cords: ink rim + cyan ring, x-ray navy inside with a faint cyan grid, cordsView inside.
  *  o = cordsView options + { sc (pop-in), label 0..1 = the tiny cyan "HUNDREDS OF BUZZES/SEC" label under the lens with a
  *  hairline to the left fold (the rewatch detail, Cleveland Clinic) }. Returns the lens bottom-left rim point [x, y] (sc = 1) */
@@ -4988,6 +5336,7 @@ export function cordsLens(x, y, r, o = {}) {
   return [x - r * 0.7, y + r * 0.7];
 }
 
+
 /** guess option pill: yellow letter disc + white pill with ink text (letter "A", text "WHISPER"). o = { sc (pop-in), check 0..1
  *  (green check badge pops on the right end), dim 0..1 (fades it back: the wrong option), hi 0..1 (yellow rim flash + small
  *  bounce, the moment it is spoken) }. The check sits just right of the pill (allow ~size*1.4 px). Origin = pill centre. Returns the pill width */
@@ -5009,6 +5358,7 @@ export function abPill(letter, text, x, y, size, { sc = 1, check = 0, dim = 0, h
   return w * sc;
 }
 
+
 /** croak marks: three short jagged ink zig-zags fanning out from a hoarse mouth. dir 1 = to the right, -1 = left.
  *  a = alpha, t = film time (they jitter), col = stroke colour (C.white on the x-ray navy) */
 export function croakLines(x, y, s = 1, t = 0, a = 1, dir = 1, col = C.ink) {
@@ -5021,6 +5371,7 @@ export function croakLines(x, y, s = 1, t = 0, a = 1, dir = 1, col = C.ink) {
   }
   ctx.restore();
 }
+
 
 /** a voice drawn as a sound wave (graphic), centred at x, y, w wide, amplitude h. o = { rough 0..1 (jagged, uneven, turns
  *  red: raspy), fade 0..1 (amplitude dies away + breaks into dashes: the voice vanishing), t, a }. Ink edge under the colour */
@@ -5038,6 +5389,7 @@ export function voiceWave(x, y, w, h, { rough = 0, fade = 0, t = 0, a = 1 } = {}
   ctx.restore();
 }
 
+
 /** a cold virus (graphic): round green ball with knobbed spikes, darker shade, grumpy dot-eyed face. ~200 px at s = 1.
  *  sc = pop-in, t = film time (slow spin of the spikes + bob) */
 export function virus(x, y, s = 1, { t = 0, sc = 1 } = {}) {
@@ -5051,6 +5403,7 @@ export function virus(x, y, s = 1, { t = 0, sc = 1 } = {}) {
   ctx.beginPath(); ctx.moveTo(-20, 34); ctx.quadraticCurveTo(0, 22, 20, 34); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke();
   ctx.restore();
 }
+
 
 /** concert stage background (real world, night): ink backdrop, two swinging yellow spotlight beams, a row of small bulbs,
  *  dark stage floor from y = floorY. beat 0..1 brightens the beams. t = film time */
@@ -5068,6 +5421,7 @@ export function stageBg(t, { beat = 0, floorY = 1180 } = {}) {
   ctx.fillStyle = C.pants; ctx.fillRect(-300, floorY, W + 600, 26);
 }
 
+
 /** work desk (front view, wood) with the back of an open laptop (grey, white dot logo) and a white mug with steam.
  *  Origin = desk-top centre, ~860 px wide at s = 1. Draw it after a seated hero so it hides his legs. t = film time */
 export function workDesk(x, y, s = 1, { t = 0 } = {}) {
@@ -5083,16 +5437,134 @@ export function workDesk(x, y, s = 1, { t = 0 } = {}) {
   ctx.restore();
 }
 
-/** next-episode tease: a tall slim energy-drink can (dark navy-blue, darker side, light highlight stripe, yellow lightning
- *  bolt, silver lid with ring pull). No brand. ~150x340 px at s = 1. Origin = can centre. sc = pop-in, rot tilts it */
-export function energyCan(x, y, s = 1, { sc = 1, rot = 0 } = {}) {
+/** tall plain energy-drink can (16 fl oz look): deep navy body, darker right side, one yellow diagonal stripe, silver top +
+ *  ring pull. NO brand, no logo. label: true adds a tiny white strip near the bottom reading "per 16 fl oz · FDA" (the
+ *  rewatch detail). fizz 0..1 = bubbles out of the open top (t = film time). ~160x380 px at s = 1, origin = can centre */
+export function energyCan(x, y, s = 1, { rot = 0, sc = 1, label = false, t = 0, fizz: fz = 0 } = {}) {
   if (sc <= 0 || s <= 0) return;
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
-  rr(-80, -160, 160, 330, 22); ctx.fillStyle = C.ink; ctx.fill();
-  rr(-74, -154, 148, 318, 18); ctx.fillStyle = CAN_E_D; ctx.fill(); rr(-74, -154, 112, 318, [18, 0, 0, 18]); ctx.fillStyle = CAN_E; ctx.fill();
-  rr(-56, -120, 14, 250, 7); ctx.fillStyle = CAN_E_HI; ctx.fill();
-  lightningBolt(-6, -110, 0.42, 1, 0.08);
-  ell(0, -160, 76, 18, TIN_D); ell(0, -166, 70, 15, TIN); ell(14, -170, 22, 6, C.ink); rr(-26, -176, 36, 12, 6); ctx.fillStyle = TIN_D; ctx.fill();
-  rr(-74, 160, 148, 14, 7); ctx.fillStyle = TIN_D; ctx.fill();
+  rr(-80, -170, 160, 350, 24); ctx.fillStyle = ENC_D; ctx.fill(); rr(-80, -170, 118, 350, [24, 0, 0, 24]); ctx.fillStyle = ENC; ctx.fill();
+  ctx.save(); rr(-80, -170, 160, 350, 24); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(-90, 10); ctx.lineTo(90, -90); ctx.lineTo(90, -40); ctx.lineTo(-90, 60); ctx.closePath(); ctx.fillStyle = CAF; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(38, -66); ctx.lineTo(90, -90); ctx.lineTo(90, -40); ctx.lineTo(38, -16); ctx.closePath(); ctx.fillStyle = CAF_D; ctx.fill();
+  if (label) {
+    rr(-70, 112, 140, 40, 10); ctx.fillStyle = C.white; ctx.fill();
+    ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '800 17px Inter'; ctx.fillText('per 16 fl oz', 0, 124); ctx.font = '900 15px Inter'; ctx.fillText('· FDA ·', 0, 142);
+  }
+  ctx.restore();
+  rr(-58, -130, 14, 220, 7); ctx.fillStyle = ENC_HI; ctx.fill();
+  ell(0, -174, 76, 20, TIN_D); ell(0, -180, 70, 16, TIN); rr(-74, -178, 148, 14, 7); ctx.fillStyle = TIN_D; ctx.fill(); ell(0, -184, 66, 14, TIN);
+  ell(16, -186, 22, 7, C.ink); rr(-26, -193, 36, 12, 6); ctx.fillStyle = TIN_D; ctx.fill();
+  rr(-74, 172, 148, 14, 7); ctx.fillStyle = TIN_D; ctx.fill();
+  ctx.restore();
+  if (fz > 0) fizz(x + 16 * s * sc, y - 196 * s * sc, 1.4 * s * sc, t, fz, { n: 7, spread: 60, rise: 100 });
+}
+
+
+// ═════════════════════════ ENERGY DRINK SET (2026-11-16 "energy drink") ═════════════════════════
+const eoE = (t) => 1 - Math.pow(1 - t, 3), eobE = (t) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+
+const ENC = '#2B3A5C', ENC_D = '#1F2A44', ENC_HI = '#3D5080', CAF = '#FFD43B', CAF_D = '#D9A90F';
+
+/** where the can's open top is (screen px) for energyCan(x, y, s, { rot }) */
+export const energyCanTop = (x, y, s = 1, rot = 0) => [x + Math.sin(rot) * 186 * s, y - Math.cos(rot) * 186 * s];
+
+
+/** one caffeine dot: yellow disc, darker yellow rim, white glint. r = radius px, a = alpha */
+export function caffeineDot(x, y, r = 16, a = 1) {
+  if (a <= 0 || r <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  circle(x, y, r, CAF_D); circle(x - r * 0.08, y - r * 0.08, r * 0.8, CAF); ell(x - r * 0.32, y - r * 0.36, r * 0.26, r * 0.14, C.white, -0.6);
+  ctx.restore();
+}
+
+
+/** corner clock (graphic, the timeline's rewatch detail): ink pill with a little white clock face (hands follow the time) and
+ *  the elapsed time in white ("0:15", "5:00" = hours:minutes). mins = minutes since the first sip. flash 0..1 = the jump
+ *  (yellow face + yellow digits, fading). ~350x130 px at s = 1, origin = centre. sc = pop-in */
+export function elapsedClock(x, y, s = 1, mins = 0, { flash = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const f = clamp(flash), text = `${Math.floor(mins / 60)}:${String(Math.round(mins % 60)).padStart(2, '0')}`;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc * (1 + 0.18 * f), s * sc * (1 + 0.18 * f));
+  rr(-176, -64, 352, 128, 64); ctx.fillStyle = C.white; ctx.fill();
+  rr(-170, -58, 340, 116, 58); ctx.fillStyle = C.ink; ctx.fill();
+  const cx = -110;
+  circle(cx, 0, 44, f > 0.05 ? C.yellow : C.white);
+  for (let i = 0; i < 12; i += 3) { ctx.save(); ctx.translate(cx, 0); ctx.rotate(i * TAU / 12); rr(-3, -40, 6, 10, 3); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore(); }
+  const ma = (mins % 60) / 60 * TAU, ha = (mins / 60) / 12 * TAU;
+  ctx.save(); ctx.translate(cx, 0); ctx.rotate(ha); rr(-5, -22, 10, 26, 5); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore();
+  ctx.save(); ctx.translate(cx, 0); ctx.rotate(ma); rr(-4, -34, 8, 38, 4); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
+  circle(cx, 0, 6, C.ink);
+  ctx.font = '900 76px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left'; ctx.fillStyle = f > 0.05 ? C.yellow : C.white; ctx.fillText(text, -50, 4);
+  ctx.restore();
+}
+
+
+/** guess-option pill: white pill, ink rim, a yellow letter disc ("A" / "B") on the left, ink text. check 0..1 pops a green
+ *  check just right of the pill; dim 0..1 fades it back (the wrong option). left: x = the pill's left edge. size = text px.
+ *  sc = pop-in. Returns its width */
+export function optionPill(letter, text, x, y, size = 60, { sc = 1, check = 0, dim = 0, left = false } = {}) {
+  if (sc <= 0) return 0;
+  ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '2px';
+  const tw = ctx.measureText(text).width, h = size * 1.7, d = h * 0.78, w = tw + d + size * 1.3;
+  ctx.save(); ctx.translate(left ? x + w / 2 : x, y); ctx.scale(sc, sc); ctx.globalAlpha = 1 - 0.55 * clamp(dim);
+  ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '2px';
+  rr(-w / 2, -h / 2, w, h, h / 2); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-w / 2 + 8, -h / 2 + 8, w - 16, h - 16, h / 2 - 8); ctx.fillStyle = C.white; ctx.fill();
+  const lx = -w / 2 + 8 + d / 2 + 4;
+  circle(lx, 0, d / 2, C.yellow); ctx.lineWidth = 6; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(letter, lx, size * 0.05);
+  ctx.textAlign = 'left'; ctx.fillText(text, lx + d / 2 + size * 0.3, size * 0.05);
+  ctx.letterSpacing = '0px'; ctx.globalAlpha = 1;
+  if (check > 0) checkMark(w / 2 + size * 0.95, 0, size / 60, eobE(clamp(check)));
+  ctx.restore();
+  return w;
+}
+
+
+/** brain-cell close-up lens (graphic): pale inside, a pink cell wall at the bottom with three cup-shaped receptors.
+ *  Sleepy-signal molecules (adenosine: little sky-blue blobs with closed eyes) drift down toward the cups; block 0..1 drops
+ *  yellow caffeine dots into the cups one by one, and each blocked cup bumps its blob back up (it can't dock). dock 0..1 =
+ *  how far the blobs have come down. r = lens radius, t = film time, sc = pop-in. Returns the cup centres (screen px) */
+export function receptorLens(x, y, r, { block = 0, dock = 0.6, t = 0, sc = 1, bg = '#FFF1E0' } = {}) {
+  const k = r / 300, cups = [-170, 0, 170].map((cx) => [x + cx * k * sc, y + 118 * k * sc]);
+  if (sc <= 0 || r <= 0) return cups;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(k, k);
+    // cell wall
+    ctx.beginPath(); ctx.moveTo(-340, 110);
+    for (const cx of [-170, 0, 170]) { ctx.lineTo(cx - 62, 110); ctx.arc(cx, 110, 62, Math.PI, 0, true); }
+    ctx.lineTo(340, 110); ctx.lineTo(340, 340); ctx.lineTo(-340, 340); ctx.closePath(); ctx.fillStyle = C.pinkDark; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-340, 128);
+    for (const cx of [-170, 0, 170]) { ctx.lineTo(cx - 44, 128); ctx.arc(cx, 128, 44, Math.PI, 0, true); }
+    ctx.lineTo(340, 128); ctx.lineTo(340, 340); ctx.lineTo(-340, 340); ctx.closePath(); ctx.fillStyle = C.pink; ctx.fill();
+    for (const [ex, ey] of [[-250, 230], [-80, 260], [90, 236], [250, 270]]) ell(ex, ey, 40, 14, C.pinkLight, -0.2);
+    [-170, 0, 170].forEach((cx, i) => {
+      const b = clamp(block * 3 - i), bob = Math.sin(t * 3 + i * 2) * 8;
+      // the sleepy blob: comes down to just above its cup; once blocked it is bumped back up
+      const yd = lerp(-200, 40, clamp(dock)) - 150 * eoE(b) + bob, xd = cx + (i - 1) * 40 * eoE(b);
+      ell(xd, yd, 46, 38, '#7EC3E0'); ell(xd - 4, yd - 4, 40, 32, C.sky); ell(xd - 18, yd - 18, 12, 6, C.white, -0.5);
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.lineCap = 'round';
+      for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(xd + sd * 15, yd - 2, 9, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); }
+      // the caffeine dot, falling into the cup
+      if (b > 0) caffeineDot(cx, lerp(-300, 96, eobE(Math.min(1, b * 1.4))), 40);
+    });
+    ctx.restore();
+  }, bg);
+  return cups;
+}
+
+
+/** next-episode tease badge (holding your breath): white disc, ink ring, pink lungs, an O2 bubble with a yellow "?" over it.
+ *  q 0..1 pops the "?" (t = film time wobble). ~300 px at s = 1, sc = pop-in */
+export function breathBadge(x, y, s = 1, sc = 1, t = 0, q = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  lungs(-14, 46, 0.62);
+  o2Bubble(78, -70, 0.62 + 0.03 * Math.sin(t * 4));
+  if (q > 0) bigText('?', 100, -12, 74, C.yellow, 0.15, eobE(clamp(q)) * (1 + 0.05 * Math.sin(t * 6)));
   ctx.restore();
 }

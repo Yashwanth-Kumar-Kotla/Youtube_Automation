@@ -1,0 +1,67 @@
+{
+  "title": "What Happens When You Drink an Energy Drink?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "FDA, 'Spilling the Beans: How Much Caffeine Is Too Much?' ('Generally, energy drinks have 54 to 328 milligrams of caffeine per 16 fluid ounces' (about a sixfold range); 'For most adults, the FDA has cited 400 milligrams a day' as an amount not generally associated with negative effects; signs of too much: heart palpitations, insomnia or sleep disruptions, jitters, nausea; 'Too much caffeine in children and teens can cause increased heart rate'; 'Medical experts advise against energy drinks for children and teens because of the levels of sugar and caffeine'): https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much",
+    "Cleveland Clinic Health Essentials, 'How To Quit Caffeine' ('The effects of caffeine can be felt as soon as 15 minutes after it's consumed'; 'Once in your bloodstream, caffeine stimulates your central nervous system'; 'Six hours after caffeine is consumed, half of it is still in your body'): https://health.clevelandclinic.org/how-to-quit-caffeine",
+    "Cleveland Clinic Health Essentials, 'How To Get Caffeine Out of Your System' ('Caffeine has a half-life (the time it takes to decrease by half) of five hours'; too much: jittery and shaky, increased heart rate/palpitations, insomnia): https://health.clevelandclinic.org/how-to-get-caffeine-out-of-your-system",
+    "Harvard T.H. Chan School of Public Health, The Nutrition Source, 'Caffeine' ('Caffeine is absorbed within about 45 minutes after consuming, and peaks in the blood anywhere from 15 minutes to 2 hours'; 'It can remain in the blood anywhere from 1.5 to 9.5 hours'; 'Caffeine can block the effects of the hormone adenosine, which is responsible for deep sleep'; high amounts 'speed up heart rate'; AAP: no caffeine under 12, adolescents 12+ no more than 100 mg daily): https://nutritionsource.hsph.harvard.edu/caffeine/",
+    "Tease (next video): DAN Europe Alert Diver, 'DAN Begins Reporting on Incident Collection of Breath-Hold Diving' (carbon dioxide is the primary trigger for the urge to breathe; low oxygen is a surprisingly weak trigger): https://alertdiver.eu/en_US/articles/dan-begins-reporting-on-incident-collection-of-breath-hold-diving/ ; US Naval Safety Command, 'Lessons Learned 20-19: Shallow Water Blackout': https://navalsafetycommand.navy.mil/Portals/29/LL%2020-19%20Shallow%20Water%20Blackout.pdf",
+    "American Heart Association newsroom, 'Energy drinks, stimulant products linked to cardiac arrest, heart attack in young adults' (Scientific Sessions 2026, Abstract MDP0323, Nov. 2, 2026; FDA adverse-event reports 2017-2025: caffeinated energy drinks and stimulant supplements appeared disproportionately more often in reports of serious cardiovascular events; 'research abstract... not peer-reviewed... preliminary'; an outside expert: 'the study does not prove that caffeine products cause these events'): https://newsroom.heart.org/news/energy-drinks-stimulant-products-linked-to-cardiac-arrest-heart-attack-in-young-adults"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you drink an energy drink?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *DRINK | AN *ENERGY DRINK?"
+    },
+    {
+      "text": "Five hours later: a quarter of the caffeine left, or half? Guess.",
+      "caps": "FIVE *HOURS LATER | A *QUARTER OF | THE *CAFFEINE LEFT, | OR *HALF? | *GUESS"
+    },
+    {
+      "text": "Some cans: fifty-four milligrams. Others: three twenty-eight.",
+      "caps": "SOME *CANS | *54 MG | OTHERS: *328"
+    },
+    {
+      "text": "Minute fifteen: you can already feel it.",
+      "caps": "MINUTE *15 | YOU CAN *ALREADY | *FEEL IT"
+    },
+    {
+      "text": "Minute forty-five: it's blocking adenosine, your sleepy signal.",
+      "caps": "MINUTE *45 | IT'S *BLOCKING | *ADENOSINE | YOUR SLEEPY *SIGNAL"
+    },
+    {
+      "text": "Ever had one on a late drive, then lay awake?",
+      "caps": "EVER HAD *ONE | ON A *LATE | *DRIVE, THEN | LAY *AWAKE?"
+    },
+    {
+      "text": "But here's the twist: it leaves slowly.",
+      "caps": "BUT *HERE'S THE | *TWIST | IT LEAVES *SLOWLY"
+    },
+    {
+      "text": "Too much? Jitters and a racing heart.",
+      "caps": "TOO *MUCH? | *JITTERS AND | A RACING *HEART"
+    },
+    {
+      "text": "Most adults? The FDA cites four hundred a day.",
+      "caps": "MOST *ADULTS? | THE *FDA CITES | *400 MG | A *DAY"
+    },
+    {
+      "text": "Hour five: half is still in you. It's B.",
+      "caps": "HOUR *5 | *HALF IS | STILL IN *YOU | IT'S *B"
+    },
+    {
+      "text": "Kids and teens? Experts say skip them.",
+      "caps": "KIDS AND *TEENS? | *EXPERTS SAY | *SKIP THEM"
+    },
+    {
+      "text": "Next Body File: holding your breath, and why the urge isn't about oxygen.",
+      "caps": "NEXT *BODY FILE | HOLDING YOUR *BREATH | AND *WHY | THE *URGE | ISN'T ABOUT *OXYGEN"
+    }
+  ]
+}
