@@ -1,0 +1,59 @@
+{
+  "title": "What Happens If You Hold Your Breath Too Long?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Human Performance Resources by CHAMP (Uniformed Services University, HPRC@usuhs.edu), 'Prevent shallow water blackout' ('The urge to breathe is driven by a buildup of CO2 in your system'; 'When people suffer shallow water blackout, there is no panic or sense of urgency to breathe'): https://hprc-online.org/physical-fitness/injury-prevention/prevent-shallow-water-blackout",
+    "NIH NCBI Bookshelf, StatPearls, 'Shallow Water Blackout' (the primary urge to breathe occurs when arterial CO2 rises; a later CO2 rise may not trigger the breathing impulse before loss of consciousness from low oxygen): https://www.ncbi.nlm.nih.gov/books/NBK554620/",
+    "NIH NCBI Bookshelf, StatPearls, 'Physiology, Chemoreceptors' / 'Physiology, Carbon Dioxide Retention' (central chemoreceptors near the ventral medulla respond to pH changes in cerebrospinal fluid; CO2 crosses the blood-brain barrier and forms hydrogen ions (acid); arterial CO2 is the chief determinant of respiratory drive; oxygen drives the respiratory center only in severe hypoxemia): https://www.ncbi.nlm.nih.gov/books/NBK545289/ ; https://www.ncbi.nlm.nih.gov/books/NBK482456/",
+    "Frontiers in Physiology 2021 (PMC8511405), breath-hold breaking point (the physiological breaking point is the onset of involuntary breathing activity, such as increased diaphragm activity): https://pmc.ncbi.nlm.nih.gov/articles/PMC8511405",
+    "CDC MMWR 2015;64(19), 'Fatal and Nonfatal Drowning Outcomes Related to Dangerous Underwater Breath-Holding Behaviors, New York State, 1988-2011' (16 cases, 4 fatal, swimmers aged 7-47): https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6419a3.htm",
+    "Tease (next video): Cleveland Clinic Health Essentials, 'What Happens When You Swallow Gum?' ('Gum base isn't able to be digested, so it just stays in your guts all the way through and doesn't break down'; 'it'll come out about 40 hours later in your stool'; not seven years): https://health.clevelandclinic.org/what-happens-when-you-swallow-gum/"
+  ],
+  "lines": [
+    {
+      "text": "What happens if you hold your breath too long?",
+      "caps": "WHAT *HAPPENS | IF YOU *HOLD | YOUR *BREATH TOO | *LONG?"
+    },
+    {
+      "text": "That desperate urge: low oxygen, or too much carbon dioxide? Guess.",
+      "caps": "THAT *DESPERATE | *URGE | LOW *OXYGEN | OR TOO *MUCH | *CARBON DIOXIDE? | *GUESS"
+    },
+    {
+      "text": "Alarm one: deep in your brainstem, sensors detect rising acid.",
+      "caps": "ALARM *ONE | *DEEP IN YOUR | *BRAINSTEM | SENSORS *DETECT | RISING *ACID"
+    },
+    {
+      "text": "Alarm two: your diaphragm twitches, trying to breathe without you.",
+      "caps": "ALARM *TWO | YOUR DIAPHRAGM *TWITCHES | TRYING TO *BREATHE | WITHOUT *YOU"
+    },
+    {
+      "text": "Ever had a doctor's \"deep breath, hold it\" feel endless?",
+      "caps": "EVER HAD A *DOCTOR'S | DEEP BREATH, *HOLD IT | FEEL *ENDLESS?"
+    },
+    {
+      "text": "But here's the weird part: the culprit is your own exhaust.",
+      "caps": "BUT *HERE'S | THE *WEIRD PART | THE *CULPRIT | IS YOUR *OWN | *EXHAUST"
+    },
+    {
+      "text": "Your cells make it nonstop, and with no exhale, it just piles up.",
+      "caps": "YOUR *CELLS | MAKE IT *NONSTOP | AND WITH *NO | *EXHALE, IT | JUST *PILES UP"
+    },
+    {
+      "text": "So it's B: carbon dioxide. Oxygen barely sounds the alarm.",
+      "caps": "SO IT'S *B | *CARBON DIOXIDE | *OXYGEN BARELY | SOUNDS THE *ALARM"
+    },
+    {
+      "text": "Underwater, that's the danger: you can black out without warning.",
+      "caps": "*UNDERWATER | THAT'S THE *DANGER | YOU CAN *BLACK OUT | WITHOUT *WARNING"
+    },
+    {
+      "text": "Next Body File: swallowing gum, which your gut can't break down.",
+      "caps": "NEXT *BODY FILE | SWALLOWING *GUM | WHICH YOUR *GUT | CAN'T BREAK *DOWN"
+    }
+  ]
+}

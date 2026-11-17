@@ -389,6 +389,19 @@ function head(o) {
   if (m === 'wavy') { ctx.beginPath(); for (let k = 0; k <= 10; k++) { const px = -34 + k * 6.8, py = 76 + Math.sin(k * 1.5) * 7; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }   // queasy
   if (o.drool > 0) { const dl = clamp(o.drool); drop(30, 92 + 26 * dl, 0.42 * (0.5 + 0.5 * dl), 0, dl); }   // mouth watering: saliva drop at the corner
   if (m === 'grin') { ctx.beginPath(); ctx.moveTo(-34, 66); ctx.quadraticCurveTo(0, 112, 34, 66); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); rr(-26, 66, 52, 12, 4); ctx.fillStyle = C.white; ctx.fill(); }
+  if (m === 'puff') {   // breath-hold (2026-11-16 "hold your breath"): cheeks puffed round past the face edge, lips pressed. o.puff 0..1
+    const pf = clamp(o.puff ?? 1);
+    for (const sd of [-1, 1]) { ell(sd * (66 + 22 * pf), 52, 32 + 18 * pf, 34 + 14 * pf, _sk); ell(sd * (70 + 24 * pf), 36, 13, 7, SKIN_HI_H, sd * 0.5); }
+    ctx.save(); ctx.globalAlpha = 0.3; for (const sd of [-1, 1]) ell(sd * (70 + 20 * pf), 62, 22, 13, C.pink); ctx.restore();
+    ell(0, 78, 14, 9, C.mouth); ell(0, 75, 8, 3.5, C.pink);
+  }
+  if (o.gumBubble > 0) gumBubble(0, 80, o.gumBubble);   // pink bubble-gum bubble blown from the lips (radius px, head units)
+  if (o.gumPop > 0 && o.gumPop < 1) {   // popped bubble: pink scraps flying off the lips, fading (o.gumPop 0..1)
+    const p = clamp(o.gumPop);
+    ctx.save(); ctx.globalAlpha = 1 - p;
+    for (let k = 0; k < 6; k++) { const an = -Math.PI + k * Math.PI / 5, d = 20 + 70 * p; ell(Math.cos(an) * d, 80 + Math.sin(an) * d * 0.7, 14, 8, C.pinkLight, an); }
+    ctx.restore(); ell(0, 80, 26, 8, C.pinkLight);
+  }
   ctx.restore();
 }
 
@@ -5459,6 +5472,193 @@ export function energyCan(x, y, s = 1, { rot = 0, sc = 1, label = false, t = 0, 
   rr(-74, 172, 148, 14, 7); ctx.fillStyle = TIN_D; ctx.fill();
   ctx.restore();
   if (fz > 0) fizz(x + 16 * s * sc, y - 196 * s * sc, 1.4 * s * sc, t, fz, { n: 7, spread: 60, rise: 100 });
+}
+
+
+
+// ═════════════════════════ BREATH-HOLD SET (2026-11-16 "hold your breath") ═════════════════════════
+// head(): mouth 'puff' (+ o.puff 0..1) = puffed cheeks; o.gumBubble = bubble radius; o.gumPop 0..1 = popped bubble scraps.
+const CO2G = '#C9C2B5', CO2G_D = '#A39C90', CO2G_L = '#E4DFD6', CO2C = '#6E7A86', CO2C_D = '#5A6573', POOL_D = '#7EC3E0';
+
+
+/** one grey CO2 dot (flat disc, darker rim, light glint; "CO2" written in it when r >= 24). a = alpha */
+export function co2Dot(x, y, r, a = 1) {
+  if (a <= 0 || r <= 0.5) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  circle(x, y, r + Math.max(2, r * 0.18), CO2G_D); circle(x, y, r, CO2G); ell(x - r * 0.35, y - r * 0.38, r * 0.28, r * 0.15, CO2G_L, -0.6);
+  if (r >= 24) { ctx.fillStyle = C.ink; ctx.font = `900 ${Math.round(r * 0.62)}px Inter`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('CO2', x, y + r * 0.05); }
+  ctx.restore();
+}
+
+
+/** grey CO2 dots piling up inside an x-ray man()'s torso (same x, y, s as the man). level 0..1 = how full (scattered over
+ *  the whole chest, the newest one pops in), n = dots at level 1, t = film time (gentle jiggle). Clipped to the torso */
+export function torsoCO2(x, y, s, level = 0, t = 0, { n = 46, r = 15 } = {}) {
+  const k = clamp(level) * n; if (k <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); torsoPath(); ctx.clip();
+  for (let i = 0; i < Math.ceil(k); i++) {
+    const g = Math.min(1, k - i);
+    const px = lerp(-128, 128, rnd(i * 3 + 1)) + Math.sin(t * 2.2 + i) * 4, py = lerp(-170, 190, rnd(i * 3 + 2)) + Math.cos(t * 1.8 + i) * 4;
+    co2Dot(px, py, r * (0.8 + 0.4 * rnd(i * 3 + 5)) * eob1(g), 1);
+  }
+  ctx.restore();
+}
+
+const eob1 = (t) => { const c1 = 1.70158, c3 = c1 + 1; return t <= 0 ? 0 : 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+
+
+/** x-ray lens on a blood vessel (cyan ring like cordsLens): navy inside, a pink-red vessel band with red cells drifting
+ *  right, grey CO2 dots crowding in. o = { co2 0..1 (how many dots, up to 22), t, sc (pop-in) }. Returns nothing */
+export function bloodLens(x, y, r, { co2 = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 22, C.ink); circle(0, 0, r + 12, C.cyan);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  ctx.fillStyle = C.xnavy; ctx.fillRect(-r - 10, -r - 10, 2 * r + 20, 2 * r + 20);
+  const vh = r * 0.62;
+  ctx.fillStyle = BLOOD_D; ctx.fillRect(-r - 10, -vh - 14, 2 * r + 20, 2 * vh + 28);
+  ctx.fillStyle = BLOOD; ctx.fillRect(-r - 10, -vh, 2 * r + 20, 2 * vh);
+  for (let i = 0; i < 7; i++) {
+    const px = ((rnd(i + 3) * 2.4 * r + t * r * 0.35) % (2.4 * r)) - 1.2 * r, py = lerp(-vh * 0.7, vh * 0.7, rnd(i + 11));
+    ctx.save(); ctx.translate(px, py); ctx.rotate(rnd(i + 5) * 3); ell(0, 0, r * 0.15, r * 0.11, RBC); ell(0, 0, r * 0.07, r * 0.05, RBC_D); ctx.restore();
+  }
+  const k = clamp(co2) * 22;
+  for (let i = 0; i < Math.ceil(k); i++) {
+    const g = Math.min(1, k - i);
+    const px = lerp(-r * 0.85, r * 0.85, rnd(i * 7 + 2)) + Math.sin(t * 1.5 + i) * r * 0.03, py = lerp(-vh * 0.78, vh * 0.78, rnd(i * 7 + 4)) + Math.cos(t * 1.3 + i) * r * 0.03;
+    co2Dot(px, py, r * 0.085 * eob1(g), 1);
+  }
+  ctx.restore(); ctx.restore();
+}
+
+
+/** small O2 dial (graphic): ink half-dial, white face, red low zone on the left, sky-blue OK zone, ink needle, "O2" under the
+ *  pivot. level 0..1 (1 = full, needle far right). ~320x230 px at s = 1. sc = pop-in */
+export function o2Gauge(x, y, s = 1, level = 1, sc = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  ctx.beginPath(); ctx.arc(0, 0, 160, Math.PI, TAU); ctx.lineTo(160, 100); ctx.lineTo(-160, 100); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 138, Math.PI, TAU); ctx.lineTo(138, 80); ctx.lineTo(-138, 80); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  const band = (a0, a1, col) => { ctx.beginPath(); ctx.arc(0, 0, 108, Math.PI + a0 * Math.PI, Math.PI + a1 * Math.PI); ctx.strokeStyle = col; ctx.lineWidth = 28; ctx.lineCap = 'butt'; ctx.stroke(); };
+  band(0, 0.28, C.red); band(0.28, 1, C.sky);
+  for (let i = 0; i <= 6; i++) { const an = Math.PI + i * Math.PI / 6; line([[Math.cos(an) * 72, Math.sin(an) * 72], [Math.cos(an) * 90, Math.sin(an) * 90]], C.ink, 6); }
+  ctx.save(); ctx.rotate(Math.PI + clamp(level) * Math.PI); rr(-9, -10, 120, 20, 10); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore();
+  circle(0, 0, 20, C.ink);
+  ctx.fillStyle = C.ink; ctx.font = '900 46px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('O2', 0, 52);
+  ctx.restore();
+}
+
+
+/** a CO2 molecule (graphic): dark grey C ball in the middle, two light grey O balls either side, ink bonds. face: dot eyes +
+ *  grumpy brows (the "culprit"). ~420x170 px at s = 1. sc = pop-in, t = film time (small bob) */
+export function co2Molecule(x, y, s = 1, { sc = 1, t = 0, face = false } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * 5); ctx.scale(s * sc, s * sc);
+  for (const dy of [-16, 16]) line([[-130, dy], [130, dy]], C.ink, 16);   // O=C=O double bonds
+  for (const sd of [-1, 1]) { circle(sd * 140, 0, 66, CO2G_D); circle(sd * 140, -4, 58, CO2G); ell(sd * 140 - 22, -30, 18, 9, CO2G_L, -0.6); }
+  circle(0, 0, 80, CO2C_D); circle(0, -4, 72, CO2C); ell(-28, -38, 22, 10, '#8A95A0', -0.6);
+  if (face) {
+    for (const sd of [-1, 1]) { circle(sd * 26, 2, 13, C.white); circle(sd * 26, 4, 7, C.ink); line([[sd * 44, -24], [sd * 12, -14]], C.ink, 8); }
+    ctx.beginPath(); ctx.moveTo(-20, 40); ctx.quadraticCurveTo(0, 28, 20, 40); ctx.strokeStyle = C.ink; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.stroke();
+  }
+  ctx.restore();
+}
+
+
+/** a body cell with a little grey exhaust pipe on its right side puffing grey CO2 dots out to the right (stream, t = film
+ *  time). r = cell radius px, puff 0..1 = stream strength, rate = puffs per second. sc = pop-in */
+export function exhaustCell(x, y, r, { t = 0, puff = 1, sc = 1, rate = 2.2, reach = 260 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  const k = r / 100;
+  rr(70 * k, -24 * k, 70 * k, 30 * k, 8 * k); ctx.fillStyle = CO2C; ctx.fill(); rr(128 * k, -32 * k, 26 * k, 46 * k, 8 * k); ctx.fillStyle = CO2C_D; ctx.fill();
+  cell(0, 0, r, { t });
+  if (puff > 0) for (let i = 0; i < 5; i++) {
+    const ph = (t * rate * 0.5 + i / 5) % 1;
+    co2Dot(150 * k + ph * reach * k, -10 * k - ph * 40 * k + Math.sin(ph * 6 + i) * 10 * k, (10 + 16 * ph) * k, clamp(puff) * Math.min(1, ph * 6, (1 - ph) * 4));
+  }
+  ctx.restore();
+}
+
+
+/** x-ray lens on the brainstem: a pink stem column (pons bulge up top), three round sensors on its front face that flash red
+ *  (detect 0..1, with ring pulses), yellow acid dots rising in the fluid to the right (acid 0..1, up to 16), a few grey CO2 dots
+ *  drifting in (co2 0..1). label 0..1 = the tiny cyan "sensors: acid (pH)" pill under the lens (StatPearls). t = film time */
+export function stemLens(x, y, r, { acid = 0, detect = 0, co2 = 0.5, label = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  const k = r / 300;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 22, C.ink); circle(0, 0, r + 12, C.cyan);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  ctx.fillStyle = C.xnavy; ctx.fillRect(-r - 10, -r - 10, 2 * r + 20, 2 * r + 20);
+  ctx.save(); ctx.globalAlpha = 0.12; ctx.strokeStyle = C.cyan; ctx.lineWidth = 2;
+  for (let q = -r; q <= r; q += 60 * k) { ctx.beginPath(); ctx.moveTo(q, -r); ctx.lineTo(q, r); ctx.moveTo(-r, q); ctx.lineTo(r, q); ctx.stroke(); }
+  ctx.restore();
+  // the stem: brain mass at the top, the column running down
+  ell(-40 * k, -330 * k, 300 * k, 150 * k, C.pinkDark); ell(-40 * k, -336 * k, 286 * k, 138 * k, C.pink);
+  rr(-150 * k, -260 * k, 170 * k, 600 * k, 80 * k); ctx.fillStyle = C.pinkDark; ctx.fill();
+  rr(-140 * k, -260 * k, 150 * k, 600 * k, 72 * k); ctx.fillStyle = C.pink; ctx.fill();
+  ell(-62 * k, -120 * k, 110 * k, 84 * k, C.pinkDark); ell(-66 * k, -124 * k, 100 * k, 74 * k, C.pink);   // pons bulge
+  rr(-120 * k, -40 * k, 22 * k, 300 * k, 11 * k); ctx.fillStyle = C.pinkLight; ctx.fill();
+  // acid (yellow) rising in the fluid on the right, CO2 dots drifting in from the right edge
+  const na = clamp(acid) * 16;
+  for (let i = 0; i < Math.ceil(na); i++) {
+    const g = Math.min(1, na - i), ph = (t * 0.18 + rnd(i + 31)) % 1;
+    const px = lerp(70, 270, rnd(i + 41)) * k, py = lerp(260, -240, ph) * k;
+    circle(px, py, 16 * k * g + 4 * k * g, C.ink); circle(px, py, 16 * k * g, C.yellow);
+  }
+  const nc = clamp(co2) * 6;
+  for (let i = 0; i < Math.ceil(nc); i++) { const ph = (t * 0.25 + i / 6) % 1; co2Dot(lerp(320, 80, ph) * k, lerp(-180, 220, rnd(i + 61)) * k, 18 * k, Math.min(1, nc - i, ph * 5, (1 - ph) * 5)); }
+  // sensors on the front face of the stem
+  const d = clamp(detect);
+  for (const [i, sy] of [[0, -60], [1, 60], [2, 180]]) {
+    const sx = 18 * k, sy2 = sy * k, bl = d * (0.6 + 0.4 * Math.sin(t * 14 + i * 1.3));
+    if (d > 0) { ctx.save(); ctx.globalAlpha = d * (1 - ((t * 1.6 + i * 0.3) % 1)); ctx.beginPath(); ctx.arc(sx, sy2, (30 + 50 * ((t * 1.6 + i * 0.3) % 1)) * k, 0, TAU); ctx.strokeStyle = C.red; ctx.lineWidth = 8 * k; ctx.stroke(); ctx.restore(); }
+    circle(sx, sy2, 30 * k, C.ink); circle(sx, sy2, 22 * k, bl > 0.05 ? C.red : C.white); circle(sx - 7 * k, sy2 - 7 * k, 6 * k, C.white);
+    line([[sx + 26 * k, sy2], [sx + 52 * k, sy2 - 14 * k]], C.ink, 6 * k);
+  }
+  ctx.restore();
+  if (label > 0) pill('sensors: acid (pH)', 0, r + 56, 26, C.cyan, C.xnavy, clamp(label));
+  ctx.restore();
+}
+
+
+/** schematic swimming pool (cross-section icon, no people): pale deck, ink-rimmed basin, sky-blue water with a darker deep
+ *  band, a white wavy surface line, red/white lane-rope floats and a steel ladder on the right. ~680x380 px at s = 1. sc = pop-in */
+export function poolIcon(x, y, s = 1, { t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rr(-340, -170, 680, 40, 12); ctx.fillStyle = C.floor; ctx.fill();
+  rr(-320, -140, 640, 320, [0, 0, 40, 40]); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-300, -140, 600, 300, [0, 0, 28, 28]); ctx.fillStyle = POOL_D; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-300, -100);
+  for (let px = -300; px <= 300; px += 10) ctx.lineTo(px, -100 + Math.sin(px * 0.03 + t * 3) * 8);
+  ctx.lineTo(300, 60); ctx.lineTo(-300, 60); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill();
+  const P = []; for (let px = -300; px <= 300; px += 10) P.push([px, -100 + Math.sin(px * 0.03 + t * 3) * 8]); line(P, C.white, 10);
+  for (let i = 0; i < 9; i++) { const px = -240 + i * 60; circle(px, -100 + Math.sin(px * 0.03 + t * 3) * 8, 14, i % 2 ? C.white : C.red); }
+  for (const lx of [214, 266]) line([[lx, -200], [lx, 40]], '#A7AEB8', 12);
+  ctx.beginPath(); ctx.arc(240, -200, 26, Math.PI, TAU); ctx.strokeStyle = '#A7AEB8'; ctx.lineWidth = 12; ctx.stroke();
+  for (const ry of [-40, 0, 40]) line([[214, ry], [266, ry]], '#A7AEB8', 8);
+  ctx.restore();
+}
+
+
+/** tiny alarm bulb (the brainstem alarm light): ink rim, dark red when off; on 0..1 = bright red, white glint and short
+ *  blinking red rays (t = film time). r = bulb radius px */
+export function alarmBulb(x, y, r, on = 0, t = 0) {
+  if (r <= 0) return;
+  const o = clamp(on), bl = o * (0.6 + 0.4 * Math.sin(t * 16));
+  if (bl > 0) { ctx.save(); ctx.globalAlpha = bl; for (let i = 0; i < 8; i++) { const an = i * TAU / 8; line([[x + Math.cos(an) * r * 1.5, y + Math.sin(an) * r * 1.5], [x + Math.cos(an) * r * 2.2, y + Math.sin(an) * r * 2.2]], C.red, Math.max(2, r * 0.3)); } ctx.restore(); }
+  circle(x, y, r + Math.max(2, r * 0.25), C.ink); circle(x, y, r, o > 0.05 ? C.red : RED_D);
+  if (o > 0.05) circle(x - r * 0.3, y - r * 0.3, r * 0.3, C.white); else circle(x - r * 0.3, y - r * 0.3, r * 0.22, '#C9566E');
+}
+
+
+/** pink bubble-gum bubble whose lip point is (x, y), radius r px (head(): o.gumBubble draws it at the hero's mouth) */
+export function gumBubble(x, y, r) {
+  if (r <= 0) return;
+  const by = y + r * 0.2;
+  circle(x, by, r + Math.max(3, r * 0.08), C.pink); circle(x, by, r, C.pinkLight); ell(x - r * 0.38, by - r * 0.38, r * 0.22, r * 0.12, C.white, -0.6);
 }
 
 
