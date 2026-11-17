@@ -372,6 +372,16 @@ function head(o) {
     drop(-118, -8, 0.5 * sw, -0.25, sw); drop(120, 22, 0.44 * sw, 0.25, sw);
     drop(-92, 44 + u * 46, 0.36 * sw, -0.1, sw * Math.min(1, u * 5, (1 - u) * 5));
   }
+  if (o.twitch > 0) {   // lower-eyelid twitch on the screen-right eye (2026-11-16 gum → eyelid tease): twitch 0..1, o.ct = film time
+    const tw = clamp(o.twitch), j = tw * (0.35 + 0.65 * Math.abs(Math.sin((o.ct || 0) * 31) * Math.sin((o.ct || 0) * 13 + 1)));
+    const ly = 42 - 16 * j;   // lid patch centre: its top edge rises from below the eye (j = 0) over the lower third (j = 1)
+    ctx.save(); ctx.beginPath(); ctx.ellipse(40, 6, 30, 33, 0, 0, TAU); ctx.clip();
+    ell(40, ly, 36, 20, _sk); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.ellipse(40, 6, 26, 29, 0, 0, TAU); ctx.clip();
+    ctx.beginPath(); ctx.ellipse(40, ly, 36, 20, 0, Math.PI, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.stroke(); ctx.restore();
+    ctx.beginPath(); ctx.ellipse(40, ly + 8, 22, 12, 0, 1.2 * Math.PI, 1.8 * Math.PI); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.stroke();
+    ctx.save(); ctx.globalAlpha = tw; for (const [dx, dy, a] of [[74, 18, 0.3], [70, 36, 0.9]]) line([[dx, dy], [dx + Math.cos(a) * 14, dy + Math.sin(a) * 14]], C.ink, 5); ctx.restore();
+  }
   if (o.stuffy > 0) { ctx.save(); ctx.globalAlpha = 0.75 * clamp(o.stuffy); ell(8, 40, 22, 17, C.pink); ctx.restore(); ell(2, 34, 7, 5, SKIN_HI_H); }   // rosy stuffy nose
   if (o.stache) for (const sd of [-1, 1]) ell(sd * 22, 56, 26, 11, HC, sd * 0.25);
   if (o.cap) { ell(0, -106, 118, 48, CAP); rr(-118, -102, 236, 30, 12); ctx.fillStyle = CAP; ctx.fill(); ell(24, -74, 100, 16, CAP_D, -0.04); ell(-34, -128, 44, 12, '#9A7A58', -0.2); }
@@ -5659,6 +5669,181 @@ export function gumBubble(x, y, r) {
   if (r <= 0) return;
   const by = y + r * 0.2;
   circle(x, by, r + Math.max(3, r * 0.08), C.pink); circle(x, by, r, C.pinkLight); ell(x - r * 0.38, by - r * 0.38, r * 0.22, r * 0.12, C.white, -0.6);
+}
+
+
+// ═════════════════════════ GUM SET (2026-11-16 "swallow gum") ═════════════════════════
+const GUM_P = '#F59BBF', GUM_PD = '#D9709C', GUM_PH = '#FFD3E4', TAG_D = '#DCD6CB';
+
+
+function wadPath(rx, ry) {
+  ctx.beginPath();
+  for (let i = 0; i <= 48; i++) { const a = i / 48 * TAU, r = 1 + 0.07 * Math.sin(3 * a + 0.6) + 0.05 * Math.sin(5 * a + 2); const px = Math.cos(a) * rx * r, py = Math.sin(a) * ry * r; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+  ctx.closePath();
+}
+
+/** a chewed pink gum wad (the traveller): lumpy bubblegum-pink blob, darker shade, light highlight, two tooth dents.
+ *  Thin ink rim so it reads on pink organs too. ~100x80 px at s = 1. o = { rot, sq (squash 0..1, + = flatter), tag (bool: tiny white luggage tag on a string, top right),
+ *  text (tag text after the tiny clock, e.g. '~40 h'; '' = clock only), t (film time: the tag sways), sc (pop-in) } */
+export function gumWad(x, y, s = 1, { rot = 0, sq = 0, tag = true, text = '', t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (tag) {   // luggage tag on a string, swinging up-right
+    ctx.save(); ctx.translate(30, -24); ctx.rotate(-0.62 + Math.sin(t * 3.1) * 0.1);
+    ctx.font = '900 20px Inter'; const tw = text ? ctx.measureText(text).width + 12 : 0, w = 50 + tw;
+    line([[0, 0], [28, 0]], C.ink, 3);
+    ctx.beginPath(); ctx.moveTo(26, -8); ctx.lineTo(36, -18); ctx.lineTo(26 + w, -18); ctx.lineTo(26 + w, 18); ctx.lineTo(36, 18); ctx.lineTo(26, 8); ctx.closePath();
+    ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.ink; ctx.stroke();
+    circle(34, 0, 4, C.ink);
+    circle(56, 0, 11, C.ink); circle(56, 0, 8, C.white); line([[56, 0], [56, -6]], C.ink, 3); line([[56, 0], [61, 2]], C.ink, 3);
+    if (text) { ctx.fillStyle = C.ink; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(text, 72, 1); }
+    ctx.restore();
+  }
+  ctx.rotate(rot); ctx.scale(1 + 0.25 * sq, 1 - 0.25 * sq);
+  wadPath(50, 40); ctx.lineWidth = 9; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = GUM_PD; ctx.fill();
+  ctx.save(); ctx.translate(-3, -4); wadPath(45, 34); ctx.fillStyle = GUM_P; ctx.fill(); ctx.restore();
+  ell(-18, -16, 15, 7, GUM_PH, -0.4);
+  for (const [dx, dy] of [[12, 10], [26, -2]]) { ctx.beginPath(); ctx.arc(dx, dy, 7, 0.2, Math.PI - 0.2); ctx.strokeStyle = GUM_PD; ctx.lineWidth = 4; ctx.stroke(); }
+  ctx.restore();
+}
+
+
+/** x-ray stomach (film look): the J stomach as a cyan-rimmed navy tube with faint cyan folds. churn 0..1 wobbles it.
+ *  Same shape/origin as stomach(): inner tube ~70 px wide at s = 1, so at s = 4 a gumWad(s ~1.6) fits inside. t = film time */
+export function xrayStomach(x, y, s, { t = 0, churn = 0 } = {}) {
+  if (s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const wob = 1 + 0.04 * clamp(churn) * Math.sin(t * 5);
+  ctx.save(); ctx.globalAlpha = 0.22; stomachPath(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 104 * wob; ctx.stroke(); ctx.restore();
+  stomachPath(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 90 * wob; ctx.stroke();
+  stomachPath(); ctx.strokeStyle = C.xnavy; ctx.lineWidth = 80 * wob; ctx.stroke();
+  ctx.save(); ctx.globalAlpha = 0.28; ctx.setLineDash([10, 14]); ctx.lineDashOffset = -t * 20; stomachPath(); ctx.strokeStyle = C.cyan; ctx.lineWidth = 3; ctx.stroke(); ctx.restore();
+  // esophagus stub into the top
+  line([[-30, -150], [-30, -112]], C.cyan, 44); line([[-30, -152], [-30, -108]], C.xnavy, 34);
+  ctx.restore();
+}
+
+
+/** small lab flask (graphic): ink outline, white glass, green liquid with two bubbles. ~120x150 px at s = 1. sc = pop-in */
+export function flask(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  const P = () => { ctx.beginPath(); ctx.moveTo(-18, -70); ctx.lineTo(-18, -24); ctx.lineTo(-58, 58); ctx.quadraticCurveTo(-62, 72, -46, 72); ctx.lineTo(46, 72); ctx.quadraticCurveTo(62, 72, 58, 58); ctx.lineTo(18, -24); ctx.lineTo(18, -70); ctx.closePath(); };
+  P(); ctx.fillStyle = C.white; ctx.fill();
+  ctx.save(); P(); ctx.clip(); ctx.fillStyle = C.leaf; ctx.fillRect(-70, 18 + Math.sin(t * 4) * 3, 140, 70); ctx.fillStyle = GLASS_GD; ctx.fillRect(20, 18, 50, 70); ctx.restore();
+  circle(-14, 40 - ((t * 40) % 30), 6, C.white); circle(10, 50 - ((t * 30 + 12) % 30), 4, C.white);
+  P(); ctx.lineWidth = 9; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(-26, -82, 52, 16, 6); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.restore();
+}
+
+
+/** (A) meeting room background: warm wall, floor strip, a wall screen (top left) with a bar chart, a wall clock-free calm look */
+export function meetingRoom() {
+  fillAll(C.bg);
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, 1300, W + 600, 900);
+  ctx.fillStyle = '#ECE6DA'; ctx.fillRect(-300, 560, W + 600, 26);
+  rr(70, 150, 380, 250, 18); ctx.fillStyle = C.ink; ctx.fill(); rr(86, 166, 348, 218, 10); ctx.fillStyle = C.white; ctx.fill();
+  [[0.45, C.shirt], [0.7, C.pink], [0.55, C.shirt], [0.9, C.yellow]].forEach(([h, col], i) => { const bh = 160 * h; rr(120 + i * 76, 362 - bh, 50, bh, 6); ctx.fillStyle = col; ctx.fill(); });
+  line([[110, 364], [410, 364]], C.ink, 5);
+  rr(250, 400, 20, 50, 4); ctx.fillStyle = C.ink; ctx.fill();
+}
+
+/** long meeting table, front view (wood top + front panel), two mugs and a closed notebook on top. Origin = top-front edge
+ *  centre, ~1000 px wide at s = 1. Draw it AFTER the people sitting behind it (it hides their laps) */
+export function meetingTable(x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-520, -40, 1040, 52, 18); ctx.fillStyle = WOOD; ctx.fill();
+  rr(-520, -6, 1040, 18, [0, 0, 12, 12]); ctx.fillStyle = WOOD_D; ctx.fill();
+  rr(-490, 12, 980, 560, 0); ctx.fillStyle = WOOD_D; ctx.fill(); rr(-470, 12, 940, 560, 0); ctx.fillStyle = WOOD; ctx.fill();
+  for (const mx of [-330, 300]) { rr(mx - 34, -110, 68, 80, [8, 8, 18, 18]); ctx.fillStyle = C.white; ctx.fill(); rr(mx + 10, -110, 24, 80, [0, 8, 18, 0]); ctx.fillStyle = TAG_D; ctx.fill(); ctx.beginPath(); ctx.arc(mx + 40, -72, 20, -1.3, 1.3); ctx.strokeStyle = C.white; ctx.lineWidth = 10; ctx.stroke(); }
+  rr(-160, -58, 200, 22, 6); ctx.fillStyle = C.shirtShade; ctx.fill(); rr(-160, -58, 200, 8, 4); ctx.fillStyle = C.white; ctx.fill();
+  ctx.restore();
+}
+
+
+/** endoscope camera view (graphic, circular): pink stomach lining as a tunnel of folds flying toward the viewer, dark centre,
+ *  a white light glint. Drawn clipped to a circle of radius r at (x, y). t = film time (the folds move), speed scales it */
+export function scopeView(x, y, r, t = 0, speed = 1) {
+  if (r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip();
+  ctx.fillStyle = C.pink; ctx.fillRect(-r, -r, 2 * r, 2 * r);
+  for (let i = 5; i >= 0; i--) {
+    const u = ((i + t * speed * 0.8) % 6) / 6, rr2 = r * (0.12 + 1.1 * u * u);
+    ctx.beginPath(); for (let k = 0; k <= 40; k++) { const a = k / 40 * TAU, w = 1 + 0.08 * Math.sin(a * 5 + i * 1.7); const px = Math.cos(a) * rr2 * w + r * 0.08 * (1 - u), py = Math.sin(a) * rr2 * w * 0.9; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.closePath(); ctx.strokeStyle = i % 2 ? C.pinkDark : C.stomachFold; ctx.lineWidth = Math.max(2, 26 * u); ctx.stroke();
+  }
+  circle(r * 0.08, 0, r * 0.12, C.stomachBgDark); circle(r * 0.08, 0, r * 0.06, C.mouth);
+  ell(-r * 0.42, -r * 0.48, r * 0.14, r * 0.06, C.pinkLight, -0.6); ell(-r * 0.5, -r * 0.4, r * 0.04, r * 0.03, C.white);
+  ctx.restore();
+}
+
+/** monitor on a stand (graphic) showing the scope view. ~440x420 px at s = 1, origin = screen centre. on 0..1 = screen lights up
+ *  (black → scope view). sc = pop-in, t = film time */
+export function scopeMonitor(x, y, s = 1, { on = 1, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-30, 150, 60, 110, 8); ctx.fillStyle = STEEL_D; ctx.fill(); rr(-110, 250, 220, 30, 12); ctx.fillStyle = STEEL_D; ctx.fill();
+  rr(-220, -170, 440, 340, 26); ctx.fillStyle = C.ink; ctx.fill(); rr(-200, -150, 400, 300, 14); ctx.fillStyle = '#10141C'; ctx.fill();
+  if (on > 0) { ctx.save(); ctx.globalAlpha = clamp(on); scopeView(0, 0, 135, t); ctx.restore(); }
+  circle(180, 156, 6, on > 0 ? C.leaf : '#3A3A42');
+  ctx.restore();
+}
+
+
+/** schematic gut segment (calm diagram, graphic): pale pink tube with ink outline across w px at (x, y), tube height 150.
+ *  clump 0..1 gathers a lump of small gum wads in the middle; ring 0..1 = dashed red ring round it (the blockage). sc = pop-in */
+export function gutSchematic(x, y, w, { clump = 0, ring = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const P = (yy) => { const pts = []; for (let k = 0; k <= 40; k++) { const px = -w / 2 + k / 40 * w; pts.push([px, yy + Math.sin(px * 0.01) * 14]); } return pts; };
+  const top = P(-75), bot = P(75);
+  ctx.beginPath(); top.forEach(([a, b], i) => (i ? ctx.lineTo(a, b) : ctx.moveTo(a, b))); bot.slice().reverse().forEach(([a, b]) => ctx.lineTo(a, b)); ctx.closePath();
+  ctx.fillStyle = '#FBE3E6'; ctx.fill();
+  line(top, C.ink, 10); line(bot, C.ink, 10);
+  const c = clamp(clump);
+  if (c > 0) {
+    const N = 7;
+    for (let i = 0; i < N; i++) {
+      const k = clamp(c * N - i * 0.7); if (k <= 0) continue;
+      const a = i * 2.4, tx = Math.cos(a) * 34 * (i ? 1 : 0), ty = Math.sin(a) * 30 * (i ? 1 : 0);
+      const sx = lerp(-w / 2 - 80, tx, k);
+      gumWad(sx, ty, 0.62, { tag: false, rot: a });
+    }
+  }
+  if (ring > 0) { ctx.save(); ctx.globalAlpha = clamp(ring); ctx.setLineDash([22, 16]); ctx.lineDashOffset = -t * 30; ctx.beginPath(); ctx.ellipse(0, 0, Math.max(1, 130 * clamp(ring) + 10), Math.max(1, 110 * clamp(ring) + 8), 0, 0, TAU); ctx.strokeStyle = C.red; ctx.lineWidth = 12; ctx.stroke(); ctx.restore(); }
+  ctx.restore();
+}
+
+
+/** a bit of food riding through the gut (graphic): 'pea' (green ball), 'bread' (crust cube), 'carrot' (orange coin). ~60 px at s = 1 */
+export function foodBit(kind, x, y, s = 1, rot = 0) {
+  if (s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  if (kind === 'pea') { circle(0, 0, 28, GLASS_GD); circle(-3, -3, 24, C.leaf); ell(-10, -11, 8, 4, '#8ED19A', -0.5); }
+  else if (kind === 'bread') { rr(-32, -28, 64, 56, 12); ctx.fillStyle = BUN_D; ctx.fill(); rr(-24, -20, 48, 40, 8); ctx.fillStyle = '#F2D6A8'; ctx.fill(); }
+  else { ell(0, 4, 34, 22, CAN_D); ell(0, 0, 34, 20, CAN); ell(0, 0, 14, 8, '#F2B48A'); }
+  ctx.restore();
+}
+
+
+/** next-episode tease (eyelid twitch): front-view eye in a round skin window (eyeFront) whose LOWER lid flickers up.
+ *  twitch 0..1, t = film time, ring 0..1 = yellow highlight ring on the lower lid. Disc radius 330 px at s = 1. sc = pop-in */
+export function twitchEye(x, y, s, { twitch = 1, t = 0, ring = 0, sc = 1, look = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const k = s * sc;
+  eyeFront(x, y, k, { lid: 0.08, look });
+  const j = clamp(twitch) * (0.3 + 0.7 * Math.abs(Math.sin(t * 29) * Math.sin(t * 11 + 1)));
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.lineCap = 'round';
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 330, 0, TAU); ctx.clip();
+  const ly = lerp(232, 120, j);
+  ctx.beginPath(); ctx.moveTo(-262, 10); ctx.quadraticCurveTo(0, ly, 262, 10); ctx.lineTo(262, 340); ctx.lineTo(-262, 340); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-250, 10); ctx.quadraticCurveTo(0, ly, 250, 10); ctx.strokeStyle = C.ink; ctx.lineWidth = 10; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-200, 60); ctx.quadraticCurveTo(0, ly + 50, 200, 60); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 10; ctx.stroke();
+  ctx.restore();
+  if (twitch > 0) { ctx.save(); ctx.globalAlpha = clamp(twitch); for (const [dx, dy, a] of [[-300, 90, 2.7], [-286, 150, 2.3], [300, 90, 0.44], [286, 150, 0.84]]) line([[dx, dy], [dx + Math.cos(a) * 40, dy + Math.sin(a) * 40]], C.ink, 12); ctx.restore(); }
+  ctx.restore();
+  if (ring > 0) hiRing(x, y + (10 + ly) / 2 * k, 250 * k, Math.max(1, 80 * k), clamp(ring));
 }
 
 

@@ -14,7 +14,8 @@ case "${1:-}" in
     ch="${2:?channel}"; [ -d "$ROOT/studio/$ch" ] || { echo "no studio/$ch" >&2; exit 2; }
     n=1; while [ -e "$ROOT/work/$DATE-$ch-$n" ]; do n=$((n+1)); done; d="$ROOT/work/$DATE-$ch-$n"
     mkdir -p "$ROOT/work"; cp -R "$ROOT/studio/$ch" "$d"; mkdir -p "$d/renders" "$d/review"
-    rm -f "$d/data/narration.wav" "$d/data/mix.wav" "$d/meta.json" "$d/qa.md"; echo "$d" ;;
+    rm -f "$d/data/narration.wav" "$d/data/mix.wav" "$d/meta.json" "$d/qa.md"
+    cp "$d/src/core/kit.js" "$d/.kit.base.js"; echo "$d" ;;   # merge base for finish
   voice)
     d="${2:?dir}"; "$PY" "$SKILL/scripts/voice.py" "$d" && "$PY" "$SKILL/scripts/words.py" "$d" ;;
   finish)
@@ -24,7 +25,10 @@ case "${1:-}" in
     [ -f "$d/meta.json" ] || { echo "missing $d/meta.json (writer step)" >&2; exit 2; }
     grep -q "^PASS" "$d/qa.md" 2>/dev/null || { echo "qa.md is not PASS: refusing to stock" >&2; exit 3; }
     vid=$(cd "$ROOT" && python3 -m pipeline.stock add "$ch" "$d" | tail -1) || exit $?
-    cp "$d/src/core/kit.js" "$ROOT/studio/$ch/src/core/kit.js"            # new components stay for next time
+    sk="$ROOT/studio/$ch/src/core/kit.js"                                  # new components stay for next time:
+    if [ -f "$d/.kit.base.js" ]; then                                      # 3-way merge, so videos made in parallel keep each other's pieces
+      git merge-file -q "$sk" "$d/.kit.base.js" "$d/src/core/kit.js" || { echo "kit merge conflict in $sk: resolve by hand" >&2; exit 5; }
+    else cp "$d/src/core/kit.js" "$sk"; fi
     a="$ROOT/archive/$ch/$vid"; mkdir -p "$a"; cp "$d/script.json" "$d/meta.json" "$d/src/shots.js" "$d/qa.md" "$a/"
     echo "stocked $vid" ;;
   room)

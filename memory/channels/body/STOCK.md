@@ -1,5 +1,5 @@
 # STOCK: body (generated from state/stock/body.json; change it with `python -m pipeline.stock`)
-_Updated 2026-11-16 19:39 · ready 16/30 · threshold 0.4 · max age 42 d_
+_Updated 2026-11-16 19:46 · ready 17/30 · threshold 0.4 · max age 42 d_
 
 | id | status | conf | topic | cluster | hook pattern | format | length | made | playbook | research |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -19,5 +19,6 @@ _Updated 2026-11-16 19:39 · ready 16/30 · threshold 0.4 · max age 42 d_
 | 2026-11-16-body-01 | ready | 0.7 | What happens when you lose your voice? | throat | question+ab-guess | guess-reveal | 38.0s | 2026-W47 | pb-bdd55284 | research/2026-W46.md |
 | 2026-11-16-body-02 | ready | 0.7 | What happens when you drink an energy drink? | heart | question+timeline-guess | timeline | 38.0s | 2026-W47 | pb-bdd55284 | research/2026-W46.md |
 | 2026-11-16-body-03 | ready | 0.7 | What happens if you hold your breath too long? | lungs | question+escalating-alarm-guess | countdown | 38.8s | 2026-W47 | pb-a66cc658 | research/2026-W46.md |
+| 2026-11-16-body-04 | ready | 0.7 | What happens if you swallow chewing gum? | gut | question+myth-guess | myth-bust | 38.1s | 2026-W47 | pb-a66cc658 | research/2026-W46.md |
 
-Clusters in stock: balance ×1, blood ×1, brain ×1, ears ×1, gut ×1, heart ×1, immune ×1, lungs ×1, muscles ×1, nerves ×1, nose ×1, skin ×1, sun ×1, tears ×1, teeth ×1, throat ×1
+Clusters in stock: balance ×1, blood ×1, brain ×1, ears ×1, gut ×2, heart ×1, immune ×1, lungs ×1, muscles ×1, nerves ×1, nose ×1, skin ×1, sun ×1, tears ×1, teeth ×1, throat ×1

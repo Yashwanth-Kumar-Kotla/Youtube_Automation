@@ -947,6 +947,50 @@
    "branch": "stock/body/2026-11-16-body-03",
    "history": [],
    "description": "Send this to the friend who swears the urge to breathe means you're out of oxygen.\nThe urge to breathe is driven mainly by carbon dioxide building up, not by oxygen running low: sensors near your brainstem pick up the acid CO2 makes, and your diaphragm starts moving on its own. Oxygen only drives breathing hard when it gets very low, which is why breath-holding in water is dangerous: you can black out without any warning (also called shallow water or hypoxic blackout). The CDC warns that underwater breath-holding games can kill even strong swimmers. Never play them. Questions about your breathing? See a doctor.\nNext Body File: swallowing gum, and why your gut can't break it down.\nFollow Body Files for a new one every day.\n#bodyfiles #breathing #lungs #humanbody #science #health #shorts\n\nSources:\nHuman Performance Resources by CHAMP (Uniformed Services University), Prevent shallow water blackout: https://hprc-online.org/physical-fitness/injury-prevention/prevent-shallow-water-blackout\nStatPearls (NIH NCBI Bookshelf), Shallow Water Blackout: https://www.ncbi.nlm.nih.gov/books/NBK554620/\nStatPearls (NIH NCBI Bookshelf), Physiology, Chemoreceptors: https://www.ncbi.nlm.nih.gov/books/NBK545289/\nFrontiers in Physiology 2021, breath-hold breaking point: https://pmc.ncbi.nlm.nih.gov/articles/PMC8511405\nCDC MMWR 2015, Dangerous Underwater Breath-Holding Behaviors: https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6419a3.htm\nCleveland Clinic, What Happens When You Swallow Gum?: https://health.clevelandclinic.org/what-happens-when-you-swallow-gum/"
+  },
+  "2026-11-16-body-04": {
+   "title": "What Happens If You Swallow Chewing Gum?",
+   "hashtags": [
+    "#bodyfiles",
+    "#chewinggum",
+    "#digestion",
+    "#mythbusting",
+    "#humanbody",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "Swallowed gum: A) stays inside you seven years or B) gone in days? Answer before you rewatch.",
+   "series": "Body Files",
+   "topic": "What happens if you swallow chewing gum?",
+   "experiment_arm": "E1-A (hook with a number: line 2 'Seven years', caption 'SEVEN YEARS'); E4 tease_next",
+   "teases": "What happens when your eyelid won't stop twitching?",
+   "topic_cluster": "gut",
+   "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the hold-your-breath video (work/2026-11-16-body-3) with 'swallowing gum, which your gut can't break down' (paid off in lines 2-3: no enzyme, stays whole; answer in line index 8: 'It's B: out in your poop, about forty hours later.', Cleveland Clinic + Duke Health)",
+   "hook_pattern": "question+myth-guess",
+   "first_frame": "object-closeup (extreme close-up of the hero mid-gulp, x-ray cyan throat with a pink gum wad already dropping; pills 'A 7 YEARS' / 'B DAYS' popping in beside it)",
+   "format": "myth-bust",
+   "structure_note": "Myth-bust told as a journey: follow the single pink gum wad as a traveler down the x-ray gut (throat, stomach, intestine, exit). Different scenes from the stomach-growls video (2026-11-15): no hungry hero, no growl sound waves, no empty-stomach squeeze; the camera rides with the gum wad, and the relatable beat cuts out to a meeting-room table.",
+   "safety": "Calm, no scare framing. One piece is framed as harmless; the blockage line says 'rare' and names the pattern (lots of gum, daily, mostly kids). No advice beyond the description's 'see a doctor if' line from Cleveland Clinic. Schematic x-ray only, no real medical imagery. Poop shown as a cartoon toilet/exit sign, nothing graphic.",
+   "engagement": {
+    "guess": "A stays seven years vs B gone in days (answer: B; Cleveland Clinic: 'it'll come out about 40 hours later in your stool', 'Gum doesn't stay in your stomach for seven years or even seven days')",
+    "relatable": "Ever gulped yours mid-meeting and heard a parent's warning?",
+    "rehook_line": 5,
+    "answer_line": 8,
+    "rewatch_detail": "The pink gum wad wears a tiny luggage tag from frame 1 with a trip clock; in the intestine shot it reads '~40 h' (Cleveland Clinic), the clue that it's B before the reveal. In the stomach shot a small 'gum base: no enzyme' label floats on the wad (Duke Health). Only sourced labels on screen.",
+    "loop": "The final tease shot cuts back to the frame-1 extreme close-up of the hero's face, same framing, but now the lower eyelid flickers (next video); the replay lands on the same face mid-gulp."
+   },
+   "id": "2026-11-16-body-04",
+   "channel": "body",
+   "made_at": "2026-11-16T19:46-06:00",
+   "made_week": "2026-W47",
+   "playbook_version": "pb-a66cc658",
+   "research_file": "research/2026-W46.md",
+   "length": 38.1,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-16-body-04",
+   "history": [],
+   "description": "Send this to the friend who still believes swallowed gum stays seven years.\nGum base is mostly synthetic and your body has no enzyme for it, so it travels through whole, but it doesn't stick: Cleveland Clinic says it comes out in your stool about 40 hours later. One piece is very unlikely to hurt you. Rare blockages have been reported after swallowing lots of gum over and over, mostly in young kids. If someone swallowed a lot and has belly pain, cramping, vomiting or can't poop, see a doctor.\nNext Body File: eyelid twitches that won't quit, and why it's usually the lower lid.\nFollow Body Files for a new one every day.\n#bodyfiles #chewinggum #digestion #mythbusting #humanbody #science #shorts\n\nSources:\nCleveland Clinic, What Happens When You Swallow Gum?: https://health.clevelandclinic.org/what-happens-when-you-swallow-gum/\nDuke Health, Myth or Fact: It Takes Seven Years to Digest Chewing Gum: https://dukehealth.org/blog/myth-or-fact-it-takes-seven-years-digest-chewing-gum\nMilov et al., Chewing gum bezoars of the gastrointestinal tract, Pediatrics 1998: https://pubmed.ncbi.nlm.nih.gov/9685468/\nCleveland Clinic, Eye Twitching: https://my.clevelandclinic.org/health/symptoms/17663-eye-twitching"
   }
  }
 }

@@ -1,0 +1,61 @@
+{
+  "title": "What Happens If You Swallow Chewing Gum?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic Health Essentials, 'What Happens When You Swallow Gum?' (gum base is 'largely synthetic'; 'Gum base isn't able to be digested, so it just stays in your guts all the way through and doesn't break down'; 'it'll come out about 40 hours later in your stool'; 'Gum doesn't stay in your stomach for seven years or even seven days'; 'Swallowing one piece of gum probably won't hurt you'; swallowing it every day or a 'mega-wad' of four pieces 'can cause an intestinal blockage'; seek care for blockage symptoms such as abdominal pain, constipation, cramping, vomiting): https://health.clevelandclinic.org/what-happens-when-you-swallow-gum/",
+    "Duke Health blog, 'Myth or Fact: It Takes Seven Years to Digest Chewing Gum' ('Our bodies do not possess digestive enzymes to specifically break down gum base'; gum passes through like food and leaves in stool; the doctor, who has reviewed upper endoscopies in children and adults: 'I have yet to see a wad of gum lying around in the stomach'): https://dukehealth.org/blog/myth-or-fact-it-takes-seven-years-digest-chewing-gum",
+    "Milov DE et al., 'Chewing gum bezoars of the gastrointestinal tract', Pediatrics 1998;102(2):e22 (three children with gut or esophageal blockage after regularly swallowing gum): https://pubmed.ncbi.nlm.nih.gov/9685468/",
+    "Tease (next video): Cleveland Clinic, 'Eye Twitching' (muscles in or near your eye move without you controlling them; usually harmless; the most common type, myokymia, is most often in the lower eyelid): https://my.clevelandclinic.org/health/symptoms/17663-eye-twitching"
+  ],
+  "lines": [
+    {
+      "text": "What happens if you swallow chewing gum?",
+      "caps": "WHAT *HAPPENS | IF YOU *SWALLOW | CHEWING *GUM?"
+    },
+    {
+      "text": "Seven years inside you, or gone in days? Guess.",
+      "caps": "*SEVEN YEARS | *INSIDE YOU OR | GONE IN *DAYS? | *GUESS"
+    },
+    {
+      "text": "Gulp. Gum base is mostly synthetic. No enzyme in you breaks it.",
+      "caps": "*GULP | GUM *BASE | IS MOSTLY *SYNTHETIC | NO *ENZYME IN YOU | *BREAKS IT"
+    },
+    {
+      "text": "It stays whole the entire trip, never breaking down.",
+      "caps": "IT STAYS *WHOLE | THE ENTIRE *TRIP | NEVER *BREAKING | *DOWN"
+    },
+    {
+      "text": "Ever gulped yours mid-meeting and heard a parent's warning?",
+      "caps": "EVER *GULPED | YOURS *MID-MEETING | AND *HEARD A | *PARENT'S WARNING?"
+    },
+    {
+      "text": "But here's the twist: whole doesn't mean stuck.",
+      "caps": "BUT *HERE'S THE | *TWIST: | *WHOLE DOESN'T | MEAN *STUCK"
+    },
+    {
+      "text": "It doesn't cling. It rides along with food.",
+      "caps": "IT *DOESN'T | *CLING | IT *RIDES | *ALONG WITH | *FOOD"
+    },
+    {
+      "text": "A Duke doctor reviewing stomach scopes hasn't seen one gum wad.",
+      "caps": "A *DUKE DOCTOR | REVIEWING STOMACH *SCOPES | HASN'T *SEEN | ONE *GUM WAD"
+    },
+    {
+      "text": "It's B: out in your poop, about forty hours later.",
+      "caps": "IT'S *B: OUT | IN YOUR *POOP | ABOUT *40 HOURS | *LATER"
+    },
+    {
+      "text": "Rare exception: blockages, mostly kids swallowing lots of gum daily.",
+      "caps": "*RARE EXCEPTION | *BLOCKAGES | MOSTLY *KIDS | *SWALLOWING | *LOTS OF GUM | *DAILY"
+    },
+    {
+      "text": "Next Body File: eyelid twitches that won't quit, mostly the lower lid.",
+      "caps": "NEXT *BODY FILE | EYELID *TWITCHES | THAT WON'T *QUIT | *MOSTLY THE | *LOWER LID"
+    }
+  ]
+}

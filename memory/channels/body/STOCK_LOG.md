@@ -43,3 +43,4 @@
 - 2026-11-16 19:36 · 2026-11-09-body-01 posted · conf 0.7 · {'posted': '2026-11-10', 'youtube': '06QOx0awTm0', 'note': 'already in posts.json; stock status was stale'}
 - 2026-11-16 19:36 · 2026-11-09-body-02 posted · conf 0.7 · {'posted': '2026-11-12', 'youtube': 'ydfZSZtqBrI', 'note': 'already in posts.json; stock status was stale'}
 - 2026-11-16 19:39 · 2026-11-16-body-03 added · conf 0.7 · question+escalating-alarm-guess · What happens if you hold your breath too long?
+- 2026-11-16 19:46 · 2026-11-16-body-04 added · conf 0.7 · question+myth-guess · What happens if you swallow chewing gum?
