@@ -1,0 +1,43 @@
+{
+ "title": "What Happens When You Drink an Energy Drink?",
+ "description": "Send this to the coworker who calls an energy drink 'lunch'.\nEnergy drinks range from 54 to 328 mg of caffeine per 16 fluid ounces (FDA), about six times apart. You can feel caffeine within about 15 minutes, it's absorbed within about 45, and with a half-life of about five hours, half is still in you five hours later. Too much can mean jitters, a racing heart and lost sleep. The FDA cites 400 mg a day for most adults, and medical experts advise against energy drinks for children and teens. A preliminary 2026 AHA conference abstract (not peer-reviewed) found heart events mentioned more often in FDA adverse-event reports involving caffeine and stimulant products; it shows an association, not proof, and not your personal risk. Questions about your heart? See a doctor.\nNext Body File: holding your breath, and why the urge to breathe isn't about oxygen.\nFollow Body Files for a new one every day.\n#bodyfiles #energydrink #caffeine #heart #humanbody #health #science #shorts\n\nSources:\nFDA, Spilling the Beans: How Much Caffeine Is Too Much?: https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much\nCleveland Clinic, How To Quit Caffeine: https://health.clevelandclinic.org/how-to-quit-caffeine\nCleveland Clinic, How To Get Caffeine Out of Your System: https://health.clevelandclinic.org/how-to-get-caffeine-out-of-your-system\nHarvard T.H. Chan School of Public Health, The Nutrition Source, Caffeine: https://nutritionsource.hsph.harvard.edu/caffeine/\nAmerican Heart Association newsroom (Scientific Sessions 2026 abstract): https://newsroom.heart.org/news/energy-drinks-stimulant-products-linked-to-cardiac-arrest-heart-attack-in-young-adults\nDAN Europe Alert Diver, breath-hold diving incidents: https://alertdiver.eu/en_US/articles/dan-begins-reporting-on-incident-collection-of-breath-hold-diving/",
+ "hashtags": [
+  "#bodyfiles",
+  "#energydrink",
+  "#caffeine",
+  "#heart",
+  "#humanbody",
+  "#health",
+  "#science",
+  "#shorts"
+ ],
+ "pinned_comment": "Five hours after an energy drink: A) a quarter of the caffeine left or B) half? Answer before you rewatch.",
+ "series": "Body Files",
+ "topic": "What happens when you drink an energy drink?",
+ "experiment_arm": "E1-A (hook with a number: line 2 'Five hours later'); E4 tease_next",
+ "teases": "What happens if you hold your breath too long?",
+ "topic_cluster": "heart",
+ "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the lose-your-voice video (work/2026-11-16-body-1) with 'energy drinks, where some cans pack six times the caffeine' (paid off in line index 2: 'Some cans: fifty-four milligrams. Others: three twenty-eight.', FDA range per 16 fl oz)",
+ "hook_pattern": "question+timeline-guess",
+ "first_frame": "hero-mid-action (hero mid-sip of a plain unbranded can, x-ray cyan body with yellow caffeine dots pouring in, wall clock at 0:00; A A QUARTER / B HALF pills pop on the spoken options at 4.2 s / 5.5 s)",
+ "format": "timeline",
+ "engagement": {
+  "guess": "A a quarter left vs B half left, five hours later (answer: B, half; Cleveland Clinic: caffeine half-life is five hours)",
+  "relatable": "Ever had one on a late drive, then lay awake?",
+  "rehook_line": 6,
+  "answer_line": 9,
+  "rewatch_detail": "The wall clock from frame 1 stays in the corner of every timeline shot and jumps 0:00 → 0:15 → 0:45 → 5:00 on the spoken time stamps; on the two cans in line 3 a tiny label reads 'per 16 fl oz · FDA', and the 5:00 answer frame keeps exactly every other dot of frame 1. Only sourced numbers on screen.",
+  "loop": "Final shot cuts back to the frame-1 framing: hero holding the same unbranded can under the clock with the A/B pills, now with a check on B and half the yellow dots still in the x-ray body; the replay lands on the same image at 0:00 with all the dots."
+ },
+ "id": "2026-11-16-body-02",
+ "channel": "body",
+ "made_at": "2026-11-16T04:12-06:00",
+ "made_week": "2026-W47",
+ "playbook_version": "pb-bdd55284",
+ "research_file": "research/2026-W46.md",
+ "length": 38.0,
+ "confidence": 0.7,
+ "status": "ready",
+ "branch": "stock/body/2026-11-16-body-02",
+ "history": []
+}
