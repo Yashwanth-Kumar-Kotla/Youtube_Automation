@@ -1,3 +1,13 @@
 mode: draft  privacy: default  record: True
-draft sent 2026-11-16-body-01 -> v_inbox_file~v2.7708707726599407629  (What Happens When You Lose Your Voice?)
+skip 2026-11-16-body-01: already in the TikTok inbox
+fatal: couldn't find remote ref stock/body/2026-11-16-body-02
+Traceback (most recent call last):
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 57, in main
+    download(v["branch"], tmp)
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/publish.py", line 32, in download
+    subprocess.run(["git", "fetch", "-q", "--depth", "1", "origin", branch], check=True, cwd=ROOT)
+  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'fetch', '-q', '--depth', '1', 'origin', 'stock/body/2026-11-16-body-02']' returned non-zero exit status 128.
+stopped at 2026-11-16-body-02; the rest can be sent by re-running
 11 drafts recorded in state/tiktok_drafts.json
