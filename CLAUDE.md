@@ -19,7 +19,9 @@ Videos go into a per-channel **stock**, not straight to posting. The hourly `pub
       Set script.json "voice"/"speed" from config `kokoro_voice`/`kokoro_speed`.
    c. `bin/episode.sh voice $d`
    d. **director** agent → `$d/src/shots.js` (+ kit components) until `node tools/capture.mjs check` says CHECK OK; then cues + mix.
-   e. **qa** agent → `$d/qa.md`. On FAIL: director fixes, qa again (max 2 rounds). Never stock a video that didn't PASS.
+   e. **qa** agent → `$d/qa.md`. On FAIL: if QA tested its fixes in a scratch copy, the main session copies those files in and
+      re-runs check/cues/mix itself (cheap); otherwise the director fixes. Then the SAME qa agent re-checks (SendMessage, max 2 rounds).
+      Never stock a video that didn't PASS.
       Still failing: in `tease_next` mode the promised topic can't be skipped, so start it over once from scratch with a simpler
       visual approach; if that fails too, stop the run and add an OWNER_TODO line (the chain is blocked). Otherwise skip the topic
       (put it back in BACKLOG "Up next" with a note) and move on.
