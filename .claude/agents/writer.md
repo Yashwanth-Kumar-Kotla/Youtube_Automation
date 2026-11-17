@@ -34,3 +34,7 @@ the newest file in memory/research/, the last 10 rows of memory/channels/<channe
    "timeline"). Name a next topic only in `tease_next` mode (it must match meta "teases").
 5. Mark the topic used in BACKLOG.md (move it to the "Used" section with today's date).
 Return a 3-line summary: topic, hook line, experiment arm. Never copy another creator's script.
+
+
+## Answer timing (2026-11-16 QA)
+The guess answer must start after 70% of the spoken words, so 2-3 lines come after it: the answer, a safety or extra-fact line, and the tease. Two of the four videos landed at 66-68%.

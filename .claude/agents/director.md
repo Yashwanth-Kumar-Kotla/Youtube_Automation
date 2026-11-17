@@ -17,3 +17,8 @@ Engagement (PLAYBOOK "Engagement", from meta.json "engagement"): on the guess li
 spoken options; on the answer word the right pill gets a check (optionally a ~1 s "COMMENT A OR B" pill during the reveal, never in
 the first 3 s, never voiced). Give the re-hook line a clear visual change (new scene or zoom into a new place). Plant the rewatch
 detail. Make the final image cut back toward frame 1's framing/object so the replay loops cleanly.
+
+## No empty frame after a cut (2026-11-16: 3 of 4 videos failed QA on this)
+Every shot's main subject must be on screen within 0.1 s of the cut. If a shot starts before the word that names its
+subject (the cut sits on the line start, the subject on a later word), pop the subject at `lt` 0.03-0.05 and let the
+*word* trigger a secondary beat (bounce, check, label). Before handing back, render one frame 0.15 s after every cut and look at it.
