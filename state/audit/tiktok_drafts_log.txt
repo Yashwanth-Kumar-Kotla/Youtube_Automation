@@ -1,13 +1,4 @@
 mode: draft  privacy: default  record: True
-draft sent 2026-11-16-body-02 -> v_inbox_file~v2.7708952460617975821  (What Happens When You Drink an Energy Drink?)
-Traceback (most recent call last):
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 60, in main
-    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode, privacy)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 86, in upload
-    _put_file(j["data"]["upload_url"], mp4, size, chunk)
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 53, in _put_file
-    raise RuntimeError(f"TikTok chunk upload failed {r.status_code}: {r.text[:300]}")
-RuntimeError: TikTok chunk upload failed 500: null
-stopped at 2026-11-16-body-03; the rest can be sent by re-running
-12 drafts recorded in state/tiktok_drafts.json
+draft sent 2026-11-16-body-03 -> v_inbox_file~v2.7708952705691224077  (What Happens If You Hold Your Breath Too Long?)
+draft sent 2026-11-16-body-04 -> v_inbox_file~v2.7708952753963337741  (What Happens If You Swallow Chewing Gum?)
+14 drafts recorded in state/tiktok_drafts.json
