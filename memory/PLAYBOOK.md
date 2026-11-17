@@ -5,6 +5,9 @@ _Last updated: 2026-11-15 (W46 review: own data still thin, 4 YouTube Shorts wit
 - Frame 1 is already mid-action and shows the premise. No intro, no logo, no "hey guys".
 - Voice starts by 0.4 s. The first line is the question in under 8 words, concrete and visual ("What happens if you break your knuckle?").
 - Prefer premises with a body, danger, money or time stake. Numbers beat adjectives ("11 days without sleep").
+- **Relatable first (owner, 2026-11-17):** pick topics most viewers have felt themselves (holding it in, everyday sensations,
+  daily habits pushed too far). Hold your pee (1.8K, still growing) beat the exotic ones. Line 1 should make the viewer think
+  "wait, I do that". Exotic or rare topics at most 1 in 5 videos (BACKLOG "Later").
 - Premise lead (W46, weak evidence): "push past the limit" ("hold X too long", "won't stop", "never") and "swallowed the unexpected"
   premises are preferred when the backlog allows. Evidence: our only YouTube video still growing after day 1 (hold your pee) plus the scout's
   outliers (hold your breath 47.4x, hold your pee 49.1x, swallow-X frame). Water ("too much") had the same pattern and didn't grow, so it isn't a rule yet.
