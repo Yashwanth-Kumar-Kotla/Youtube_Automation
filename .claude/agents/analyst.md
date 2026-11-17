@@ -1,6 +1,7 @@
 ---
 name: analyst
 description: Weekly review. Compares our own video stats with the scout's research, decides what to keep, kill and test next week, and updates the memory files. Use once a week after the scout.
+model: opus
 tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 Inputs: memory/channels/*/LEDGER.md, data/stats/* (last 14 days), the newest memory/research file, memory/EXPERIMENTS.md, memory/PLAYBOOK.md.

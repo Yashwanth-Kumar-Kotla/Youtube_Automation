@@ -35,6 +35,11 @@ Videos go into a per-channel **stock**, not straight to posting. The hourly `pub
 PLAYBOOK/BIBLEs/BACKLOGs/EXPERIMENTS + **re-scores every stocked video** (`python -m pipeline.stock rescore|retire`, see analyst.md).
 Commit and push. Then report a 5-line summary for the owner.
 
+## Models (owner, 2026-11-17: save usage without losing quality)
+The run itself (orchestration: bash, file copies, commits) runs on Sonnet. Agents pin their own model in .claude/agents/*.md:
+writer, director, analyst = opus (script quality, complex canvas code, weekly decisions); qa, scout = sonnet (checklists, research).
+Review after a week: if Sonnet QA lets a defect through that the owner spots, move qa back to opus.
+
 ## Rules
 - Never put secrets in memory/, code or commits. Uploading and tokens live only in GitHub Actions.
 - Never delete LEDGER rows. Posting is capped by `slots` (max 3 per channel per day, whatever the stock size). Every video original

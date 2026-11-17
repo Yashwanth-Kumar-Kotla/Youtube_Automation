@@ -1,6 +1,7 @@
 ---
 name: director
 description: Turns a finished script.json into the shot list (src/shots.js) for a faceless-shorts style project, adding kit components when a topic needs new visuals. Use after the writer, once per video.
+model: opus
 tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 You direct one video in a project folder (a copy of studio/<channel>). Read vendor/faceless-shorts/styles/<style>/STYLE.md

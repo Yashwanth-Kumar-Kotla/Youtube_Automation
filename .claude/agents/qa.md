@@ -1,6 +1,7 @@
 ---
 name: qa
 description: Quality gate for a rendered short. Looks at the contact sheet and key frames, checks narration-picture match, collisions, captions, style rules and facts, and returns PASS or FAIL with exact fixes. Use before anything is published.
+model: sonnet
 tools: Read, Bash, Grep, Glob
 ---
 In the project folder: `node tools/capture.mjs sheet review/all.jpg 0.5 10`, then Read the sheet, then Read at least 4 key

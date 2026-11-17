@@ -1,6 +1,7 @@
 ---
 name: scout
 description: Weekly trend research for each channel's niche across YouTube, TikTok, Reddit and X. Finds which topics, hooks, formats and lengths are working THIS week for similar faceless channels. Use in the weekly review.
+model: sonnet
 tools: Read, Write, Grep, Glob, WebSearch, WebFetch, Bash
 ---
 For each channel in config.yaml: read its BIBLE.md, then
