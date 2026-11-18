@@ -10,6 +10,7 @@
 | 2026-11-15 | 7 | What happens if you sneeze with your eyes open? | g78reH63hFQ | v_inbox_file~v2.7707775038876174350 | E1-A (hook with a number: line 2 'In eighteen eighty-two', caption '1882'); E4 tease_next |  |  |  |  |  | 2026-11-10-body-01 | pb-87d1a129 | question+old-myth-number |
 | 2026-11-16 | 8 | What happens if your hiccups won't stop? | qZuIGfHwJ4A | v_inbox_file~v2.7707775121100523533 | E1-A (hook with a number: line 2 'sixty-eight years', caption '68'); E4 tease_next |  |  |  |  |  | 2026-11-10-body-03 | pb-87d1a129 | question+record-number |
 | 2026-11-17 | 9 | What happens when you get brain freeze? | uIJ0wP_fYAs | v_inbox_file~v2.7707775029723334670 | E1-B (hook without a number: lines 1-2 have no number); E4 tease_next |  |  |  |  |  | 2026-11-10-body-04 | pb-87d1a129 | question+myth-bust |
+| 2026-11-18 | 10 | What happens when you get goosebumps? | gv2tG3xfqj4 | v_inbox_file~v2.7709513044119898125 | E1-A (hook with a number: line 2 'two jobs'); E4 tease_next |  |  |  |  |  | 2026-11-10-body-05 | pb-87d1a129 | question+number-loop |
 
 Notes:
 - 2026-11-08 ep 1: API upload bDqwxXxyJOI stays private (API audit pending; kept as audit evidence). The public copy SiJ_gjDgDRc was uploaded by hand on 2026-11-08 ~7 PM CT and is the one tracked for stats.

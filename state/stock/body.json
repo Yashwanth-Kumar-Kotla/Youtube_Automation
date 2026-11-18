@@ -463,10 +463,25 @@
    "research_file": "none",
    "length": 33.2,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "posted",
    "branch": "stock/body/2026-11-10-body-05",
-   "history": [],
-   "description": "Goosebumps (piloerection) are an automatic reaction of your sympathetic nervous system, your fight-or-flight mode. Tiny muscles at the base of each hair follicle (the arrector pili) contract, so the hairs stand up and small bumps form. Cold, fear, shock, excitement and even music or a movie can set them off. In animals it makes them look bigger, like a cat that puffs up while it hisses; in humans it mostly helps conserve a little heat. A 2020 Harvard study in mice suggests a second job: the same nerve, bridged by that muscle, wakes up hair follicle stem cells, and mice kept in the cold grew new hair in under two weeks.\nNext Body File: what happens when your foot falls asleep, and the pins and needles once it wakes.\nFollow Body Files for a new one every day.\n#bodyfiles #goosebumps #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Why You Have Goosebumps on Your Skin: https://health.clevelandclinic.org/why-do-you-get-goosebumps\nNIH Research Matters, What goosebumps are for (2020): https://www.nih.gov/news-events/nih-research-matters/what-goosebumps-are\nNINDS, Paresthesia Information Page: https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia"
+   "history": [
+    {
+     "at": "2026-11-18T08:08-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-18, episode 10, manual upload"
+    },
+    {
+     "at": "2026-11-18T08:08-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
+    }
+   ],
+   "description": "Goosebumps (piloerection) are an automatic reaction of your sympathetic nervous system, your fight-or-flight mode. Tiny muscles at the base of each hair follicle (the arrector pili) contract, so the hairs stand up and small bumps form. Cold, fear, shock, excitement and even music or a movie can set them off. In animals it makes them look bigger, like a cat that puffs up while it hisses; in humans it mostly helps conserve a little heat. A 2020 Harvard study in mice suggests a second job: the same nerve, bridged by that muscle, wakes up hair follicle stem cells, and mice kept in the cold grew new hair in under two weeks.\nNext Body File: what happens when your foot falls asleep, and the pins and needles once it wakes.\nFollow Body Files for a new one every day.\n#bodyfiles #goosebumps #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Why You Have Goosebumps on Your Skin: https://health.clevelandclinic.org/why-do-you-get-goosebumps\nNIH Research Matters, What goosebumps are for (2020): https://www.nih.gov/news-events/nih-research-matters/what-goosebumps-are\nNINDS, Paresthesia Information Page: https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia",
+   "posted": "2026-11-18",
+   "episode": 10,
+   "youtube": "gv2tG3xfqj4",
+   "tiktok": "v_inbox_file~v2.7709513044119898125"
   },
   "2026-11-10-body-06": {
    "title": "What Happens When Your Foot Falls Asleep?",
