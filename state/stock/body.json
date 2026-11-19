@@ -510,10 +510,25 @@
    "research_file": "none",
    "length": 34.9,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "posted",
    "branch": "stock/body/2026-11-10-body-06",
-   "history": [],
-   "description": "That \"asleep\" feeling is temporary paresthesia: sitting with your legs crossed too long puts sustained pressure on a nerve (body position can also limit blood flow), so the messages between your foot and your brain get interrupted and the foot goes numb. Move, the pressure is released, and the nerve \"wakes up\": that's the pins and needles, a tingling, prickling or burning feeling that fades in a minute or two with no permanent damage. If it won't go away or happens often, see a doctor.\nNext Body File: what happens if you knock out a tooth, and why a glass of milk might save it.\nFollow Body Files for a new one every day.\n#bodyfiles #pinsandneedles #humanbody #science #shorts #healthfacts\n\nSources:\nNINDS, Paresthesia Information Page (via BrainFacts.org): https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia\nCleveland Clinic, Paresthesia: https://my.clevelandclinic.org/health/symptoms/24932-paresthesia\nThe Conversation, What happens when your foot falls asleep? (2021): https://theconversation.com/what-happens-when-your-foot-falls-asleep-164655\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635"
+   "history": [
+    {
+     "at": "2026-11-19T07:20-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-19, episode 11, manual upload"
+    },
+    {
+     "at": "2026-11-19T07:20-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
+    }
+   ],
+   "description": "That \"asleep\" feeling is temporary paresthesia: sitting with your legs crossed too long puts sustained pressure on a nerve (body position can also limit blood flow), so the messages between your foot and your brain get interrupted and the foot goes numb. Move, the pressure is released, and the nerve \"wakes up\": that's the pins and needles, a tingling, prickling or burning feeling that fades in a minute or two with no permanent damage. If it won't go away or happens often, see a doctor.\nNext Body File: what happens if you knock out a tooth, and why a glass of milk might save it.\nFollow Body Files for a new one every day.\n#bodyfiles #pinsandneedles #humanbody #science #shorts #healthfacts\n\nSources:\nNINDS, Paresthesia Information Page (via BrainFacts.org): https://www.brainfacts.org/Diseases-and-Disorders/Neurological-Disorders-AZ/Diseases-A-to-Z-from-NINDS/Paresthesia\nCleveland Clinic, Paresthesia: https://my.clevelandclinic.org/health/symptoms/24932-paresthesia\nThe Conversation, What happens when your foot falls asleep? (2021): https://theconversation.com/what-happens-when-your-foot-falls-asleep-164655\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635",
+   "posted": "2026-11-19",
+   "episode": 11,
+   "youtube": "N1Zj0hqxtS0",
+   "tiktok": "v_inbox_file~v2.7709871780005660685"
   },
   "2026-11-10-body-07": {
    "title": "What Happens If You Knock Out a Tooth?",
