@@ -558,10 +558,25 @@
    "research_file": "none",
    "length": 33.1,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "posted",
    "branch": "stock/body/2026-11-10-body-07",
-   "history": [],
-   "description": "A knocked-out adult tooth put back in its socket, or stored properly, within five minutes will likely survive. Hold it by the crown, never the root: the root carries tiny fibers it needs to heal. Don't scrub it or put it in water. If it won't go back in, keep it in milk or your own saliva and get to a dentist or emergency department right away. Baby teeth are not put back.\nNext Body File: what happens when your ears pop, and the hidden tube linking your ears to your throat.\nFollow Body Files for a new one every day.\n#bodyfiles #teeth #firstaid #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, What To Do When You Knock Out a Tooth (2023): https://health.clevelandclinic.org/must-act-fast-tooth-gets-knocked/\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635\nMayo Clinic, Airplane ear: https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701"
+   "history": [
+    {
+     "at": "2026-11-20T07:00-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-20, episode 12, manual upload"
+    },
+    {
+     "at": "2026-11-20T07:00-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
+    }
+   ],
+   "description": "A knocked-out adult tooth put back in its socket, or stored properly, within five minutes will likely survive. Hold it by the crown, never the root: the root carries tiny fibers it needs to heal. Don't scrub it or put it in water. If it won't go back in, keep it in milk or your own saliva and get to a dentist or emergency department right away. Baby teeth are not put back.\nNext Body File: what happens when your ears pop, and the hidden tube linking your ears to your throat.\nFollow Body Files for a new one every day.\n#bodyfiles #teeth #firstaid #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, What To Do When You Knock Out a Tooth (2023): https://health.clevelandclinic.org/must-act-fast-tooth-gets-knocked/\nMayo Clinic, Tooth loss: First aid: https://www.mayoclinic.org/first-aid/first-aid-tooth-loss/basics/art-20056635\nMayo Clinic, Airplane ear: https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701",
+   "posted": "2026-11-20",
+   "episode": 12,
+   "youtube": "aaOKlRNn27U",
+   "tiktok": "v_inbox_file~v2.7710237726188111886"
   },
   "2026-11-10-body-08": {
    "title": "What Happens When Your Ears Pop?",
