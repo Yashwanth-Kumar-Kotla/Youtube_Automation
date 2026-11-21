@@ -52,3 +52,5 @@
 - 2026-11-19 07:20 · 2026-11-10-body-06 posted · conf 0.7 · {'posted': '2026-11-19', 'episode': 11, 'youtube': 'N1Zj0hqxtS0', 'tiktok': 'v_inbox_file~v2.7709871780005660685'}
 - 2026-11-20 07:00 · 2026-11-10-body-07 ready → scheduled · slot 0 on 2026-11-20, episode 12, manual upload
 - 2026-11-20 07:00 · 2026-11-10-body-07 posted · conf 0.7 · {'posted': '2026-11-20', 'episode': 12, 'youtube': 'aaOKlRNn27U', 'tiktok': 'v_inbox_file~v2.7710237726188111886'}
+- 2026-11-21 05:14 · 2026-11-10-body-08 ready → scheduled · slot 0 on 2026-11-21, episode 13, manual upload
+- 2026-11-21 05:14 · 2026-11-10-body-08 posted · conf 0.7 · {'posted': '2026-11-21', 'episode': 13, 'youtube': '_XVPRSZJ3nc', 'tiktok': 'v_inbox_file~v2.7710581249731397645'}
