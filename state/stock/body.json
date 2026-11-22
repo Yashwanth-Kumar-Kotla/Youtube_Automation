@@ -654,10 +654,25 @@
    "research_file": "none",
    "length": 34.5,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "posted",
    "branch": "stock/body/2026-11-14-body-01",
-   "history": [],
-   "description": "A charley horse is a muscle cramp: a sudden tightening, most often in the calf, where the muscle contracts on its own and can't relax. It can last from a few seconds to 10 minutes, and most people get them at night or while resting. Stretching and massaging the muscle, or putting your weight on that leg, may ease it, and the muscle can stay sore afterward. See a doctor if cramps happen often, are severe, or come with swelling or numbness.\nNext Body File: what happens when you cry, and why the extra tears drain into the back of your nose.\nFollow Body Files for a new one every day.\n#bodyfiles #charleyhorse #musclecramp #humanbody #science #shorts #healthfacts\n\nSources:\nNHS, Leg cramps: https://www.nhs.uk/conditions/leg-cramps/\nCleveland Clinic, Muscle Spasms: https://my.clevelandclinic.org/health/symptoms/21190-muscle-cramps\nCleveland Clinic, Leg Cramps at Night: https://my.clevelandclinic.org/health/diseases/14170-leg-cramps-at-night\nMayo Clinic, Muscle cramp: https://www.mayoclinic.org/diseases-conditions/muscle-cramp/symptoms-causes/syc-20350820\nCleveland Clinic, Lacrimal Apparatus: https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus"
+   "history": [
+    {
+     "at": "2026-11-22T00:57-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-22, episode 14, manual upload"
+    },
+    {
+     "at": "2026-11-22T00:58-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
+    }
+   ],
+   "description": "A charley horse is a muscle cramp: a sudden tightening, most often in the calf, where the muscle contracts on its own and can't relax. It can last from a few seconds to 10 minutes, and most people get them at night or while resting. Stretching and massaging the muscle, or putting your weight on that leg, may ease it, and the muscle can stay sore afterward. See a doctor if cramps happen often, are severe, or come with swelling or numbness.\nNext Body File: what happens when you cry, and why the extra tears drain into the back of your nose.\nFollow Body Files for a new one every day.\n#bodyfiles #charleyhorse #musclecramp #humanbody #science #shorts #healthfacts\n\nSources:\nNHS, Leg cramps: https://www.nhs.uk/conditions/leg-cramps/\nCleveland Clinic, Muscle Spasms: https://my.clevelandclinic.org/health/symptoms/21190-muscle-cramps\nCleveland Clinic, Leg Cramps at Night: https://my.clevelandclinic.org/health/diseases/14170-leg-cramps-at-night\nMayo Clinic, Muscle cramp: https://www.mayoclinic.org/diseases-conditions/muscle-cramp/symptoms-causes/syc-20350820\nCleveland Clinic, Lacrimal Apparatus: https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus",
+   "posted": "2026-11-22",
+   "episode": 14,
+   "youtube": "6LVXdAb0_Qg",
+   "tiktok": "v_inbox_file~v2.7710886431811569678"
   },
   "2026-11-14-body-02": {
    "title": "What Happens When You Cry?",

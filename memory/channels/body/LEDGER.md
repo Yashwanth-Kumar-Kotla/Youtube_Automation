@@ -14,6 +14,7 @@
 | 2026-11-19 | 11 | What happens when your foot falls asleep? | N1Zj0hqxtS0 | v_inbox_file~v2.7709871780005660685 | E1-B (hook without a number: lines 1-2 have no number); E4 tease_next |  |  |  |  |  | 2026-11-10-body-06 | pb-87d1a129 | question+reframe-loop |
 | 2026-11-20 | 12 | What happens if you knock out a tooth? | aaOKlRNn27U | v_inbox_file~v2.7710237726188111886 | E1-A (hook with a number: 'five minutes' in line 2); E4 tease_next |  |  |  |  |  | 2026-11-10-body-07 | pb-87d1a129 | question+countdown-number |
 | 2026-11-21 | 13 | What happens when your ears pop? | _XVPRSZJ3nc | v_inbox_file~v2.7710581249731397645 | E1-B (hook without a number); E4 tease_next |  |  |  |  |  | 2026-11-10-body-08 | pb-87d1a129 | question+hidden-tube-reveal |
+| 2026-11-22 | 14 | What happens when you get a charley horse? | 6LVXdAb0_Qg | v_inbox_file~v2.7710886431811569678 | E1-A (hook with a number: 'sometimes for ten minutes' in line 2); E4 tease_next |  |  |  |  |  | 2026-11-14-body-01 | pb-87d1a129 | question+duration-number |
 
 Notes:
 - 2026-11-08 ep 1: API upload bDqwxXxyJOI stays private (API audit pending; kept as audit evidence). The public copy SiJ_gjDgDRc was uploaded by hand on 2026-11-08 ~7 PM CT and is the one tracked for stats.
