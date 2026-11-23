@@ -15,6 +15,7 @@
 | 2026-11-20 | 12 | What happens if you knock out a tooth? | aaOKlRNn27U | v_inbox_file~v2.7710237726188111886 | E1-A (hook with a number: 'five minutes' in line 2); E4 tease_next |  |  |  |  |  | 2026-11-10-body-07 | pb-87d1a129 | question+countdown-number |
 | 2026-11-21 | 13 | What happens when your ears pop? | _XVPRSZJ3nc | v_inbox_file~v2.7710581249731397645 | E1-B (hook without a number); E4 tease_next |  |  |  |  |  | 2026-11-10-body-08 | pb-87d1a129 | question+hidden-tube-reveal |
 | 2026-11-22 | 14 | What happens when you get a charley horse? | 6LVXdAb0_Qg | v_inbox_file~v2.7710886431811569678 | E1-A (hook with a number: 'sometimes for ten minutes' in line 2); E4 tease_next |  |  |  |  |  | 2026-11-14-body-01 | pb-87d1a129 | question+duration-number |
+| 2026-11-23 | 15 | What happens when you cry? | KHqTm4AzF30 | v_inbox_file~v2.7711350420865943566 | E1-B (hook without a number: no number in lines 1-2); E4 tease_next |  |  |  |  |  | 2026-11-14-body-02 | pb-87d1a129 | question+hidden-place-loop |
 
 Notes:
 - 2026-11-08 ep 1: API upload bDqwxXxyJOI stays private (API audit pending; kept as audit evidence). The public copy SiJ_gjDgDRc was uploaded by hand on 2026-11-08 ~7 PM CT and is the one tracked for stats.

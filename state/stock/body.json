@@ -702,10 +702,25 @@
    "research_file": "none",
    "length": 36.7,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "posted",
    "branch": "stock/body/2026-11-14-body-02",
-   "history": [],
-   "description": "Tears are made by glands behind the upper outside corner of each eye. Every blink drains used tears into your tear ducts, which empty into the back of your nose. When you cry, tears flow in faster than usual and drain into your throat, which is why you might feel stuffy after crying. Emotional tears, triggered by feelings like sadness or joy, contain more stress hormones and natural painkillers than everyday tears.\nNext Body File: what happens when you blush, and why the red can spread to your neck and upper chest.\nFollow Body Files for a new one every day.\n#bodyfiles #crying #tears #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Lacrimal Apparatus: https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus\nCleveland Clinic, Tears: https://my.clevelandclinic.org/health/body/tears\nCleveland Clinic, Tears: Why We Cry and More: https://health.clevelandclinic.org/tears-why-we-cry-and-more-infographic/\nCleveland Clinic, Skin Flushing: https://my.clevelandclinic.org/health/symptoms/skin-flushing"
+   "history": [
+    {
+     "at": "2026-11-23T06:58-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-23, episode 15, manual upload"
+    },
+    {
+     "at": "2026-11-23T06:58-06:00",
+     "status": "ready->posted",
+     "why": "publisher"
+    }
+   ],
+   "description": "Tears are made by glands behind the upper outside corner of each eye. Every blink drains used tears into your tear ducts, which empty into the back of your nose. When you cry, tears flow in faster than usual and drain into your throat, which is why you might feel stuffy after crying. Emotional tears, triggered by feelings like sadness or joy, contain more stress hormones and natural painkillers than everyday tears.\nNext Body File: what happens when you blush, and why the red can spread to your neck and upper chest.\nFollow Body Files for a new one every day.\n#bodyfiles #crying #tears #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Lacrimal Apparatus: https://my.clevelandclinic.org/health/body/24415-lacrimal-apparatus\nCleveland Clinic, Tears: https://my.clevelandclinic.org/health/body/tears\nCleveland Clinic, Tears: Why We Cry and More: https://health.clevelandclinic.org/tears-why-we-cry-and-more-infographic/\nCleveland Clinic, Skin Flushing: https://my.clevelandclinic.org/health/symptoms/skin-flushing",
+   "posted": "2026-11-23",
+   "episode": 15,
+   "youtube": "KHqTm4AzF30",
+   "tiktok": "v_inbox_file~v2.7711350420865943566"
   },
   "2026-11-14-body-03": {
    "title": "What Happens When You Blush?",
