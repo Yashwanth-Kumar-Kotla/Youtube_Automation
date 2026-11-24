@@ -59,3 +59,4 @@
 - 2026-11-23 06:58 · 2026-11-14-body-02 ready → scheduled · slot 0 on 2026-11-23, episode 15, manual upload
 - 2026-11-23 06:58 · 2026-11-14-body-02 posted · conf 0.7 · {'posted': '2026-11-23', 'episode': 15, 'youtube': 'KHqTm4AzF30', 'tiktok': 'v_inbox_file~v2.7711350420865943566'}
 - 2026-11-24 00:15 · 2026-11-24-body-01 added · conf 0.7 · question+speed-number · What happens when your eyelid won't stop twitching?
+- 2026-11-24 00:15 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-24, episode 16, manual upload

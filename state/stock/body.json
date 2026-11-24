@@ -749,9 +749,15 @@
    "research_file": "none",
    "length": 35.4,
    "confidence": 0.7,
-   "status": "ready",
+   "status": "scheduled",
    "branch": "stock/body/2026-11-14-body-03",
-   "history": [],
+   "history": [
+    {
+     "at": "2026-11-24T00:15-06:00",
+     "status": "ready->scheduled",
+     "why": "slot 0 on 2026-11-24, episode 16, manual upload"
+    }
+   ],
    "description": "Blushing is a sudden rush of blood to your cheeks, neck or upper chest, most often set off by strong emotions like embarrassment or affection. Nerves prompt the blood vessels to open wide, flooding the skin with blood, and you don't control it. On darker skin it can look slightly darker instead of red, and if an emotion caused it, it may go away once you relax.\nNext Body File: what happens when motion sickness hits, and why your mouth suddenly starts watering.\nFollow Body Files for a new one every day.\n#bodyfiles #blushing #humanbody #science #shorts #healthfacts\n\nSources:\nCleveland Clinic, Skin Flushing: https://my.clevelandclinic.org/health/symptoms/skin-flushing\nBetter Health Channel (Victoria State Government), Blushing and flushing: https://www.betterhealth.vic.gov.au/health/conditionsandtreatments/blushing-and-flushing\nCleveland Clinic, Motion Sickness: https://my.clevelandclinic.org/health/diseases/12782-motion-sickness"
   },
   "2026-11-14-body-04": {
