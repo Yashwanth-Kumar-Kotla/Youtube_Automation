@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T10:01:55+00:00",
+  "updated": "2026-11-24T10:04:20+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -149,6 +149,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-05/2026-11-24-body-05.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-05/2026-11-24-body-05.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-24-body-06",
+      "title": "What Happens If You Sit All Day?",
+      "caption": "What Happens If You Sit All Day? #bodyfiles #sitting #metabolism #deskjob #health",
+      "length": 35.6,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-06/2026-11-24-body-06.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-06/2026-11-24-body-06.mp4",
       "approved": false
     }
   ]
