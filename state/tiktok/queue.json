@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T10:10:38+00:00",
+  "updated": "2026-11-24T10:16:34+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -169,6 +169,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-07/2026-11-24-body-07.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-07/2026-11-24-body-07.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-24-body-08",
+      "title": "What Happens When You Get a Stitch in Your Side?",
+      "caption": "What Happens When You Get a Stitch in Your Side? #bodyfiles #sidestitch #running #swimming #exercise",
+      "length": 33.8,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-08/2026-11-24-body-08.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-08/2026-11-24-body-08.mp4",
       "approved": false
     }
   ]
