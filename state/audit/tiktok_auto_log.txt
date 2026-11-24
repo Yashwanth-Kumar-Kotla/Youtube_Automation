@@ -13,6 +13,6 @@ Traceback (most recent call last):
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 85, in upload
     raise RuntimeError(f"TikTok init failed: {j}")
-RuntimeError: TikTok init failed: {'error': {'code': 'spam_risk_too_many_pending_share', 'message': 'spam_risk_too_many_pending_share', 'log_id': '202611241004416DC6FB6AFD462B018B8B'}}
+RuntimeError: TikTok init failed: {'error': {'code': 'spam_risk_too_many_pending_share', 'message': 'spam_risk_too_many_pending_share', 'log_id': '2026112410104191EB4BF385FF1C01A17A'}}
 stopped at 2026-11-24-body-05; the rest can be sent by re-running
 18 drafts recorded in state/tiktok_drafts.json
