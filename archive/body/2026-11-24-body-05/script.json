@@ -1,0 +1,53 @@
+{
+ "title": "What Happens When You Walk Into a Room and Forget Why?",
+ "voice": "am_michael",
+ "speed": 1.15,
+ "lead": 0.4,
+ "outro": 0.9,
+ "gap": 0.24,
+ "music": "bed",
+ "sources": [
+  "University of Notre Dame, 'Walking through doorways causes forgetting, new research shows' (Gabriel Radvansky, Quarterly Journal of Experimental Psychology, Nov 2011; college students; virtual rooms: subjects carried an object from table to table and forgot more after passing through a doorway than after covering the same distance in one room; real rooms with objects hidden in boxes gave the same result; returning to the original room did not improve memory; a doorway acts as an 'event boundary' that 'separates episodes of activity and files them away'): https://provost.nd.edu/news/walking-through-doorways-causes-forgetting-new-research-shows",
+  "BPS Research Digest, 'How walking through a doorway increases forgetting' (study 1 virtual environment had 55 rooms; participants picked up an object at one table and set it down at the next; memory probed right after an open doorway or halfway across a large room; going back through two doorways to the original room gave no better performance than the second room): https://www.bps.org.uk/research-digest/how-walking-through-doorway-increases-forgetting",
+  "Radvansky, Krawietz & Tamplin (2011), 'Walking through doorways causes forgetting: Further explorations', Quarterly Journal of Experimental Psychology 64(8), 1632-1645, doi:10.1080/17470218.2011.571267",
+  "Tease (next video): NHS, 'Why we should sit less' (many adults spend more than 7 hours a day sitting; the Department of Health and Social Care calls inactivity a 'silent killer'; sedentary behaviour is linked to heart disease, stroke, type 2 diabetes and obesity): https://www.nhs.uk/live-well/exercise/exercise-guidelines/why-sitting-too-much-is-bad-for-us/"
+ ],
+ "lines": [
+  {
+   "text": "What happens when you walk into a room and forget why?",
+   "caps": "WHAT *HAPPENS | WHEN YOU *WALK | INTO A *ROOM | AND *FORGET WHY?"
+  },
+  {
+   "text": "Scientists built fifty-five virtual rooms to test it. Does going back help? Yes or no?",
+   "caps": "SCIENTISTS *BUILT | *55 ROOMS | TO *TEST IT | GOING *BACK | *HELP? | *YES OR NO?"
+  },
+  {
+   "text": "People carried objects through a doorway, or the same distance in one room.",
+   "caps": "PEOPLE *CARRIED | *OBJECTS | THROUGH A *DOORWAY | OR THE *SAME DISTANCE | IN *ONE ROOM"
+  },
+  {
+   "text": "Ever stood at the open fridge, totally blank?",
+   "caps": "EVER *STOOD | AT THE *FRIDGE | TOTALLY *BLANK?"
+  },
+  {
+   "text": "But here's the twist: the doorway made them forget more.",
+   "caps": "*BUT HERE'S | THE *TWIST | THE *DOORWAY | MADE THEM *FORGET"
+  },
+  {
+   "text": "A doorway is an event boundary: new chapter, old one filed away.",
+   "caps": "A *DOORWAY IS | AN *EVENT BOUNDARY | NEW *CHAPTER | OLD ONE *FILED AWAY"
+  },
+  {
+   "text": "Going back? Nope, the first room didn't help.",
+   "caps": "GOING *BACK? | *NOPE | THE FIRST *ROOM | DIDN'T *HELP"
+  },
+  {
+   "text": "Same result in real rooms.",
+   "caps": "SAME *RESULT | IN *REAL ROOMS"
+  },
+  {
+   "text": "Next Body File: sitting all day, the 'silent killer.' Now get up... wait, why?",
+   "caps": "NEXT *BODY FILE | *SITTING ALL DAY | THE *SILENT KILLER | NOW *GET UP... | WAIT, *WHY?"
+  }
+ ]
+}

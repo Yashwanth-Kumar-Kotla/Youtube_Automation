@@ -63,3 +63,4 @@
 - 2026-11-24 00:20 · 2026-11-24-body-02 added · conf 0.7 · question+myth-fact-number · What happens if you hold in a sneeze?
 - 2026-11-24 00:25 · 2026-11-24-body-03 added · conf 0.7 · question+where-did-it-go · What happens when you stand up too fast?
 - 2026-11-24 00:34 · 2026-11-24-body-04 added · conf 0.7 · question+which-side-number · What happens when you hit your funny bone?
+- 2026-11-24 04:01 · 2026-11-24-body-05 added · conf 0.7 · question+lab-number-yesno · What happens when you walk into a room and forget why?

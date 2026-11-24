@@ -485,8 +485,16 @@ export function man(o) {
     if (o.cross) crossLegs();
     else {
       if (o.sit) for (const sd of [-1, 1]) ell(sd * 92, 360, 70, 34, BOOT);
+      if (o.step) for (const sd of [-1, 1]) {   // step (rad): legs splayed mid-stride (walking pose), feet get little shoes
+        ctx.save(); ctx.translate(sd * 67, 200); ctx.rotate(-sd * o.step * (sd > 0 ? 1 : 0.8));
+        ell(sd * 10, LEG - 22, 74, 34, BOOT);
+        rr(-61, -20, 122, LEG, 40); ctx.fillStyle = C.pants; ctx.fill();
+        if (sd > 0) { rr(-61, -20, 40, LEG, [40, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill(); }
+        ctx.restore();
+      } else {
       rr(-128, 180, 122, LEG, 40); ctx.fillStyle = C.pants; ctx.fill(); rr(6, 180, 122, LEG, 40); ctx.fill();
       rr(6, 180, 40, LEG, [0, 0, 0, 30]); ctx.fillStyle = C.pantsShade; ctx.fill();
+      }
     }
     rr(-36, -250, 72, 60, 20); ctx.fillStyle = _sk; ctx.fill();
   }
@@ -6784,4 +6792,172 @@ export function eyeChart(x, y, s = 1, sc = 1) {
   ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   [['E', 120, -100], ['F P', 64, 6], ['T O Z', 44, 76], ['L P E D', 30, 132]].forEach(([tx, sz, ty]) => { ctx.font = `900 ${sz}px Inter`; ctx.letterSpacing = '4px'; ctx.fillText(tx, 0, ty); });
   ctx.letterSpacing = '0px'; ctx.restore();
+}
+
+
+// ═════════════════════════ DOORWAY SET (2026-11-24 "walk into a room and forget why") ═════════════════════════
+// man({ step }) (rad, ~0.3) = legs splayed mid-stride with little shoes (walking / frozen mid-step). Reuse fbJamb / fbDoorway /
+// fbThought from the funny-bone set for the rooms and the thought cloud.
+const DW_BOX = '#C8925A', DW_BOX_D = '#A87442', DW_BOX_L = '#DDB07C', DW_TAPE = '#E9D3A8', DW_MANILA = '#EBC872', DW_MANILA_D = '#CFA94E',
+  DW_CHAIR = '#3A4152', DW_CHAIR_D = '#2A3040', DW_CHAIR_L = '#4E5670', DW_ROOM2_D = '#D6CCB8';
+
+/** coffee mug icon (blue mug, darker right side, brown coffee, light steam). ~170x170 px at s = 1, origin = centre */
+export function dwMug(x, y, s = 1, t = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.arc(62, 6, 34, -1.3, 1.3); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 18; ctx.stroke();
+  rr(-66, -46, 132, 112, [8, 8, 30, 30]); ctx.fillStyle = C.shirt; ctx.fill();
+  rr(30, -46, 36, 112, [0, 8, 30, 0]); ctx.fillStyle = C.shirtShade; ctx.fill();
+  ell(0, -46, 66, 14, C.shirtShade); ell(0, -45, 56, 10, '#6B4A33');
+  for (const dx of [-22, 18]) { const P = []; for (let k = 0; k <= 6; k++) P.push([dx + Math.sin(k * 1.1 + t * 4 + dx) * 8, -66 - k * 11]); line(P, C.gumEdge, 8); }
+  ctx.restore();
+}
+
+/** cardboard box (front view, flaps folded, tape strip). ~220x170 px at s = 1, origin = centre. lid 0..1 lifts the top flaps */
+export function dwBox(x, y, s = 1, rot = 0, lid = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const l = clamp(lid);
+  if (l > 0) for (const sd of [-1, 1]) { ctx.save(); ctx.translate(sd * 110, -78); ctx.rotate(sd * l * 2.2); rr(sd > 0 ? -110 : 0, -16, 110, 22, 6); ctx.fillStyle = DW_BOX_L; ctx.fill(); ctx.restore(); }
+  rr(-110, -80, 220, 160, 10); ctx.fillStyle = DW_BOX; ctx.fill();
+  rr(60, -80, 50, 160, [0, 10, 10, 0]); ctx.fillStyle = DW_BOX_D; ctx.fill();
+  if (l <= 0) { rr(-110, -80, 220, 22, [10, 10, 0, 0]); ctx.fillStyle = DW_BOX_L; ctx.fill(); rr(-16, -80, 32, 74, 4); ctx.fillStyle = DW_TAPE; ctx.fill(); }
+  else { rr(-100, -74, 200, 16, 4); ctx.fillStyle = DW_BOX_D; ctx.fill(); }
+  rr(-80, 10, 70, 10, 5); ctx.fillStyle = DW_BOX_D; ctx.fill();
+  ctx.restore();
+}
+
+/** small wall / door-frame sign: white plate, ink rim, ink text. sc = pop-in, hi 0..1 = yellow plate */
+export function dwSign(text, x, y, size = 30, sc = 1, hi = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '1px';
+  const w = ctx.measureText(text).width + size * 1.1, h = size * 1.7;
+  rr(-w / 2, -h / 2, w, h, size * 0.3); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-w / 2 + 6, -h / 2 + 6, w - 12, h - 12, size * 0.22); ctx.fillStyle = hi > 0 ? C.yellow : C.white; ctx.fill();
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 0, size * 0.06);
+  ctx.letterSpacing = '0px'; ctx.restore();
+}
+
+/** thought cloud with a picture in it that is WIPED to blank right of wipeX (canvas px): the forgetting. Built on fbThought
+ *  (no "?"). icon: 'mug' | 'box' | null. ghost 0..1 = a dashed outline of the lost icon in the blank part. Little paper
+ *  fragments peel off the wipe line (t = film time). sc = pop-in. tx/ty = where the trail dots point (the head) */
+export function dwThought(x, y, s = 1, { sc = 1, t = 0, tx = null, ty = null, wipeX = 1e9, icon = 'mug', ghost = 0 } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  fbThought(x, y, s, { sc, t, tx, ty, text: '' });
+  const P = [[-90, 10, 70], [-30, -40, 80], [50, -36, 74], [100, 14, 64], [30, 50, 70], [-50, 52, 62]];
+  const clip = () => { ctx.beginPath(); for (const [px, py, r] of P) { ctx.moveTo(x + (px + r) * k, y + py * k); ctx.arc(x + px * k, y + py * k, r * k, 0, TAU); } };
+  const draw = () => { if (icon === 'mug') dwMug(x, y + 8 * k, 0.78 * k, t); else if (icon === 'box') dwBox(x, y + 6 * k, 0.62 * k); };
+  if (icon) {
+    ctx.save(); clip(); ctx.clip(); ctx.beginPath(); ctx.rect(-500, -500, wipeX + 500, H + 1000); ctx.clip(); draw(); ctx.restore();
+    if (ghost > 0) { ctx.save(); clip(); ctx.clip(); ctx.globalAlpha = 0.35 * clamp(ghost); ctx.setLineDash([12 * k, 10 * k]); rr(x - 52 * k, y - 30 * k, 104 * k, 88 * k, 18 * k); ctx.lineWidth = 6 * k; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.restore(); }
+    // fragments peeling off the wipe line (only where the line crosses the picture)
+    if (wipeX > x - 70 * k && wipeX < x + 70 * k) {
+      for (let i = 0; i < 7; i++) { const u = (t * 0.9 + i / 7) % 1, fy = y + (rnd(i) - 0.5) * 110 * k - u * 40 * k, fx = wipeX + u * 90 * k;
+        ctx.save(); ctx.globalAlpha = 1 - u; ctx.translate(fx, fy); ctx.rotate(u * 3 + i); rr(-9 * k, -9 * k, 18 * k, 18 * k, 3 * k); ctx.fillStyle = icon === 'box' ? DW_BOX : C.shirt; ctx.fill(); ctx.restore(); }
+    }
+  }
+}
+
+/** "virtual rooms" screen: ink monitor (w x h screen, centre x, y) showing a top-down grid of 55 little rooms (7 x 8, last cell
+ *  empty) with door gaps along a snake path and a small table in each. p 0..1 = how many rooms have been built (pop in one by
+ *  one); walk 0..1 = a hero dot travelling the snake path (null = none); hi = room index marked yellow (-1 = none).
+ *  Returns at(u) → [x, y] canvas point on the path */
+export function dwRoomMap(x, y, w, h, { p = 1, walk = null, hi = -1, t = 0 } = {}) {
+  const cols = 7, rows = 8, N = 55, sx = x - w / 2, sy = y - h / 2, cw = w / cols, ch = h / rows;
+  rr(sx - 30, sy - 30, w + 60, h + 60, 30); ctx.fillStyle = C.ink; ctx.fill();
+  rr(x - 50, sy + h + 30, 100, 70, 0); ctx.fillStyle = C.ink; ctx.fill(); rr(x - 170, sy + h + 92, 340, 30, 14); ctx.fill();
+  rr(sx, sy, w, h, 8); ctx.fillStyle = C.white; ctx.fill();
+  const cell = (i) => { const r = Math.floor(i / cols), c0 = i % cols, c = r % 2 ? cols - 1 - c0 : c0; return [sx + c * cw, sy + r * ch]; };
+  const shown = Math.floor(clamp(p) * N + 1e-6);
+  for (let i = 0; i < N; i++) {
+    const sc = clamp(p * N - i) ; if (sc <= 0) continue;
+    const [cx, cy] = cell(i), k = eobLocal(clamp(sc * 1.5));
+    ctx.save(); ctx.translate(cx + cw / 2, cy + ch / 2); ctx.scale(k, k);
+    rr(-cw / 2 + 5, -ch / 2 + 5, cw - 10, ch - 10, 6); ctx.fillStyle = i === hi ? C.yellow : C.floor; ctx.fill();
+    ctx.lineWidth = 6; ctx.strokeStyle = C.ink; ctx.stroke();
+    rr(-16, -10, 32, 20, 4); ctx.fillStyle = WOOD; ctx.fill();
+    ctx.restore();
+  }
+  // door gaps between consecutive rooms on the path
+  for (let i = 0; i < Math.min(shown, N) - 1; i++) {
+    const [ax, ay] = cell(i), [bx, by] = cell(i + 1);
+    ctx.fillStyle = C.yellow;
+    if (ay === by) { const gx = Math.max(ax, bx); rr(gx - 9, ay + ch / 2 - 16, 18, 32, 4); }
+    else { rr(ax + cw / 2 - 16, by - 9, 32, 18, 4); }
+    ctx.fill();
+  }
+  const at = (u) => { const f = clamp(u) * (N - 1), i = Math.floor(f), j = Math.min(N - 1, i + 1), [ax, ay] = cell(i), [bx, by] = cell(j); return [lerp(ax, bx, f - i) + cw / 2, lerp(ay, by, f - i) + ch / 2]; };
+  if (walk != null) { const [hx, hy] = at(walk); circle(hx, hy, 24, C.ink); circle(hx, hy, 18, C.hair); circle(hx, hy + 2, 8, C.hairHi); }
+  return at;
+}
+const eobLocal = (t) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+
+/** office chair, FRONT view: dark seat + back, gas stem, 5-star base on wheels. Origin = seat top centre (~360 px wide, back
+ *  top at -330, wheels at +250 at s = 1). Draw it BEFORE a seated man({ sit: true }) whose chest is ~190*s above the origin */
+export function dwChair(x, y, s = 1, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  rr(-14, 40, 28, 150, 8); ctx.fillStyle = C.gumEdge; ctx.fill();
+  for (const [ex, ey] of [[-170, 230], [-90, 215], [90, 215], [170, 230], [0, 240]]) { line([[0, 190], [ex, ey]], DW_CHAIR_D, 22); circle(ex, ey + 18, 18, C.ink); }
+  rr(-150, -330, 300, 300, 46); ctx.fillStyle = DW_CHAIR_D; ctx.fill(); rr(-136, -316, 250, 272, 38); ctx.fillStyle = DW_CHAIR; ctx.fill();
+  ell(-50, -280, 50, 12, DW_CHAIR_L);
+  rr(-24, -40, 48, 60, 8); ctx.fillStyle = DW_CHAIR_D; ctx.fill();
+  rr(-180, -10, 360, 70, 30); ctx.fillStyle = DW_CHAIR_D; ctx.fill(); rr(-180, -10, 340, 52, 26); ctx.fillStyle = DW_CHAIR; ctx.fill();
+  ell(-70, 4, 70, 9, DW_CHAIR_L);
+  ctx.restore();
+}
+
+/** next-episode tease badge (sitting all day): white disc, ink ring, a small office chair + a wall clock whose hands spin
+ *  (t = film time: the day going by). ~300 px at s = 1, sc = pop-in */
+export function dwChairBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  dwChair(-30, 20, 0.34);
+  circle(72, -62, 46, C.ink); circle(72, -62, 37, C.white);
+  const a1 = t * 5, a2 = t * 0.6; line([[72, -62], [72 + Math.cos(a1) * 28, -62 + Math.sin(a1) * 28]], C.ink, 6); line([[72, -62], [72 + Math.cos(a2) * 18, -62 + Math.sin(a2) * 18]], C.red, 7);
+  ctx.restore();
+}
+
+/** manila file folder (back panel with a tab, front panel, a label). ~260x200 px at s = 1, origin = centre. col = folder colour,
+ *  open 0..1 swings the front panel down to show a white sheet */
+export function dwFolder(x, y, s = 1, label = '', { rot = 0, sc = 1, col = DW_MANILA, open = 0 } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  const dk = col === C.yellow ? SUN_D : DW_MANILA_D;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(k, k);
+  rr(-130, -110, 100, 40, [12, 12, 0, 0]); ctx.fillStyle = dk; ctx.fill();
+  rr(-130, -86, 260, 186, 12); ctx.fillStyle = dk; ctx.fill();
+  if (open > 0) { rr(-110, -100 - 30 * open, 220, 160, 6); ctx.fillStyle = C.white; ctx.fill(); for (let i = 0; i < 3; i++) { rr(-84, -70 - 30 * open + i * 28, 150 - i * 30, 10, 5); ctx.fillStyle = C.gumEdge; ctx.fill(); } }
+  ctx.save(); ctx.transform(1, 0, 0, 1 - 0.6 * clamp(open), 0, 100 * 0.6 * clamp(open));
+  rr(-130, -60, 260, 160, 12); ctx.fillStyle = col; ctx.fill();
+  if (label) { ctx.font = '900 40px Inter'; ctx.letterSpacing = '1px'; ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, 0, 24); ctx.letterSpacing = '0px'; }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** filing cabinet, SIDE view (graphic in a thought lens): steel body, the top drawer slides out to the right (open 0..1) with
+ *  folder tabs sticking up out of it; the bottom drawer stays shut. label = tiny text on the top drawer's label holder (the
+ *  rewatch detail). ~300x560 px at s = 1, origin = body centre. Returns the canvas point above the open drawer (drop folders) */
+export function dwCabinet(x, y, s = 1, { open = 0, label = '', tabs = 3 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const o = clamp(open), dx = 230 * o;
+  if (o > 0) {
+    rr(110, -250, dx + 20, 200, 6); ctx.fillStyle = STEEL_D; ctx.fill();
+    for (let i = 0; i < tabs; i++) { const fx = 150 + i * (dx / Math.max(1, tabs)) * 0.9; rr(fx, -290, 60, 60, [10, 10, 0, 0]); ctx.fillStyle = i % 2 ? DW_MANILA_D : DW_MANILA; ctx.fill(); }
+    rr(110, -250, dx + 20, 40, 6); ctx.fillStyle = STEEL_L; ctx.fill();
+  }
+  rr(-150, -280, 300, 560, 20); ctx.fillStyle = STEEL; ctx.fill();
+  rr(70, -280, 80, 560, [0, 20, 20, 0]); ctx.fillStyle = STEEL_D; ctx.fill();
+  rr(-150, -10, 300, 12, 4); ctx.fillStyle = STEEL_D; ctx.fill();
+  for (const [dy, dxx] of [[-140, dx], [140, 0]]) {
+    rr(118 + dxx, dy - 125, 34, 250, 10); ctx.fillStyle = STEEL_L; ctx.fill();
+    rr(146 + dxx, dy - 40, 22, 80, 8); ctx.fillStyle = C.ink; ctx.fill();
+  }
+  ctx.restore();
+  if (label) { /* label lives on the body face so it stays readable */
+    ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+    rr(-170, -230, 340, 110, 10); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = C.ink; ctx.stroke();
+    ctx.font = '900 34px Inter'; ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const rows = label.split('\n'); rows.forEach((r, i) => ctx.fillText(r, 0, -175 + (i - (rows.length - 1) / 2) * 40));
+    ctx.restore();
+  }
+  return [x + (150 + dx / 2) * s, y - 300 * s];
 }
