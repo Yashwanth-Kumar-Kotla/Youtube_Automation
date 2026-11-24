@@ -1011,6 +1011,222 @@ export function nerve(pts, p = -1, drawn = 1) {
 }
 
 
+// ═════════════════════════ FUNNY BONE SET (2026-11-24 "hit your funny bone") ═════════════════════════
+const FB_TRIM = '#FFFFFF', FB_TRIM_D = '#DCD6CB', FB_ROOM2 = '#E4DCCB', FB_ROOM2_D = '#D6CCB8', FB_BONE = '#F7F4EE', FB_BONE_D = '#E3DBCB',
+  FB_WOOD = '#B5653F', FB_WOOD_D = '#9A5333', FB_EDGE = '#B9B09F';
+
+/** a door casing seen face-on in a close-up: white casing (2 moulding grooves) from canvas top to bottom with its left edge at x,
+ *  shaded jamb depth, and the next room beyond. side -1 mirrors it (opening to the LEFT of x). shake = px jolt (the hit) */
+export function fbJamb(x, { shake = 0, side = 1, top = -300, bot = 2300 } = {}) {
+  ctx.save(); ctx.translate(x + shake, 0); ctx.scale(side, 1);
+  ctx.fillStyle = FB_ROOM2; ctx.fillRect(110, top, 1600, bot - top);
+  ctx.fillStyle = FB_TRIM_D; ctx.fillRect(84, top, 50, bot - top);
+  ctx.fillStyle = FB_TRIM; ctx.fillRect(0, top, 96, bot - top);
+  ctx.fillStyle = FB_TRIM_D; ctx.fillRect(16, top, 8, bot - top); ctx.fillRect(70, top, 8, bot - top);
+  ctx.restore();
+}
+
+/** a whole doorway on a wall (real world): white casing, the next room through it (floor strip), a wood door hinged on the
+ *  right edge and swung open (open 0..1). glow 0..1 = yellow outline around the opening (the tease). Origin = floor centre,
+ *  opening 420x920 px at s = 1. Returns { left, right, top } edges of the opening (canvas px) */
+export function fbDoorway(x, y, s = 1, { open = 0.7, sc = 1, glow = 0 } = {}) {
+  const k = s * sc, out = { left: x - 210 * k, right: x + 210 * k, top: y - 920 * k };
+  if (k <= 0) return out;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  const w = 420, h = 920;
+  rr(-w / 2 - 70, -h - 70, w + 140, h + 70, [14, 14, 0, 0]); ctx.fillStyle = FB_TRIM; ctx.fill(); ctx.lineWidth = 12; ctx.strokeStyle = FB_EDGE; ctx.stroke();
+  ctx.fillStyle = FB_TRIM_D; ctx.fillRect(-w / 2 - 52, -h - 52, 8, h + 52); ctx.fillRect(w / 2 + 44, -h - 52, 8, h + 52); ctx.fillRect(-w / 2 - 52, -h - 52, w + 104, 8);
+  ctx.fillStyle = FB_ROOM2; ctx.fillRect(-w / 2, -h, w, h);
+  ctx.fillStyle = FB_ROOM2_D; ctx.fillRect(-w / 2, -150, w, 150);
+  ctx.fillStyle = FB_TRIM_D; ctx.fillRect(-w / 2, -h, 26, h); ctx.fillRect(-w / 2, -h, w, 22);
+  const dw = w * (1 - 0.78 * clamp(open)), sk = 46 * clamp(open);
+  ctx.beginPath(); ctx.moveTo(w / 2, -h); ctx.lineTo(w / 2 - dw, -h + sk); ctx.lineTo(w / 2 - dw, -sk); ctx.lineTo(w / 2, 0); ctx.closePath(); ctx.fillStyle = FB_WOOD; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(w / 2 - dw * 0.18, -h + sk * 1.0 + 60); ctx.lineTo(w / 2 - dw * 0.82, -h + sk + 80); ctx.lineTo(w / 2 - dw * 0.82, -h * 0.55); ctx.lineTo(w / 2 - dw * 0.18, -h * 0.55 + 10); ctx.closePath(); ctx.fillStyle = FB_WOOD_D; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(w / 2 - dw * 0.18, -h * 0.45); ctx.lineTo(w / 2 - dw * 0.82, -h * 0.45); ctx.lineTo(w / 2 - dw * 0.82, -sk - 70); ctx.lineTo(w / 2 - dw * 0.18, -sk * 0.5 - 60); ctx.closePath(); ctx.fill();
+  circle(w / 2 - dw + 34, -h * 0.5, 17, C.yellow);
+  if (glow > 0) { ctx.save(); ctx.globalAlpha = clamp(glow); rr(-w / 2 - 22, -h - 22, w + 44, h + 22, 10); ctx.lineWidth = 34; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 18; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  ctx.restore();
+  return out;
+}
+
+/** thought cloud (graphic): white puffs with an ink rim, two trailing dots toward (tx, ty), a big yellow "?" inside.
+ *  ~300x220 px at s = 1, origin = centre. sc = pop-in, t = film time (the ? bobs) */
+export function fbThought(x, y, s = 1, { sc = 1, t = 0, tx = null, ty = null, text = '?' } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  const P = [[-90, 10, 70], [-30, -40, 80], [50, -36, 74], [100, 14, 64], [30, 50, 70], [-50, 52, 62]];
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  if (tx != null) { const dx = (tx - x) / k, dy = (ty - y) / k; for (const [u, r] of [[0.55, 26], [0.8, 16]]) { circle(dx * u, dy * u, r + 8, C.ink); circle(dx * u, dy * u, r, C.white); } }
+  for (const [px, py, r] of P) circle(px, py, r + 9, C.ink);
+  for (const [px, py, r] of P) circle(px, py, r, C.white);
+  ctx.restore();
+  bigText(text, x, y + (6 + Math.sin(t * 5) * 6) * k, 150 * k, C.yellow);
+}
+
+/** cartoon bone (graphic: the "funny BONE" joke): off-white bone with an ink rim and a light shade. ~330x130 px at s = 1 */
+export function fbBone(x, y, s = 1, rot = 0, sc = 1) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(k, k);
+  const shape = (g, col) => { for (const sx of [-1, 1]) for (const sy of [-1, 1]) circle(sx * 125, sy * 30, 40 + g, col); rr(-125, -28 - g, 250, 56 + 2 * g, 8); ctx.fillStyle = col; ctx.fill(); };
+  shape(9, C.ink); shape(0, FB_BONE);
+  rr(-120, 6, 240, 18, 8); ctx.fillStyle = FB_BONE_D; ctx.fill(); for (const sx of [-1, 1]) circle(sx * 132, 38, 22, FB_BONE_D);
+  ell(-60, -14, 50, 7, C.white);
+  ctx.restore();
+}
+
+// hand-local nerve (handBones coords, pinky on +x): wrist → pinky side of the palm, then the two branches
+const FB_HAND_N = [[64, 236], [80, 120], [96, -20]];
+const FB_PINKY_N = [[96, -20], [112, -120], [118, -200], [122, -290]];
+const FB_RING_N = [[96, -20], [62, -110], [54, -230], [56, -362]];
+
+/** x-ray arm close-up (inside view: navy limb, cyan bones, head of the hero stays normal elsewhere).
+ *  S, E, Wr = shoulder / elbow / wrist (canvas px), w = limb width, hs = hand scale (handBones, 1 = 620 px tall).
+ *  The hand sits past the wrist, fingers pointing away from the elbow, PINKY on the elbow-knob side (the ulnar side).
+ *  nerve: signal position 0..1 along the pink ulnar nerve (shoulder → behind the elbow knob → forearm → pinky), <0 = none.
+ *  lit 0..1 = whole nerve glows yellow · zone 0..1 = the pinky (+ palm edge) lights up yellow, zoneR 0..1 (default = zone) =
+ *  the pinky half of the ring finger (dashed midline on the ring finger) · halfT / halfP 0..1 = coarse yellow wash over the thumb half / pinky half (the guess) ·
+ *  knobRing 0..1 = yellow ring on the elbow knob · fingers: per-finger jitter px (buzz). Returns { knob, palm, toHand(lx, ly),
+ *  thumbTip, pinkyTip, ringTip, nerveAt(u) } */
+export function fbArm({ S, E, Wr, w = 84, hs = 0.5, nerve: np = -1, lit = 0, zone = 0, zoneR = null, halfT = 0, halfP = 0, knobRing = 0, buzz = 0, t = 0, drawn = 1 }) {
+  if (zoneR == null) zoneR = zone;
+  const n2 = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+  const u1 = n2(S, E), d = n2(E, Wr);
+  let out = [u1[0] - d[0], u1[1] - d[1]]; { const l = Math.hypot(out[0], out[1]) || 1; out = [out[0] / l, out[1] / l]; }
+  const knob = [E[0] + out[0] * w * 0.3, E[1] + out[1] * w * 0.3], kr = w * 0.32;
+  const rot = Math.atan2(d[1], d[0]) + Math.PI / 2, px = [Math.cos(rot), Math.sin(rot)];
+  const flip = px[0] * out[0] + px[1] * out[1] < 0 ? -1 : 1;
+  const palm = [Wr[0] + d[0] * 200 * hs, Wr[1] + d[1] * 200 * hs];
+  const toHand = (lx, ly) => { const X = lx * flip * hs, Y = ly * hs; return [palm[0] + X * Math.cos(rot) - Y * Math.sin(rot), palm[1] + X * Math.sin(rot) + Y * Math.cos(rot)]; };
+  // perpendicular toward the knob side, for the nerve lanes
+  const side = (v) => { const p = [-v[1], v[0]]; return p[0] * out[0] + p[1] * out[1] < 0 ? [-p[0], -p[1]] : p; };
+  const pu = side(u1), pd = side(d);
+  const NP = [
+    [S[0] + pu[0] * w * 0.22, S[1] + pu[1] * w * 0.22],
+    [lerp(S[0], E[0], 0.7) + pu[0] * w * 0.28, lerp(S[1], E[1], 0.7) + pu[1] * w * 0.28],
+    [knob[0] - u1[0] * kr * 0.6 + out[0] * kr * 0.9, knob[1] - u1[1] * kr * 0.6 + out[1] * kr * 0.9],
+    [knob[0] + d[0] * kr * 0.6 + out[0] * kr * 0.9, knob[1] + d[1] * kr * 0.6 + out[1] * kr * 0.9],
+    [lerp(E[0], Wr[0], 0.35) + pd[0] * w * 0.3, lerp(E[1], Wr[1], 0.35) + pd[1] * w * 0.3],
+    [lerp(E[0], Wr[0], 0.85) + pd[0] * w * 0.26, lerp(E[1], Wr[1], 0.85) + pd[1] * w * 0.26],
+    ...FB_HAND_N.map(([a, b]) => toHand(a, b)), ...FB_PINKY_N.slice(1).map(([a, b]) => toHand(a, b))];
+  const RING = FB_RING_N.map(([a, b]) => toHand(a, b));
+  const cum = [0]; for (let i = 1; i < NP.length; i++) cum.push(cum[i - 1] + Math.hypot(NP[i][0] - NP[i - 1][0], NP[i][1] - NP[i - 1][1]));
+  const L = cum[cum.length - 1];
+  const nerveAt = (u) => { const dd = clamp(u) * L; let i = 1; while (i < cum.length - 1 && cum[i] < dd) i++; const a = NP[i - 1], b = NP[i], f = (dd - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1); return [lerp(a[0], b[0], f), lerp(a[1], b[1], f)]; };
+  const res = { knob, palm, toHand, nerveAt, thumbTip: toHand(-252, -110), pinkyTip: toHand(124, -300), ringTip: toHand(39, -384), out };
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // limb + hand flesh (navy, cyan rim)
+  const handFlesh = (g, col) => {
+    ctx.save(); ctx.translate(palm[0], palm[1]); ctx.rotate(rot); ctx.scale(flip * hs, hs);
+    rr(-170 - g, -140 - g, 340 + 2 * g, 360 + 2 * g, 100 + g); ctx.fillStyle = col; ctx.fill();
+    for (const f of FINGERS) { const p = fingerPts(f); line([p[0], p[3]], col, 84 + 2 * g); }
+    line([[-120, 150], [-205, 30], [-245, -60]], col, 86 + 2 * g);
+    ctx.restore();
+  };
+  line([S, E, Wr], C.cyan, w + 14); handFlesh(14 / hs * 0.5, C.cyan);
+  line([S, E, Wr], C.xnavy, w); handFlesh(0, C.xnavy);
+  // coarse guess washes (thumb half / pinky half of the hand)
+  for (const [a, sg] of [[halfT, -1], [halfP, 1]]) {
+    if (a <= 0) continue;
+    ctx.save(); ctx.translate(palm[0], palm[1]); ctx.rotate(rot); ctx.scale(flip * hs, hs);
+    ctx.beginPath(); ctx.rect(sg < 0 ? -420 : 0, -520, 420, 760); ctx.clip(); ctx.globalAlpha = 0.72 * clamp(a);
+    rr(-170, -140, 340, 360, 100); ctx.fillStyle = C.yellow; ctx.fill();
+    for (const f of FINGERS) { const p = fingerPts(f); line([p[0], p[3]], C.yellow, 84); }
+    line([[-120, 150], [-205, 30], [-245, -60]], C.yellow, 86);
+    ctx.restore();
+  }
+  // bones: humerus, radius + ulna, elbow knob (medial epicondyle)
+  const bone = (a, b, bw) => { line([a, b], C.cyan, bw); line([a, b], C.xnavy, bw * 0.42); circle(a[0], a[1], bw * 0.62, C.cyan); circle(b[0], b[1], bw * 0.62, C.cyan); };
+  bone([S[0] + u1[0] * w * 0.2, S[1] + u1[1] * w * 0.2], [E[0] - u1[0] * w * 0.15, E[1] - u1[1] * w * 0.15], w * 0.36);
+  for (const o of [-0.17, 0.17]) bone([E[0] + d[0] * w * 0.2 + pd[0] * w * o, E[1] + d[1] * w * 0.2 + pd[1] * w * o], [Wr[0] - d[0] * w * 0.1 + pd[0] * w * o, Wr[1] - d[1] * w * 0.1 + pd[1] * w * o], w * 0.15);
+  circle(knob[0], knob[1], kr, C.cyan); circle(knob[0] - out[0] * 4, knob[1] - out[1] * 4, kr * 0.55, C.xnavy);
+  // the hand bones (+ buzz jitter)
+  ctx.save(); ctx.translate(palm[0], palm[1]); ctx.rotate(rot); ctx.scale(flip, 1);
+  if (buzz > 0) ctx.translate(Math.sin(t * 70) * 5 * buzz, Math.cos(t * 63) * 4 * buzz);
+  handBones(0, 0, hs, { t });
+  ctx.restore();
+  // ulnar zone: pinky + the pinky half of the ring finger
+  if (zone > 0 || zoneR > 0) {
+    ctx.save(); ctx.translate(palm[0], palm[1]); ctx.rotate(rot); ctx.scale(flip * hs, hs);
+    ctx.save(); ctx.beginPath(); ctx.rect(37, -520, 400, 900); ctx.clip();
+    ctx.globalAlpha = 0.8 * clamp(zone); { const p = fingerPts(FINGERS[3]); line([p[0], p[3]], C.yellow, 84); } rr(80, -150, 90, 300, [0, 100, 60, 0]); ctx.fillStyle = C.yellow; ctx.fill();
+    ctx.globalAlpha = 0.8 * clamp(zoneR); { const p = fingerPts(FINGERS[2]); line([p[0], p[3]], C.yellow, 84); } rr(37, -150, 43, 300, 0); ctx.fillStyle = C.yellow; ctx.fill();
+    ctx.restore();
+    ctx.globalAlpha = clamp(zoneR); ctx.setLineDash([22, 16]); line([[37, -110], [39, -400]], C.white, 8); ctx.setLineDash([]);
+    ctx.restore();
+  }
+  // the ulnar nerve
+  const part = []; for (let i = 0; i <= 80 * clamp(drawn); i++) part.push(nerveAt(i / 80));
+  const ringOn = drawn >= 0.92 ? clamp((drawn - 0.92) / 0.08) : 0;
+  if (part.length > 1) { line(part, C.pinkDark, w * 0.2); line(part, C.pink, w * 0.12); }
+  if (ringOn > 0) { line(RING, C.pinkDark, w * 0.17); line(RING, C.pink, w * 0.1); }
+  if (lit > 0) { ctx.save(); ctx.globalAlpha = clamp(lit); if (part.length > 1) line(part, C.yellow, w * 0.11); line(RING, C.yellow, w * 0.08); ctx.restore(); }
+  if (np >= 0 && np <= 1) {
+    for (let k = 3; k >= 1; k--) { const q = nerveAt(clamp(np - k * 0.03)); ctx.save(); ctx.globalAlpha = 0.25 * (4 - k); circle(q[0], q[1], w * (0.14 + (3 - k) * 0.04), C.yellow); ctx.restore(); }
+    const q = nerveAt(np); circle(q[0], q[1], w * 0.3, C.ink); circle(q[0], q[1], w * 0.23, C.yellow); circle(q[0], q[1], w * 0.1, C.white);
+  }
+  if (knobRing > 0) { ctx.save(); ctx.globalAlpha = clamp(knobRing); ctx.beginPath(); ctx.arc(knob[0], knob[1], kr + w * 0.35, 0, TAU); ctx.lineWidth = 16; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 9; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  ctx.restore();
+  return res;
+}
+
+/** elbow cross-section (cutaway graphic, macro): a curved skin band on top, a thin pink tissue layer, the ulnar nerve (pink
+ *  cross-section with fascicles) lying right on the dome of the bony bump. Away from the middle the tissue gets thick.
+ *  edge 0..1 brings a wood door-frame edge down from above until it touches the skin; press 0..1 dents the skin and squashes the
+ *  nerve flat against the bone; zap 0..1 = yellow shock rays + ring around the nerve. ~1100 px wide at s = 1, origin = the
+ *  top of the bone dome (nerve centre ~96 px above it, skin top ~310 px above it at s = 1). Returns { nerve, skin, bone, gap,
+ *  tissue, top } points (canvas px) */
+export function fbElbowCut(x, y, s = 1, { edge = 0, press = 0, zap = 0, t = 0, sc = 1 } = {}) {
+  const k = s * sc, NR = 96, sq = clamp(press), ry = NR * (1 - 0.45 * sq), rx = NR * (1 + 0.38 * sq), GAP = 26, SK = 44;
+  const yb = (u) => 430 * (u / 540) ** 2, dent = (u) => sq * NR * 0.9 * Math.exp(-((u / 190) ** 2));
+  const ys = (u) => -2 * NR - GAP - SK + 210 * (u / 540) ** 2 + dent(u);
+  const P = (u, v) => [x + u * k, y + v * k];
+  const out = { nerve: P(0, -ry), skin: P(-250, ys(-250) + SK / 2), bone: P(330, yb(330) + 80), gap: P(0, ys(0) + SK), tissue: P(-420, (ys(-420) + yb(-420)) / 2 + 20), top: P(0, ys(0)) };
+  if (k <= 0) return out;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  const band = (top, bot) => { ctx.beginPath(); for (let u = -640; u <= 640; u += 16) ctx.lineTo(u, top(u)); for (let u = 640; u >= -640; u -= 16) ctx.lineTo(u, bot(u)); ctx.closePath(); };
+  band((u) => ys(u) + SK - 2, (u) => yb(u) + 2); ctx.fillStyle = C.pinkLight; ctx.fill();               // tissue: thin over the bump, thick at the sides
+  ctx.save(); band((u) => ys(u) + SK, (u) => yb(u)); ctx.clip();
+  for (const sd of [-1, 1]) for (let i = 0; i < 5; i++) { const u0 = sd * (250 + i * 70); line([[u0, ys(u0) + 80], [u0 + sd * 50, yb(u0) - 30]], C.pink, 9); }
+  ctx.restore();
+  band((u) => yb(u), () => 1500); ctx.fillStyle = FB_BONE; ctx.fill();                                // the bony bump
+  band((u) => yb(u) + 170, () => 1500); ctx.fillStyle = FB_BONE_D; ctx.fill();
+  band((u) => yb(u) + 14, (u) => yb(u) + 30); ctx.fillStyle = C.white; ctx.fill();
+  band((u) => ys(u), (u) => ys(u) + SK); ctx.fillStyle = C.skin; ctx.fill();                          // skin
+  band((u) => ys(u) + SK - 10, (u) => ys(u) + SK); ctx.fillStyle = C.skinShade; ctx.fill();
+  // the nerve cross-section (bundles inside)
+  ell(0, -ry, rx + 12, ry + 12, C.pinkDark); ell(0, -ry, rx, ry, C.pink);
+  for (const [fx, fy, fr] of [[-40, -26, 22], [30, -34, 20], [0, 22, 24], [-46, 30, 17], [46, 24, 18], [4, -58, 14]]) ell(fx * rx / NR, -ry + fy * ry / NR, fr * rx / NR, fr * ry / NR, C.pinkLight);
+  ell(-30 * rx / NR, -ry - 60 * ry / NR, 26, 8, C.white + '66', -0.3);
+  if (zap > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(zap); ctx.beginPath(); ctx.ellipse(0, -ry, rx + 32, ry + 32, 0, 0, TAU); ctx.lineWidth = 18; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 10; ctx.strokeStyle = C.yellow; ctx.stroke();
+    for (const sd of [-1, 1]) for (const a of [-0.45, 0, 0.45]) { const an = (sd > 0 ? 0 : Math.PI) + a * sd, r0 = 1.0, w0 = 60 + 18 * Math.sin(t * 30 + a * 7);
+      const cx = Math.cos(an), cy = Math.sin(an); line([[cx * (rx + 50), -ry + cy * (ry + 50)], [cx * (rx + 50 + w0 * r0 + 30), -ry + cy * (ry + 50 + w0 * r0 + 30)]], C.ink, 22); line([[cx * (rx + 50), -ry + cy * (ry + 50)], [cx * (rx + 50 + w0 * r0 + 30), -ry + cy * (ry + 50 + w0 * r0 + 30)]], C.yellow, 12); }
+    ctx.restore();
+  }
+  // the door-frame edge coming down (wood, rounded corner)
+  if (edge > 0) {
+    const bot = lerp(-1300, ys(0) - dent(0), eoFB(clamp(edge))) + dent(0);
+    rr(-260, bot - 1600, 520, 1600, [0, 0, 40, 40]); ctx.fillStyle = FB_WOOD; ctx.fill();
+    rr(150, bot - 1600, 110, 1600, [0, 0, 40, 0]); ctx.fillStyle = FB_WOOD_D; ctx.fill();
+    rr(-210, bot - 1600, 36, 1560, 14); ctx.fillStyle = '#C97A52'; ctx.fill();
+  }
+  ctx.restore();
+  return out;
+}
+const eoFB = (t) => 1 - Math.pow(1 - t, 3);
+
+/** "next" doorway badge (graphic for the end card): white disc, ink ring, a small doorway + a thought "?". ~300 px at s = 1 */
+export function fbDoorBadge(x, y, s = 1, sc = 1, t = 0) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  circle(0, 0, 150, C.ink); circle(0, 0, 136, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 136, 0, TAU); ctx.clip(); ctx.fillStyle = C.bg; ctx.fillRect(-140, -140, 280, 280);
+  fbDoorway(-20, 120, 0.22, { open: 0.7 });
+  ctx.restore();
+  ctx.restore();
+  fbThought(x + 62 * k, y - 62 * k, 0.32 * k, { t });
+}
+
+
 /** bladder neck close-up: a pink tube going DOWN from (x, y), len px, with two sphincter ring muscles.
  *  sq 0..1 = the rings clamp the tube shut; a = ring alpha (pop them in); flow 0..1 = yellow pee in the channel */
 export function sphincters(x, y, s, sq = 0, { a = 1, len = 600, flow = 1 } = {}) {

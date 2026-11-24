@@ -1,0 +1,58 @@
+{
+  "title": "What Happens When You Hit Your Funny Bone?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Ulnar Nerve' (the ulnar nerve 'is commonly known as your funny bone', 'which isn't a bone at all'; bumping the elbow can temporarily pinch the nerve, causing 'a funny-feeling, shock-like tingling or burning'; it starts as roots in the neck and runs down the arm, through the cubital tunnel under a bony bump in the elbow, into the hand; it 'runs underneath the first layer of skin near your elbow'; it provides feeling to the pinky and the side of the ring finger closest to the pinky): https://my.clevelandclinic.org/health/body/21664-ulnar-nerve",
+    "Cleveland Clinic, 'Cubital Tunnel Syndrome' ('your funny bone isn't a bone. It's a nerve'; at the elbow 'there's only a little tissue protecting it'; affects the pinky and ring finger; see a provider if symptoms last more than six weeks or are severe): https://my.clevelandclinic.org/health/diseases/21997-cubital-tunnel-syndrome",
+    "AAOS OrthoInfo, 'Ulnar Nerve Entrapment at the Elbow' (the nerve travels from your neck down into your hand; 'At the funny bone, the nerve is close to your skin, and bumping it causes a shock-like feeling'; it passes through a narrow space 'with very little soft tissue to protect it'; numbness and tingling in the pinky and ring fingers; see your doctor if symptoms are severe or have lasted more than 6 weeks): https://www.orthoinfo.org/diseases--conditions/ulnar-nerve-entrapment-at-the-elbow",
+    "Wikipedia, 'Ulnar nerve' (supporting: at the funny bone the nerve 'is trapped between the bone and the overlying skin'; it supplies the little finger and the adjacent half of the ring finger): https://en.wikipedia.org/wiki/Ulnar_nerve",
+    "Tease (next video): University of Notre Dame, 'Walking through doorways causes forgetting, new research shows' (Radvansky et al. 2011, Quarterly Journal of Experimental Psychology: memory was poorer after walking through a doorway than after covering the same distance inside one room): https://provost.nd.edu/news/walking-through-doorways-causes-forgetting-new-research-shows"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you hit your funny bone?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *HIT | YOUR *FUNNY BONE?"
+    },
+    {
+      "text": "One bump, and two fingers buzz. Thumb side, or pinky side?",
+      "caps": "ONE *BUMP | *2 FINGERS | *BUZZ | *THUMB SIDE? | OR *PINKY SIDE?"
+    },
+    {
+      "text": "First, it's not a bone at all. It's a nerve.",
+      "caps": "IT'S *NOT | A *BONE | IT'S A *NERVE"
+    },
+    {
+      "text": "It runs from your neck all the way down to your hand.",
+      "caps": "FROM YOUR *NECK | ALL THE *WAY | TO YOUR *HAND"
+    },
+    {
+      "text": "Ever smacked your elbow on a door frame and just froze?",
+      "caps": "EVER *SMACKED | YOUR *ELBOW | ON A *DOOR FRAME | AND JUST *FROZE?"
+    },
+    {
+      "text": "But here's the weird part: your elbow barely protects it.",
+      "caps": "*BUT HERE'S | THE *WEIRD PART | YOUR *ELBOW | *BARELY | PROTECTS *IT"
+    },
+    {
+      "text": "It sits right under your skin, so one bump pins it against bone.",
+      "caps": "RIGHT UNDER | YOUR *SKIN | ONE *BUMP | *PINS IT | AGAINST *BONE"
+    },
+    {
+      "text": "Pinky side. It wires your pinky and half your ring finger.",
+      "caps": "*PINKY SIDE | IT *WIRES | YOUR *PINKY | AND *HALF | YOUR *RING FINGER"
+    },
+    {
+      "text": "Still tingling after six weeks? See a doctor.",
+      "caps": "STILL *TINGLING | AFTER *6 WEEKS? | SEE A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: the doorway that makes you forget. Mind your elbow...",
+      "caps": "NEXT *BODY FILE | THE *DOORWAY | THAT MAKES YOU *FORGET | MIND YOUR *ELBOW..."
+    }
+  ]
+}

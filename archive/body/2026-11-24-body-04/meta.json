@@ -1,0 +1,27 @@
+{
+  "title": "What Happens When You Hit Your Funny Bone?",
+  "description": "Send this to the friend who walks into every door frame.\nYour funny bone isn't a bone: it's your ulnar nerve, which runs from your neck to your hand and sits just under the skin at your elbow with very little tissue to protect it (Cleveland Clinic, AAOS OrthoInfo). One bump pinches it, and the shock-like tingle shoots into your pinky and half your ring finger. If numbness or tingling in those fingers lasts more than six weeks or is severe, see a doctor (Cleveland Clinic, AAOS).\nNext Body File: the doorway that makes you forget.\nFollow Body Files for a new one every day.\n#bodyfiles #funnybone #humanbody #science #nerves #shorts\n\nSources:\nCleveland Clinic, Ulnar Nerve: https://my.clevelandclinic.org/health/body/21664-ulnar-nerve\nCleveland Clinic, Cubital Tunnel Syndrome: https://my.clevelandclinic.org/health/diseases/21997-cubital-tunnel-syndrome\nAAOS OrthoInfo, Ulnar Nerve Entrapment at the Elbow: https://www.orthoinfo.org/diseases--conditions/ulnar-nerve-entrapment-at-the-elbow\nWikipedia, Ulnar nerve: https://en.wikipedia.org/wiki/Ulnar_nerve\nUniversity of Notre Dame, Walking through doorways causes forgetting: https://provost.nd.edu/news/walking-through-doorways-causes-forgetting-new-research-shows",
+  "hashtags": ["#bodyfiles", "#funnybone", "#humanbody", "#science", "#nerves", "#shorts"],
+  "pinned_comment": "How many times have you hit your funny bone this month? Give a number, be honest. (And your guess before the reveal: thumb side or pinky side?)",
+  "series": "Body Files",
+  "topic": "What happens when you hit your funny bone?",
+  "experiment_arm": "len-33-35 control + loop-close",
+  "teases": "What happens when you walk into a room and forget why?",
+  "topic_cluster": "nerves",
+  "topic_source": "backlog #1: mandatory, promised by the stand-up-too-fast video (work/2026-11-24-body-2) with 'your funny bone isn't a bone'; paid off in line 3 (it's a nerve) and the pinky-side reveal",
+  "hook_pattern": "question+which-side-number",
+  "format": "anatomy-tour",
+  "first_frame": "hero-mid-action (hero's elbow mid-impact with a door frame, cyan x-ray arm showing the nerve flashing, '2 FINGERS' tag, THUMB / PINKY pills on the hand)",
+  "structure_note": "An anatomy tour that follows the nerve: frame 1 is the elbow hitting a door frame with an electric flash running down a cyan nerve to the hand and two pills (THUMB SIDE / PINKY SIDE) on the hand; a 'NOT A BONE' stamp knocks a cartoon bone off the elbow; the camera rides the glowing nerve from the neck down the arm to the hand; a door-frame cutaway for the relatable beat; the re-hook cuts to a cross-section of the elbow showing a thin skin layer over the nerve on the bony bump; the bump squashes the nerve against the bone; the hand lights up on the pinky and half the ring finger as the PINKY pill gets its check; a calendar '6 WEEKS' tag for the safety line; the doorway tease; and a snap back to the frame-1 door frame. Different from the stand-up (direction guess on liquid, name-twist) and sneeze (myth-fact cold open, true story) videos: no myth stamp opener, no case story, a travel-along-the-nerve structure with a body-map guess.",
+  "safety": "Calm: the narrator is a curious friend, no medical advice beyond the sourced 'see a doctor' threshold (Cleveland Clinic and AAOS: symptoms lasting more than six weeks or severe). No injury shown beyond a cartoon bump; no challenge framing.",
+  "engagement": {
+    "guess": "A thumb side vs B pinky side (answer: B pinky side. Cleveland Clinic 'Ulnar Nerve': the ulnar nerve provides feeling to the pinky and the side of the ring finger closest to the pinky; AAOS: numbness and tingling in the pinky and ring fingers)",
+    "relatable": "Ever smacked your elbow on a door frame and just froze?",
+    "rehook_line": 5,
+    "answer_line": 7,
+    "answer_word_position": "answer starts at word 76 of 105 (75 words before it = 71.4%); re-hook starts at word 53 (49.5%); narration 105 words, about 34-35 s at am_michael 1.15",
+    "first_frame": "The hero's elbow is caught at the instant it smacks a door frame, and through cyan x-ray skin an electric flash races down a glowing nerve toward his hand, where a '2 FINGERS' tag and two pills, 'THUMB SIDE' and 'PINKY SIDE', pop on either edge of the hand, so the hit and the guess are on screen before the first word.",
+    "rewatch_detail": "On the elbow cross-section a tiny label reads 'ulnar nerve: just under the skin (Cleveland Clinic)', and on the hand shot the glow stops exactly halfway across the ring finger. Only sourced labels.",
+    "loop": "The tease ends on 'Mind your elbow...' as the camera snaps back to the frame-1 shot of the hero's elbow about to hit the door frame, so the replay's first line answers it: 'Mind your elbow... what happens when you hit your funny bone?'"
+  }
+}
