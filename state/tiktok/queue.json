@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T06:35:13+00:00",
+  "updated": "2026-11-24T10:01:55+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -139,6 +139,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-04/2026-11-24-body-04.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-04/2026-11-24-body-04.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-24-body-05",
+      "title": "What Happens When You Walk Into a Room and Forget Why?",
+      "caption": "What Happens When You Walk Into a Room and Forget Why? #bodyfiles #memory #brain #doorwayeffect #psychology",
+      "length": 33.9,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-05/2026-11-24-body-05.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-05/2026-11-24-body-05.mp4",
       "approved": false
     }
   ]
