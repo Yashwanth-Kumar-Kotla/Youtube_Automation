@@ -1,0 +1,56 @@
+{
+  "title": "What Happens When You Get a Stitch in Your Side?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic Health Essentials, 'Why Do I Sometimes Get a Side Stitch When I Run?' ('there's no single reason why side stitches occur'; theories include internal organs pulling down on the diaphragm, which 'doesn't explain why side stitches are common in swimming', and eating right before activity; one study of 965 athletes: swimmers 75%, runners 69%, horse riders 62%; usually nothing to be concerned about; relief: slow down, deep breaths, press on the spot; avoid eating about two hours before): https://health.clevelandclinic.org/why-do-i-sometimes-get-a-side-stitch-when-i-run",
+    "Morton & Callister, Sports Medicine 2015;45(1):23-35, 'Exercise-related transient abdominal pain (ETAP)' (965 participants in six sports: swimming 75%, running 69%; 'unclear why ETAP would be prevalent in swimming as this activity is not jolting'; food or drink before exercise consistently reported to evoke it; 14% reported shoulder tip pain, the referred site for the phrenic nerve, which supplies the diaphragm; 'irritation of the parietal peritoneum appears to best explain the ailment', further research needed): https://pmc.ncbi.nlm.nih.gov/articles/PMC4281377 (PubMed https://pubmed.ncbi.nlm.nih.gov/25178498/)",
+    "Tease (next video): Cleveland Clinic Health Essentials, 'How To Remove Plaque From Teeth' (RDH Tenika Patterson: plaque is 'soft and sticky at first, but if it's not removed within 24 hours, it hardens like cement. That's what we call tartar.'): https://health.clevelandclinic.org/how-to-remove-plaque-from-teeth"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get a stitch in your side?",
+      "caps": "WHAT *HAPPENS | GET A *STITCH | IN YOUR *SIDE?"
+    },
+    {
+      "text": "Nearly seven in ten runners get one. Who gets more, runners or swimmers?",
+      "caps": "NEARLY *7 IN 10 | *RUNNERS | GET *ONE | WHO GETS *MORE | *RUNNERS | OR *SWIMMERS?"
+    },
+    {
+      "text": "Nobody's sure why. Three suspects.",
+      "caps": "NOBODY'S *SURE | *WHY | *3 SUSPECTS"
+    },
+    {
+      "text": "Suspect one: food. Ever jogged after a big lunch?",
+      "caps": "SUSPECT *1 | *FOOD | EVER *JOGGED | AFTER A *BIG LUNCH?"
+    },
+    {
+      "text": "Suspect two: bouncing organs tugging your diaphragm.",
+      "caps": "SUSPECT *2 | *BOUNCING ORGANS | *TUGGING | YOUR *DIAPHRAGM"
+    },
+    {
+      "text": "But here's the weird part: it can hit your shoulder.",
+      "caps": "*BUT HERE'S | THE *WEIRD PART | IT CAN *HIT | YOUR *SHOULDER"
+    },
+    {
+      "text": "Suspect three: your belly's lining, rubbing and getting irritated.",
+      "caps": "SUSPECT *3 | YOUR BELLY'S *LINING | *RUBBING | GETTING *IRRITATED"
+    },
+    {
+      "text": "Swimmers! Seventy-five percent.",
+      "caps": "*SWIMMERS! SEVENTY-FIVE | *PERCENT"
+    },
+    {
+      "text": "No bouncing there, so maybe it's the lining.",
+      "caps": "NO *BOUNCING | *THERE | SO *MAYBE | IT'S THE *LINING"
+    },
+    {
+      "text": "Next Body File: skip brushing, plaque sets like cement. Still got that stitch?",
+      "caps": "NEXT *BODY FILE | SKIP *BRUSHING | *PLAQUE SETS | LIKE *CEMENT | *STILL GOT | THAT *STITCH?"
+    }
+  ]
+}

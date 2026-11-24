@@ -7485,3 +7485,211 @@ export function sideStitchBadge(x, y, r = 120, { sc = 1, t = 0 } = {}) {
     painZap(r * 0.36, r * 0.62, r / 300, 1, t);
   });
 }
+
+// ═════════════════════════ SIDE STITCH SET (2026-11-24 "side stitch") ═════════════════════════
+const ST_WALL = '#C9D3DC', ST_WALL_D = '#B4C0CB', ST_LINE = '#8E9BA8', ST_LIVER = '#B5485C', ST_LIVER_D = '#963A4C', ST_LIVER_L = '#CF6A7C',
+  ST_TRACK = '#C8734A', ST_TRACK_D = '#B5653F', ST_PLAQUE = '#F2D76B', ST_PLAQUE_D = '#D9B94A', ST_CEMENT = '#A7AEB8', ST_CEMENT_D = '#8A95A0',
+  ST_DECK = '#E4DCCB', ST_DECK_D = '#CFC5B1', ST_WATER_D = '#7EC3E0', ST_STEEL = '#C3C8CF', ST_STEEL_D = '#8A95A0';
+
+/** the hero's "side stitch" pose: right hand pressed under the ribs (screen right side of the torso) */
+ARM.stitch = { e: [232, -10], h: [128, 52] };
+/** jogging left-arm swing: k -1..1 (back..forward) */
+export const stJogArm = (k) => armPose({ e: [176, 10], h: [190, 150] }, { e: [205, -40], h: [120, -90] }, 0.5 + 0.5 * clamp(k, -1, 1));
+
+/** lane-rope floats across the canvas at y (alternating red / white discs), t = film time (gentle bob) */
+export function stLaneRope(y, t = 0, r = 15, x0 = -40, x1 = W + 40) {
+  line([[x0, y], [x1, y]], ST_STEEL_D, 6);
+  for (let i = 0, px = x0; px <= x1; i++, px += r * 2.6) circle(px, y + Math.sin(px * 0.02 + t * 2.5) * 3, r, i % 2 ? C.white : C.red);
+}
+
+/** poolside set (real world): plain bg wall, a pale tiled deck whose top edge is at deckY (feet stand here), pool water from
+ *  deckY + 44 down with a wavy white surface line, one lane rope just under the edge (ropeY) and another at ropeY2 (frame bottom) */
+export function stPoolside(deckY, t = 0, { ropeY = null, ropeY2 = 1745 } = {}) {
+  ctx.fillStyle = C.bg; ctx.fillRect(-300, -300, W + 600, deckY + 300);
+  ctx.fillStyle = ST_DECK; ctx.fillRect(-300, deckY, W + 600, 44); ctx.fillStyle = ST_DECK_D; ctx.fillRect(-300, deckY + 32, W + 600, 12);
+  for (let x = -280; x < W + 300; x += 120) { ctx.fillStyle = ST_DECK_D; ctx.fillRect(x, deckY, 4, 32); }
+  const wy = deckY + 44; ctx.fillStyle = C.sky; ctx.fillRect(-300, wy, W + 600, 2300);
+  ctx.fillStyle = ST_WATER_D; ctx.fillRect(-300, wy + 360, W + 600, 2300);
+  const P = []; for (let x = -300; x <= W + 300; x += 20) P.push([x, wy + 10 + Math.sin(x * 0.025 + t * 2.4) * 4]); line(P, C.white, 6);
+  stLaneRope(ropeY ?? wy + 40, t, 14);
+  if (ropeY2) stLaneRope(ropeY2, t + 1, 16);
+}
+
+/** police lineup wall: slate wall from the top to floorY with height lines every 90 px (labels every other line on both edges),
+ *  a floor strip below. Returns nothing; pair with stPlate() + stSpot() */
+export function stLineup(floorY = 1180) {
+  ctx.fillStyle = ST_WALL; ctx.fillRect(-300, -300, W + 600, floorY + 300);
+  ctx.font = '900 34px Inter'; ctx.textBaseline = 'middle';
+  for (let k = 1; k <= 14; k++) {
+    const y = floorY - k * 90; line([[-300, y], [W + 300, y]], ST_LINE, k % 2 ? 4 : 8);
+    if (k % 2 === 0) { ctx.fillStyle = ST_LINE; ctx.textAlign = 'left'; ctx.fillText(`${k / 2 + 1}'`, 18, y - 24); ctx.textAlign = 'right'; ctx.fillText(`${k / 2 + 1}'`, W - 18, y - 24); }
+  }
+  ctx.fillStyle = ST_WALL_D; ctx.fillRect(-300, floorY - 26, W + 600, 26);
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, floorY, W + 600, 1400);
+  ctx.fillStyle = '#D6CCB8'; ctx.fillRect(-300, floorY, W + 600, 14);
+}
+
+/** flat spotlight cone from the top of the frame onto the floor at (x, floorY): pale yellow wedge + floor ellipse. a = alpha */
+export function stSpot(x, floorY, a = 1, w = 170) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = 0.38 * clamp(a);
+  ctx.beginPath(); ctx.moveTo(x - 50, -300); ctx.lineTo(x + 50, -300); ctx.lineTo(x + w, floorY); ctx.lineTo(x - w, floorY); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.globalAlpha = 0.6 * clamp(a); ell(x, floorY + 30, w + 10, 34, C.yellow); ctx.restore();
+}
+
+/** lineup number plate (ink rounded board, white number). hi 0..1 turns it yellow with an ink number. sc = pop-in */
+export function stPlate(num, x, y, sc = 1, hi = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  rr(-62, -46, 124, 92, 16); ctx.fillStyle = C.ink; ctx.fill();
+  const h = clamp(hi); if (h > 0) { ctx.globalAlpha = h; rr(-52, -36, 104, 72, 10); ctx.fillStyle = C.yellow; ctx.fill(); ctx.globalAlpha = 1; }
+  ctx.font = '900 64px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = h > 0.5 ? C.ink : C.white; ctx.fillText(String(num), 0, 4);
+  ctx.restore();
+}
+
+/** a liver (organ, flat): big rounded right lobe tapering to the left, dark rim + highlight. ~300x170 px at s = 1, origin = centre.
+ *  face: { look, mood: 'n' | 'worried' } adds dot eyes (the lineup suspect) */
+export function stLiver(x, y, s = 1, rot = 0, face = null) {
+  if (s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const P = (g) => { ctx.beginPath(); ctx.moveTo(-150 + g, 10); ctx.bezierCurveTo(-120, -60, 20, -92 + g, 110 - g, -70 + g); ctx.bezierCurveTo(170 - g, -54, 168 - g, 40, 120 - g, 72 - g);
+    ctx.bezierCurveTo(60, 100 - g, -40, 60 - g, -150 + g, 10); ctx.closePath(); };
+  P(0); ctx.fillStyle = ST_LIVER_D; ctx.fill(); P(10); ctx.fillStyle = ST_LIVER; ctx.fill();
+  ell(30, -44, 70, 16, ST_LIVER_L, -0.12);
+  line([[-10, -70], [20, 20]], ST_LIVER_D, 7);
+  if (face) {
+    const lk = (face.look || 0) * 6;
+    for (const sd of [-1, 1]) { ell(40 + sd * 34 + lk, 4, 11, 14, C.ink); circle(44 + sd * 34 + lk, -1, 4, C.white); }
+    if (face.mood === 'worried') { ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.lineCap = 'round'; for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(40 + sd * 22, -24); ctx.lineTo(40 + sd * 46, -16); ctx.stroke(); } }
+    ctx.beginPath(); ctx.moveTo(26, 34); ctx.quadraticCurveTo(40, face.mood === 'worried' ? 26 : 44, 54, 34); ctx.strokeStyle = C.mouth; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/** steel coil spring standing from y0 (bottom) up to y1 (top), width w px (flat: ink rim, steel, light edge) */
+export function stSpring(x, y0, y1, w = 120, coils = 6) {
+  const P = []; const n = coils * 2;
+  for (let i = 0; i <= n; i++) P.push([x + (i === 0 || i === n ? 0 : (i % 2 ? -1 : 1) * w / 2), lerp(y0, y1, i / n)]);
+  line(P, C.ink, 22); line(P, ST_STEEL, 12);
+  line([[x - w / 2 - 10, y0], [x + w / 2 + 10, y0]], C.ink, 16); line([[x - w / 2 - 10, y1], [x + w / 2 + 10, y1]], C.ink, 16);
+}
+
+/** suspect two: a liver with a face bouncing on a spring that stands on the floor at (x, floorY). ext 0..1 = spring extension
+ *  (0 squashed, 1 stretched up), s scales it all. ~300 px wide, 190-380 px tall */
+export function stSpringLiver(x, floorY, s = 1, { ext = 0.5, face = { look: 0 }, rot = 0 } = {}) {
+  const top = floorY - lerp(70, 210, clamp(ext)) * s;
+  stSpring(x, floorY, top, 110 * s, 5);
+  stLiver(x + 10 * s, top - 62 * s, s, rot, face);
+}
+
+/** suspect three: the belly lining as a character: a wavy pale-pink sheet (like a little curtain) with folds, a shine and a
+ *  face. ~260x330 px at s = 1, origin = centre. wob 0..1 ripples it (t = film time), hot 0..1 = red irritated blotches */
+export function stLiningSheet(x, y, s = 1, { t = 0, wob = 0, hot = 0, mood = 'n' } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const wv = (yy, k) => Math.sin(yy * 0.03 + t * 6 + k) * (6 + 14 * clamp(wob));
+  const P = (g) => { ctx.beginPath(); ctx.moveTo(-120 + g + wv(-165, 0), -165 + g);
+    for (let px = -120; px <= 120; px += 20) ctx.lineTo(px, -165 + g + Math.sin(px * 0.05 + t * 3) * 6);
+    for (let yy = -165; yy <= 165; yy += 15) ctx.lineTo(120 - g + wv(yy, 1), yy);
+    for (let px = 120; px >= -120; px -= 20) ctx.lineTo(px, 165 - g + Math.sin(px * 0.06 + t * 4) * 10);
+    for (let yy = 165; yy >= -165; yy -= 15) ctx.lineTo(-120 + g + wv(yy, 0), yy); ctx.closePath(); };
+  P(0); ctx.fillStyle = C.pink; ctx.fill(); P(10); ctx.fillStyle = C.pinkLight; ctx.fill();
+  for (const fx of [-60, 0, 60]) { const Q = []; for (let yy = -140; yy <= 140; yy += 14) Q.push([fx + wv(yy, fx) * 0.6, yy]); line(Q, C.pink, 8); }
+  ell(-70, -110, 26, 12, '#FBD3DA', -0.4);
+  const h = clamp(hot); if (h > 0) { ctx.save(); ctx.globalAlpha = h * 0.85; for (const [bx, by, r] of [[-70, 60, 34], [64, 100, 26], [80, -40, 22], [-40, -30, 18]]) ell(bx, by, r, r * 0.7, C.red); ctx.restore(); }
+  for (const sd of [-1, 1]) { ell(sd * 34, -40, 11, 14, C.ink); circle(sd * 34 + 4, -45, 4, C.white); }
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.beginPath();
+  if (mood === 'ow') { ell(0, 4, 13, 16, C.mouth); } else { ctx.moveTo(-18, 0); ctx.quadraticCurveTo(0, 14, 18, 0); ctx.stroke(); }
+  ctx.restore();
+}
+
+/** belly-lining close-up lens: the belly wall (muscle, top) lined by the smooth lining layer, a thin fluid gap, and gut loops
+ *  below with their own shiny surface. rub 0..1 slides the two surfaces past each other (t = film time) with white friction
+ *  ticks; irritate 0..1 = the lining goes red with jagged red zaps. r = lens radius, sc = pop-in */
+export function stLiningLens(x, y, r, { rub = 0, irritate = 0, t = 0, sc = 1 } = {}) {
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(r / 300, r / 300); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const rb = clamp(rub), ir = clamp(irritate), sh = Math.sin(t * 9) * 34 * rb;
+    ctx.fillStyle = '#FFF1E0'; ctx.fillRect(-320, -320, 640, 640);
+    // belly wall: muscle bands
+    ctx.fillStyle = '#A8445A'; ctx.fillRect(-320, -320, 640, 250);
+    for (let k = 0; k < 6; k++) line([[-320, -300 + k * 40], [320, -290 + k * 40]], '#C9566E', 12);
+    // the lining (slides with the wall)
+    ctx.save(); ctx.translate(sh, 0);
+    rr(-360, -86, 720, 46, 20); ctx.fillStyle = C.pinkLight; ctx.fill();
+    for (const sx of [-260, -100, 60, 220]) line([[sx, -74], [sx + 60, -74]], C.white, 7);
+    if (ir > 0) { ctx.save(); ctx.globalAlpha = ir; rr(-360, -86, 720, 46, 20); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
+      for (const sx of [-190, 20, 200]) for (const d of [-1, 1]) { const P = [[sx, -100], [sx + d * 16, -122], [sx - d * 6, -140], [sx + d * 14, -160]]; ctx.save(); ctx.globalAlpha = ir; line(P, C.ink, 16); line(P, C.yellow, 8); ctx.restore(); } }
+    ctx.restore();
+    // gut loops below (slide the other way)
+    ctx.save(); ctx.translate(-sh, 0);
+    for (let k = -3; k <= 3; k++) { const cx = k * 150; ell(cx, 120, 92, 110, C.pinkDark); ell(cx, 116, 82, 100, C.pink); ell(cx - 26, 52, 30, 12, C.pinkLight, -0.3); }
+    rr(-360, -26, 720, 22, 11); ctx.fillStyle = '#FBD3DA'; ctx.fill();
+    ctx.restore();
+    // friction ticks in the gap
+    if (rb > 0) { ctx.save(); ctx.globalAlpha = rb; for (let i = 0; i < 6; i++) { const px = -250 + i * 100 + Math.sin(t * 9 + i) * 20; line([[px - 22, -33], [px + 22, -33]], C.white, 6); } ctx.restore(); }
+    ctx.restore();
+  }, '#FFF1E0');
+}
+
+/** running-track strip (graphic): terracotta band with white lane lines, from x0 to x1, top at y, height h */
+export function stTrack(x0, x1, y, h = 120) {
+  rr(x0, y, x1 - x0, h, 18); ctx.fillStyle = ST_TRACK_D; ctx.fill(); rr(x0, y, x1 - x0, h - 12, 18); ctx.fillStyle = ST_TRACK; ctx.fill();
+  for (let k = 1; k < 3; k++) line([[x0 + 16, y + k * (h - 12) / 3], [x1 - 16, y + k * (h - 12) / 3]], C.white, 5);
+}
+
+/** a swimmer seen side-on doing front crawl, flat: body a darker shape just under the surface line, red swim cap + ink goggles,
+ *  one arm arcing over (t = film time). Origin = head centre (on the surface). ~360x200 px at s = 1. Swimmers glide: no bounce */
+export function stSwimmer(x, y, s = 1, { t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  rr(-300, 4, 290, 64, 32); ctx.fillStyle = ST_WATER_D; ctx.fill();
+  const kick = Math.sin(t * 12) * 14; line([[-290, 36], [-350, 36 + kick]], ST_WATER_D, 40);
+  const an = t * 6, ax = Math.cos(an) * 150 - 110, ay = -Math.abs(Math.sin(an)) * 120 + 10;
+  line([[-90, 20], [ax, ay]], C.skinShade, 34); circle(ax, ay, 20, C.skinShade);
+  circle(0, 0, 50, C.skin); ctx.beginPath(); ctx.arc(0, 0, 52, Math.PI * 0.95, Math.PI * 2.05); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill();
+  rr(8, -2, 50, 20, 10); ctx.fillStyle = C.ink; ctx.fill(); circle(40, 8, 7, C.sky);
+  const P = []; for (let px = -380; px <= 120; px += 20) P.push([px, 26 + Math.sin(px * 0.05 + t * 5) * 4]); line(P, C.white, 6);
+  ctx.restore();
+}
+
+/** toothbrush (graphic): blue handle, white neck, a block of white/sky bristles pointing up at rot = 0. ~420x90 px at s = 1,
+ *  origin = centre of the handle */
+export function stToothbrush(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-210, -24, 300, 48, 24); ctx.fillStyle = C.shirtShade; ctx.fill(); rr(-210, -24, 300, 34, 24); ctx.fillStyle = C.shirt; ctx.fill();
+  rr(80, -14, 140, 28, 12); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(80, -14, 140, 20, 12); ctx.fillStyle = C.white; ctx.fill();
+  for (let i = 0; i < 6; i++) { rr(112 + i * 18, -70, 12, 58, 5); ctx.fillStyle = i % 2 ? C.sky : C.white; ctx.fill(); }
+  ctx.restore();
+}
+
+/** tease tooth: the cartoon molar (toothX) with plaque along its gum line. plaque 0..1 grows a soft yellow film (blobs on the lower
+ *  crown); cement 0..1 hardens it into a grey crusty band with dark speckles and crack lines; face as toothX. ~260x330 at s = 1 */
+export function stPlaqueTooth(x, y, s = 1, { plaque = 0, cement = 0, face = 'smile', sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  toothX(x, y, s, { face: null, sc, t });
+  const p = clamp(plaque), c = clamp(cement);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  if (p > 0) {
+    ctx.save(); toothPath(); ctx.clip();
+    const top = lerp(60, 0, p);
+    const band = () => { ctx.beginPath(); ctx.moveTo(-130, 60); for (let px = -130; px <= 130; px += 10) ctx.lineTo(px, top + Math.sin(px * 0.09) * 10 + (Math.abs(px) > 80 ? -18 * p : 0)); ctx.lineTo(130, 60); ctx.closePath(); };
+    band(); ctx.fillStyle = c > 0 ? mixHex(ST_PLAQUE, ST_CEMENT, c) : ST_PLAQUE; ctx.fill();
+    ctx.save(); ctx.translate(0, 10); band(); ctx.fillStyle = c > 0 ? mixHex(ST_PLAQUE_D, ST_CEMENT_D, c) : ST_PLAQUE_D; ctx.fill(); ctx.restore();
+    if (c > 0) { ctx.save(); ctx.globalAlpha = c;
+      for (let i = 0; i < 16; i++) circle(-110 + rnd(i + 3) * 220, top + 8 + rnd(i + 9) * 40, 4 + rnd(i) * 4, ST_CEMENT_D);
+      line([[-70, top + 14], [-62, top + 26], [-68, top + 38]], ST_CEMENT_D, 5); line([[74, top + 12], [82, top + 24], [76, top + 40]], ST_CEMENT_D, 5); ctx.restore(); }
+    ctx.restore();
+  }
+  toothFace(face);
+  ctx.restore();
+}
+
+/** next-episode badge for the end card: white disc, ink ring, the plaque tooth with its grey cement band. ~300 px at s = 1 */
+export function stToothBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  stPlaqueTooth(0, 6, 0.62, { plaque: 1, cement: 1, face: 'wow', t });
+  ctx.restore();
+}

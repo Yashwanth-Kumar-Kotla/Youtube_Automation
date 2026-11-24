@@ -1421,6 +1421,52 @@
    "branch": "stock/body/2026-11-24-body-07",
    "history": [],
    "description": "Send this to the friend who stays in the bath until they're a raisin.\nFingers wrinkle because the autonomic nervous system narrows blood vessels under the skin (Newcastle University), and fingers that lost their nerve supply stay smooth (Clinical Autonomic Research, 2006). A 2025 Binghamton study found the wrinkles come back in the same pattern every time. Pruney skin when you haven't been in water? Cleveland Clinic says talk to a doctor.\nNext Body File: what happens when you get a stitch in your side.\nFollow Body Files for a new one every day.\n#bodyfiles #wrinklyfingers #nervoussystem #skin #bath #science #shorts\n\nSources:\nThe Conversation (Bond University), Curious Kids: why do our toes and fingers get wrinkly in the bath?: https://theconversation.com/curious-kids-why-do-our-toes-and-fingers-get-wrinkly-in-the-bath-120229\nCleveland Clinic, Why Water Makes Your Skin Look Like a Prune: https://health.clevelandclinic.org/why-water-makes-your-skin-look-like-a-prune-and-not-a-plum\nNewcastle University, Get a grip: why we get wrinkly fingers and toes: https://www.ncl.ac.uk/press/articles/archive/2013/01/getagrip-whywegetwrinklyfingersandtoes.html\nHaseleu et al., PLoS One 2014: https://pubmed.ncbi.nlm.nih.gov/24416318/\nBinghamton University, Do your fingers wrinkle the same way every time?: https://www.binghamton.edu/news/story/5547/do-your-fingers-wrinkle-the-same-way-every-time-youre-in-the-water-too-long-new-research-says-yes\nHsieh et al., Paradoxical response to water immersion in replanted fingers (2006): https://www.springermedizin.de/paradoxical-response-to-water-immersion-in-replanted-fingers/8780024\nTindall et al., The skin wrinkle test, Emerg Med J 2006: https://pmc.ncbi.nlm.nih.gov/articles/PMC2464382\nCleveland Clinic, Why Do I Sometimes Get a Side Stitch When I Run? (next video): https://health.clevelandclinic.org/why-do-i-sometimes-get-a-side-stitch-when-i-run"
+  },
+  "2026-11-24-body-08": {
+   "title": "What Happens When You Get a Stitch in Your Side?",
+   "hashtags": [
+    "#bodyfiles",
+    "#sidestitch",
+    "#running",
+    "#swimming",
+    "#exercise",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "How many minutes into a run or swim does YOUR side stitch hit? Give a number. (And your guess before the reveal: A) runners or B) swimmers get it more?)",
+   "series": "Body Files",
+   "topic": "What happens when you get a stitch in your side?",
+   "experiment_arm": "len-33-35 + loop-close",
+   "teases": "What happens if you don't brush your teeth for a week?",
+   "topic_cluster": "exercise",
+   "topic_source": "backlog #1: mandatory, promised by the bath-fingers video (2026-11-24-body-6) with 'Next Body File: the side stitch, three suspects. Still pruney?'; the three suspects (food, bouncing organs, belly lining) are lines 3-6 and the swimmer stat convicts one",
+   "hook_pattern": "question+who-more-number",
+   "format": "suspect-lineup",
+   "first_frame": "hero-mid-action (jogging hero clutching his side under the ribs, '~7 IN 10 RUNNERS' tag, A RUNNERS / B SWIMMERS pills)",
+   "structure_note": "A police lineup: three suspects step up to a lineup wall with height lines (a sandwich for food, a bouncing liver/spleen on a spring tugging an x-ray-cyan diaphragm, a glowing belly lining), the shoulder clue in between, then the swimmer stat walks in as the alibi that clears suspect two. Different from bath fingers (clue trail), sitting (dose guess), doorway (lab yes/no), funny bone (anatomy tour), stand-up (direction guess): no timer, no body map tour, a lineup.",
+   "safety": "Curious-friend tone, no personal medical advice. Mechanism said only as suspects; 'the lining might' matches the review's 'appears to best explain' plus 'further research needed'. Cleveland Clinic's 'usually nothing to worry about' and relief tips are in the description, not as instructions in the voice. Schematic organs only, no gore.",
+   "engagement": {
+    "guess": "A runners vs B swimmers: who gets side stitches more? (answer: B swimmers, 75% vs 69% of runners; Morton & Callister 2015 survey of 965 athletes, cited by Cleveland Clinic)",
+    "relatable": "Suspect one: food. Ever jogged after a big lunch?",
+    "rehook_line": 5,
+    "answer_line": 7,
+    "answer_word_position": "trimmed after the first voicing (36.19 s at 93 words by the pipeline's count): narration now 85 words by hand count (86 if 'seventy-five' counts as two; about 87 by the pipeline's count); the answer starts at word 63 (62 words before it = 72.9% of 85, 72.1% of 86, 71.3% of 87); re-hook starts at word 44 (about 51%); 2 lines follow the answer (the 'no bouncing, maybe the lining' line, the tease)",
+    "first_frame": "The hero mid-jog, bent over with one hand pressed under his right ribs, a small '~7 IN 10 RUNNERS' tag beside him and the pills 'A RUNNERS' / 'B SWIMMERS' already on screen, with a swimming-lane rope across the bottom edge, so the stitch, the number and the guess are visible before the first word.",
+    "rewatch_detail": "During the shoulder line, a thin x-ray-cyan nerve line runs from the diaphragm up to the shoulder tip with a tiny label 'phrenic nerve' and '14% felt it' (Morton & Callister); the swimming-lane rope in frame 1 hints at the answer before it's said.",
+    "loop": "The tease ends on 'Still got that stitch?' as the camera returns to the frame-1 shot of the hero clutching his side mid-jog, so the replay's first line answers it: 'Still got that stitch? ... What happens when you get a stitch in your side?'"
+   },
+   "id": "2026-11-24-body-08",
+   "channel": "body",
+   "made_at": "2026-11-24T04:15-06:00",
+   "made_week": "2026-W48",
+   "playbook_version": "pb-a66cc658",
+   "research_file": "research/2026-W46.md",
+   "length": 33.8,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-24-body-08",
+   "history": [],
+   "description": "Send this to the friend who always gets a stitch five minutes into a run.\nIn a survey of 965 athletes, 75% of swimmers and 69% of runners had a side stitch in the past year, even though swimming barely jolts your organs (Morton & Callister, Sports Medicine 2015). That review's best explanation is an irritated belly lining, but the cause is still debated. Cleveland Clinic says it's usually nothing to worry about; their tips: slow down, breathe deep, press on the spot, and skip big meals about two hours before exercise.\nNext Body File: what happens if you don't brush your teeth for a week.\nFollow Body Files for a new one every day.\n#bodyfiles #sidestitch #running #swimming #exercise #science #shorts\n\nSources:\nCleveland Clinic, Why Do I Sometimes Get a Side Stitch When I Run?: https://health.clevelandclinic.org/why-do-i-sometimes-get-a-side-stitch-when-i-run\nMorton & Callister, Exercise-related transient abdominal pain (ETAP), Sports Medicine 2015: https://pmc.ncbi.nlm.nih.gov/articles/PMC4281377\nCleveland Clinic, How To Remove Plaque From Teeth (next video): https://health.clevelandclinic.org/how-to-remove-plaque-from-teeth"
   }
  }
 }

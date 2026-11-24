@@ -66,3 +66,4 @@
 - 2026-11-24 04:01 · 2026-11-24-body-05 added · conf 0.7 · question+lab-number-yesno · What happens when you walk into a room and forget why?
 - 2026-11-24 04:04 · 2026-11-24-body-06 added · conf 0.7 · question+dose-guess-number · What happens if you sit all day?
 - 2026-11-24 04:10 · 2026-11-24-body-07 added · conf 0.7 · question+cause-ab-number · What happens to your fingers in the bath?
+- 2026-11-24 04:16 · 2026-11-24-body-08 added · conf 0.7 · question+who-more-number · What happens when you get a stitch in your side?
