@@ -5,5 +5,6 @@ skip 2026-11-16-body-03: already in the TikTok inbox
 skip 2026-11-16-body-04: already in the TikTok inbox
 skip 2026-11-24-body-01: already in the TikTok inbox
 skip 2026-11-24-body-02: already in the TikTok inbox
-draft sent 2026-11-24-body-03 -> v_inbox_file~v2.7711620318137468941  (What Happens When You Stand Up Too Fast?)
-17 drafts recorded in state/tiktok_drafts.json
+skip 2026-11-24-body-03: already in the TikTok inbox
+draft sent 2026-11-24-body-04 -> v_inbox_file~v2.7711622841875138574  (What Happens When You Hit Your Funny Bone?)
+18 drafts recorded in state/tiktok_drafts.json
