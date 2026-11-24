@@ -1,0 +1,27 @@
+{
+  "title": "What Happens When Your Eyelid Won't Stop Twitching?",
+  "description": "Send this to the friend whose eye has been twitching all week.\nThat flutter is eyelid myokymia: the eyelid muscle firing on its own (AAO EyeWiki: up to 3-8 times a second), most often in the lower lid, from a nervous-system glitch. Cleveland Clinic says it's extremely common, usually harmless, and most cases go away within days or weeks. Common triggers: poor sleep, caffeine, stress, eye strain and long screen time. See an eye doctor if it hasn't gone after a few weeks, spreads to other parts of your face, or affects your vision (right away for any vision change).\nNext Body File: the held-in sneeze that tore a man's throat.\nFollow Body Files for a new one every day.\n#bodyfiles #eyetwitch #eyelid #humanbody #science #health #shorts\n\nSources:\nCleveland Clinic, Myokymia: https://my.clevelandclinic.org/health/symptoms/myokymia\nCleveland Clinic, Eye Twitching: https://my.clevelandclinic.org/health/symptoms/17663-eye-twitching\nAAO EyeWiki, Eyelid Myokymia: https://eyewiki.aao.org/Eyelid_Myokymia\nBMJ Case Reports 2018 (via ScienceDaily), stifled sneeze case: https://www.sciencedaily.com/releases/2018/01/180115184339.htm",
+  "hashtags": ["#bodyfiles", "#eyetwitch", "#eyelid", "#humanbody", "#science", "#health", "#shorts"],
+  "pinned_comment": "How many days has your longest eyelid twitch lasted? Be honest. (And did you guess it right: gone in weeks or stuck for months?)",
+  "series": "Body Files",
+  "topic": "What happens when your eyelid won't stop twitching?",
+  "experiment_arm": "E1-A (hook with a number: line 2 'up to eight times a second', caption '8'); TEST 9+10: len-25-30 + loop-close; E4 tease_next",
+  "teases": "What happens if you hold in a sneeze?",
+  "topic_cluster": "eyes",
+  "topic_source": "backlog #1: mandatory next_topic_must_be, promised by the swallow-gum video (work/2026-11-16-body-4) with 'eyelid twitches that won't quit, mostly the lower lid' (paid off in line 2: lower lid, nerve glitch; Cleveland Clinic Myokymia)",
+  "hook_pattern": "question+speed-number",
+  "format": "explainer",
+  "first_frame": "object-closeup (extreme close-up of the hero's lower eyelid mid-twitch)",
+  "structure_note": "Short loop-built explainer: open on the twitching lid, x-ray cyan zoom into the lid muscle with nerve sparks firing (8/sec counter), cut out to a video-call grid for the relatable beat, then a 'your week' calendar montage for triggers (moon/short sleep, coffee cup, stress, glowing screen), answer pill check, quick doctor sign, tease, and a snap back to the frame-1 eyelid close-up. No room-opening shot, no guess-first cold open: the speed number leads, the guess rides second.",
+  "safety": "Calm, no scare framing. Says 'usually' and 'most', points to an eye doctor for spreading or lingering twitches (Cleveland Clinic). No rare-disease mentions in the video. The tease names a real one-off case without showing how to stifle a sneeze; schematic visuals only.",
+  "engagement": {
+    "guess": "A gone in weeks vs B stuck for months (answer: A weeks; Cleveland Clinic: 'Most cases go away within days or weeks without any treatment'; months is the persistent case, treatment considered if consistent for at least three months)",
+    "relatable": "Ever had it flicker through a whole video call?",
+    "rehook_line": 4,
+    "answer_line": 6,
+    "answer_word_position": "answer starts at word 60 of 82 (73%)",
+    "first_frame": "An extreme close-up of the hero's eye where the lower eyelid is visibly flickering with yellow motion ticks and a tiny cyan counter racing to '8/sec', so the twitch itself is the first thing the viewer sees before any word.",
+    "rewatch_detail": "In the x-ray lid shot a tiny label reads 'orbicularis oculi' with '3-8 Hz' beside the sparks (AAO EyeWiki), and the week-calendar shot has the twitch day circled on a 'lower lid' sticky note (Cleveland Clinic). Only sourced labels on screen.",
+    "loop": "The tease ends on 'But first...' as the camera snaps back to the frame-1 extreme close-up of the twitching lower eyelid, so the replay's opening line 'What happens when your eyelid won't stop twitching?' completes the sentence: '...But first, what happens when your eyelid won't stop twitching?'"
+  }
+}

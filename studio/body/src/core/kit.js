@@ -5828,8 +5828,9 @@ export function foodBit(kind, x, y, s = 1, rot = 0) {
 
 
 /** next-episode tease (eyelid twitch): front-view eye in a round skin window (eyeFront) whose LOWER lid flickers up.
- *  twitch 0..1, t = film time, ring 0..1 = yellow highlight ring on the lower lid. Disc radius 330 px at s = 1. sc = pop-in */
-export function twitchEye(x, y, s, { twitch = 1, t = 0, ring = 0, sc = 1, look = 0 } = {}) {
+ *  twitch 0..1, t = film time, ring 0..1 = yellow highlight ring on the lower lid. Disc radius 330 px at s = 1. sc = pop-in.
+ *  yellow: true = the motion ticks are yellow with an ink edge and stretch with each flick (the eyelid-twitch episode hook) */
+export function twitchEye(x, y, s, { twitch = 1, t = 0, ring = 0, sc = 1, look = 0, yellow = false } = {}) {
   if (sc <= 0 || s <= 0) return;
   const k = s * sc;
   eyeFront(x, y, k, { lid: 0.08, look });
@@ -5841,7 +5842,10 @@ export function twitchEye(x, y, s, { twitch = 1, t = 0, ring = 0, sc = 1, look =
   ctx.beginPath(); ctx.moveTo(-250, 10); ctx.quadraticCurveTo(0, ly, 250, 10); ctx.strokeStyle = C.ink; ctx.lineWidth = 10; ctx.stroke();
   ctx.beginPath(); ctx.moveTo(-200, 60); ctx.quadraticCurveTo(0, ly + 50, 200, 60); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 10; ctx.stroke();
   ctx.restore();
-  if (twitch > 0) { ctx.save(); ctx.globalAlpha = clamp(twitch); for (const [dx, dy, a] of [[-300, 90, 2.7], [-286, 150, 2.3], [300, 90, 0.44], [286, 150, 0.84]]) line([[dx, dy], [dx + Math.cos(a) * 40, dy + Math.sin(a) * 40]], C.ink, 12); ctx.restore(); }
+  if (twitch > 0) { ctx.save(); ctx.globalAlpha = clamp(twitch); for (const [dx, dy, a] of [[-300, 90, 2.7], [-286, 150, 2.3], [300, 90, 0.44], [286, 150, 0.84]]) {
+    const L2 = yellow ? 40 + 22 * j : 40, P = [[dx, dy], [dx + Math.cos(a) * L2, dy + Math.sin(a) * L2]];
+    if (yellow) { line(P, C.ink, 26); line(P, C.yellow, 13); } else line(P, C.ink, 12);
+  } ctx.restore(); }
   ctx.restore();
   if (ring > 0) hiRing(x, y + (10 + ly) / 2 * k, 250 * k, Math.max(1, 80 * k), clamp(ring));
 }
@@ -5952,4 +5956,201 @@ export function breathBadge(x, y, s = 1, sc = 1, t = 0, q = 1) {
   o2Bubble(78, -70, 0.62 + 0.03 * Math.sin(t * 4));
   if (q > 0) bigText('?', 100, -12, 74, C.yellow, 0.15, eobE(clamp(q)) * (1 + 0.05 * Math.sin(t * 6)));
   ctx.restore();
+}
+
+
+// ═════════════════════════ EYELID TWITCH SET (2026-11-23 "eyelid won't stop twitching") ═════════════════════════
+const TW_PALE = '#DCEFF7', TW_SCREEN = '#2B3346', TW_GREY = '#9A9A9F', TW_GREY_L = '#B9B9BE', TW_NOTE_D = '#E0B521';
+
+/** x-ray close-up of the eye region (draw K.xray(t) behind it): cyan socket + brow outline, navy eyeball with a cyan iris
+ *  ring, and the ORBICULARIS OCULI as a pink oval ring of fibres around the eye. A pink facial-nerve branch runs in from the
+ *  lower right to the lower ring. fire 0..1 = the lower-lid fibres fire: yellow spark beats at `rate` per second where the
+ *  nerve meets the ring, the lower fibres flash yellow and the ring's lower edge jerks up. hi 0..1 = yellow ring around the
+ *  muscle (on "muscle"). ~760x620 px at s = 1, origin = eye centre. Returns { lower: [x, y] } (lower-lid fibre point, screen px) */
+export function lidXray(x, y, s, { t = 0, fire = 0, hi = 0, rate = 8, sc = 1 } = {}) {
+  const out = { lower: [x, y + 215 * s * sc], nerve: [x + 150 * s * sc, y + 235 * s * sc] };
+  if (sc <= 0 || s <= 0) return out;
+  const k = s * sc, f = clamp(fire), ph = (t * rate) % 1, beat = f * Math.max(0, 1 - ph * 2.2);   // one sharp beat per cycle
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // bony socket + brow ridge
+  ctx.beginPath(); ctx.ellipse(0, 0, 370, 290, 0, 0, TAU); ctx.strokeStyle = C.cyan; ctx.lineWidth = 9; ctx.globalAlpha = 0.55; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.beginPath(); ctx.moveTo(-380, -230); ctx.quadraticCurveTo(0, -400, 380, -230); ctx.strokeStyle = C.cyan; ctx.lineWidth = 16; ctx.stroke();
+  // the ring muscle (lower half jerks up on each beat)
+  const lift = 22 * beat;
+  const ring = (rx, ry, dy) => { ctx.beginPath(); for (let i = 0; i <= 64; i++) { const a = i / 64 * TAU, sy = Math.sin(a); ctx.lineTo(Math.cos(a) * rx, sy * ry - (sy > 0 ? dy * sy : 0)); } ctx.closePath(); };
+  ring(335, 255, lift); ring(215, 150, lift * 0.6); ctx.fillStyle = C.pinkDark; ctx.fill('evenodd');
+  ring(322, 242, lift); ring(228, 162, lift * 0.6); ctx.fillStyle = C.pink; ctx.fill('evenodd');
+  for (let j = 0; j < 4; j++) {   // concentric fibres
+    const rx = lerp(240, 310, j / 3), ry = lerp(172, 232, j / 3);
+    ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, Math.PI * 1.08, Math.PI * 1.92); ctx.strokeStyle = C.pinkLight; ctx.lineWidth = 7; ctx.stroke();
+    const P = []; for (let i = 0; i <= 24; i++) { const a = lerp(0.1, Math.PI - 0.1, i / 24), sy = Math.sin(a); P.push([Math.cos(a) * rx, sy * ry - lift * lerp(0.6, 1, j / 3) * sy]); }
+    line(P, beat > 0.05 ? C.yellow : C.pinkLight, 7);
+  }
+  // eyeball
+  circle(0, 0, 150, C.xnavy); ctx.beginPath(); ctx.arc(0, 0, 150, 0, TAU); ctx.strokeStyle = C.cyan; ctx.lineWidth = 8; ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 0, 62, 0, TAU); ctx.lineWidth = 7; ctx.stroke(); circle(0, 0, 26, C.cyan); circle(20, -22, 10, C.white);
+  // facial nerve branch (lower right → lower ring)
+  const NP = [[430, 470], [330, 380], [230, 300], [150, 235 - lift]];
+  line(NP, C.pinkDark, 22); line(NP, C.pinkLight, 9);
+  if (f > 0) {
+    const q = (t * rate * 0.5) % 1, sx = lerp(430, 150, q), sy = lerp(470, 235 - lift, q);
+    ctx.save(); ctx.globalAlpha = f; circle(sx, sy, 24, C.ink); circle(sx, sy, 17, C.yellow); ctx.restore();
+    if (beat > 0) {
+      ctx.save(); ctx.globalAlpha = clamp(beat * 1.4); ctx.strokeStyle = C.yellow; ctx.lineWidth = 11;
+      for (let i = 0; i < 7; i++) { const an = -Math.PI * 0.95 + i * 0.32, r0 = 30, r1 = 30 + 60 * beat + 20; ctx.beginPath(); ctx.moveTo(150 + Math.cos(an) * r0, 235 - lift + Math.sin(an) * r0); ctx.lineTo(150 + Math.cos(an) * r1, 235 - lift + Math.sin(an) * r1); ctx.stroke(); }
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+  if (hi > 0) hiRing(x, y, 360 * k, 278 * k, clamp(hi));
+  return out;
+}
+
+
+/** rate counter (graphic): ink pill with a white rim, a small yellow bolt on the left, a big yellow number and a white unit
+ *  ("8" + "/sec"). bump 0..1 = scale kick (per flick / on the landing word). ~330x130 px at s = 1, origin = centre. sc = pop-in */
+export function rateCounter(x, y, s = 1, n = '8', unit = '/sec', { sc = 1, bump = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const k = s * sc * (1 + 0.12 * clamp(bump));
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  ctx.font = '900 92px Inter'; const nw = ctx.measureText(String(n)).width; ctx.font = '900 60px Inter'; const uw = ctx.measureText(unit).width;
+  const w = 90 + nw + 12 + uw + 50, h = 128;
+  rr(-w / 2 - 7, -h / 2 - 7, w + 14, h + 14, h / 2 + 7); ctx.fillStyle = C.white; ctx.fill();
+  rr(-w / 2, -h / 2, w, h, h / 2); ctx.fillStyle = C.ink; ctx.fill();
+  const bx = -w / 2 + 52;
+  ctx.beginPath(); ctx.moveTo(bx + 8, -40); ctx.lineTo(bx - 20, 6); ctx.lineTo(bx + 0, 6); ctx.lineTo(bx - 10, 42); ctx.lineTo(bx + 22, -6); ctx.lineTo(bx + 2, -6); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.font = '900 92px Inter'; ctx.fillStyle = C.yellow; ctx.fillText(String(n), -w / 2 + 90, 6);
+  ctx.font = '900 60px Inter'; ctx.fillStyle = C.white; ctx.fillText(unit, -w / 2 + 90 + nw + 12, 10);
+  ctx.restore();
+}
+
+
+/** laptop on a video call: ink bezel, dark screen with a 2x2 grid of pastel tiles, a toolbar (timer, mic + camera dots, red
+ *  hang-up pill) and a grey base. inner(i, cx, cy, w, h) draws tile i's person (screen px, already clipped to the tile);
+ *  tiles go 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right. hi = { i, a } yellow "speaking" border on a tile.
+ *  you = tile index that gets a tiny "YOU" tag. timer = text. ~1000x720 px at s = 1, origin = screen centre.
+ *  Returns the tile rects [{ cx, cy, w, h }] in screen px */
+export function videoCall(x, y, s = 1, { inner = null, hi = null, you = 3, timer = '12:47', sc = 1 } = {}) {
+  const k = s * sc, TW2 = 437, TH2 = 240, GAP = 12, top = -300;
+  const tiles = [0, 1, 2, 3].map((i) => { const lx = -450 + (i % 2) * (TW2 + GAP) + TW2 / 2, ly = top + Math.floor(i / 2) * (TH2 + GAP) + TH2 / 2; return { cx: x + lx * k, cy: y + ly * k, w: TW2 * k, h: TH2 * k }; });
+  if (k <= 0) return tiles;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  ctx.beginPath(); ctx.moveTo(-500, 330); ctx.lineTo(500, 330); ctx.lineTo(560, 380); ctx.lineTo(-560, 380); ctx.closePath(); ctx.fillStyle = TW_GREY; ctx.fill();
+  rr(-560, 370, 1120, 26, [0, 0, 13, 13]); ctx.fillStyle = TW_GREY_L; ctx.fill(); rr(-90, 330, 180, 16, [0, 0, 8, 8]); ctx.fillStyle = TW_GREY_L; ctx.fill();
+  rr(-480, -340, 960, 680, 34); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-460, -318, 920, 636, 16); ctx.fillStyle = TW_SCREEN; ctx.fill();
+  const BG = [C.sky, '#FFF1B8', C.floor, TW_PALE];
+  tiles.forEach((tl, i) => { const lx = -450 + (i % 2) * (TW2 + GAP), ly = top + Math.floor(i / 2) * (TH2 + GAP); rr(lx, ly, TW2, TH2, 14); ctx.fillStyle = BG[i]; ctx.fill(); });
+  // toolbar
+  const by = 260; ctx.font = '900 34px Inter'; ctx.fillStyle = C.white; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(timer, -430, by);
+  for (const dx of [-70, 0]) circle(dx, by, 24, '#4A5470');
+  rr(60, by - 22, 110, 44, 22); ctx.fillStyle = C.red; ctx.fill(); rr(88, by - 6, 54, 12, 6); ctx.fillStyle = C.white; ctx.fill();
+  ctx.restore();
+  tiles.forEach((tl, i) => {
+    if (!inner) return;
+    ctx.save(); rr(tl.cx - tl.w / 2, tl.cy - tl.h / 2, tl.w, tl.h, 14 * k); ctx.clip(); inner(i, tl.cx, tl.cy, tl.w, tl.h); ctx.restore();
+  });
+  if (you != null) { const tl = tiles[you]; pill('YOU', tl.cx - tl.w / 2 + 60 * k, tl.cy + tl.h / 2 - 32 * k, 26 * k, C.ink, C.white, 1); }
+  if (hi && hi.a > 0) { const tl = tiles[hi.i]; ctx.save(); ctx.globalAlpha = clamp(hi.a); rr(tl.cx - tl.w / 2, tl.cy - tl.h / 2, tl.w, tl.h, 14 * k); ctx.strokeStyle = C.yellow; ctx.lineWidth = 12 * k; ctx.stroke(); ctx.restore(); }
+  return tiles;
+}
+
+/** a head-and-shoulders person for a video-call tile (screen px): shirt block + heroHead. o = heroHead face options */
+export function callPerson(cx, cy, h, { shirt = C.shirt, o = {} } = {}) {
+  const s = h / 300;
+  rr(cx - 120 * s, cy + 70 * s, 240 * s, 200 * s, 70 * s); ctx.fillStyle = shirt; ctx.fill();
+  rr(cx - 26 * s, cy + 40 * s, 52 * s, 50 * s, 16 * s); ctx.fillStyle = C.skin; ctx.fill();
+  heroHead(cx, cy - 20 * s, 0.62 * s, o);
+}
+
+
+/** week planner board (calendar look): white board, ink rim, red header band with "THIS WEEK", seven day columns M..S with
+ *  thin ink dividers. lit[i] 0..1 fills day i yellow. note 0..1 sticks a yellow "lower lid" sticky note on Thursday (the
+ *  rewatch detail); circle 0..1 draws a red hand-drawn ring around the Thursday letter. Origin = board centre, w x h px.
+ *  Returns column centre xs + the letter row y + the cell centre y (screen px) */
+export function weekBoard(x, y, w, h, { lit = [], note = 0, circle: cir = 0, sc = 1, header = 'THIS WEEK' } = {}) {
+  const HB = 110, cw = (w - 40) / 7, cols = [...Array(7)].map((_, i) => x - w / 2 + 20 + cw * (i + 0.5)), ly = y - h / 2 + HB + 64, cy = (ly + 50 + y + h / 2) / 2;
+  const out = { cols, ly, cy, cw };
+  if (sc <= 0) return out;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.translate(-x, -y);
+  rr(x - w / 2, y - h / 2, w, h, 40); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(x - w / 2, y - h / 2, w, HB, [40, 40, 0, 0]); ctx.fillStyle = C.red; ctx.fill(); ctx.stroke();
+  for (const bx of [-0.3, 0.3]) { rr(x + bx * w - 16, y - h / 2 - 40, 32, 84, 16); ctx.fillStyle = C.ink; ctx.fill(); }
+  ctx.font = '900 62px Inter'; ctx.letterSpacing = '6px'; ctx.fillStyle = C.white; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(header, x, y - h / 2 + HB / 2 + 4); ctx.letterSpacing = '0px';
+  const top = y - h / 2 + HB + 14, bot = y + h / 2 - 16;
+  cols.forEach((cx, i) => {
+    const a = clamp(lit[i] || 0);
+    if (a > 0) { ctx.save(); ctx.globalAlpha = a; rr(cx - cw / 2 + 6, top, cw - 12, bot - top, 18); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); }
+    if (i) line([[cx - cw / 2, top + 6], [cx - cw / 2, bot - 6]], '#D9D3C6', 5);
+    ctx.font = '900 64px Inter'; ctx.fillStyle = C.ink; ctx.fillText('MTWTFSS'[i], cx, ly);
+  });
+  if (cir > 0) {
+    const cx = cols[3]; ctx.beginPath();
+    for (let i = 0; i <= 60 * clamp(cir); i++) { const a = -1.9 + i / 60 * TAU * 1.08, r = 1 + 0.05 * Math.sin(i * 0.4); ctx.lineTo(cx + Math.cos(a) * 62 * r, ly + 2 + Math.sin(a) * 52 * r); }
+    ctx.strokeStyle = C.red; ctx.lineWidth = 10; ctx.lineCap = 'round'; ctx.stroke();
+  }
+  if (note > 0) stickyNote(cols[3] + 8, Math.max(bot - 70, ly + 110), Math.min(1, cw / 150), ['lower', 'lid'], -0.08, eobE(clamp(note)));
+  ctx.restore();
+  return out;
+}
+
+/** yellow sticky note (darker folded corner, a strip of tape) with 1-2 short ink lines of handwriting-weight text.
+ *  ~170x160 px at s = 1, origin = centre. sc = pop-in */
+export function stickyNote(x, y, s = 1, lines = ['note'], rot = 0, sc = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  ctx.beginPath(); ctx.moveTo(-85, -80); ctx.lineTo(85, -80); ctx.lineTo(85, 50); ctx.lineTo(55, 80); ctx.lineTo(-85, 80); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(85, 50); ctx.lineTo(55, 50); ctx.lineTo(55, 80); ctx.closePath(); ctx.fillStyle = TW_NOTE_D; ctx.fill();
+  ctx.save(); ctx.globalAlpha = 0.7; rr(-40, -96, 80, 30, 4); ctx.fillStyle = C.white; ctx.fill(); ctx.restore();
+  ctx.font = '900 40px Inter'; ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  lines.forEach((l, i) => ctx.fillText(l, -4, (i - (lines.length - 1) / 2) * 46));
+  ctx.restore();
+}
+
+
+/** twitch-trigger badge (graphic): pale disc in an ink ring with one icon. kind 'sleep' (night disc, yellow crescent moon,
+ *  white z's) | 'coffee' (white mug, dark coffee, steam) | 'stress' (frowning face under a red scribble) | 'screen' (phone
+ *  with a sky screen and yellow light rays). ~300 px wide at s = 1, origin = centre. sc = pop-in, t = film time */
+export function triggerIcon(kind, x, y, s = 1, { sc = 1, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 136, TW_PALE);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 136, 0, TAU); ctx.clip();
+  if (kind === 'sleep') {
+    circle(0, 0, 136, C.pants);
+    for (const [sx, sy] of [[-80, -60], [70, 70], [-60, 80], [90, -40]]) circle(sx, sy, 6, C.white);
+    circle(-10, 0, 78, C.yellow); circle(26, -22, 70, C.pants);
+    ctx.font = '900 46px Inter'; ctx.fillStyle = C.white; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const b = Math.sin(t * 3) * 6; ctx.fillText('z', 62, -2 + b); ctx.font = '900 34px Inter'; ctx.fillText('z', 92, -40 + b);
+  } else if (kind === 'coffee') {
+    rr(-78, -40, 140, 140, [10, 10, 40, 40]); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-78, -40, 112, 140, [10, 0, 0, 40]); ctx.fillStyle = C.white; ctx.fill();
+    ell(-8, -40, 70, 16, C.hair); ell(-8, -42, 70, 12, C.hairHi);
+    ctx.beginPath(); ctx.arc(64, 22, 34, -1.3, 1.3); ctx.strokeStyle = C.white; ctx.lineWidth = 16; ctx.stroke();
+    for (const dx of [-40, 0, 36]) { const P = []; for (let i = 0; i <= 8; i++) P.push([dx + Math.sin(i * 0.9 + t * 5 + dx) * 8, -66 - i * 9]); line(P, C.gumEdge, 9); }
+  } else if (kind === 'stress') {
+    circle(0, 36, 80, C.skin); ell(-24, 6, 14, 8, C.white + '55', -0.5);
+    circle(-26, 32, 9, C.ink); circle(26, 32, 9, C.ink);
+    line([[-50, 4], [-12, 16]], C.ink, 9); line([[50, 4], [12, 16]], C.ink, 9);
+    const P = []; for (let i = 0; i <= 8; i++) P.push([-34 + i * 8.5, 78 + (i % 2 ? -6 : 6)]); line(P, C.ink, 7);
+    const S = []; for (let i = 0; i <= 9; i++) S.push([-72 + i * 16, (i % 2 ? -112 : -72) + 3 * Math.sin(t * 9 + i)]); line(S, C.red, 11);   // red stress zigzag
+  } else {   // screen
+    ctx.save(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 10;
+    for (let i = 0; i < 8; i++) { const an = i * TAU / 8 + 0.2, r0 = 92 + 4 * Math.sin(t * 8 + i); line([[Math.cos(an) * r0, Math.sin(an) * r0], [Math.cos(an) * (r0 + 30), Math.sin(an) * (r0 + 30)]], C.yellow, 10); }
+    ctx.restore();
+    rr(-50, -86, 100, 172, 20); ctx.fillStyle = C.ink; ctx.fill(); rr(-40, -72, 80, 140, 10); ctx.fillStyle = C.sky; ctx.fill();
+    rr(-28, -56, 56, 10, 5); ctx.fillStyle = C.white; ctx.fill(); rr(-28, -38, 40, 10, 5); ctx.fill(); rr(-28, -20, 50, 10, 5); ctx.fill();
+  }
+  ctx.restore(); ctx.restore();
+}
+
+
+/** eye chart (graphic): white board, ink rim, rows E / F P / T O Z / L P E D shrinking. ~260x380 px at s = 1, origin = centre */
+export function eyeChart(x, y, s = 1, sc = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-130, -190, 260, 380, 22); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  [['E', 120, -100], ['F P', 64, 6], ['T O Z', 44, 76], ['L P E D', 30, 132]].forEach(([tx, sz, ty]) => { ctx.font = `900 ${sz}px Inter`; ctx.letterSpacing = '4px'; ctx.fillText(tx, 0, ty); });
+  ctx.letterSpacing = '0px'; ctx.restore();
 }

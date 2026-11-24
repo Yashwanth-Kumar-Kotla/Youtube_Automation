@@ -1,0 +1,53 @@
+{
+  "title": "What Happens When Your Eyelid Won't Stop Twitching?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Myokymia' (eyelid myokymia is a slow, uncontrollable twitching with wavelike contractions in the eyelids; 'You can have it in your upper or lower eyelids, but lower is more common'; 'happens because of malfunctions somewhere in your nervous system'; triggers: tiredness or sleep deprivation, caffeine, nicotine, dry eyes, fatigue, stress; 'extremely common and usually harmless'; 'Most cases go away within days or weeks without any treatment'; see a provider 'if eyelid myokymia doesn't go away after a few weeks', sooner if it spreads to other parts of your face; treatment may be an option if it happens consistently for at least three months): https://my.clevelandclinic.org/health/symptoms/myokymia",
+    "Cleveland Clinic, 'Eye Twitching' (muscles in or near your eye move without you controlling them; myokymia twitches are most common in the eyelids, especially the lower ones; triggers include stress, not enough sleep, caffeine or nicotine, eye strain, fatigue; see an eye doctor if it affects your vision or worries you, right away for any vision change): https://my.clevelandclinic.org/health/symptoms/17663-eye-twitching",
+    "American Academy of Ophthalmology EyeWiki, 'Eyelid Myokymia' (asynchronous discharges within the orbicularis oculi muscle; 'Single motor units may fire several times per second at a frequency of 3-8 Hz'; typically one-sided and more common in the lower lid; usually benign and self-limited, resolving within minutes to weeks; triggers include stress, fatigue, caffeine, sleep deprivation, prolonged screen time): https://eyewiki.aao.org/Eyelid_Myokymia",
+    "Tease (next video): Yang W, Sahota R, Das S, 'Snap, crackle and pop: when sneezing leads to crackling in the neck', BMJ Case Reports 2018 (a 34-year-old man pinched his nose and closed his mouth to stop a forceful sneeze and tore the back of his throat; recovered fully), via ScienceDaily 2018-01-15: https://www.sciencedaily.com/releases/2018/01/180115184339.htm"
+  ],
+  "lines": [
+    {
+      "text": "What happens when your eyelid won't stop twitching?",
+      "caps": "WHAT *HAPPENS | WHEN YOUR *EYELID | WON'T STOP *TWITCHING?"
+    },
+    {
+      "text": "Its muscle can fire up to eight times a second. Gone in weeks, or months?",
+      "caps": "ITS *MUSCLE | CAN *FIRE | UP TO *8 | TIMES A *SECOND | GONE IN *WEEKS | OR *MONTHS?"
+    },
+    {
+      "text": "Usually it's the lower lid, and the glitch is in your nerves.",
+      "caps": "*USUALLY | THE *LOWER LID | THE *GLITCH | IN YOUR *NERVES"
+    },
+    {
+      "text": "Ever had it flicker through a whole video call?",
+      "caps": "EVER *HAD IT | *FLICKER THROUGH | A *WHOLE | *VIDEO CALL?"
+    },
+    {
+      "text": "Here's the twist: the trigger is usually your week.",
+      "caps": "*HERE'S | THE *TWIST | THE *TRIGGER | IS *USUALLY | YOUR *WEEK"
+    },
+    {
+      "text": "Short sleep, extra coffee, stress, screens.",
+      "caps": "SHORT *SLEEP | EXTRA *COFFEE | *STRESS | *SCREENS"
+    },
+    {
+      "text": "Weeks. Most fade on their own.",
+      "caps": "*WEEKS. MOST | *FADE ON | THEIR *OWN"
+    },
+    {
+      "text": "Spreading? Lingering? Eye doctor.",
+      "caps": "*SPREADING? | *LINGERING? | EYE *DOCTOR"
+    },
+    {
+      "text": "Next Body File: the held-in sneeze that tore a man's throat. But first...",
+      "caps": "NEXT *BODY FILE | THE HELD-IN *SNEEZE | THAT *TORE | A MAN'S *THROAT | BUT *FIRST..."
+    }
+  ]
+}
