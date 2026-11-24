@@ -3302,6 +3302,220 @@ export function sofa(x, y, s = 1) {
   ctx.restore();
 }
 
+// ═════════════════════════ HEAD RUSH SET (2026-11-24 "stand up too fast") ═════════════════════════
+const HR_BLOOD_D = '#A81E2D', HR_BLOOD_L = '#F0707C', HR_WOOD = '#C8734A', HR_WOOD_D = '#A85E3A', HR_WOOD_L = '#D98C63';
+
+/** sub-polyline of P between fractions a..b of its length (a < b, both 0..1) */
+function hrSub(P, a, b) {
+  const seg = [], L = [0]; for (let i = 1; i < P.length; i++) L.push(L[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+  const tot = L[L.length - 1], at = (u) => { const d = clamp(u) * tot; let i = 1; while (i < P.length - 1 && L[i] < d) i++; const k = (d - L[i - 1]) / ((L[i] - L[i - 1]) || 1); return [lerp(P[i - 1][0], P[i][0], k), lerp(P[i - 1][1], P[i][1], k)]; };
+  if (b <= a) return null;
+  seg.push(at(a)); for (let i = 1; i < P.length - 1; i++) { const u = L[i] / tot; if (u > a && u < b) seg.push(P[i]); } seg.push(at(b));
+  return seg;
+}
+
+/** the hero getting up off a couch, FRONT view, anchored to the floor: (x, floor) = between his feet on the floor.
+ *  rise 0..1: 0 = seated (short foreshortened legs, knees apart), 1 = standing (same size as man()). xray: whole body
+ *  x-ray (head normal) + the BLOOD ROUTE inside: a vessel from the neck down past the heart, splitting into both legs.
+ *  slug = where a red 1-liter blood mass sits on the route (0 = neck, 0.5 = the hips, 1 = the feet; null = none),
+ *  pool 0..1 = blood filled up the leg veins from the feet (pooled), veins swell with it. beat 0..1 = heart pulse.
+ *  bend = knee splay px at rise 0 (default 64), lean 0..1 = torso tipped forward toward the camera (squashed ~10%, vessels follow).
+ *  Arms must keep their hands above the hips (the body is clipped at hip level). Other man() options pass through.
+ *  Returns screen points { chest, neck, heart, slug, knee, foot, s } */
+export function hrRiser(x, floor, s, o = {}) {
+  const rise = clamp(o.rise ?? 1), L = lerp(250, 440, rise), cy = floor - (180 + L) * s, XR = !!o.xray;
+  const sp = (o.bend ?? 64) * (1 - rise), lean = clamp(o.lean || 0);
+  const legPts = (sd) => [[sd * 67, 196], [sd * (67 + sp), 180 + L * 0.42], [sd * 67, 180 + L - 26]];
+  ctx.save(); ctx.translate(x, cy); ctx.scale(s, s);
+  // legs (behind the torso)
+  for (const sd of [-1, 1]) {
+    const P = legPts(sd);
+    if (XR) {
+      line(P, C.cyan, 136); line(P, C.xnavy, 122);
+      line([P[0], P[1]], C.cyan, 16); circle(P[1][0], P[1][1], 20, C.cyan);
+      const d = 9; line([[P[1][0] - d, P[1][1] + 20], [P[2][0] - d, P[2][1]]], C.cyan, 8); line([[P[1][0] + d, P[1][1] + 20], [P[2][0] + d, P[2][1]]], C.cyan, 8);
+      ell(P[2][0] + sd * 10, P[2][1] + 14, 70, 30, C.cyan); ell(P[2][0] + sd * 10, P[2][1] + 14, 60, 22, C.xnavy);
+    } else {
+      ell(P[2][0] + sd * 14, P[2][1] + 16, 74, 34, '#5A4030');
+      line(P, C.pants, 122); if (sd > 0) line(P.map(([px, py]) => [px + 38, py]), C.pantsShade, 40);
+    }
+  }
+  // the body above the hips (man(), clipped so its own standing legs never show)
+  ctx.save(); ctx.beginPath(); ctx.rect(-1200, -2000, 2400, 2000 + 205); ctx.clip();
+  const mo = { ...o }; delete mo.rise; delete mo.slug; delete mo.pool; delete mo.beat; delete mo.bend; delete mo.lean;
+  ctx.translate(0, 200); ctx.scale(1, 1 - 0.1 * lean); ctx.translate(0, -200);   // lean 0..1: torso tipped toward the camera (foreshortened, head lower)
+  man({ ...mo, x: 0, y: 0, s: 1, xray: XR });
+  ctx.restore();
+  const lk = 1 - 0.1 * lean, LY = (yy) => (yy < 200 ? 200 + (yy - 200) * lk : yy);
+  const out = { chest: [x, cy + (LY(0)) * s], s, neck: [x, cy + LY(-228) * s], heart: [x - 34 * s, cy + LY(-70) * s], foot: [x + 67 * s, floor - 26 * s], knee: [x + (67 + sp) * s, cy + (180 + L * 0.5) * s], slug: null };
+  if (XR) {
+    const trunk = [[0, -226], [0, -150], [-14, -70], [-4, 40], [0, 168]].map(([px, py]) => [px, LY(py)]);
+    const legR = (sd) => [[0, 168], [sd * 50, 210], ...legPts(sd).slice(1).map(([px, py]) => [px, py - 6])];
+    const tube = (P) => { line(P, C.pinkDark, 30); line(P, C.xnavy, 16); };
+    tube(trunk); tube(legR(-1)); tube(legR(1));
+    heart(-34, LY(-70), 0.42, o.beat || 0);
+    const blood = (P, w = 20) => { if (!P) return; line(P, HR_BLOOD_D, w + 8); line(P, C.red, w); line(P, HR_BLOOD_L, 6); };
+    const pool = clamp(o.pool || 0);
+    if (pool > 0) for (const sd of [-1, 1]) blood(hrSub(legR(sd), 1 - pool, 1), 20 + 16 * pool);
+    if (o.slug != null) {
+      const u = o.slug, a = u - 0.1, b = u + 0.1;
+      const ta = clamp(a / 0.5), tb = clamp(b / 0.5), la = clamp((a - 0.5) / 0.5), lb = clamp((b - 0.5) / 0.5);
+      if (tb > ta) blood(hrSub(trunk, ta, tb), 34);
+      if (lb > la) for (const sd of [-1, 1]) blood(hrSub(legR(sd), la, lb), 30);
+      const c = u <= 0.5 ? hrSub(trunk, 0, Math.max(0.001, clamp(u / 0.5))).pop() : hrSub(legR(1), 0, Math.max(0.001, clamp((u - 0.5) / 0.5))).pop();
+      out.slug = [x + c[0] * s, cy + c[1] * s];
+    }
+  }
+  ctx.restore();
+  return out;
+}
+
+/** blurry-vision edges, flat: three wobbly whitish bands creeping in from the frame edges (no real blur). a 0..1 = how far
+ *  they reach, t = film time (they wobble). Draw last in the shot (over everything, under the caption) */
+export function hrFog(a, t = 0) {
+  if (a <= 0) return;
+  ctx.save();
+  [[150, 0.42], [90, 0.4], [40, 0.45]].forEach(([inset, al], k) => {
+    const d = inset * clamp(a) * 1.4 + 10, N = 28;
+    ctx.beginPath(); ctx.rect(-400, -400, W + 800, H + 800);
+    const pts = [];
+    for (let i = 0; i < N; i++) pts.push([lerp(0, W, i / N), 0]); for (let i = 0; i < N * 1.7; i++) pts.push([W, lerp(0, H, i / (N * 1.7))]);
+    for (let i = 0; i < N; i++) pts.push([lerp(W, 0, i / N), H]); for (let i = 0; i < N * 1.7; i++) pts.push([0, lerp(H, 0, i / (N * 1.7))]);
+    pts.forEach(([px, py], i) => {
+      const w = d + 26 * Math.sin(i * 0.9 + t * 3 + k * 2) * clamp(a);
+      const qx = clamp(px, w, W - w), qy = clamp(py, w, H - w);
+      i ? ctx.lineTo(qx, qy) : ctx.moveTo(qx, qy);
+    });
+    ctx.closePath(); ctx.fillStyle = k === 2 ? '#FFFFFF' : '#E9E4DA'; ctx.globalAlpha = al * clamp(a * 1.5); ctx.fill('evenodd');
+  });
+  ctx.restore();
+}
+
+/** arrow pill: ink pill with white text and a yellow arrow (dir -1 = up, 1 = down) on its left. sc = pop-in */
+export function hrArrowPill(text, x, y, size, dir = -1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  ctx.font = `900 ${size}px Inter`; ctx.letterSpacing = '2px';
+  const tw = ctx.measureText(text).width, h = size * 1.7, aw = size * 1.0, w = tw + aw + size * 1.4;
+  rr(-w / 2, -h / 2, w, h, h / 2); ctx.fillStyle = C.ink; ctx.fill();
+  const ax = -w / 2 + size * 0.55 + aw / 2;
+  ctx.save(); ctx.translate(ax, 0); ctx.scale(1, -dir);
+  ctx.beginPath(); ctx.moveTo(0, -size * 0.62); ctx.lineTo(size * 0.5, -size * 0.02); ctx.lineTo(size * 0.18, -size * 0.02); ctx.lineTo(size * 0.18, size * 0.58);
+  ctx.lineTo(-size * 0.18, size * 0.58); ctx.lineTo(-size * 0.18, -size * 0.02); ctx.lineTo(-size * 0.5, -size * 0.02); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = C.white; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(text, ax + aw / 2 + size * 0.3, size * 0.05);
+  ctx.letterSpacing = '0px'; ctx.restore();
+}
+
+/** living room for the couch shots: cream wall, floor from y = floor, a framed picture + a floor lamp (nothing in the middle) */
+export function hrLounge(floor = 1250) {
+  fillAll(C.bg);
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, floor, W + 600, H);
+  rr(-300, floor - 14, W + 600, 14, 0); ctx.fillStyle = '#D8CFBC'; ctx.fill();
+  rr(380, 170, 320, 210, 14); ctx.fillStyle = C.ink; ctx.fill(); rr(396, 186, 288, 178, 6); ctx.fillStyle = C.sky; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(396, 364); ctx.lineTo(480, 270); ctx.lineTo(540, 330); ctx.lineTo(590, 290); ctx.lineTo(684, 364); ctx.closePath(); ctx.fillStyle = C.leaf; ctx.fill();
+  circle(620, 230, 26, C.yellow);
+  line([[985, floor - 10], [985, 420]], C.ink, 14); ell(985, floor - 6, 70, 16, C.ink);
+  ctx.beginPath(); ctx.moveTo(905, 420); ctx.lineTo(1065, 420); ctx.lineTo(1030, 300); ctx.lineTo(940, 300); ctx.closePath(); ctx.fillStyle = '#F7D88A'; ctx.fill();
+}
+
+/** front door (wood, two panels, yellow knob) on the wall with a doorbell plate to its LEFT. Origin = bottom centre of the
+ *  door, ~380x900 px at s = 1. ring 0..1 = the bell rings (yellow button lit + ink ring arcs pulsing out), t = film time.
+ *  Returns the bell's screen point */
+export function hrDoor(x, y, s = 1, { ring = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-230, -940, 460, 940, [20, 20, 0, 0]); ctx.fillStyle = C.white; ctx.fill();
+  rr(-190, -900, 380, 900, [12, 12, 0, 0]); ctx.fillStyle = HR_WOOD; ctx.fill();
+  rr(110, -900, 80, 900, [0, 12, 0, 0]); ctx.fillStyle = HR_WOOD_D; ctx.fill();
+  for (const [py, ph] of [[-840, 330], [-450, 380]]) { rr(-140, py, 280, ph, 12); ctx.fillStyle = HR_WOOD_D; ctx.fill(); rr(-128, py + 12, 256, ph - 24, 8); ctx.fillStyle = HR_WOOD_L; ctx.fill(); }
+  circle(140, -470, 26, '#C99A1E'); circle(136, -474, 20, C.yellow);
+  // bell plate
+  const bx = -300, by = -500;
+  rr(bx - 34, by - 50, 68, 100, 14); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = C.gumEdge; ctx.stroke();
+  circle(bx, by, 22, ring > 0 ? C.yellow : C.gumEdge);
+  if (ring > 0) {
+    ctx.lineCap = 'round';
+    for (let k = 0; k < 3; k++) {
+      const u = (t * 2.2 + k / 3) % 1, r = 50 + u * 120;
+      ctx.globalAlpha = clamp(ring) * (1 - u); ctx.strokeStyle = C.ink; ctx.lineWidth = 10;
+      for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(bx, by, r, sd > 0 ? -0.6 : Math.PI - 0.6, sd > 0 ? 0.6 : Math.PI + 0.6); ctx.stroke(); }
+    }
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  return [x + bx * s, y + by * s];
+}
+
+/** neck-artery close-up for a lens() (x-ray look, local coords, r = 300 units): cyan neck outline + spine on the right, the
+ *  red carotid artery coming up from the bottom and forking, with the round sinus bulb at the fork carrying 4 sensors
+ *  (baroreceptors). flow 0..1 = speed of the blood dots, drop 0..1 = pressure drop (artery narrows, dots thin out),
+ *  flash 0..1 = sensors light up yellow + pulse rings + a yellow signal runs up the nerve. t = film time.
+ *  Returns the bulb centre (local units) */
+export function hrNeckArtery({ flow = 1, drop = 0, flash = 0, t = 0 } = {}) {
+  fillAll(C.xnavy);
+  ctx.save();
+  ctx.strokeStyle = C.cyan; ctx.lineWidth = 10; ctx.globalAlpha = 0.9;
+  ctx.beginPath(); ctx.moveTo(-210, 320); ctx.lineTo(-190, -80); ctx.quadraticCurveTo(-180, -240, -60, -320); ctx.stroke();
+  ctx.globalAlpha = 1;
+  for (let y = -300; y < 320; y += 74) { rr(150, y, 90, 58, 14); ctx.fillStyle = C.cyan; ctx.fill(); }
+  const w = lerp(64, 44, clamp(drop)), F = [-40, -10];
+  const main = [[-40, 330], [-40, F[1]]], b1 = [[-40, F[1]], [-120, -170], [-130, -330]], b2 = [[-40, F[1]], [20, -170], [30, -330]];
+  for (const P of [main, b1, b2]) line(P, HR_BLOOD_D, w + 14);
+  ell(F[0], F[1] + 20, w * 0.95, w * 1.15, HR_BLOOD_D);
+  for (const P of [main, b1, b2]) line(P, C.red, w);
+  ell(F[0], F[1] + 20, w * 0.95 - 7, w * 1.15 - 7, C.red);
+  // blood dots moving up
+  const n = Math.round(lerp(9, 4, clamp(drop)));
+  for (let k = 0; k < n; k++) {
+    const u = (t * lerp(0.15, 0.6, clamp(flow)) + k / n) % 1;
+    const P = u < 0.5 ? hrSub(main, 0, Math.max(0.001, u * 2)).pop() : hrSub(k % 2 ? b1 : b2, 0, Math.max(0.001, (u - 0.5) * 2)).pop();
+    ell(P[0], P[1], 13, 9, HR_BLOOD_L);
+  }
+  // nerve from the bulb up to the brain
+  const nv = [[F[0] + 50, F[1] + 20], [90, -120], [100, -330]];
+  line(nv, C.yellow + '66', 10);
+  if (flash > 0) { const p = hrSub(nv, 0, Math.max(0.001, clamp(flash * 1.4))); line(p, C.yellow, 12); }
+  // sensors
+  const S = [[-82, 0], [2, 0], [-70, 54], [-10, 56]];
+  S.forEach(([sx, sy], i) => {
+    const on = clamp(flash) * (0.6 + 0.4 * Math.abs(Math.sin(t * 9 + i)));
+    circle(F[0] + sx + 40, F[1] + sy - 8, 17, C.ink); circle(F[0] + sx + 40, F[1] + sy - 8, 11, on > 0.05 ? C.yellow : C.gumEdge);
+    if (on > 0.05) { ctx.globalAlpha = on * (1 - ((t * 2 + i * 0.25) % 1)); ctx.strokeStyle = C.yellow; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(F[0] + sx + 40, F[1] + sy - 8, 20 + 30 * ((t * 2 + i * 0.25) % 1), 0, TAU); ctx.stroke(); ctx.globalAlpha = 1; }
+  });
+  ctx.restore();
+  return [F[0], F[1] + 20];
+}
+
+/** simple white bone icon (two knobbly ends), ink outline. ~300x110 px at s = 1 */
+export function hrBone(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  const shape = (k) => { for (const sd of [-1, 1]) for (const dy of [-1, 1]) circle(sd * 120, dy * 26, 36 + k, ctx.fillStyle); rr(-120, -24 - k, 240, 48 + 2 * k, 10); ctx.fill(); };
+  ctx.fillStyle = C.ink; shape(9); ctx.fillStyle = C.white; shape(0);
+  rr(-90, -14, 120, 10, 5); ctx.fillStyle = C.gum; ctx.fill();
+  ctx.restore();
+}
+
+/** next-episode tease ("funny bone"): white disc badge, ink ring, a bent arm (blue sleeve, skin forearm) with the elbow
+ *  bottom-left and a yellow nerve running along the arm and round the elbow, zap marks at the elbow. ~320 px at s = 1.
+ *  zap 0..1 lights the zaps, sc = pop-in, t = film time */
+export function hrElbowBadge(x, y, s = 1, { zap = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 160, C.ink); circle(0, 0, 144, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 144, 0, TAU); ctx.clip();
+  const sh = [190, 60], el = [-60, 70], hd = [-10, -100];
+  line([sh, el], C.ink, 96); line([el, hd], C.ink, 82); circle(hd[0], hd[1] - 10, 52, C.ink);
+  line([sh, el], C.skin, 80); line([el, hd], C.skin, 66); circle(hd[0], hd[1] - 10, 44, C.skin);
+  line([[sh[0], sh[1] + 18], [el[0] + 30, el[1] + 22]], C.skinShade, 18);
+  for (const k of [-24, -4, 16]) line([[hd[0] - 30, hd[1] - 30 + k], [hd[0] + 20, hd[1] - 30 + k]], C.skinShade, 6);
+  rr(70, 6, 200, 108, 30); ctx.fillStyle = C.shirt; ctx.fill(); rr(70, 70, 200, 44, [0, 0, 30, 30]); ctx.fillStyle = C.shirtShade; ctx.fill();
+  line([[80, 92], [-40, 100], [-88, 78], [-74, 30], [-40, -40]], C.ink, 20); line([[80, 92], [-40, 100], [-88, 78], [-74, 30], [-40, -40]], C.yellow, 11);
+  ctx.restore();
+  if (zap > 0) painZap(-92, 88, 0.8, clamp(zap), t, [2.2, 2.9, 3.6]);
+  ctx.restore();
+}
+
 /** pinch icon: two chunky red arrowheads (ink edge) squeezing toward (x, y) from above and below. p 0..1 squeezes them in */
 export function pinchIcon(x, y, s = 1, p = 1, sc = 1) {
   if (sc <= 0) return;

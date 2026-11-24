@@ -1193,6 +1193,51 @@
    "branch": "stock/body/2026-11-24-body-02",
    "history": [],
    "description": "Send this to the friend who swallows every sneeze.\nIn a 2018 BMJ Case Reports case, a 34-year-old man blocked his nose and mouth to stop a forceful sneeze and tore a hole in the back of his throat. Air leaked into his neck and chest (doctors heard crackling down to his ribcage), he was tube-fed with IV antibiotics, spent seven days in hospital and had no further problems at two months. The authors call it rare but say blocking your nose and mouth during a sneeze is a dangerous manoeuvre. Cleveland Clinic adds that a stifled sneeze can also hurt your ears, and advises letting it out into a tissue or your elbow.\nNext Body File: why standing up fast blurs your vision.\nFollow Body Files for a new one every day.\n#bodyfiles #sneeze #humanbody #science #health #shorts\n\nSources:\nBMJ Case Reports 2018 (via ScienceDaily): https://www.sciencedaily.com/releases/2018/01/180115184339.htm\nNPR 2018: https://www.npr.org/sections/thetwo-way/2018/01/16/578410729/man-ruptures-his-throat-by-stifling-a-big-sneeze-prompting-doctors-warning\nLive Science 2018: https://www.livescience.com/61424-sneeze-throat-rupture.html\nCleveland Clinic, Don't Stifle That Sneeze: https://health.clevelandclinic.org/dont-stifle-that-sneeze-you-could-get-hurt\nNHS, Low blood pressure: https://www.nhs.uk/conditions/low-blood-pressure-hypotension/"
+  },
+  "2026-11-24-body-03": {
+   "title": "What Happens When You Stand Up Too Fast?",
+   "hashtags": [
+    "#bodyfiles",
+    "#headrush",
+    "#humanbody",
+    "#science",
+    "#health",
+    "#shorts"
+   ],
+   "pinned_comment": "How many times this week did standing up make your vision go fuzzy? Give a number, be honest. (And your guess before the reveal: did the blood go to your head or your legs?)",
+   "series": "Body Files",
+   "topic": "What happens when you stand up too fast?",
+   "experiment_arm": "len-25-30 + loop-close",
+   "teases": "What happens when you hit your funny bone?",
+   "topic_cluster": "blood",
+   "topic_source": "backlog #1: mandatory, promised by the hold-in-a-sneeze video (work/2026-11-24-body-1) with 'why standing up fast blurs your vision'; paid off with the blurred vision in line 3 and the blood pooling in the legs",
+   "hook_pattern": "question+where-did-it-go",
+   "format": "name-twist explainer",
+   "first_frame": "hero-mid-action (hero caught half-way up off a couch, x-ray body with a glowing blood column sliding, HEAD / LEGS pills, blurry edges)",
+   "structure_note": "A 'the name lies' explainer: frame 1 is the hero mid-rise with a '1 LITER' tag on a cyan blood column and two arrow pills (HEAD up / LEGS down), the screen edges blur on 'vision can go blurry', a doorbell cutaway for the relatable beat, then the re-hook slams a big 'HEAD RUSH?' label over the hero's head, a zoom into the neck arteries where little sensors flash and the heart speeds up, the camera drops down the body to the legs as the LEGS pill gets its check, a calm slow-rise shot for the safety line, the funny-bone tease, and a snap back to the frame-1 hero mid-rise. Different from the eyelid (speed-number, calendar montage) and sneeze (myth-fact cold open, true story) videos: no myth stamp, no case story, a direction-choice guess on a moving liquid.",
+   "safety": "Calm and non-alarming: says 'can' go blurry, gives 'rise slowly' and 'dizzy often? see a doctor' in the voice, and the description adds the NHS / Cleveland Clinic advice (get up slowly; see a doctor if it happens often, or if you faint or fall). Narrator is a curious friend, no medical advice beyond the sourced self-help. No fainting or falling shown on screen, no challenge framing.",
+   "engagement": {
+    "guess": "A head vs B legs (answer: B legs. Merck Manual: on suddenly standing, 1/2 to 1 L of blood pools in the veins of the legs and trunk; Mayo Clinic: gravity causes blood to collect in the legs and belly. Option A is the natural assumption from the common name 'head rush' (UCLA Health))",
+    "relatable": "Ever jumped up for the doorbell and gone fuzzy?",
+    "rehook_line": 4,
+    "answer_line": 6,
+    "answer_word_position": "answer starts at word 61 of 84 (60 words before it = 71.4%); re-hook starts at word 40 (46%); narration 84 words, about 28-29 s at am_michael 1.15",
+    "first_frame": "The hero is caught half-way up off a couch, and through cyan x-ray skin a glowing column of blood tagged '1 LITER' is visibly sliding inside his body while two arrow pills, 'HEAD' pointing up and 'LEGS' pointing down, pop on either side and the edges of the frame start to blur, so the stand-up and the guess are on screen before the first word.",
+    "rewatch_detail": "On the legs shot a tiny label on the leg veins reads '1/2 to 1 L (Merck Manual)', and on the neck zoom a small tag reads 'baroreceptors' next to the flashing sensors in the neck artery (Mayo Clinic). Only sourced labels.",
+    "loop": "The tease ends on 'But first...' as the camera snaps back to the frame-1 hero half-way up off the couch with the HEAD / LEGS pills, so the replay's first line completes the sentence: 'But first... what happens when you stand up too fast?'"
+   },
+   "id": "2026-11-24-body-03",
+   "channel": "body",
+   "made_at": "2026-11-24T00:25-06:00",
+   "made_week": "2026-W48",
+   "playbook_version": "pb-a66cc658",
+   "research_file": "research/2026-W46.md",
+   "length": 27.1,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-24-body-03",
+   "history": [],
+   "description": "Send this to the friend who sees stars every time they get off the couch.\nWhen you stand up suddenly, gravity pulls about half a liter to a liter of blood into the veins of your legs and trunk (Merck Manual). Your blood pressure dips for a moment, which can make you dizzy or blur your vision, until sensors near your heart and neck arteries tell your heart to beat faster (Mayo Clinic). People call it a head rush, but the blood is actually heading down. Get up slowly, and if it happens often, or you faint or fall, talk to a doctor (NHS, Cleveland Clinic).\nNext Body File: your funny bone isn't a bone.\nFollow Body Files for a new one every day.\n#bodyfiles #headrush #humanbody #science #health #shorts\n\nSources:\nMerck Manual, Orthostatic Hypotension: https://www.merckmanuals.com/professional/cardiovascular-disorders/symptoms-of-cardiovascular-disorders/orthostatic-hypotension\nMayo Clinic, Orthostatic hypotension: https://www.mayoclinic.org/diseases-conditions/orthostatic-hypotension/symptoms-causes/syc-20352548\nCleveland Clinic, Orthostatic Hypotension: https://my.clevelandclinic.org/health/diseases/9385-low-blood-pressure-orthostatic-hypotension\nCleveland Clinic, Dizzy When Standing: https://health.clevelandclinic.org/dizzy-when-standing\nUCLA Health, Feel dizzy when you stand up?: https://www.uclahealth.org/news/article/feel-dizzy-when-you-stand-up-what-it-means-and-what-do-about\nNHS, Low blood pressure: https://www.nhs.uk/conditions/low-blood-pressure-hypotension/\nCleveland Clinic, Ulnar Nerve: https://my.clevelandclinic.org/health/body/21664-ulnar-nerve"
   }
  }
 }

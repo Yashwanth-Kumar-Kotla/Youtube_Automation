@@ -1,0 +1,56 @@
+{
+  "title": "What Happens When You Stand Up Too Fast?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Merck Manual Professional, 'Orthostatic Hypotension' ('Normally, the gravitational stress of suddenly standing causes blood (1/2 to 1 L) to pool in the veins of the legs and trunk'; the drop in venous return lowers cardiac output and BP; baroreceptors in the aortic arch and carotid sinus activate reflexes that rapidly return BP to normal, raising heart rate; 'Symptoms of faintness, light-headedness, dizziness, confusion, or blurred vision occur within seconds to a few minutes of standing'): https://www.merckmanuals.com/professional/cardiovascular-disorders/symptoms-of-cardiovascular-disorders/orthostatic-hypotension",
+    "Mayo Clinic, 'Orthostatic hypotension (postural hypotension)' (symptoms include lightheadedness or dizziness upon standing and blurry vision; when you stand, gravity causes blood to collect in the legs and belly and blood pressure drops; special cells (baroreceptors) near the heart and neck arteries sense the lower pressure and signal the brain, which tells the heart to beat faster and pump more blood): https://www.mayoclinic.org/diseases-conditions/orthostatic-hypotension/symptoms-causes/syc-20352548",
+    "Cleveland Clinic, 'Orthostatic Hypotension' (blurred vision is a listed symptom; diagnosed by a drop of 20 mmHg top / 10 mmHg bottom within three minutes of standing; give yourself more time to stand; call a provider if you often get dizzy when standing; immediate care for fainting, falls or chest pain): https://my.clevelandclinic.org/health/diseases/9385-low-blood-pressure-orthostatic-hypotension",
+    "Cleveland Clinic Health Essentials, 'Dizzy When Standing' (blood can settle or pool in the veins in your lower body; 'your blood pressure in your brain drops which causes you to feel dizzy'; sit on the edge of the bed for a couple seconds before standing; if this is happening often, see your doctor): https://health.clevelandclinic.org/dizzy-when-standing",
+    "UCLA Health, 'Feel dizzy when you stand up? What it means and what to do about it' (some people call it a 'head rush'; the medical name is orthostatic or postural hypotension): https://www.uclahealth.org/news/article/feel-dizzy-when-you-stand-up-what-it-means-and-what-do-about",
+    "NHS, 'Low blood pressure (hypotension)' (blurred vision and dizziness; symptoms when you stand up may be postural hypotension; get up slowly; see a GP if symptoms keep happening): https://www.nhs.uk/conditions/low-blood-pressure-hypotension/",
+    "Tease (next video): Cleveland Clinic, 'Ulnar Nerve' (your funny bone isn't a bone, it's a nerve; the tingle comes from pressure on the ulnar nerve at the elbow): https://my.clevelandclinic.org/health/body/21664-ulnar-nerve"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you stand up too fast?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *STAND | UP TOO *FAST?"
+    },
+    {
+      "text": "Up to a liter of blood moves. Toward your head, or your legs?",
+      "caps": "UP *TO | *1 LITER | OF *BLOOD | *MOVES | YOUR *HEAD? | OR YOUR *LEGS?"
+    },
+    {
+      "text": "Within seconds, your vision can go blurry.",
+      "caps": "WITHIN *SECONDS | YOUR *VISION | GOES *BLURRY"
+    },
+    {
+      "text": "Ever jumped up for the doorbell and gone fuzzy?",
+      "caps": "EVER *JUMPED UP | FOR THE *DOORBELL | AND GONE *FUZZY?"
+    },
+    {
+      "text": "But here's the twist: we call it a head rush.",
+      "caps": "*BUT HERE'S | THE *TWIST | WE *CALL IT | A *HEAD RUSH"
+    },
+    {
+      "text": "Sensors in your neck arteries catch the pressure drop. Your heart speeds up.",
+      "caps": "*SENSORS | IN YOUR *NECK | CATCH THE *DROP | YOUR *HEART | SPEEDS *UP"
+    },
+    {
+      "text": "Your blood pooled in your legs.",
+      "caps": "YOUR *BLOOD | *POOLED | IN YOUR *LEGS"
+    },
+    {
+      "text": "Rise slowly. Dizzy often? See a doctor.",
+      "caps": "RISE *SLOWLY | DIZZY *OFTEN? | SEE A *DOCTOR"
+    },
+    {
+      "text": "Next Body File: your funny bone isn't a bone. But first...",
+      "caps": "NEXT *BODY FILE | YOUR *FUNNY BONE | ISN'T A *BONE | *BUT FIRST..."
+    }
+  ]
+}
