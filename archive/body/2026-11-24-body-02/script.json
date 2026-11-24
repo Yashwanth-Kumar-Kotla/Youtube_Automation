@@ -1,0 +1,53 @@
+{
+  "title": "What Happens If You Hold In a Sneeze?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Yang W, Sahota R, Das S, 'Snap, crackle and pop: when sneezing leads to crackling in the neck', BMJ Case Reports 2018, via ScienceDaily 2018-01-15 (a 34-year-old man tried to hold in a forceful sneeze 'pinching his nose and keeping his mouth clamped shut at the same time'; felt a popping sensation in his neck, which swelled; swallowing became very painful and he nearly lost his voice; doctors heard 'popping and crackling sounds (crepitus)' from his neck to his ribcage; CT confirmed air had entered the deep chest tissues; tube-fed with IV antibiotics; discharged after seven days; spontaneous rupture of the back of the throat is rare; authors: 'Halting sneezing via blocking [the] nostrils and mouth is a dangerous manoeuvre, and should be avoided'): https://www.sciencedaily.com/releases/2018/01/180115184339.htm",
+    "NPR, 'Man Ruptures His Throat By Stifling A Big Sneeze, Prompting Doctors' Warning' (2018-01-16) and Live Science, 'Here's a Perfect Example of Why You Shouldn't Stifle Your Sneeze' (the stifled sneeze tore a hole in the bottom part of his pharynx; no further complications at two-month follow-up): https://www.npr.org/sections/thetwo-way/2018/01/16/578410729/man-ruptures-his-throat-by-stifling-a-big-sneeze-prompting-doctors-warning , https://www.livescience.com/61424-sneeze-throat-rupture.html",
+    "Cleveland Clinic Health Essentials, 'Don't Stifle That Sneeze: You Could Get Hurt' (the pressure has nowhere to exit and can force air and mucus into your eustachian tube; can damage the eardrum or cause a middle ear infection; in extreme cases can rupture blood vessels in the head or neck; no reported deaths; let the sneeze happen and cover your nose and mouth with a tissue or your elbow): https://health.clevelandclinic.org/dont-stifle-that-sneeze-you-could-get-hurt",
+    "Tease (next video): NHS, 'Low blood pressure (hypotension)' (symptoms include lightheadedness or dizziness and blurred vision; 'If you get symptoms when you stand up or suddenly change position, you may have a type of low blood pressure called postural hypotension'; get up slowly): https://www.nhs.uk/conditions/low-blood-pressure-hypotension/"
+  ],
+  "lines": [
+    {
+      "text": "What happens if you hold in a sneeze?",
+      "caps": "WHAT *HAPPENS | IF YOU *HOLD | IN A *SNEEZE?"
+    },
+    {
+      "text": "Myth: it's harmless. Fact: one man spent seven days in hospital.",
+      "caps": "*MYTH: | IT'S *HARMLESS | *FACT: | ONE *MAN | SPENT 7 *DAYS | IN *HOSPITAL"
+    },
+    {
+      "text": "He blocked his nose and mouth. Where did the blast go? Ears, or throat?",
+      "caps": "HE *BLOCKED | HIS *NOSE | AND *MOUTH | WHERE *DID | THE *BLAST GO? | *EARS | OR *THROAT?"
+    },
+    {
+      "text": "Ever choked one back in a silent meeting?",
+      "caps": "EVER *CHOKED | ONE *BACK | IN A *SILENT | *MEETING?"
+    },
+    {
+      "text": "But here's the weird part: his skin crackled, down to his ribs.",
+      "caps": "BUT *HERE'S | THE *WEIRD PART | HIS *SKIN | *CRACKLED | *DOWN TO | HIS *RIBS"
+    },
+    {
+      "text": "Air had leaked deep into his chest.",
+      "caps": "*AIR | HAD *LEAKED | *DEEP INTO | HIS *CHEST"
+    },
+    {
+      "text": "His throat.",
+      "caps": "HIS *THROAT"
+    },
+    {
+      "text": "Torn, then healed. Doctors say: let it out.",
+      "caps": "*TORN | THEN *HEALED | DOCTORS *SAY | LET IT *OUT"
+    },
+    {
+      "text": "Next Body File: why standing up fast blurs your vision. Now you know...",
+      "caps": "NEXT *BODY FILE | WHY *STANDING | UP *FAST | *BLURS | YOUR *VISION | NOW YOU *KNOW..."
+    }
+  ]
+}

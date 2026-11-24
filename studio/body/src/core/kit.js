@@ -1825,6 +1825,207 @@ export function sneezeSpray(x, y, s, p, dir = 1, { d0 = 60, reach = 300, ang = 0
 }
 
 
+// ═════════════════════════ HELD-IN SNEEZE SET (2026-11-24 "hold in a sneeze") ═════════════════════════
+/** points on sneezeXray (local units, origin = middle of the face, s = 1): nose cavity, mouth, ears (eardrums), the back of the
+ *  throat (where the tear goes), the neck low point and the neck base */
+export const SX = { nose: [0, 30], mouth: [0, 132], earL: [-162, 10], earR: [162, 10], throat: [0, 280], neck: [0, 340], base: [0, 420] };
+export const sxPt = (x, y, s, k) => [x + SX[k][0] * s, y + SX[k][1] * s];
+const SX_HAIR = '#16304D';
+const SX_BOUNCE = ['nose', 'earR', 'throat', 'earL', 'mouth'];
+
+/** where the trapped blast is at bounce phase u (loops nose → right ear → throat → left ear → mouth), local units */
+export function sxBlastAt(u) {
+  const n = SX_BOUNCE.length, f = ((u % n) + n) % n, i = Math.floor(f), k = f - i;
+  const a = SX[SX_BOUNCE[i]], b = SX[SX_BOUNCE[(i + 1) % n]], e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  return [lerp(a[0], b[0], e), lerp(a[1], b[1], e)];
+}
+
+/** the trapped sneeze blast (graphic): a flat yellow spiky burst with an ink rim, a small white core and three trail dots
+ *  behind it (trail = [[x, y], ...] older positions). r = radius px. a = alpha */
+export function sneezeBlast(x, y, r, { t = 0, a = 1, trail = [] } = {}) {
+  if (a <= 0 || r <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  trail.forEach(([tx, ty], i) => { const rr2 = r * (0.42 - i * 0.1); if (rr2 > 2) { circle(tx, ty, rr2 + 4, C.ink); circle(tx, ty, rr2, C.yellow); } });
+  const star = (R, k) => { ctx.beginPath(); for (let i = 0; i < 20; i++) { const an = i * Math.PI / 10 + t * 2.4, rad = (i % 2 ? 0.62 : 1) * R * (1 + 0.06 * Math.sin(t * 19 + i)); const px = x + Math.cos(an) * rad, py = y + Math.sin(an) * rad; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.closePath(); ctx.fillStyle = k; ctx.fill(); };
+  star(r + 7, C.ink); star(r, C.yellow);
+  circle(x, y, r * 0.42, C.white); circle(x - r * 0.12, y - r * 0.12, r * 0.14, C.yellow);
+  ctx.restore();
+}
+
+/** small round air bubbles (white, cyan rim) filling a soft area from the top down: centre (x, y), half-size (w, h) px.
+ *  p 0..1 = how far down they have spread (bubbles appear top-first), crackle 0..1 = tiny yellow sparks flicker between them.
+ *  stopY = hard floor (canvas px): no bubble below it (e.g. the ribcage). n bubbles, seed varies the layout */
+export function airPocket(x, y, w, h, { p = 1, t = 0, crackle = 0, n = 26, seed = 0, stopY = Infinity, r0 = 14, a = 1 } = {}) {
+  if (p <= 0 || a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  for (let i = 0; i < n; i++) {
+    const v = rnd(i * 3 + seed + 1), bx = x + (rnd(i * 7 + seed + 2) * 2 - 1) * w, by = y - h + v * 2 * h;
+    if (by > stopY) continue;
+    const show = clamp((p - v * 0.9) * 8); if (show <= 0) continue;
+    const r = r0 * (0.6 + rnd(i * 11 + seed) * 0.8) * show, wob = Math.sin(t * 5 + i) * 3;
+    circle(bx + wob, by, r + 4, C.cyan); circle(bx + wob, by, r, C.white); circle(bx + wob - r * 0.3, by - r * 0.3, r * 0.28, C.sky);
+    if (crackle > 0 && Math.sin(t * 23 + i * 2.1) > 0.55) {
+      ctx.save(); ctx.globalAlpha = clamp(crackle) * clamp(a); ctx.lineCap = 'round';
+      for (let k = 0; k < 3; k++) { const an = i + k * 2.1; line([[bx + Math.cos(an) * (r + 8), by + Math.sin(an) * (r + 8)], [bx + Math.cos(an) * (r + 20), by + Math.sin(an) * (r + 20)]], C.yellow, 6); }
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+
+/** the HELD-IN SNEEZE x-ray bust: the hero's head + neck + shoulders, front view, all x-ray (navy, cyan rim + skull, his
+ *  side-part hair as a darker navy cap) with the airway inside in organ pink: nose cavity, mouth, the throat tube down the
+ *  neck, both ear canals + eardrums and the thin tubes linking ears and throat. Face in white line art, frozen mid "ah-":
+ *  eyes squeezed > <, brows up, lips pressed, cheeks puffed (puff 0..1). ~760 px wide, head top -270 / shirt edge +560 at s = 1.
+ *  o = { t, blast 0..1 (the trapped yellow blast bouncing, phase from t * speed, or blastAt [x, y] local), speed, blastR,
+ *  press 0..1 (white pressure ticks round the head + tiny shake), block [nose, mouth] 0..1 (red stop bars over the exits),
+ *  ears 0..1 / throat 0..1 (yellow rings), tear 0..1 (small cyan crack on the back of the throat), heal 0..1 (the crack
+ *  closes, fresh pink patch), leak 0..1 (air bubbles from the tear into the neck), eyes 'squeeze' | 'closed' | 'n' | 'wide' } */
+export function sneezeXray(x, y, s, o = {}) {
+  const t = o.t || 0, puff = clamp(o.puff ?? 1), press = clamp(o.press || 0);
+  const shake = press * Math.sin(t * 61) * 4;
+  ctx.save(); ctx.translate(x + shake, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // shoulders (run off the bottom), neck
+  const shoulders = () => { ctx.beginPath(); ctx.moveTo(-420, 1000); ctx.lineTo(-400, 560); ctx.bezierCurveTo(-390, 470, -260, 440, -110, 410); ctx.lineTo(110, 410); ctx.bezierCurveTo(260, 440, 390, 470, 400, 560); ctx.lineTo(420, 1000); ctx.closePath(); };
+  shoulders(); ctx.lineWidth = 14; ctx.strokeStyle = C.cyan; ctx.stroke(); ctx.fillStyle = C.xnavy; ctx.fill();
+  ctx.save(); shoulders(); ctx.clip();
+  for (const sd of [-1, 1]) {
+    line([[sd * 40, 452], [sd * 150, 436], [sd * 290, 468]], C.cyan, 14);                               // collarbones
+    for (let i = 0; i < 3; i++) { const yy = 540 + i * 62; ctx.beginPath(); ctx.moveTo(sd * 22, yy); ctx.quadraticCurveTo(sd * 200, yy - 40, sd * 250, yy + 60); ctx.strokeStyle = C.cyan; ctx.globalAlpha = 0.8; ctx.lineWidth = 12; ctx.stroke(); ctx.globalAlpha = 1; }
+  }
+  for (let yy = 430; yy < 1000; yy += 40) { rr(-16, yy, 32, 28, 7); ctx.fillStyle = C.cyan; ctx.fill(); }
+  ctx.restore();
+  rr(-108, 140, 216, 300, 30); ctx.fillStyle = C.xnavy; ctx.fill();
+  line([[-108, 170], [-108, 420]], C.cyan, 7); line([[108, 170], [108, 420]], C.cyan, 7);
+  ctx.save(); ctx.globalAlpha = 0.55; for (let yy = 196; yy < 430; yy += 40) { rr(-42, yy, 84, 28, 9); ctx.fillStyle = C.cyan; ctx.fill(); } ctx.restore();
+  // outer ears (behind the head)
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sd * 212, 14, 36, 62, sd * 0.12, 0, TAU); ctx.fillStyle = C.xnavy; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = C.cyan; ctx.stroke(); }
+  // head + puffed cheeks: union outline (thick cyan strokes first, then the navy fills cover the inner halves)
+  const headP = () => { ctx.beginPath(); ctx.moveTo(-205, -10); ctx.bezierCurveTo(-210, -200, -110, -262, 0, -262); ctx.bezierCurveTo(110, -262, 210, -200, 205, -10);
+    ctx.bezierCurveTo(200, 90, 150, 170, 80, 214); ctx.quadraticCurveTo(0, 252, -80, 214); ctx.bezierCurveTo(-150, 170, -200, 90, -205, -10); ctx.closePath(); };
+  const cheek = (sd) => { ctx.beginPath(); ctx.ellipse(sd * (128 + 34 * puff), 112, 66 + 16 * puff, 62 + 10 * puff, 0, 0, TAU); };
+  ctx.lineWidth = 16; ctx.strokeStyle = C.cyan; headP(); ctx.stroke(); if (puff > 0) for (const sd of [-1, 1]) { cheek(sd); ctx.stroke(); }
+  ctx.fillStyle = C.xnavy; headP(); ctx.fill(); if (puff > 0) for (const sd of [-1, 1]) { cheek(sd); ctx.fill(); }
+  // hair cap with the hero's side part
+  ctx.save(); headP(); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(-215, -20); ctx.quadraticCurveTo(-230, -240, -20, -258); ctx.quadraticCurveTo(200, -268, 222, -60);
+  ctx.quadraticCurveTo(190, -150, 90, -158); ctx.quadraticCurveTo(-30, -160, -110, -118); ctx.quadraticCurveTo(-170, -84, -215, -20); ctx.closePath(); ctx.fillStyle = SX_HAIR; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-110, -118); ctx.quadraticCurveTo(-30, -160, 90, -158); ctx.quadraticCurveTo(190, -150, 222, -60); ctx.strokeStyle = C.cyan; ctx.globalAlpha = 0.5; ctx.lineWidth = 6; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.restore();
+  // skull: cranium arc, eye sockets, cheekbones, nasal opening, jaw + teeth
+  ctx.save(); ctx.globalAlpha = 0.9; ctx.strokeStyle = C.cyan; ctx.lineWidth = 9;
+  ctx.beginPath(); ctx.moveTo(-178, 10); ctx.bezierCurveTo(-190, -170, -100, -228, 0, -228); ctx.bezierCurveTo(100, -228, 190, -170, 178, 10); ctx.stroke();
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sd * 74, -26, 46, 40, 0, 0, TAU); ctx.stroke(); ctx.beginPath(); ctx.moveTo(sd * 30, 40); ctx.quadraticCurveTo(sd * 110, 30, sd * 170, 20); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(-160, 50); ctx.quadraticCurveTo(-150, 190, 0, 212); ctx.quadraticCurveTo(150, 190, 160, 50); ctx.stroke();
+  ctx.restore();
+  // airway (organ pink): eardrum tubes, nose cavity → throat tube, mouth, ear canals + eardrums
+  const thr = clamp(o.throat || 0), ears = clamp(o.ears || 0);
+  for (const sd of [-1, 1]) { line([[sd * 150, 14], [sd * 80, 46], [sd * 22, 78]], C.pinkDark, 18); line([[sd * 150, 14], [sd * 80, 46], [sd * 22, 78]], C.pink, 10); }
+  ctx.save(); ctx.globalAlpha = 0.55; line([[0, 40], [0, 236]], C.pinkDark, 34); line([[0, 40], [0, 236]], C.pink, 24); ctx.restore();   // behind the jaw: faint
+  const TH = [[0, 236], [0, 440]];
+  line(TH, C.pinkDark, 64); line(TH, C.pink, 50); line([[-12, 262], [-12, 430]], C.pinkLight, 8);
+  ctx.beginPath(); ctx.moveTo(0, -22); ctx.bezierCurveTo(42, 10, 48, 66, 0, 74); ctx.bezierCurveTo(-48, 66, -42, 10, 0, -22); ctx.closePath(); ctx.fillStyle = C.pinkDark; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(0, -10); ctx.bezierCurveTo(32, 14, 36, 58, 0, 64); ctx.bezierCurveTo(-36, 58, -32, 14, 0, -10); ctx.closePath(); ctx.fillStyle = C.pink; ctx.fill();
+  ell(0, 132, 78, 20, C.pinkDark); ell(0, 132, 68, 12, C.pink);
+  for (let i = -3; i <= 3; i++) { rr(i * 19 - 8, 104, 16, 20, 4); ctx.fillStyle = C.cyan; ctx.fill(); rr(i * 19 - 8, 142, 16, 18, 4); ctx.fill(); }
+  for (const sd of [-1, 1]) { line([[sd * 214, 12], [sd * 172, 10]], C.mouth, 16); circle(sd * 162, 10, 17, C.pinkDark); circle(sd * 162, 10, 11, C.pink); }
+  // the tear on the back of the throat (small cyan crack), healing
+  const tear = clamp(o.tear || 0), heal = clamp(o.heal || 0);
+  if (heal > 0) { ctx.save(); ctx.globalAlpha = heal; ell(SX.throat[0], SX.throat[1], 22, 52, C.pinkLight); ctx.restore(); }
+  if (tear > 0 && heal < 1) {
+    const P = [[-10, 246], [8, 262], [-8, 278], [10, 296], [-4, 314]].slice(0, 2 + Math.round(3 * tear));
+    ctx.save(); ctx.globalAlpha = 1 - heal; line(P, C.ink, 13); line(P, C.cyan, 7); ctx.restore();
+  }
+  // face in white line art: squeezed eyes, raised brows, scrunched nose lines, pressed lips
+  const ey = o.eyes || 'squeeze';
+  ctx.strokeStyle = C.white; ctx.lineWidth = 10;
+  for (const sd of [-1, 1]) {
+    ctx.beginPath();
+    if (ey === 'squeeze') { ctx.moveTo(sd * 96, -42); ctx.lineTo(sd * 60, -26); ctx.lineTo(sd * 96, -10); }
+    else if (ey === 'closed') { ctx.arc(sd * 74, -30, 18, 0.15 * Math.PI, 0.85 * Math.PI); }
+    else if (ey === 'wide') { ctx.arc(sd * 74, -26, 22, 0, TAU); }
+    else { ctx.arc(sd * 74, -26, 10, 0, TAU); }
+    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sd * 40, -98); ctx.quadraticCurveTo(sd * 74, -118, sd * 110, -100); ctx.stroke();
+  }
+  ctx.lineWidth = 6; for (const dy of [0, 14]) { ctx.beginPath(); ctx.moveTo(-14, 6 + dy); ctx.lineTo(14, 6 + dy); ctx.stroke(); }
+  ctx.lineWidth = 11; ctx.beginPath(); ctx.moveTo(-58, 136); ctx.quadraticCurveTo(0, 124, 58, 136); ctx.stroke();   // lips pressed shut
+  // rings: ears / throat
+  if (ears > 0) for (const sd of [-1, 1]) { ctx.save(); ctx.globalAlpha = ears; ctx.beginPath(); ctx.arc(sd * 186, 12, 62, 0, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 22; ctx.stroke(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 12; ctx.stroke(); ctx.restore(); }
+  if (thr > 0) { ctx.save(); ctx.globalAlpha = thr; ctx.beginPath(); ctx.ellipse(0, 286, 86, 112, 0, 0, TAU); ctx.strokeStyle = C.ink; ctx.lineWidth = 22; ctx.stroke(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 12; ctx.stroke(); ctx.restore(); }
+  // red stop bars over the two exits (nostrils / lips): schematic, no hands
+  const blk = o.block || [0, 0];
+  [[0, 84, blk[0]], [0, 132, blk[1]]].forEach(([bx, by, k]) => {
+    if (k <= 0) return; ctx.save(); ctx.translate(bx, by); ctx.rotate(-0.08); ctx.scale(k, k);
+    rr(-74, -17, 148, 34, 17); ctx.fillStyle = C.ink; ctx.fill(); rr(-66, -10, 132, 20, 10); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
+  });
+  // leaked air bubbles in the neck (from the tear)
+  if (o.leak > 0) airPocket(0, 350, 90, 90, { p: o.leak, t, n: 14, seed: 5, r0: 13 });
+  // pressure ticks round the head
+  if (press > 0) {
+    ctx.save(); ctx.globalAlpha = press; ctx.lineCap = 'round';
+    for (let i = 0; i < 10; i++) { const an = -Math.PI * 0.95 + i * Math.PI * 0.21, j = 1 + 0.05 * Math.sin(t * 17 + i); const r1 = 290 * j, r2 = 336 * j;
+      line([[Math.cos(an) * r1 * 0.95, -20 + Math.sin(an) * r1], [Math.cos(an) * r2 * 0.95, -20 + Math.sin(an) * r2]], C.white, 12); }
+    ctx.restore();
+  }
+  // the trapped blast
+  const bA = clamp(o.blast || 0);
+  if (bA > 0) {
+    const sp = o.speed ?? 2.2, ph = t * sp;
+    const P0 = o.blastAt || sxBlastAt(ph), trail = o.blastAt ? [] : [sxBlastAt(ph - 0.12), sxBlastAt(ph - 0.24), sxBlastAt(ph - 0.36)];
+    sneezeBlast(P0[0], P0[1], o.blastR || 50, { t, a: bA, trail });
+  }
+  ctx.restore();
+}
+
+/** hospital ID wristband (graphic): a white band loop seen flat, ink rim, a red-cross tab on the left, big text (e.g. "7 DAYS")
+ *  and a fine-print line under it (e.g. "BMJ Case Reports 2018"). ~620x170 px at s = 1. rot/sc = drop-in */
+export function wristband(x, y, s = 1, big = '7 DAYS', fine = '', { rot = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-330, -48, 660, 96, 48); ctx.fillStyle = C.ink; ctx.fill(); rr(-322, -40, 644, 80, 40); ctx.fillStyle = '#E9E4DA'; ctx.fill();
+  for (let i = 0; i < 5; i++) circle(260 - i * 26, 0, 7, C.gumEdge);
+  rr(-250, -86, 430, 172, 22); ctx.fillStyle = C.ink; ctx.fill(); rr(-242, -78, 414, 156, 16); ctx.fillStyle = C.white; ctx.fill();
+  rr(-230, -66, 96, 132, 12); ctx.fillStyle = C.red; ctx.fill(); rr(-194, -44, 24, 88, 4); ctx.fillStyle = C.white; ctx.fill(); rr(-226, -12, 88, 24, 4); ctx.fill();
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = '900 70px Inter'; ctx.fillText(big, 20, fine ? -14 : 0);
+  if (fine) { ctx.font = '700 22px Inter'; ctx.fillStyle = '#5B5B66'; ctx.fillText(fine, 20, 46); }
+  ctx.restore();
+}
+
+/** (A) calm hospital room background: pale wall, floor, a window with sky, a red-cross sign and an IV stand (bag + line that
+ *  runs down out of frame, no needle) on the right */
+export function hospitalRoom() {
+  fillAll('#EEF3F2');
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, 1260, W + 600, 900);
+  ctx.fillStyle = '#DCE6E4'; ctx.fillRect(-300, 820, W + 600, 22);
+  rr(110, 170, 330, 300, 18); ctx.fillStyle = C.white; ctx.fill(); rr(130, 190, 290, 260, 8); ctx.fillStyle = C.sky; ctx.fill(); line([[275, 190], [275, 450]], C.white, 12);
+  circle(760, 270, 76, C.white); rr(740, 214, 40, 112, 6); ctx.fillStyle = C.red; ctx.fill(); rr(704, 250, 112, 40, 6); ctx.fill();
+  line([[930, 300], [930, 1250]], '#9AA3A8', 12); line([[880, 1250], [980, 1250]], '#9AA3A8', 12); line([[890, 300], [970, 300]], '#9AA3A8', 10);
+  rr(898, 312, 64, 100, 18); ctx.fillStyle = '#D6EEF5'; ctx.fill(); rr(898, 360, 64, 52, [0, 0, 18, 18]); ctx.fillStyle = C.sky; ctx.fill();
+  line([[930, 412], [930, 470], [905, 560], [900, 700]], '#B9C3C7', 6);
+}
+
+/** next-episode tease badge (stand up too fast): white disc, ink ring, a little person icon popping up out of a chair with an
+ *  up arrow, spiral eyes and a ghost double (blurred vision). t = film time. ~300 px at s = 1 */
+export function standUpBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  rr(-96, 30, 110, 26, 10); ctx.fillStyle = C.pot; ctx.fill(); rr(-96, -40, 26, 120, 10); ctx.fill(); rr(-60, 56, 16, 40, 6); ctx.fill(); rr(-6, 56, 16, 40, 6); ctx.fill();
+  const g = Math.sin(t * 6) * 10;
+  ctx.save(); ctx.globalAlpha = 0.35; circle(30 + 14 + g, -54, 34, C.shirt); rr(-4 + 14 + g, -14, 68, 92, [30, 30, 10, 10]); ctx.fillStyle = C.shirt; ctx.fill(); ctx.restore();
+  circle(30, -54, 34, C.skin); rr(-4, -14, 68, 92, [30, 30, 10, 10]); ctx.fillStyle = C.shirt; ctx.fill();
+  for (const sd of [-1, 1]) { ctx.beginPath(); for (let k = 0; k <= 14; k++) { const an = k * 0.6 + t * 8 * sd, r = 1 + k * 0.6; const px = 30 + sd * 12 + Math.cos(an) * r, py = -56 + Math.sin(an) * r; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.strokeStyle = C.ink; ctx.lineWidth = 3; ctx.stroke(); }
+  line([[100, 40], [100, -70]], C.ink, 18); line([[100, 40], [100, -70]], C.yellow, 10);
+  ctx.beginPath(); ctx.moveTo(72, -56); ctx.lineTo(100, -96); ctx.lineTo(128, -56); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(82, -60); ctx.lineTo(100, -86); ctx.lineTo(118, -60); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.restore();
+}
+
+/** sneeze-into-your-elbow arm pose (RIGHT arm): the elbow crosses in front of the mouth and nose, hand out past the left cheek */
+ARM.elbow = { e: [0, -282], h: [-190, -330] };
+
 /** an old 1882 newspaper (cream paper, masthead, date line, headline, a picture box + text columns). ~680x880 at s = 1.
  *  rot/sc: spin-in. head 0..1 pops the headline in (placeholder grey bars before it). year 0..1 marks "1882" in yellow.
  *  lady 0..1 = the engraving of a lady on a street car sneezing (0 = still, 0.3+ = sneeze puffs; eyes always shut) */
