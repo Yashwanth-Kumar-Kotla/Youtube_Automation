@@ -6795,6 +6795,7 @@ export function eyeChart(x, y, s = 1, sc = 1) {
 }
 
 
+<<<<<<< /home/user/Youtube_Automation/studio/body/src/core/kit.js
 // ═════════════════════════ DOORWAY SET (2026-11-24 "walk into a room and forget why") ═════════════════════════
 // man({ step }) (rad, ~0.3) = legs splayed mid-stride with little shoes (walking / frozen mid-step). Reuse fbJamb / fbDoorway /
 // fbThought from the funny-bone set for the rooms and the thought cloud.
@@ -6960,4 +6961,295 @@ export function dwCabinet(x, y, s = 1, { open = 0, label = '', tabs = 3 } = {}) 
     ctx.restore();
   }
   return [x + (150 + dx / 2) * s, y - 300 * s];
+=======
+// ═════════════════════════ SITTING SET (2026-11-24 "sit all day") ═════════════════════════
+const SIT_CH = '#5A6B8C', SIT_CH_D = '#46556F', SIT_CH_L = '#7383A3', SIT_VEL = '#C9566E', SIT_VEL_D = '#A3304A', SIT_VEL_L = '#E57A8A',
+  SIT_RUST = '#C8734A', SIT_RUST_D = '#A85E3A', SIT_WOOD = '#B5653F', SIT_WOOD_D = '#9A5333', SIT_SAND = '#FFD43B', SIT_SAND_D = '#E3B92E';
+
+/** office background for the sitting shots: cream wall, floor from y = floor with a baseboard (nothing else) */
+export function sitOffice(floor = 1180) {
+  fillAll(C.bg);
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, floor, W + 600, H);
+  rr(-300, floor - 14, W + 600, 14, 0); ctx.fillStyle = '#D8CFBC'; ctx.fill();
+}
+
+/** office chair, FRONT view, for hrRiser(): (x, floor) = where the hero's feet meet the floor, s = hero scale.
+ *  Draw BEFORE the hero: backrest, armrests, seat, gas lift and 5-star base. xr = x-ray film look (navy fill, cyan outline).
+ *  sink 0..1 squashes the seat cushion a little (someone just dropped in). Seat top ≈ floor - 235 s */
+export function sitOfficeChair(x, floor, s = 1, { xr = false, sink = 0 } = {}) {
+  ctx.save(); ctx.translate(x, floor); ctx.scale(s, s);
+  const f = (col) => { ctx.fillStyle = xr ? C.xnavy : col; ctx.fill(); if (xr) { ctx.lineWidth = 7; ctx.strokeStyle = C.cyan; ctx.stroke(); } };
+  const q = 10 * clamp(sink);
+  // base: 5-star legs + casters
+  for (const [lx, ly] of [[-230, -14], [230, -14], [-120, 0], [120, 0]]) { ctx.beginPath(); ctx.moveTo(-14, -70); ctx.lineTo(lx, ly - 22); ctx.lineTo(lx, ly - 4); ctx.lineTo(14, -50); ctx.closePath(); f(SIT_CH_D); }
+  for (const [lx, ly] of [[-230, -14], [230, -14], [-120, 0], [120, 0]]) { circle(lx, ly, 18, xr ? C.cyan : C.ink); }
+  rr(-22, -220, 44, 160, 12); f('#9A9A9F');
+  rr(-70, -86, 140, 30, 14); f(SIT_CH_D);
+  // backrest
+  rr(-205, -760, 410, 520, 90); f(SIT_CH_D);
+  rr(-188, -744, 376, 490, 80); f(SIT_CH);
+  if (!xr) { rr(-150, -720, 120, 26, 13); ctx.fillStyle = SIT_CH_L; ctx.fill(); }
+  // armrests (behind the hands)
+  for (const sd of [-1, 1]) { rr(sd * 250 - 18, -360, 36, 140, 12); f(SIT_CH_D); rr(sd * 250 - 60, -384, 120, 36, 18); f(SIT_CH_D); }
+  // seat cushion
+  rr(-225, -262 + q, 450, 72 - q, 34); f(SIT_CH_D);
+  rr(-215, -258 + q, 430, 48 - q, 26); f(SIT_CH);
+  ctx.restore();
+}
+
+/** cinema seat, FRONT view (velvet pink-dark), for hrRiser(): same anchors as sitOfficeChair. part 'back' (draw before the
+ *  hero) = high back + cushion + arm blocks; 'cup' (draw after) = a little cup holder on the right arm */
+export function sitCinemaSeat(x, floor, s = 1, part = 'back') {
+  ctx.save(); ctx.translate(x, floor); ctx.scale(s, s);
+  if (part === 'back') {
+    rr(-230, -800, 460, 600, [110, 110, 20, 20]); ctx.fillStyle = SIT_VEL_D; ctx.fill();
+    rr(-208, -780, 416, 560, [96, 96, 16, 16]); ctx.fillStyle = SIT_VEL; ctx.fill();
+    ell(-90, -730, 70, 14, SIT_VEL_L);
+    for (const sd of [-1, 1]) { rr(sd * 262 - 44, -380, 88, 380, 20); ctx.fillStyle = C.ink; ctx.fill(); rr(sd * 262 - 50, -400, 100, 40, 18); ctx.fillStyle = '#2B2B33'; ctx.fill(); }
+    rr(-220, -270, 440, 90, 30); ctx.fillStyle = SIT_VEL_D; ctx.fill(); rr(-210, -264, 420, 56, 24); ctx.fillStyle = SIT_VEL; ctx.fill();
+  } else {
+    rr(262 - 46, -440, 92, 60, [0, 0, 20, 20]); ctx.fillStyle = '#2B2B33'; ctx.fill();
+    rr(262 - 36, -500, 72, 80, 8); ctx.fillStyle = C.white; ctx.fill(); rr(262 - 36, -500, 72, 18, 6); ctx.fillStyle = C.red; ctx.fill();
+    line([[268, -500], [286, -560]], C.ink, 8);
+  }
+  ctx.restore();
+}
+
+/** cinema background: navy wall, a wide screen up top (white; end 0..1 fades in "THE END" + two credit lines), dim floor */
+export function sitCinema(t = 0, { end = 0, floor = 1180 } = {}) {
+  fillAll(C.navy);
+  ctx.fillStyle = C.xnavy; ctx.fillRect(-300, floor, W + 600, H);
+  rr(60, 150, 960, 400, 16); ctx.fillStyle = '#2B2B33'; ctx.fill(); rr(80, 170, 920, 360, 8); ctx.fillStyle = C.white; ctx.fill();
+  if (end > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(end); ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '900 96px Inter'; ctx.letterSpacing = '8px'; ctx.fillText('THE END', 540, 330); ctx.letterSpacing = '0px';
+    rr(380, 420, 320, 16, 8); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(420, 456, 240, 16, 8); ctx.fill();
+    ctx.restore();
+  }
+  // curtain edges
+  for (const sd of [-1, 1]) { ctx.fillStyle = SIT_VEL_D; ctx.fillRect(sd < 0 ? -300 : W - 40, -300, 340, floor + 300); }
+}
+
+/** rust flakes (flat orange-brown chips) shaking off a joint at (x, y) + small ink creak ticks. a 0..1, t = film time */
+export function sitRust(x, y, t, a = 1, s = 1) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  for (let i = 0; i < 9; i++) {
+    const u = (t * (0.9 + rnd(i) * 0.6) + rnd(i + 9)) % 1, fx = x + (rnd(i + 3) - 0.5) * 160 * s + Math.sin(u * 9 + i) * 10 * s, fy = y + u * 220 * s;
+    ctx.save(); ctx.translate(fx, fy); ctx.rotate(u * 6 + i); rr(-12 * s, -7 * s, 24 * s, 14 * s, 4 * s); ctx.fillStyle = i % 2 ? SIT_RUST : SIT_RUST_D; ctx.fill(); ctx.restore();
+  }
+  for (const sd of [-1, 1]) for (let k = 0; k < 3; k++) {
+    const an = (sd < 0 ? Math.PI : 0) + (k - 1) * 0.5, j = Math.sin(t * 30 + k) * 4;
+    line([[x + Math.cos(an) * 80 * s, y + Math.sin(an) * 80 * s + j], [x + Math.cos(an) * 120 * s, y + Math.sin(an) * 120 * s + j]], C.ink, 9 * s);
+  }
+  ctx.restore();
+}
+
+/** flat furnace (graphic metaphor for metabolism): rounded ink body, a window with a yellow/red flame sized by heat 0..1,
+ *  a chimney puffing yellow sparks (rate follows heat). xr = cyan outline for x-ray shots. ~300x420 px at s = 1, origin = centre */
+export function sitFurnace(x, y, s = 1, { heat = 1, t = 0, sc = 1, xr = false } = {}) {
+  if (sc <= 0) return;
+  const h = clamp(heat);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(60, -260, 60, 120, 8); ctx.fillStyle = xr ? C.xnavy : C.watch; ctx.fill(); if (xr) { ctx.lineWidth = 8; ctx.strokeStyle = C.cyan; ctx.stroke(); }
+  // sparks out of the chimney
+  const n = Math.round(1 + 7 * h);
+  for (let i = 0; i < n; i++) { const u = (t * (0.7 + 0.8 * h) + i / n) % 1; const sx = 90 + Math.sin(u * 8 + i * 2) * 26, sy = -270 - u * 220; circle(sx, sy, (12 - 8 * u) * (0.6 + 0.4 * h), C.yellow); }
+  rr(-150, -170, 300, 340, 46); ctx.fillStyle = xr ? C.xnavy : C.watch; ctx.fill(); if (xr) { ctx.lineWidth = 10; ctx.strokeStyle = C.cyan; ctx.stroke(); }
+  rr(-150, 130, 300, 40, [0, 0, 46, 46]); ctx.fillStyle = xr ? C.cyan : C.ink; ctx.fill();
+  rr(-100, -110, 200, 190, 30); ctx.fillStyle = C.ink; ctx.fill(); rr(-88, -98, 176, 166, 24); ctx.fillStyle = '#2B2B33'; ctx.fill();
+  // flame
+  const fl = lerp(0.18, 1, h), wob = Math.sin(t * 14) * 6 * fl;
+  ctx.save(); ctx.translate(0, 60);
+  const flame = (k, col) => { ctx.beginPath(); ctx.moveTo(-70 * k * fl, 0); ctx.quadraticCurveTo(-80 * k * fl, -80 * k * fl, wob, -150 * k * fl); ctx.quadraticCurveTo(80 * k * fl, -80 * k * fl, 70 * k * fl, 0); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); };
+  flame(1, C.red); flame(0.62, C.yellow);
+  ctx.restore();
+  rr(-60, 92, 120, 12, 6); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.restore();
+}
+
+/** balance scale (ink graphic) with free pans: tilt rad (+ = right side down), left()/right() draw each pan's load in local
+ *  px with the pan top at (0, 0). ~640x520 px at s = 1, origin = beam pivot */
+export function sitScale(x, y, s = 1, tilt = 0, { left = null, right = null, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-16, 0, 32, 380, 10); ctx.fillStyle = C.ink; ctx.fill(); rr(-140, 370, 280, 36, 18); ctx.fill();
+  const bx = Math.cos(tilt) * 280, by = Math.sin(tilt) * 280;
+  line([[-bx, -by], [bx, by]], C.ink, 22);
+  circle(0, 0, 26, C.ink); circle(0, 0, 12, C.yellow);
+  for (const [px, py, fn] of [[-bx, -by, left], [bx, by, right]]) {
+    const top = py + 170;
+    line([[px, py], [px - 110, top]], C.ink, 6); line([[px, py], [px + 110, top]], C.ink, 6);
+    ctx.beginPath(); ctx.moveTo(px - 140, top); ctx.quadraticCurveTo(px, top + 70, px + 140, top); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+    circle(px, py, 12, C.ink);
+    if (fn) { ctx.save(); ctx.translate(px, top); fn(); ctx.restore(); }
+  }
+  ctx.restore();
+}
+
+/** little office chair icon, front view (slate), ~200x300 px at s = 1, origin = seat centre. sc = pop-in */
+export function sitChairIcon(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-80, -190, 160, 190, 40); ctx.fillStyle = SIT_CH_D; ctx.fill(); rr(-70, -180, 140, 170, 34); ctx.fillStyle = SIT_CH; ctx.fill();
+  rr(-100, -10, 200, 36, 16); ctx.fillStyle = SIT_CH_D; ctx.fill();
+  rr(-10, 26, 20, 70, 6); ctx.fillStyle = '#9A9A9F'; ctx.fill();
+  for (const lx of [-80, 80]) line([[0, 96], [lx, 110]], SIT_CH_D, 14);
+  for (const lx of [-80, 80]) circle(lx, 116, 10, C.ink);
+  ctx.restore();
+}
+
+/** small seated person (icon) on a chair icon: for crowd rows. col = shirt, sc = pop-in. ~200x330 px at s = 1, origin = seat */
+export function sitMini(x, y, s = 1, col = C.shirt, sc = 1, slump = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  sitChairIcon(0, 0, 1, 1);
+  const k = 8 * clamp(slump);
+  rr(-52, -150 + k, 104, 150 - k, [44, 44, 10, 10]); ctx.fillStyle = col; ctx.fill();
+  rr(-56, -14, 50, 80, 18); ctx.fillStyle = C.pants; ctx.fill(); rr(6, -14, 50, 80, 18); ctx.fill();
+  circle(0, -196 + k * 1.4, 44, C.skin);
+  ctx.beginPath(); ctx.arc(0, -206 + k * 1.4, 46, Math.PI * 1.05, Math.PI * 1.95); ctx.closePath(); ctx.fillStyle = C.hair; ctx.fill();
+  circle(-15, -192 + k * 1.4, 5, C.ink); circle(15, -192 + k * 1.4, 5, C.ink);
+  ctx.restore();
+}
+
+/** desk + monitor at the right of the office: (x, floor) = desk centre on the floor, s = scale. The monitor's screen is
+ *  sky blue; screen(cx, cy, w, h) draws over it (screen px). note = sticky-note lines on the bezel (null = none).
+ *  Returns { screen: [cx, cy, w, h], top } (desk top y) */
+export function sitDesk(x, floor, s = 1, { screen = null, note = null, noteSc = 1 } = {}) {
+  const top = floor - 470 * s;
+  ctx.save(); ctx.translate(x, floor); ctx.scale(s, s);
+  rr(-300, -470, 600, 40, 10); ctx.fillStyle = SIT_WOOD; ctx.fill(); rr(-300, -440, 600, 12, [0, 0, 10, 10]); ctx.fillStyle = SIT_WOOD_D; ctx.fill();
+  for (const lx of [-270, 240]) { rr(lx, -430, 30, 430, 8); ctx.fillStyle = SIT_WOOD_D; ctx.fill(); }
+  // monitor
+  rr(-30, -560, 60, 100, 8); ctx.fillStyle = '#9A9A9F'; ctx.fill(); rr(-90, -480, 180, 18, 9); ctx.fill();
+  rr(-210, -840, 420, 290, 20); ctx.fillStyle = C.ink; ctx.fill(); rr(-192, -822, 384, 254, 10); ctx.fillStyle = C.sky; ctx.fill();
+  ctx.restore();
+  const sc = [x, floor - 695 * s, 384 * s, 254 * s];
+  if (screen) { ctx.save(); ctx.beginPath(); ctx.rect(sc[0] - sc[2] / 2, sc[1] - sc[3] / 2, sc[2], sc[3]); ctx.clip(); screen(...sc); ctx.restore(); }
+  if (note) sitNote(x - 130 * s, floor - 600 * s, s * 0.9, note, -0.07, noteSc);
+  return { screen: sc, top };
+}
+
+/** sticky note, wide (yellow, folded corner, tape strip), small ink lines of text (first line bigger). ~250x170 px at s = 1 */
+export function sitNote(x, y, s = 1, lines = ['note'], rot = 0, sc = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  ctx.beginPath(); ctx.moveTo(-125, -85); ctx.lineTo(125, -85); ctx.lineTo(125, 55); ctx.lineTo(95, 85); ctx.lineTo(-125, 85); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(125, 55); ctx.lineTo(95, 55); ctx.lineTo(95, 85); ctx.closePath(); ctx.fillStyle = SIT_SAND_D; ctx.fill();
+  ctx.save(); ctx.globalAlpha = 0.7; rr(-40, -100, 80, 28, 4); ctx.fillStyle = C.white; ctx.fill(); ctx.restore();
+  ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  lines.forEach((l, i) => { ctx.font = `900 ${i ? 30 : 38}px Inter`; ctx.fillText(l, -4, (i - (lines.length - 1) / 2) * 44); });
+  ctx.restore();
+}
+
+/** dumbbell icon (ink bar, slate plates), ~300x120 px at s = 1. sc = pop-in */
+export function sitDumbbell(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-110, -14, 220, 28, 14); ctx.fillStyle = '#9A9A9F'; ctx.fill();
+  for (const sd of [-1, 1]) { rr(sd * 110 - 30, -60, 60, 120, 18); ctx.fillStyle = C.ink; ctx.fill(); rr(sd * 150 - 18, -40, 36, 80, 14); ctx.fill(); rr(sd * 110 - 20, -50, 18, 40, 8); ctx.fillStyle = '#3A3A44'; ctx.fill(); }
+  ctx.restore();
+}
+
+/** schematic cigarette ICON (comparison only, no smoke): white stick, tan filter, small red tip, inside a white disc with an
+ *  ink ring. ~300 px wide at s = 1. sc = pop-in */
+export function sitCigIcon(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 136, C.white);
+  ctx.rotate(-0.35);
+  rr(-110, -22, 220, 44, 10); ctx.fillStyle = C.gum; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(-110, -22, 70, 44, [10, 0, 0, 10]); ctx.fillStyle = C.pot; ctx.fill();
+  rr(96, -22, 14, 44, [0, 10, 10, 0]); ctx.fillStyle = C.red; ctx.fill();
+  ctx.restore();
+}
+
+/** hourglass (wood caps, pale glass, yellow sand). fill 0..1 = sand moved to the bottom; a thin stream while 0 < fill < 1.
+ *  ~220x380 px at s = 1, origin = centre. sc = pop-in, t = film time */
+export function sitHourglass(x, y, s = 1, { fill = 0, t = 0, sc = 1, rot = 0 } = {}) {
+  if (sc <= 0) return;
+  const f = clamp(fill);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  const glass = () => { ctx.beginPath(); ctx.moveTo(-90, -160); ctx.lineTo(90, -160); ctx.quadraticCurveTo(90, -50, 14, 0); ctx.quadraticCurveTo(90, 50, 90, 160); ctx.lineTo(-90, 160); ctx.quadraticCurveTo(-90, 50, -14, 0); ctx.quadraticCurveTo(-90, -50, -90, -160); ctx.closePath(); };
+  glass(); ctx.fillStyle = '#E6F4FA'; ctx.fill();
+  ctx.save(); glass(); ctx.clip();
+  const topH = 130 * (1 - f), botH = 130 * f;
+  if (topH > 1) { ctx.fillStyle = SIT_SAND; ctx.fillRect(-100, -10 - topH, 200, topH); }
+  if (botH > 1) { ctx.beginPath(); ctx.moveTo(-100, 160); ctx.lineTo(-100, 160 - botH * 0.8); ctx.quadraticCurveTo(0, 160 - botH * 1.25, 100, 160 - botH * 0.8); ctx.lineTo(100, 160); ctx.closePath(); ctx.fillStyle = SIT_SAND; ctx.fill(); }
+  if (f > 0 && f < 1) { rr(-4, -4, 8, 164 - botH * 0.9, 4); ctx.fillStyle = SIT_SAND_D; ctx.fill(); }
+  ctx.restore();
+  glass(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke();
+  ell(-52, -110, 10, 28, C.white, 0.2);
+  for (const sy of [-1, 1]) { rr(-120, sy * 170 - 20, 240, 40, 14); ctx.fillStyle = SIT_WOOD; ctx.fill(); rr(-120, sy * 170 + (sy < 0 ? 8 : -20) + 2, 240, 10, 5); ctx.fillStyle = SIT_WOOD_D; ctx.fill(); }
+  ctx.restore();
+}
+
+/** ping rings: two ink arcs on each side of (x, y), pulsing out. p 0..1 = one ping (out + fade) */
+export function sitPing(x, y, r, p, w = 10) {
+  if (p <= 0 || p >= 1) return;
+  ctx.save(); ctx.globalAlpha = 1 - p; ctx.lineCap = 'round'; ctx.strokeStyle = C.ink; ctx.lineWidth = w;
+  for (const k of [0, 1]) { const rr2 = r + (40 + k * 40) * p + k * 30; for (const sd of [0, Math.PI]) { ctx.beginPath(); ctx.arc(x, y, rr2, sd - 0.5, sd + 0.5); ctx.stroke(); } }
+  ctx.restore();
+}
+
+/** bath (white tub, sky water with bubbles) + the hero's hand rising out of the water, fingers up. wrinkle 0..1 draws the
+ *  fingertip wrinkles (ink-shade ridges on the pads). rise 0..1 = how far the hand is out. (x, y) = water line centre,
+ *  s = scale (tub ~900 px wide at s = 1). Returns the index fingertip screen point */
+export function sitBathHand(x, y, s = 1, { wrinkle = 0, rise = 1, t = 0, sc = 1 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  // tub back rim
+  rr(-470, -40, 940, 60, 30); ctx.fillStyle = C.gumEdge; ctx.fill();
+  // hand + forearm (clipped at the water line)
+  const hy = lerp(260, 0, clamp(rise));
+  ctx.save(); ctx.beginPath(); ctx.rect(-600, -900, 1200, 920); ctx.clip();
+  ctx.translate(0, hy);
+  rr(-80, -120, 160, 300, 60); ctx.fillStyle = C.skin; ctx.fill(); rr(30, -120, 50, 300, [0, 50, 50, 0]); ctx.fillStyle = C.skinShade; ctx.fill();
+  rr(-110, -330, 220, 240, 70); ctx.fillStyle = C.skin; ctx.fill();
+  const F = [[-84, -470, 46], [-30, -520, 48], [26, -510, 48], [80, -450, 42]];
+  for (const [fx, fy, fw] of F) { rr(fx - fw / 2, fy, fw, -fy - 290, fw / 2); ctx.fillStyle = C.skin; ctx.fill(); }
+  rr(96, -300, 46, 150, 23); ctx.fillStyle = C.skin; ctx.fill();   // thumb
+  const w = clamp(wrinkle);
+  if (w > 0) for (const [fx, fy, fw] of F) for (let k = 0; k < 4; k++) {
+    const yy = fy + 24 + k * 20, P = []; for (let i = 0; i <= 6; i++) P.push([fx - fw * 0.34 + i * fw * 0.68 / 6, yy + Math.sin(i * 2.1 + k) * 5]);
+    ctx.save(); ctx.globalAlpha = w; line(P, C.skinShade, 6); ctx.restore();
+  }
+  const tip = [F[1][0], F[1][1] + 30 + hy];
+  ctx.restore();
+  // water + front of the tub
+  ctx.fillStyle = C.sky; ctx.fillRect(-470, 0, 940, 70);
+  for (let i = 0; i < 7; i++) { const bx = -400 + i * 130 + Math.sin(t * 2 + i) * 10, by = 14 + (i % 2) * 18; circle(bx, by, 26 + (i % 3) * 8, C.white); }
+  rr(-500, 50, 1000, 300, [20, 20, 140, 140]); ctx.fillStyle = C.white; ctx.fill(); rr(-500, 50, 1000, 40, 20); ctx.fillStyle = C.gum; ctx.fill();
+  rr(-500, 250, 1000, 100, [0, 0, 140, 140]); ctx.fillStyle = C.gumEdge; ctx.fill();
+  for (const fx of [-380, 380]) { rr(fx - 30, 330, 60, 60, 20); ctx.fillStyle = C.ink; ctx.fill(); }
+  ctx.restore();
+  return [x + tip[0] * s * sc, y + tip[1] * s * sc];
+}
+
+/** round badge for the bath-fingers tease (white disc, ink ring): a wrinkly fingertip with two water drops. ~280 px at s = 1 */
+export function sitFingerBadge(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 140, C.ink); circle(0, 0, 126, C.sky);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 126, 0, TAU); ctx.clip();
+  rr(-50, -80, 100, 260, 50); ctx.fillStyle = C.skin; ctx.fill(); rr(20, -60, 30, 240, [0, 30, 30, 0]); ctx.fillStyle = C.skinShade; ctx.fill();
+  for (let k = 0; k < 4; k++) { const P = []; for (let i = 0; i <= 6; i++) P.push([-34 + i * 11, -50 + k * 20 + Math.sin(i * 2.1 + k) * 4]); line(P, C.skinShade, 6); }
+  ctx.restore();
+  drop(-82, -40, 0.6); drop(80, 10, 0.5);
+  ctx.restore();
+}
+
+/** fingertip close-up lens contents (call inside lens()): skin pad with wrinkle grooves (wrinkle 0..1), a pink nerve with
+ *  a yellow signal (sig 0..1 along it), and a wet sky marble pressed against the pad (grip 0..1 slides it in). r = lens r */
+export function sitGripLens(r, { wrinkle = 1, sig = -1, grip = 0, t = 0 } = {}) {
+  fillAll(C.sky);
+  ctx.beginPath(); ctx.ellipse(-40, -60, r * 0.95, r * 0.8, -0.2, 0, TAU); ctx.fillStyle = C.skin; ctx.fill();
+  const w = clamp(wrinkle);
+  for (let k = 0; k < 6; k++) { const P = []; for (let i = 0; i <= 10; i++) P.push([-r * 0.7 + i * r * 0.13, -r * 0.5 + k * r * 0.16 + Math.sin(i * 1.3 + k) * 10 * w]); ctx.save(); ctx.globalAlpha = 0.3 + 0.7 * w; line(P, C.skinShade, 10); ctx.restore(); }
+  const N = []; for (let i = 0; i <= 12; i++) N.push([-r + i * r * 0.11, r * 0.15 + Math.sin(i * 0.7) * 20]);
+  line(N, C.pinkDark, 22); line(N, C.pink, 14);
+  if (sig >= 0 && sig <= 1) { const i = Math.min(11, Math.floor(sig * 12)), k = sig * 12 - i; const px = lerp(N[i][0], N[i + 1][0], k), py = lerp(N[i][1], N[i + 1][1], k); circle(px, py, 22, C.ink); circle(px, py, 16, C.yellow); }
+  const g = clamp(grip);
+  if (g > 0) { const mx = lerp(r * 1.3, r * 0.42, g), my = r * 0.55; circle(mx, my, 92, C.ink); circle(mx, my, 84, '#7EC3E0'); ell(mx - 28, my - 30, 22, 14, C.white, -0.6); drop(mx + 60, my + 70, 0.4); }
+>>>>>>> work/2026-11-24-body-5/src/core/kit.js
 }

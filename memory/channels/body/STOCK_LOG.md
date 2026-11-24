@@ -64,3 +64,4 @@
 - 2026-11-24 00:25 · 2026-11-24-body-03 added · conf 0.7 · question+where-did-it-go · What happens when you stand up too fast?
 - 2026-11-24 00:34 · 2026-11-24-body-04 added · conf 0.7 · question+which-side-number · What happens when you hit your funny bone?
 - 2026-11-24 04:01 · 2026-11-24-body-05 added · conf 0.7 · question+lab-number-yesno · What happens when you walk into a room and forget why?
+- 2026-11-24 04:04 · 2026-11-24-body-06 added · conf 0.7 · question+dose-guess-number · What happens if you sit all day?
