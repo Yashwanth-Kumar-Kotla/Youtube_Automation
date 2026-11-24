@@ -7252,3 +7252,236 @@ export function sitGripLens(r, { wrinkle = 1, sig = -1, grip = 0, t = 0 } = {}) 
   const g = clamp(grip);
   if (g > 0) { const mx = lerp(r * 1.3, r * 0.42, g), my = r * 0.55; circle(mx, my, 92, C.ink); circle(mx, my, 84, '#7EC3E0'); ell(mx - 28, my - 30, 22, 14, C.white, -0.6); drop(mx + 60, my + 70, 0.4); }
 }
+
+// ═════════════════════════ BATH (wrinkly bath fingers, 2026-11-24) ═════════════════════════
+const BATH_WALL = '#DCEFF7', BATH_GROUT = '#FFFFFF', BATH_W = '#BFE3F2', BATH_WD = '#7EC3E0', BATH_WL = '#E6F5FB', BATH_TUB = '#F7F4EE',
+  BATH_TUB_D = '#DCD6CB', BATH_DUCK = '#FFD43B', BATH_DUCK_D = '#E0B521', BATH_BEAK = '#E8823A', BATH_TIP = '#E7A98F', BATH_GREY = '#8C8C94',
+  BATH_TYRE = '#2A2A30', BATH_TYRE_L = '#4A4A52', BATH_GROOVE = '#B97A5E';
+
+/** deterministic wrinkle grooves across a fingertip pad: n wavy lines between y0..y1 (local), width hw at the centre.
+ *  The pattern only depends on seed, so the same finger wrinkles the same way every time. amp 0..1 = how deep. */
+function bathGrooves(seed, y0, y1, hw, amp, col, w, n = 5) {
+  if (amp <= 0) return;
+  ctx.save(); ctx.globalAlpha *= clamp(amp * 1.6);
+  for (let i = 0; i < n; i++) {
+    const yy = lerp(y0, y1, (i + 0.5) / n), ph = rnd(seed * 13 + i) * TAU, fr = 2.2 + rnd(seed * 7 + i) * 1.6, half = hw * (0.55 + 0.45 * Math.sin(Math.PI * (i + 0.5) / n));
+    const P = []; for (let k = 0; k <= 14; k++) { const u = k / 14; P.push([lerp(-half, half, u), yy + Math.sin(u * fr * Math.PI + ph) * hw * 0.09 * amp + (u - 0.5) * (rnd(seed + i * 3) - 0.5) * hw * 0.25]); }
+    line(P, col, w);
+  }
+  ctx.restore();
+}
+
+/** bathroom wall (pale tiles) + the tub's back rim just above the water line waterY. Fill past the edges for the camera. */
+export function bathWall(waterY = 960) {
+  ctx.fillStyle = BATH_WALL; ctx.fillRect(-300, -300, W + 600, H + 600);
+  ctx.save(); ctx.globalAlpha = 1; ctx.strokeStyle = BATH_GROUT; ctx.lineWidth = 8;
+  for (let y = -300; y < waterY; y += 150) { ctx.beginPath(); ctx.moveTo(-300, y); ctx.lineTo(W + 300, y); ctx.stroke(); }
+  for (let x = -300; x < W + 300; x += 150) { ctx.beginPath(); ctx.moveTo(x, -300); ctx.lineTo(x, waterY); ctx.stroke(); }
+  ctx.restore();
+  rr(-300, waterY - 70, W + 600, 90, 0); ctx.fillStyle = BATH_TUB; ctx.fill();          // back rim (top face)
+  rr(-300, waterY - 18, W + 600, 30, 0); ctx.fillStyle = BATH_TUB_D; ctx.fill();         // rim lip shade
+}
+
+/** bath water in FRONT of whatever sticks out of it: flat pale-blue body from the wavy surface at waterY down past the frame,
+ *  a lighter reflection band and foam bubbles along the surface. ripple: [x, r] adds a ring around something poking out. */
+export function bathWater(waterY, t = 0, { ripple = null, foam = 1 } = {}) {
+  const surf = (x) => waterY + Math.sin(x * 0.012 + t * 2.2) * 7;
+  ctx.beginPath(); ctx.moveTo(-300, surf(-300)); for (let x = -300; x <= W + 300; x += 20) ctx.lineTo(x, surf(x));
+  ctx.lineTo(W + 300, H + 300); ctx.lineTo(-300, H + 300); ctx.closePath(); ctx.fillStyle = BATH_W; ctx.fill();
+  ctx.beginPath(); for (let x = -300; x <= W + 300; x += 20) { const y = surf(x) + 10; x === -300 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+  ctx.strokeStyle = BATH_WD; ctx.lineWidth = 8; ctx.stroke();
+  for (let i = 0; i < 6; i++) { const x = 60 + i * 190 + Math.sin(t * 1.3 + i) * 12; rr(x, waterY + 70 + (i % 2) * 60, 90, 14, 7); ctx.fillStyle = BATH_WL; ctx.fill(); }
+  if (ripple) { ctx.save(); ctx.beginPath(); ctx.ellipse(ripple[0], waterY + 4, ripple[1] * (1 + 0.04 * Math.sin(t * 4)), ripple[1] * 0.16, 0, 0, TAU); ctx.lineWidth = 8; ctx.strokeStyle = BATH_WL; ctx.stroke(); ctx.restore(); }
+  if (foam > 0) for (let i = 0; i < 26; i++) {
+    const x = -40 + i * 46 + rnd(i) * 30, r = (16 + rnd(i + 9) * 22) * foam, y = surf(x) - r * 0.35 + Math.sin(t * 3 + i) * 3;
+    circle(x, y, r + 4, BATH_TUB_D); circle(x, y, r, C.white); circle(x - r * 0.35, y - r * 0.35, r * 0.25, BATH_WL);
+  }
+}
+
+/** palm-side right hand, fingers up, thumb on the left, bare forearm running down (for a hand rising out of water).
+ *  prune 0..1 = wrinkly fingertip pads (same pattern every time), tips 0..1 = yellow rings on the four fingertips,
+ *  drip 0..1 = water drops falling from the fingertips (t = film time). Origin = palm centre; ~620 px from wrist to fingertip at s = 1. */
+export function bathHand(x, y, s, { prune = 0, tips = 0, rot = 0, sc = 1, t = 0, drip = 0, arm = 900 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  line([[0, 120], [0, arm]], C.skin, 220); line([[86, 160], [86, arm]], C.skinShade, 40);
+  line([[-120, 150], [-205, 30], [-245, -60]], C.skin, 74);                              // thumb
+  rr(-155, -125, 310, 330, 90); ctx.fillStyle = C.skin; ctx.fill();
+  for (const f of FINGERS) { const p = fingerPts(f); line([p[0], p[3]], C.skin, 66); }
+  // palm lines + finger creases (palm side)
+  ctx.save(); ctx.globalAlpha = 0.8;
+  line([[-120, -30], [-20, -50], [110, -20]], C.skinShade, 8); line([[-130, 40], [-30, 30], [60, 60]], C.skinShade, 8); line([[-95, 160], [-40, 60], [-60, -10]], C.skinShade, 8);
+  ctx.restore();
+  for (const f of FINGERS) { const p = fingerPts(f); line([[p[1][0] - 18, p[1][1]], [p[1][0] + 18, p[1][1]]], C.skinShade, 6); }
+  // fingertip pads: tint + grooves (prune)
+  const pads = FINGERS.map((f) => { const p = fingerPts(f); return [p[3][0], p[3][1] + 38, f]; });
+  pads.push([-238, -40, null]);
+  pads.forEach(([px, py], i) => {
+    if (prune > 0) { ctx.save(); ctx.globalAlpha = 0.8 * clamp(prune); ell(px, py, 31, 48, BATH_TIP); ctx.restore(); }
+    ctx.save(); ctx.translate(px, py); bathGrooves(i + 1, -36, 40, 30, prune, BATH_GROOVE, 6.5, 4); ctx.restore();
+  });
+  if (tips > 0) pads.slice(0, 4).forEach(([px, py]) => hiRing(px, py, 46, 60, clamp(tips)));
+  if (drip > 0) pads.slice(0, 4).forEach(([px, py], i) => {
+    const u = ((t * 0.9 + i * 0.37) % 1), dy = 60 + u * u * 260;
+    drop(px + (i - 1.5) * 4, py + dy, 0.4, Math.PI, clamp(drip) * (1 - u));
+  });
+  ctx.restore();
+}
+/** fingertip pad centre of finger i (0 index .. 3 pinky, 4 thumb) for bathHand at (x, y, s) without rotation */
+export const bathTipAt = (x, y, s, i) => { if (i === 4) return [x - 238 * s, y - 40 * s]; const p = fingerPts(FINGERS[i]); return [x + p[3][0] * s, y + (p[3][1] + 38) * s]; };
+
+/** big fingertip pad close-up (palm side, one finger, top rounded). r = half width px. prune 0..1 = wrinkle grooves (same
+ *  pattern for the same seed), print: true = ink-line "scan" look on white (no skin). col = groove colour override. sc = pop-in */
+export function bathPad(x, y, r, { prune = 1, seed = 3, sc = 1, print = false, col = null, alpha = 1 } = {}) {
+  if (sc <= 0 || r <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.globalAlpha = alpha;
+  if (!print) {
+    rr(-r, -r * 1.3, 2 * r, r * 3.2, r); ctx.fillStyle = C.skin; ctx.fill();
+    rr(r * 0.55, -r * 0.6, r * 0.45, r * 2.4, [0, r, 0, 0]); ctx.fillStyle = C.skinShade; ctx.fill();
+    ctx.save(); ctx.globalAlpha *= 0.5 * clamp(prune); ell(0, -r * 0.2, r * 0.82, r * 0.95, BATH_TIP); ctx.restore();
+    line([[-r * 0.7, r * 1.55], [r * 0.7, r * 1.55]], C.skinShade, r * 0.06);
+  }
+  bathGrooves(seed, -r * 0.95, r * 0.75, r * 0.85, prune, col || (print ? C.ink : BATH_GROOVE), print ? r * 0.06 : r * 0.07, 6);
+  ctx.restore();
+}
+
+/** fingertip "scan" card: white card, ink rim, a fingertip outline with the wrinkle print (bathPad print) and a small label.
+ *  w = card width (h = 1.3 w). lineCol = print colour (yellow for the overlaid second scan). bg: false = no card (overlay only) */
+export function bathScanCard(x, y, w, { label = '', sub = '', seed = 3, prune = 1, sc = 1, lineCol = C.ink, bg = true, rot = 0 } = {}) {
+  if (sc <= 0) return;
+  const h = w * 1.3; ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(sc, sc);
+  if (bg) { rr(-w / 2 - 8, -h / 2 - 8, w + 16, h + 16, 34); ctx.fillStyle = C.ink; ctx.fill(); rr(-w / 2, -h / 2, w, h, 28); ctx.fillStyle = C.white; ctx.fill();
+    ctx.save(); ctx.setLineDash([14, 12]); rr(-w * 0.3, -h * 0.32, w * 0.6, h * 0.66, w * 0.3); ctx.lineWidth = 5; ctx.strokeStyle = BATH_GREY; ctx.stroke(); ctx.restore(); }
+  bathPad(0, -h * 0.02, w * 0.26, { prune, seed, print: true, col: lineCol });
+  if (label) { ctx.font = `900 ${Math.round(w * 0.11)}px Inter`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.ink; ctx.fillText(label, 0, -h * 0.42); }
+  if (sub) { ctx.font = `900 ${Math.round(w * 0.065)}px Inter`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = BATH_GREY; ctx.fillText(sub, 0, h * 0.42); }
+  ctx.restore();
+}
+
+/** round kitchen timer: white dial, ink rim, a yellow sector sweeping p 0..1, a red hand, big text ("5 MIN") under the centre.
+ *  ~2 r wide; r default 110. sc = pop-in, kick 0..1 = a bounce */
+export function bathTimer(x, y, r = 110, { text = '5 MIN', p = 1, sc = 1, kick = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); const k = sc * (1 + 0.12 * kick); ctx.scale(k, k);
+  rr(-r * 0.22, -r * 1.22, r * 0.44, r * 0.3, 10); ctx.fillStyle = C.ink; ctx.fill();          // knob
+  circle(0, 0, r + 12, C.ink); circle(0, 0, r, C.white);
+  if (p > 0) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, r * 0.86, -Math.PI / 2, -Math.PI / 2 + TAU * clamp(p)); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill(); }
+  for (let i = 0; i < 12; i++) { const a = i / 12 * TAU; line([[Math.cos(a) * r * 0.86, Math.sin(a) * r * 0.86], [Math.cos(a) * r * 0.96, Math.sin(a) * r * 0.96]], C.ink, 6); }
+  const ha = -Math.PI / 2 + TAU * clamp(p); line([[0, 0], [Math.cos(ha) * r * 0.78, Math.sin(ha) * r * 0.78]], C.red, 10); circle(0, 0, 12, C.ink);
+  rr(-r * 0.78, r * 0.22, r * 1.56, r * 0.5, r * 0.25); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.font = `900 ${Math.round(r * 0.36)}px Inter`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.white; ctx.fillText(text, 0, r * 0.48);
+  ctx.restore();
+}
+
+/** rubber duck, ~170 px wide at s = 1, facing right (flip = -1 faces left). Origin = waterline under its body. */
+export function bathDuck(x, y, s = 1, { rot = 0, flip = 1, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc * flip, s * sc);
+  ell(0, -40, 85, 50, BATH_DUCK); ell(10, -22, 70, 28, BATH_DUCK_D); ell(-60, -70, 30, 18, BATH_DUCK, -0.6);
+  circle(42, -112, 46, BATH_DUCK); ell(92, -104, 30, 13, BATH_BEAK); circle(52, -124, 9, C.ink); circle(55, -127, 3, C.white);
+  ell(-10, -50, 40, 20, BATH_DUCK_D, 0.2);
+  ctx.restore();
+}
+
+/** bar of soap (pink, lighter top face, a couple of white suds). ~180x100 px at s = 1 */
+export function bathSoap(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-92, -50, 184, 100, 40); ctx.fillStyle = C.pinkDark; ctx.fill(); rr(-92, -56, 184, 86, 40); ctx.fillStyle = C.pink; ctx.fill();
+  rr(-60, -40, 120, 46, 22); ctx.fillStyle = C.pinkLight; ctx.fill();
+  circle(-70, -58, 16, C.white); circle(-48, -64, 11, C.white); circle(74, -54, 12, C.white);
+  ctx.restore();
+}
+
+/** glass marble (flat disc, darker rim, white glint). r = radius */
+export function bathMarble(x, y, r = 30, col = C.cyan) {
+  circle(x, y, r + 5, C.ink); circle(x, y, r, col); ell(x + r * 0.15, y + r * 0.2, r * 0.7, r * 0.55, C.white + '33'); circle(x - r * 0.35, y - r * 0.35, r * 0.22, C.white);
+}
+
+/** shallow bowl of water seen from the side (white bowl, water band). w = width; marbles drawn by the caller */
+export function bathBowl(x, y, w = 220) {
+  ctx.beginPath(); ctx.moveTo(x - w / 2, y - w * 0.12); ctx.lineTo(x + w / 2, y - w * 0.12); ctx.quadraticCurveTo(x + w * 0.45, y + w * 0.3, x, y + w * 0.3);
+  ctx.quadraticCurveTo(x - w * 0.45, y + w * 0.3, x - w / 2, y - w * 0.12); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = BATH_W; ctx.fillRect(x - w / 2, y - w * 0.04, w, w * 0.4); ctx.restore();
+  rr(x - w / 2 - 6, y - w * 0.15, w + 12, 16, 8); ctx.fillStyle = BATH_TUB; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.ink; ctx.stroke();
+}
+
+/** car tyre (graphic): dark ring with chunky tread blocks + grooves, grey hub. r = outer radius, rot = spin */
+export function bathTyre(x, y, r = 200, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.rotate(rot);
+  circle(0, 0, r, BATH_TYRE);
+  for (let i = 0; i < 18; i++) { ctx.save(); ctx.rotate(i / 18 * TAU); rr(-r * 0.07, -r * 1.06, r * 0.14, r * 0.2, 6); ctx.fillStyle = BATH_TYRE; ctx.fill(); ctx.restore(); }
+  circle(0, 0, r * 0.82, BATH_TYRE_L);
+  for (let i = 0; i < 18; i++) { ctx.save(); ctx.rotate(i / 18 * TAU + 0.17); line([[0, -r * 0.8], [r * 0.08, -r * 0.62]], BATH_TYRE, r * 0.05); ctx.restore(); }
+  circle(0, 0, r * 0.58, BATH_TYRE); circle(0, 0, r * 0.5, BATH_TUB_D); circle(0, 0, r * 0.18, BATH_GREY);
+  for (let i = 0; i < 5; i++) { const a = i / 5 * TAU; circle(Math.cos(a) * r * 0.32, Math.sin(a) * r * 0.32, r * 0.05, BATH_GREY); }
+  ctx.restore();
+}
+
+/** x-ray side cutaway of ONE fingertip (pointing up, pad on the left, nail on the right) on the x-ray film look:
+ *  cyan skin outline, cyan bone tip, red blood vessel with capillary loops toward the pad, pink nerve with yellow signals.
+ *  narrow 0..1 squeezes the vessel, buckle 0..1 folds the pad skin inward, nerve 0..1 lights the nerve (signals run up),
+ *  ghost 0..1 = dashed yellow copy of the vessel (the second soak: same spot), hiV 0..1 = yellow ring round the vessel,
+ *  pins 0..1 = pin icons fixing the vessel. Origin = fingertip centre; ~420 x 1100 px at s = 1. t = film time. */
+export function bathTipXray(x, y, s = 1, { t = 0, narrow = 0, buckle = 0, nerve = 0, ghost = 0, hiV = 0, pins = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  const hw = 210, top = -560, bot = 700, bk = clamp(buckle);
+  const padX = (yy) => { const base = -hw + (yy < top + hw ? hw - Math.sqrt(Math.max(0, hw * hw - (yy - top - hw) ** 2)) : 0); return yy > -420 && yy < 300 ? base + bk * (14 + 14 * Math.sin((yy + 420) / 720 * Math.PI * 9)) * Math.sin((yy + 420) / 720 * Math.PI) : base; };
+  const shape = () => {
+    ctx.beginPath(); ctx.moveTo(hw, bot);
+    ctx.lineTo(hw, top + hw); ctx.arc(0, top + hw, hw, 0, -Math.PI / 2, true);
+    for (let yy = top; yy <= bot; yy += 8) ctx.lineTo(padX(yy), yy);
+    ctx.closePath();
+  };
+  shape(); ctx.fillStyle = C.xnavy; ctx.fill(); ctx.lineWidth = 14; ctx.strokeStyle = C.cyan; ctx.stroke();
+  // nail (right side, top)
+  rr(hw - 34, top + 130, 26, 360, 13); ctx.fillStyle = C.cyan; ctx.fill();
+  // bone tip (distal phalanx) + joint
+  ctx.beginPath(); ctx.moveTo(10, top + 150); ctx.quadraticCurveTo(110, top + 150, 100, top + 260); ctx.lineTo(80, 420); ctx.quadraticCurveTo(150, 470, 120, 520);
+  ctx.lineTo(-40, 520); ctx.quadraticCurveTo(-70, 470, -20, 420); ctx.lineTo(-40, top + 260); ctx.quadraticCurveTo(-60, top + 150, 10, top + 150); ctx.closePath();
+  ctx.fillStyle = C.cyan + '55'; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = C.cyan; ctx.stroke();
+  rr(-50, 560, 190, 160, 40); ctx.fillStyle = C.cyan + '55'; ctx.fill(); ctx.stroke();
+  // vessel: up the pad side with three capillary loops reaching toward the pad skin
+  const VP = []; for (let yy = bot + 40; yy >= top + 120; yy -= 10) { const u = (yy - (top + 120)) / (bot - top), loop = Math.max(0, Math.sin(u * Math.PI * 7)) ** 2; VP.push([-90 - loop * 70 * (yy < 320 ? 1 : 0), yy]); }
+  const vw = lerp(30, 11, clamp(narrow));
+  if (hiV > 0) { ctx.save(); ctx.globalAlpha = clamp(hiV); line(VP, C.yellow, vw + 34); ctx.restore(); }
+  line(VP, '#A81E2D', vw + 8); line(VP, C.red, vw);
+  for (let i = 0; i < 7; i++) { const k = Math.floor((((t * 0.35 * (1 - 0.7 * narrow) + i / 7) % 1)) * (VP.length - 1)); const p = VP[VP.length - 1 - k]; circle(p[0], p[1], vw * 0.32, C.pinkLight); }
+  if (ghost > 0) { ctx.save(); ctx.globalAlpha = clamp(ghost); ctx.setLineDash([18, 14]); line(VP, C.yellow, 8); ctx.restore(); }
+  if (pins > 0) [[-90, 200], [-150, -190], [-90, 560]].forEach(([px, py], i) => pinIcon(px + 4, py - 52, 0.75, 0.15, clamp(pins * 3 - i)));
+  // nerve: pink cord up the middle-left, signals when lit
+  const NP = [[-10, bot + 40], [-20, 300], [-40, 0], [-60, -300], [-110, top + 160]];
+  if (nerve > 0) { ctx.save(); ctx.globalAlpha = clamp(nerve); line(NP, C.yellow, 34); ctx.restore(); }
+  line(NP, C.pinkDark, 20); line(NP, C.pink, 12);
+  if (nerve > 0) for (let i = 0; i < 3; i++) { const u = ((t * 1.4 + i / 3) % 1), sp = 1 - u, seg_ = Math.min(NP.length - 2, Math.floor(sp * (NP.length - 1))), f = sp * (NP.length - 1) - seg_;
+    const [ax, ay] = NP[seg_], [bx, by] = NP[seg_ + 1]; circle(lerp(ax, bx, f), lerp(ay, by, f), 16 * clamp(nerve * 2), C.ink); circle(lerp(ax, bx, f), lerp(ay, by, f), 11 * clamp(nerve * 2), C.yellow); }
+  ctx.restore();
+}
+
+/** schematic nerve icon badge (white disc, ink ring) with a pink nerve cord across it. cut 0..1 = the cord splits into two ends
+ *  with a gap and a red "//" mark between them (a symbol, not a wound). Yellow signal dot runs when not cut. r = radius */
+export function bathNerveIcon(x, y, r = 80, { cut = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 10, C.ink); circle(0, 0, r, C.white);
+  const g = clamp(cut) * r * 0.32;
+  const L1 = [[-r * 0.8, r * 0.1], [-r * 0.3, -r * 0.1], [-g, 0]], L2 = [[g, 0], [r * 0.3, r * 0.1], [r * 0.8, -r * 0.1]];
+  if (cut <= 0) { const P = [[-r * 0.8, r * 0.1], [-r * 0.3, -r * 0.1], [r * 0.3, r * 0.1], [r * 0.8, -r * 0.1]]; line(P, C.pinkDark, r * 0.22); line(P, C.pink, r * 0.13);
+    const u = (t * 1.2) % 1; circle(lerp(-r * 0.7, r * 0.7, u), 0, r * 0.11, C.ink); circle(lerp(-r * 0.7, r * 0.7, u), 0, r * 0.075, C.yellow); }
+  else { for (const P of [L1, L2]) { line(P, C.pinkDark, r * 0.22); line(P, C.pink, r * 0.13); }
+    ctx.save(); ctx.globalAlpha = clamp(cut * 2); for (const dx of [-0.1, 0.1]) line([[dx * r - r * 0.08, r * 0.3], [dx * r + r * 0.08, -r * 0.3]], C.red, r * 0.07); ctx.restore(); }
+  ctx.restore();
+}
+
+/** side-stitch badge (the next-episode object): a round lens with the hero's torso, hand pressed to his side under the ribs,
+ *  red pain zap at the spot. r = lens radius, sc = pop-in, t = film time */
+export function sideStitchBadge(x, y, r = 120, { sc = 1, t = 0 } = {}) {
+  if (sc <= 0) return;
+  lens(x, y, r, sc, () => {
+    ctx.fillStyle = C.sky; ctx.fillRect(-r - 10, -r - 10, 2 * r + 20, 2 * r + 20);
+    man({ x: 0, y: r * 0.45, s: r / 300, arm: ARM.hip, mouth: 'o', brow: 0.8, eyes: 'n' });
+    painZap(r * 0.36, r * 0.62, r / 300, 1, t);
+  });
+}

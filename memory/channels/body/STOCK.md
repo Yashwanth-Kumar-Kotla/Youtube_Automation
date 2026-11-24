@@ -1,5 +1,5 @@
 # STOCK: body (generated from state/stock/body.json; change it with `python -m pipeline.stock`)
-_Updated 2026-11-24 04:04 · ready 15/30 · threshold 0.4 · max age 42 d_
+_Updated 2026-11-24 04:10 · ready 16/30 · threshold 0.4 · max age 42 d_
 
 | id | status | conf | topic | cluster | hook pattern | format | length | made | playbook | research |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -18,5 +18,6 @@ _Updated 2026-11-24 04:04 · ready 15/30 · threshold 0.4 · max age 42 d_
 | 2026-11-24-body-04 | ready | 0.7 | What happens when you hit your funny bone? | nerves | question+which-side-number | anatomy-tour | 33.7s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
 | 2026-11-24-body-05 | ready | 0.7 | What happens when you walk into a room and forget why? | brain | question+lab-number-yesno | lab-experiment | 33.9s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
 | 2026-11-24-body-06 | ready | 0.7 | What happens if you sit all day? | sitting | question+dose-guess-number | countdown-to-cure explainer | 35.6s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
+| 2026-11-24-body-07 | ready | 0.7 | What happens to your fingers in the bath? | skin | question+cause-ab-number | clue-trail explainer | 33.6s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
 
-Clusters in stock: balance ×1, blood ×1, brain ×1, eyes ×1, gut ×2, heart ×1, immune ×1, lungs ×1, nerves ×1, nose ×1, sitting ×1, sneeze ×1, sun ×1, throat ×1
+Clusters in stock: balance ×1, blood ×1, brain ×1, eyes ×1, gut ×2, heart ×1, immune ×1, lungs ×1, nerves ×1, nose ×1, sitting ×1, skin ×1, sneeze ×1, sun ×1, throat ×1

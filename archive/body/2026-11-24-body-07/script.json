@@ -1,0 +1,61 @@
+{
+ "title": "What Happens to Your Fingers in the Bath?",
+ "voice": "am_michael",
+ "speed": 1.15,
+ "lead": 0.4,
+ "outro": 0.9,
+ "gap": 0.24,
+ "music": "bed",
+ "sources": [
+  "The Conversation, 'Curious Kids: why do our toes and fingers get wrinkly in the bath?' (Bond University academic; wrinkling happens after more than about five minutes in the bath, faster in hotter water): https://theconversation.com/curious-kids-why-do-our-toes-and-fingers-get-wrinkly-in-the-bath-120229",
+  "Cleveland Clinic Health Essentials, 'Why Water Makes Your Skin Look Like a Prune and Not a Plum' (after just a few minutes in wet conditions palms and soles get wrinkly; the sympathetic nervous system is behind it; wrinkles act like tire treads that let water slide out for better wet grip; pruney skin without water exposure can signal a health condition, talk to your doctor): https://health.clevelandclinic.org/why-water-makes-your-skin-look-like-a-prune-and-not-a-plum",
+  "Newcastle University press office, 'Get a grip: why we get wrinkly fingers and toes' (Kareklas, Nettle & Smulders, Biology Letters 2013: wrinkling is caused by blood vessels constricting below the skin, controlled by the autonomic nervous system, replacing the older idea that water makes the skin swell; participants were 12% faster moving wet marbles with wrinkled fingers, no difference with dry objects; Smulders: like treads on car tyres): https://www.ncl.ac.uk/press/articles/archive/2013/01/getagrip-whywegetwrinklyfingersandtoes.html",
+  "Haseleu et al., PLoS One 2014, 'Water-induced finger wrinkles do not affect touch acuity or dexterity in handling wet objects' (40 subjects; no grip benefit found, hence 'not every study agrees'): https://pubmed.ncbi.nlm.nih.gov/24416318/",
+  "Binghamton University news, 2025-05-07, 'Do your fingers wrinkle the same way every time you're in the water too long? New research says yes' (Laytin & German, J. Mech. Behav. Biomed. Mater. 2025: fingers soaked 30 minutes, re-soaked at least 24 hours later, the wrinkle patterns stayed the same; blood vessels beneath the skin contract after prolonged immersion and don't change position much; wrinkles don't form with median nerve damage): https://www.binghamton.edu/news/story/5547/do-your-fingers-wrinkle-the-same-way-every-time-youre-in-the-water-too-long-new-research-says-yes",
+  "Hsieh et al., Clinical Autonomic Research 2006, 'Paradoxical response to water immersion in replanted fingers' (20 replanted, i.e. denervated, fingers: normal fingers lost ~28% blood flow and wrinkled, replanted fingers did not wrinkle; sympathetic innervation is important for immersion wrinkling): https://www.springermedizin.de/paradoxical-response-to-water-immersion-in-replanted-fingers/8780024",
+  "Tindall, Dawood & Povlsen, Emergency Medicine Journal 2006, 'The skin wrinkle test: a simple nerve injury test' (a denervated digit does not wrinkle in warm water; used as a bedside nerve-injury test): https://pmc.ncbi.nlm.nih.gov/articles/PMC2464382",
+  "Tease (next video): Cleveland Clinic Health Essentials, 'Why Do I Sometimes Get a Side Stitch When I Run?' (a painful spasm of the diaphragm; 'there's no single reason' it happens; suspects: extra blood flow to the liver and spleen, eating shortly before activity, electrolyte imbalance; in one study of 965 athletes it hit 75% of swimmers and 69% of runners): https://health.clevelandclinic.org/why-do-i-sometimes-get-a-side-stitch-when-i-run"
+ ],
+ "lines": [
+  {
+   "text": "What happens to your fingers in the bath?",
+   "caps": "WHAT *HAPPENS | TO YOUR *FINGERS | IN THE *BATH?"
+  },
+  {
+   "text": "About five minutes in, they prune. Is it water soaking in, or your nerves?",
+   "caps": "ABOUT *5 MINUTES | IN, THEY *PRUNE | IS IT *WATER | *SOAKING IN | OR YOUR *NERVES?"
+  },
+  {
+   "text": "Ever chased the soap around the tub?",
+   "caps": "EVER *CHASED | THE *SOAP | AROUND THE *TUB?"
+  },
+  {
+   "text": "One study: wrinkly fingers moved wet marbles twelve percent faster.",
+   "caps": "ONE *STUDY | *WRINKLY FINGERS | MOVED WET *MARBLES | *TWELVE PERCENT | *FASTER"
+  },
+  {
+   "text": "Like tire treads, though not every study agrees.",
+   "caps": "LIKE TIRE *TREADS | THOUGH NOT *EVERY | STUDY *AGREES"
+  },
+  {
+   "text": "But here's the weird part: soak again tomorrow, and the wrinkles match exactly.",
+   "caps": "*BUT HERE'S | THE *WEIRD PART | SOAK *AGAIN | *TOMORROW | AND THE *WRINKLES | MATCH *EXACTLY"
+  },
+  {
+   "text": "The blood vessels underneath barely move.",
+   "caps": "THE *BLOOD VESSELS | *UNDERNEATH | BARELY *MOVE"
+  },
+  {
+   "text": "It's your nerves: they narrow those vessels, and skin buckles.",
+   "caps": "IT'S YOUR *NERVES | THEY *NARROW | THOSE *VESSELS | AND SKIN *BUCKLES"
+  },
+  {
+   "text": "Fingers with cut nerves stay smooth.",
+   "caps": "*FINGERS WITH | *CUT NERVES | STAY *SMOOTH"
+  },
+  {
+   "text": "Next Body File: the side stitch, three suspects. Still pruney?",
+   "caps": "NEXT *BODY FILE | THE SIDE *STITCH | THREE *SUSPECTS | STILL *PRUNEY?"
+  }
+ ]
+}
