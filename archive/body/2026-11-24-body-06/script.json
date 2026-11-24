@@ -1,0 +1,53 @@
+{
+  "title": "What Happens If You Sit All Day?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NHS, 'Why we should sit less' (many adults spend more than 7 hours a day sitting; the Department of Health and Social Care describes inactivity as a 'silent killer'; sedentary behaviour is thought to raise the risk of heart disease, stroke, type 2 diabetes, weight gain and obesity; adults should aim for at least 150 minutes of physical activity a week, i.e. about 21 minutes a day = guess option A): https://www.nhs.uk/live-well/exercise/exercise-guidelines/why-sitting-too-much-is-bad-for-us/",
+    "Mayo Clinic, 'What are the risks of sitting too much?' (Expert Answer; an analysis of 13 studies of more than 1 million people: sitting more than eight hours a day with no physical activity carried a risk of dying similar to the risks posed by obesity and smoking; 60 to 75 minutes of moderately intense physical activity a day countered the effects of too much sitting (answer B); start by taking a short break from sitting to standing every 30 minutes): https://www.mayoclinic.org/healthy-lifestyle/adult-health/expert-answers/sitting/faq-20058005",
+    "NIH News in Health, 'Don't Just Sit There! Move for Your Health' (Charles Matthews, NCI: when you sit, 'muscle contractions go way down, and your body's resistance to gravity decreases'; over long periods the body adapts and metabolism slows, so you burn fewer calories and extra energy is more likely to be stored as fat; Americans 12+ sit about 8 to 10 hours a day): https://newsinhealth.nih.gov/node/1626",
+    "Tease (next video): Newcastle University press office, 'Get a grip: why we get wrinkly fingers and toes' (Kareklas, Nettle & Smulders, Biology Letters, 2013: wrinkling is caused by blood vessels narrowing under the skin, controlled by the autonomic nervous system; wrinkled fingers moved wet marbles 12% faster, no difference with dry objects): https://www.ncl.ac.uk/press/articles/archive/2013/01/getagrip-whywegetwrinklyfingersandtoes.html"
+  ],
+  "lines": [
+    {
+      "text": "What happens if you sit all day?",
+      "caps": "WHAT *HAPPENS | IF YOU *SIT | *ALL DAY?"
+    },
+    {
+      "text": "Many of us sit seven-plus hours. What cancels that: twenty minutes of exercise, or an hour-plus?",
+      "caps": "MANY OF US | SIT *7+ HOURS | WHAT *CANCELS THAT? | *TWENTY MINUTES | OR AN *HOUR-PLUS?"
+    },
+    {
+      "text": "Sit down, and your muscle contractions go way down.",
+      "caps": "SIT *DOWN | YOUR *MUSCLE | *CONTRACTIONS | GO *WAY DOWN"
+    },
+    {
+      "text": "Ever stood up after a movie, rusted to the seat?",
+      "caps": "EVER *STOOD UP | AFTER A *MOVIE | *RUSTED | TO THE *SEAT?"
+    },
+    {
+      "text": "But it's not just legs: your metabolism slows, so you burn fewer calories.",
+      "caps": "*BUT IT'S | NOT JUST *LEGS | *METABOLISM | *SLOWS | BURN *FEWER | *CALORIES"
+    },
+    {
+      "text": "The silent killer part? Eight-plus hours, no exercise: a death risk like smoking.",
+      "caps": "THE *SILENT KILLER | PART? | *8+ HOURS | *NO EXERCISE | A *DEATH RISK | LIKE *SMOKING"
+    },
+    {
+      "text": "An hour-plus: sixty to seventy-five minutes a day.",
+      "caps": "AN *HOUR-PLUS | *60 TO 75 | *MINUTES A DAY"
+    },
+    {
+      "text": "Mayo's tip: stand every thirty minutes.",
+      "caps": "MAYO'S *TIP | *STAND | EVERY *30 MINUTES"
+    },
+    {
+      "text": "Next Body File: wrinkly bath fingers, your nerves' grip trick. Still sitting?",
+      "caps": "NEXT *BODY FILE | *WRINKLY | BATH *FINGERS | YOUR NERVES' | *GRIP TRICK | STILL *SITTING?"
+    }
+  ]
+}

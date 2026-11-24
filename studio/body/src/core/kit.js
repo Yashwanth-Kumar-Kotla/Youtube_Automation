@@ -6795,7 +6795,6 @@ export function eyeChart(x, y, s = 1, sc = 1) {
 }
 
 
-<<<<<<< /home/user/Youtube_Automation/studio/body/src/core/kit.js
 // ═════════════════════════ DOORWAY SET (2026-11-24 "walk into a room and forget why") ═════════════════════════
 // man({ step }) (rad, ~0.3) = legs splayed mid-stride with little shoes (walking / frozen mid-step). Reuse fbJamb / fbDoorway /
 // fbThought from the funny-bone set for the rooms and the thought cloud.
@@ -6961,7 +6960,8 @@ export function dwCabinet(x, y, s = 1, { open = 0, label = '', tabs = 3 } = {}) 
     ctx.restore();
   }
   return [x + (150 + dx / 2) * s, y - 300 * s];
-=======
+}
+
 // ═════════════════════════ SITTING SET (2026-11-24 "sit all day") ═════════════════════════
 const SIT_CH = '#5A6B8C', SIT_CH_D = '#46556F', SIT_CH_L = '#7383A3', SIT_VEL = '#C9566E', SIT_VEL_D = '#A3304A', SIT_VEL_L = '#E57A8A',
   SIT_RUST = '#C8734A', SIT_RUST_D = '#A85E3A', SIT_WOOD = '#B5653F', SIT_WOOD_D = '#9A5333', SIT_SAND = '#FFD43B', SIT_SAND_D = '#E3B92E';
@@ -7251,5 +7251,4 @@ export function sitGripLens(r, { wrinkle = 1, sig = -1, grip = 0, t = 0 } = {}) 
   if (sig >= 0 && sig <= 1) { const i = Math.min(11, Math.floor(sig * 12)), k = sig * 12 - i; const px = lerp(N[i][0], N[i + 1][0], k), py = lerp(N[i][1], N[i + 1][1], k); circle(px, py, 22, C.ink); circle(px, py, 16, C.yellow); }
   const g = clamp(grip);
   if (g > 0) { const mx = lerp(r * 1.3, r * 0.42, g), my = r * 0.55; circle(mx, my, 92, C.ink); circle(mx, my, 84, '#7EC3E0'); ell(mx - 28, my - 30, 22, 14, C.white, -0.6); drop(mx + 60, my + 70, 0.4); }
->>>>>>> work/2026-11-24-body-5/src/core/kit.js
 }
