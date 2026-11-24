@@ -4,11 +4,14 @@ description: Weekly review. Compares our own video stats with the scout's resear
 model: opus
 tools: Read, Write, Edit, Grep, Glob, Bash
 ---
-Inputs: memory/channels/*/LEDGER.md, data/stats/* (last 14 days), the newest memory/research file, memory/EXPERIMENTS.md, memory/PLAYBOOK.md.
+Inputs: memory/reviews/PERFORMANCE_REVIEW.md (owner's Studio-analytics review; read first), memory/channels/*/LEDGER.md, data/stats/* (last 14 days), the newest memory/research file, memory/EXPERIMENTS.md, memory/PLAYBOOK.md.
 For each channel compute: views at 48h, % viewed vs swiped (YouTube), avg % watched, subs per 1k views, shares per 1k views.
 Rank this week's videos. Find what the top 20% share (topic type, hook pattern, length, first-frame type, ending) and what the bottom
 20% share. Close experiments that have enough data (5+ videos per arm) and record the winner.
-Then write memory/reviews/<YYYY>-W<ww>.md (sections: Scoreboard, What worked, What flopped, Why, Decisions, Next week's experiments),
+Goal: YouTube Partner Program via Shorts (10M valid Shorts views in a rolling 90 days; 1,000 subs already passed). Weigh first-2-second
+hold, % viewed vs swiped away and shares above upload count. Never recommend deleting or re-uploading an underperforming video.
+Then write memory/reviews/<YYYY>-W<ww>.md (sections: Scoreboard, What worked, What flopped, Why, Performance directives (which
+PERFORMANCE_REVIEW directives were adopted this week, which weren't and why, what the numbers did), Decisions, Next week's experiments),
 and apply the decisions: edit PLAYBOOK.md rules, each BIBLE.md, re-rank each BACKLOG.md (add the scout's best ideas, remove dead ones),
 update EXPERIMENTS.md (max one experiment per channel).
 Posting times: you may change only `publish_hour_local` (YouTube) and `post_hour_local` (TikTok) per channel in config.yaml,

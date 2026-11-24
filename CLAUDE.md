@@ -3,6 +3,17 @@ Memory lives in `memory/` (markdown). How the system works: `docs/AUTOPILOT.md`.
 Styles + engine: `vendor/faceless-shorts/` (read `styles/<style>/STYLE.md` before directing).
 Each channel's living template (with every component built so far): `studio/<channel>/`.
 
+## Performance directives (owner, 2026-11-24; standing input for EVERY production run and weekly review)
+Before starting, read `memory/reviews/PERFORMANCE_REVIEW.md` (written every Sunday by the owner's other agent from YouTube Studio
+analytics joined with our per-video metadata, plus Shorts/Reels trend research). If it doesn't exist yet, say so in the report and go on.
+1. Its "Directives for production" section decides topics, hooks and lengths. Pass the file path to the writer (and director when a
+   directive is visual). Any override must be explained in the run report.
+2. The Sunday weekly review gets a section "Performance directives": which directives were adopted this week, which weren't (and why),
+   and what the numbers did.
+3. Goal: YouTube Partner Program via Shorts: 1,000 subs (passed) + 10M valid Shorts views in a rolling 90 days. Judge every creative
+   choice by closing that views gap: the first 2 seconds, % viewed vs swiped away and shares matter more than upload count.
+4. Never delete or re-upload an underperforming video; the review learns from them as they are.
+
 ## Production run ("make videos"; scheduled twice a day)
 Videos go into a per-channel **stock**, not straight to posting. The hourly `publish` workflow posts the best one per slot.
 0. `bin/episode.sh setup` once per container (until it prints "All set"). `git pull` first.
