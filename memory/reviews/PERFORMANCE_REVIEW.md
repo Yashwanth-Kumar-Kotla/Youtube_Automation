@@ -89,7 +89,46 @@ Ranked by strength of evidence. "Weak" means n is small or the age confound appl
 7. **No length signal inside the current range — because the range was never tested (moderate).** Length bands show no views difference: 33–35s averaged 1,263 views, 36–38s 1,202, 39–44s 1,255. Average % viewed was 67.4% (33–35s), 60.8% (36–38s), 69.1% (39–44s). Every video is 33–44s long, so the catalog has never tested the 15–35s sweet spot the trend research points to. The flat result inside 33–44s is not evidence that length does not matter.
 8. **Repo status is unreliable for scheduling (operational).** 10 videos marked "ready" were already Public; Blush is marked "ready" but its file does not exist in the repo. Any pipeline step that trusts repo status without a Studio check will double-post or schedule a missing file.
 
-## 6. Directives for production
+## 6. Scheduling findings
+
+**Source note:** Studio's Content list gave publish dates for all 24 Shorts but publish times for only 2 of them, so this section is computed from the scheduler's own verified records (launch schedule verified in Studio Nov 13; daily scheduler runs Nov 14–17), cross-checked against the scoreboard's Studio publish dates. Every slot below is the slot the video was actually scheduled into and verified as Scheduled in Studio before it went public. Slot times are America/Chicago.
+
+### Slot table (anomalies excluded: Hiccups 18 views at 7:30 AM and Brain Freeze 16 views at 12:00 PM on Nov 16 are distribution failures, not content — see Section 5.1)
+
+| Slot | n | Avg views | Median views | Avg % viewed | Avg stayed-to-watch |
+|---|---|---|---|---|---|
+| 7:30 AM | 5 | 1,085 | 1,087 | 61.7% | 54.9% |
+| 12:00 PM | 6 | 1,208 | 1,247 | 70.3% | 59.2% |
+| 6:00 PM | 10 | 1,340 | 1,326 | 65.7% | 56.3% |
+
+- **6:00 PM leads on raw views (1,340) but the lead is age-driven, not slot-driven.** The 6:00 PM set contains the two oldest videos (Pee 1,842 on Nov 13; Water 1,447 on Nov 14). The review's publish-date gradient (Nov 13: 1,842; Nov 21: 946) applies inside every slot.
+- **12:00 PM is the best slot on retention — the metric that decides distribution.** 70.3% average viewed and 59.2% stayed-to-watch, ahead of 6:00 PM (65.7% / 56.3%) and 7:30 AM (61.7% / 54.9%). It also holds the only shares on the channel (Tooth 2, Nosebleed 1). Subscribers gained per video are flat across slots (7:30 AM 1.6, 12:00 PM 1.7, 6:00 PM 1.7), so no slot converts better.
+- **Day-matched comparison (same publish day, so age is controlled):** Nov 14 — 6:00 PM beat 12:00 PM by 206 (1,447 vs 1,241). Nov 17 — 12:00 PM and 6:00 PM tied at the top (1,446 vs 1,439), 7:30 AM last (1,247). Nov 18 — all three within 55 views (1,287 / 1,272 / 1,232), no difference. Nov 19 — all three within 32 views (1,087 / 1,063 / 1,055), no difference. Nov 20 — 12:00 PM won clearly (1,252 vs 1,020 at 6:00 PM, 887 at 7:30 AM). Nov 21 — 12:00 PM ahead by 28 (960 vs 932). Tally: 12:00 PM best on 3 of 6 comparable days, 6:00 PM on 1, no difference on 2. **7:30 AM never won a day.**
+- **Verdict on slots (weak-to-moderate evidence, n=5–10 per slot):** no slot is a clear winner on views once age is controlled. 12:00 PM is the retention leader and the safest anchor for the strongest video of the day. 7:30 AM is the weakest slot on both views and retention, but with n=5 it is a hint, not a verdict — and dropping it would cut daily output by a third, which the monetization math cannot afford.
+
+### Day of week
+
+Average views by publish day (normal videos only): Fri Nov 13: 1,842 (n=1); Sat Nov 14: 1,344 (n=2); Sun Nov 15: 1,345 (n=3); Mon Nov 16: 1,327 (n=1); Tue Nov 17: 1,377 (n=3); Wed Nov 18: 1,264 (n=3); Thu Nov 19: 1,068 (n=3); Fri Nov 20: 1,053 (n=3); Sat Nov 21: 946 (n=2). **No day-of-week signal survives the age confound:** the decline tracks publish date (older = more days live), not the weekday. Tuesday's 1,377 is the best 3-video day and Saturday Nov 21's 946 the worst, but both are explained by age. Do not schedule around weekdays until an age-matched comparison exists.
+
+### Burst vs spaced
+
+- **The burst test case is the Sun Nov 15 trio, all published at 6:00 PM:** Knuckles 1,446, Sneeze 1,264, Space 1,325 — average 1,345 views, 71.6% average viewed, 57.2% stayed.
+- **Spaced 6:00 PM videos (the other 7):** average 1,337 views, 63.1% average viewed, 56.0% stayed.
+- **Verdict: no burst penalty.** The trio performed like spaced videos of the same age on views, and its retention (71.6% viewed) was the best 3-video group on the channel. The earlier advice to avoid bursting is not supported by this channel's own data — but it is one burst day (n=3), so this is a clearance for occasional catch-up bursts, not proof that bursting is equal or better. Default stays spaced; use a burst only to clear a backlog.
+
+### Cadence
+
+- **3/day is the right cadence for now.** At the current average of ~1,240 views per video, 3/day yields ~3,720 views/day. Dropping to 2/day would cut daily views by a third with no evidence of a per-video gain; raising to 4/day is not possible from production (max 4 per production run, and the pipeline makes at most 4/day) and is untested for feed dilution. The binding constraint is per-video breakout (37,037 views per video needed at 3/day for the 10M bar), not the number of posts.
+- **Early velocity:** first-24-hour views by slot are not available in the data collected for this review (Studio shows only channel-level last-48-hour views: 356). Do not judge slots on first-day velocity until a run collects per-video 48-hour views.
+
+### Scheduling recommendations (for the owner — the upload scheduler is adjusted on the owner's word, not by this review)
+
+1. **Keep 3/day at 7:30 AM / 12:00 PM / 6:00 PM CT.** No slot shows a day-matched disadvantage large enough to drop, and cutting a slot costs a third of daily views.
+2. **Put the strongest hook/topic of the day at 12:00 PM.** It is the retention leader (70.3% viewed, 59.2% stayed) and retention decides whether the feed expands the test audience.
+3. **Keep 6:00 PM as the anchor slot for the day's second video.** Its raw lead is age-driven, but it has never underperformed in day-matched comparison except Nov 20, and it holds the channel's top video (Pee 1,842).
+4. **A same-day burst is cleared for backlog catch-up only.** Spaced stays the default; the Nov 15 trio proves a burst does not suppress the videos.
+
+## 7. Directives for production
 
 ### DO MORE
 1. **Keep the "What happens if/when..." question as line 1 of every script.** The format is consistent across all 24 videos and retention is healthy (66.8% average viewed, 56.9% stayed). Do not change the opening question format.
@@ -103,6 +142,12 @@ Ranked by strength of evidence. "Weak" means n is small or the age confound appl
 7. **Stop trusting repo `status` for scheduling decisions.** Verify every video against Studio Content before scheduling or posting. 10 "ready" videos were already Public; Blush is "ready" with no file. A Studio check is mandatory, not optional.
 8. **Stop publishing a video whose first frame has not been checked against the hook.** Sunburn (48.0% stayed, 52.0% swiped, 887 views — lowest non-anomaly) and Brain Freeze (61.1% swiped away, worst on the channel) both failed at the first frame while holding viewers who stayed (Sunburn 58.1% viewed; Brain Freeze 76.9% viewed). The first frame must carry the hook visually, not just in the voiceover.
 
+### Scheduling (for the owner)
+
+15. **Keep 3/day at 7:30 AM / 12:00 PM / 6:00 PM CT.** No slot shows a day-matched disadvantage large enough to drop; cutting a slot costs a third of daily views for no proven gain.
+16. **Put the strongest hook/topic of the day at 12:00 PM.** Best retention on the channel (70.3% viewed, 59.2% stayed) — retention is what expands the test audience.
+17. **A same-day burst is cleared for backlog catch-up only.** The Nov 15 trio (1,345 avg, 71.6% viewed) performed like spaced videos; spaced stays the default.
+
 ### TEST NEXT
 9. **Test 25–30s cuts: make the next 3 videos 25–30 seconds, same topics and hooks as a 35s+ control would have used.** The whole catalog is 33–44s; the 15–35s sweet spot (vidIQ, PandaStudio) has never been tested on this channel. Compare average % viewed and stayed rate at equal age (48 hours after publish), not lifetime views.
 10. **Test a loop close on the next 3 videos: write the final line so it flows back into the opening question.** Target: at least one video with average % viewed above 100% (viewers rewatching). ScaleLab and AIR both report AVD at or above video length as the breakout signal; the channel's current best is 77.6% (Pee).
@@ -111,7 +156,7 @@ Ranked by strength of evidence. "Weak" means n is small or the age confound appl
 13. **Audit the Nov 16 publish path before anything else about Brain Freeze and Hiccups: compare the exact publish steps, slot, and metadata of the Nov 16 7:30 AM and 12:00 PM uploads against the Nov 15 and Nov 17 uploads, and record the difference in the repo.** Do NOT re-upload either video until the cause is found — a silent re-upload of a video the feed already rejected once risks a second dead video and a duplicate. If the audit finds a settings/publish-path difference, fix the path and only then re-test one of the two topics with a fresh cut.
 14. **Test one Friday 4:00 PM CT slot.** Buffer's 1.8M-video study puts Friday late afternoon/evening (4/6/7 PM) on top, and the channel's current 6:00 PM CT slot is already inside that window. Move one Friday video to 4:00 PM CT (5:00 PM ET) and compare its 48-hour views against the same week's 6:00 PM CT videos.
 
-## 7. Trend briefing
+## 8. Trend briefing
 
 Sources are creator guides and platform coverage published or updated in the last ~60 days unless marked otherwise. Each finding is tagged [platform fact] (YouTube/Instagram's own documentation or announcement) or [creator report] (third-party analysis of creator data).
 
@@ -139,7 +184,7 @@ Sources are creator guides and platform coverage published or updated in the las
 - **Trending audio still works on Reels (unlike Shorts).** [creator report — PandaStudio] *Adaptation:* Reels cuts may use trending audio; YouTube cuts should not depend on it.
 - **Reels up to 3 minutes are now eligible for recommendations to non-followers.** [platform fact — Instagram, Jan 2025 change, via BlendPixel] *Adaptation:* no action — Body Files is far under the cap.
 
-## 8. History
+## 9. History
 
 | Week | Date written | Subscribers | 90-day Shorts views | Avg views / video (normal videos) | Top pattern (by avg views) | Headline |
 |---|---|---|---|---|---|---|
