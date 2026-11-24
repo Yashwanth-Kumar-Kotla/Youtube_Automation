@@ -3,5 +3,6 @@ skip 2026-11-16-body-01: already in the TikTok inbox
 skip 2026-11-16-body-02: already in the TikTok inbox
 skip 2026-11-16-body-03: already in the TikTok inbox
 skip 2026-11-16-body-04: already in the TikTok inbox
-draft sent 2026-11-24-body-01 -> v_inbox_file~v2.7711617906630739981  (What Happens When Your Eyelid Won't Stop Twitching?)
-15 drafts recorded in state/tiktok_drafts.json
+skip 2026-11-24-body-01: already in the TikTok inbox
+draft sent 2026-11-24-body-02 -> v_inbox_file~v2.7711619205581326350  (What Happens If You Hold In a Sneeze?)
+16 drafts recorded in state/tiktok_drafts.json
