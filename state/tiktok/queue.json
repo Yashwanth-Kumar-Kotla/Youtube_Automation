@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T10:07:38+00:00",
+  "updated": "2026-11-25T10:09:26+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -209,6 +209,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-25-body-03/2026-11-25-body-03.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-25-body-03/2026-11-25-body-03.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-25-body-04",
+      "title": "What Happens When You Don't Drink Enough Water?",
+      "caption": "What Happens When You Don't Drink Enough Water? #bodyfiles #dehydration #water #hydration #humanbody",
+      "length": 35.7,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-25-body-04/2026-11-25-body-04.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-25-body-04/2026-11-25-body-04.mp4",
       "approved": false
     }
   ]
