@@ -7,9 +7,17 @@ skip 2026-11-24-body-01: already in the TikTok inbox
 skip 2026-11-24-body-02: already in the TikTok inbox
 skip 2026-11-24-body-03: already in the TikTok inbox
 skip 2026-11-24-body-04: already in the TikTok inbox
-draft sent 2026-11-24-body-05 -> v_inbox_file~v2.7712046040148527118  (What Happens When You Walk Into a Room and Forget Why?)
-draft sent 2026-11-24-body-06 -> v_inbox_file~v2.7712045953838204941  (What Happens If You Sit All Day?)
-draft sent 2026-11-24-body-07 -> v_inbox_file~v2.7712046164257835021  (What Happens to Your Fingers in the Bath?)
-draft sent 2026-11-24-body-08 -> v_inbox_file~v2.7712046035660605453  (What Happens When You Get a Stitch in Your Side?)
-draft sent 2026-11-25-body-01 -> v_inbox_file~v2.7712046164257867789  (What Happens If You Don't Brush Your Teeth for a Week?)
+skip 2026-11-24-body-05: already in the TikTok inbox
+skip 2026-11-24-body-06: already in the TikTok inbox
+skip 2026-11-24-body-07: already in the TikTok inbox
+skip 2026-11-24-body-08: already in the TikTok inbox
+skip 2026-11-25-body-01: already in the TikTok inbox
+Traceback (most recent call last):
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 60, in main
+    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode, privacy)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 85, in upload
+    raise RuntimeError(f"TikTok init failed: {j}")
+RuntimeError: TikTok init failed: {'error': {'code': 'spam_risk_too_many_pending_share', 'message': 'spam_risk_too_many_pending_share', 'log_id': '20261125100506E060696CD35C3000AA87'}}
+stopped at 2026-11-25-body-02; the rest can be sent by re-running
 23 drafts recorded in state/tiktok_drafts.json
