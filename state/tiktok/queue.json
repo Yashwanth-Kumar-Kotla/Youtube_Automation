@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T08:29:07+00:00",
+  "updated": "2026-11-25T09:58:06+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -179,6 +179,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-08/2026-11-24-body-08.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-24-body-08/2026-11-24-body-08.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-25-body-01",
+      "title": "What Happens If You Don't Brush Your Teeth for a Week?",
+      "caption": "What Happens If You Don't Brush Your Teeth for a Week? #bodyfiles #teeth #plaque #oralhealth #brushing",
+      "length": 31.2,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-25-body-01/2026-11-25-body-01.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-25-body-01/2026-11-25-body-01.mp4",
       "approved": false
     }
   ]
