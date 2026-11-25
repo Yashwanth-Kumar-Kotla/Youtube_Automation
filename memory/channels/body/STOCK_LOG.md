@@ -68,3 +68,5 @@
 - 2026-11-24 04:10 · 2026-11-24-body-07 added · conf 0.7 · question+cause-ab-number · What happens to your fingers in the bath?
 - 2026-11-24 04:16 · 2026-11-24-body-08 added · conf 0.7 · question+who-more-number · What happens when you get a stitch in your side?
 - 2026-11-25 03:57 · 2026-11-25-body-01 added · conf 0.7 · question+day-diary-recovery · What happens if you don't brush your teeth for a week?
+- 2026-11-25 03:58 · 2026-11-14-body-03 scheduled → ready · slot on 2026-11-24 missed its window
+- 2026-11-25 03:58 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-25, episode 16, manual upload
