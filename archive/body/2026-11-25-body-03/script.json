@@ -1,0 +1,61 @@
+{
+  "title": "What Happens When You Get Heartburn?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NHS, 'Heartburn and acid reflux' ('Heartburn is a burning feeling in the chest caused by stomach acid travelling up towards the throat (acid reflux)'; 'an unpleasant sour taste in your mouth, caused by stomach acid'; symptoms often worse after eating and when lying down; do not eat within 3 or 4 hours before bed; 'raise the head of your bed by around 10 to 20cm' (= about 4 to 8 inches); 'do not try to achieve the same effect by using additional pillows' because it 'can increase pressure on your belly and make your symptoms worse'; see a GP if it's most days, pharmacy medicines don't help, or food gets stuck / frequent vomiting / unexplained weight loss): https://www.nhs.uk/conditions/heartburn-and-acid-reflux/",
+    "Cleveland Clinic, 'Heartburn' ('a burning sensation that feels like it's in your heart, but isn't really'; the esophagus runs close to the heart; the lower esophageal sphincter, a valve at the bottom of the esophagus, can 'weaken or relax too much'; 'Your stomach has a thick mucous lining that protects it from these substances, but your esophagus doesn't'; a late dinner is a common trigger; it may be hard to tell heartburn from other chest pain): https://my.clevelandclinic.org/health/diseases/9617-heartburn-overview",
+    "NHS, 'Chest pain' (call 999 if 'you get pain that spreads to your left or right arm, or your neck, jaw, stomach or back', sudden chest pain that does not go away, or chest pain with feeling sweaty, sick, light headed or short of breath; voiced as 'Call emergency services' for the US-majority audience): https://www.nhs.uk/conditions/chest-pain/",
+    "Tease (next video): NHS, 'Dehydration' ('Dehydration means your body loses more fluids than you take in'; symptoms include 'dark yellow, strong-smelling pee'): https://www.nhs.uk/conditions/dehydration/"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get heartburn?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *GET | *HEARTBURN?"
+    },
+    {
+      "text": "Night fix: extra pillows, or raising your bed four to eight inches?",
+      "caps": "NIGHT *FIX | EXTRA *PILLOWS | OR *RAISING | YOUR *BED | FOUR TO *EIGHT | *INCHES?"
+    },
+    {
+      "text": "Not your heart. A muscle valve above your stomach relaxes,",
+      "caps": "NOT YOUR *HEART | A MUSCLE *VALVE | ABOVE YOUR *STOMACH | *RELAXES"
+    },
+    {
+      "text": "and acid sneaks up your food pipe.",
+      "caps": "AND *ACID | *SNEAKS UP | YOUR FOOD *PIPE"
+    },
+    {
+      "text": "Ever get a sour taste after a late dinner?",
+      "caps": "EVER *GET | A SOUR *TASTE | AFTER A *LATE | *DINNER?"
+    },
+    {
+      "text": "But here's the twist: your stomach has a mucus shield.",
+      "caps": "BUT *HERE'S | THE *TWIST | YOUR *STOMACH HAS | A MUCUS *SHIELD"
+    },
+    {
+      "text": "Your food pipe doesn't, so it burns.",
+      "caps": "YOUR FOOD *PIPE | *DOESN'T | SO IT *BURNS"
+    },
+    {
+      "text": "Chest pain spreading to your arm or jaw? Call emergency services.",
+      "caps": "CHEST *PAIN | *SPREADING | TO YOUR *ARM | OR *JAW? | CALL *EMERGENCY | *SERVICES"
+    },
+    {
+      "text": "Answer: raise the bed.",
+      "caps": "*ANSWER | RAISE THE *BED"
+    },
+    {
+      "text": "Extra pillows can squeeze your belly and make it worse.",
+      "caps": "EXTRA *PILLOWS | CAN *SQUEEZE | YOUR *BELLY | AND *MAKE IT | *WORSE"
+    },
+    {
+      "text": "Next Body File: too little water, and dark pee. Still burning?",
+      "caps": "NEXT BODY *FILE | TOO LITTLE *WATER | AND DARK *PEE | STILL *BURNING?"
+    }
+  ]
+}

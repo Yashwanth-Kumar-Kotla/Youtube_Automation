@@ -8094,3 +8094,269 @@ export function ywHeartburnBadge(x, y, s = 1, sc = 1, t = 0) {
   ctx.restore();
   ctx.restore();
 }
+
+// ═════════════════════════ HEARTBURN SET (2026-11-25-body-3 "heartburn", hb prefix) ═════════════════════════
+const HB_BOOKS = [['#C8734A', '#9A5333'], ['#3A7BD5', '#2F67BE'], ['#5BAE6A', '#3F8A4E'], ['#E57A8A', '#C9566E']];
+const HB_LUMEN = '#A3304A', HB_ACID_D = '#E0B20F', HB_MUCUS = '#E4F4EA', HB_MUCUS_D = '#BFE0CB';
+const HB_PEE = ['#FFF6C8', '#FFE680', '#F5C93A', '#D99A1E'];
+
+/** a stack of n flat books (side-on: coloured cover, white page edge). Origin = top centre of the stack (where a bed leg
+ *  rests); each book ~170x36 px at s = 1. Returns the stack height in px */
+export function hbBooks(x, y, s = 1, { n = 3, sc = 1 } = {}) {
+  if (sc <= 0 || n <= 0) return 0;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  for (let i = 0; i < n; i++) {
+    const [c, cd] = HB_BOOKS[i % HB_BOOKS.length], w = 170 - (i % 2) * 16, by = i * 36, dx = (i % 2 ? 6 : -4);
+    rr(-w / 2 + dx, by, w, 34, 6); ctx.fillStyle = cd; ctx.fill();
+    rr(-w / 2 + dx, by, w, 28, 6); ctx.fillStyle = c; ctx.fill();
+    rr(-w / 2 + dx + 12, by + 8, w - 34, 12, 4); ctx.fillStyle = C.white; ctx.fill();
+  }
+  ctx.restore();
+  return n * 36 * s * sc;
+}
+
+/** bedside digital clock (ink box, white digits, small "PM"). Origin = centre, ~230x120 px at s = 1. sc = pop-in */
+export function hbClock(x, y, s = 1, { text = '11:00', pm = 'PM', sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-115, -60, 230, 120, 24); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-100, -46, 200, 92, 14); ctx.fillStyle = '#26262C'; ctx.fill();
+  ctx.fillStyle = C.white; ctx.font = '900 62px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, -14, 2);
+  ctx.font = '900 22px Inter'; ctx.fillText(pm, 76, -20);
+  for (const sd of [-1, 1]) { rr(sd * 80 - 14, 58, 28, 16, 6); ctx.fillStyle = C.ink; ctx.fill(); }
+  ctx.restore();
+}
+
+/** FRONT-view bed, back layer (draw BEFORE the hero): headboard with posts standing on book stacks (books = 0..1 shows
+ *  them: the "raise the head of the bed" hint) and a stack of `pillows` white pillows behind the hero's back.
+ *  Origin = mattress top centre; at s = 1 ~860 px wide, floor at y + 330. wob 0..1 = the stack wobbles (t = film time) */
+export function hbBedBack(x, y, s = 1, { books = 1, pillows = 3, wob = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round';
+  const lift = books > 0 ? 3 * 36 : 0;
+  for (const sd of [-1, 1]) {
+    if (books > 0) hbBooks(sd * 400, 330 - lift, 1, { n: 3 });
+    rr(sd * 400 - 26, -470, 52, 800 - lift, 14); ctx.fillStyle = WOOD_D; ctx.fill();
+    rr(sd * 400 - 26, -470, 36, 800 - lift, 14); ctx.fillStyle = WOOD; ctx.fill();
+    circle(sd * 400, -480, 34, WOOD_D); circle(sd * 400 - 4, -484, 28, WOOD);
+  }
+  rr(-380, -420, 760, 420, 30); ctx.fillStyle = WOOD; ctx.fill();
+  rr(-380, -60, 760, 60, [0, 0, 30, 30]); ctx.fillStyle = WOOD_D; ctx.fill();
+  for (const px of [-250, 0, 250]) { rr(px - 70, -360, 140, 260, 20); ctx.fillStyle = WOOD_D; ctx.fill(); }
+  // pillow stack (bottom one widest), slight lean
+  for (let i = 0; i < pillows; i++) {
+    const w = 580 - i * 40, py = -70 - i * 92, sw = Math.sin(t * 5 + i * 1.3) * 10 * wob * (i / Math.max(1, pillows - 1)), rot = (i % 2 ? 0.04 : -0.03) * (1 + wob);
+    ctx.save(); ctx.translate(sw + (i % 2 ? 14 : -10), py); ctx.rotate(rot);
+    rr(-w / 2, -50, w, 104, 46); ctx.fillStyle = C.gumEdge; ctx.fill();
+    rr(-w / 2, -54, w, 96, 46); ctx.fillStyle = C.white; ctx.fill();
+    ell(-w * 0.18, -24, w * 0.2, 12, C.gum);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** FRONT-view bed, front layer (draw AFTER the hero, it hides his legs): mattress edge, a blanket over his lap with knee
+ *  bumps falling over the edge, low footboard. Same origin/scale as hbBedBack. Blanket top (his waist) ≈ y - 60 */
+export function hbBedFront(x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round';
+  rr(-420, 0, 840, 150, 26); ctx.fillStyle = C.white; ctx.fill(); rr(-420, 110, 840, 40, [0, 0, 26, 26]); ctx.fillStyle = C.gumEdge; ctx.fill();
+  const bl = () => { ctx.beginPath(); ctx.moveTo(-400, 170); ctx.lineTo(-400, -10); ctx.quadraticCurveTo(-330, -70, -200, -66);
+    ctx.quadraticCurveTo(-110, -110, -20, -66); ctx.quadraticCurveTo(80, -112, 180, -64); ctx.quadraticCurveTo(330, -70, 400, -10); ctx.lineTo(400, 170); ctx.closePath(); };
+  bl(); ctx.fillStyle = BLANKET_D; ctx.fill();
+  ctx.save(); ctx.translate(0, -8); ctx.scale(0.98, 1); bl(); ctx.fillStyle = BLANKET; ctx.fill(); ctx.restore();
+  for (const [x0, x1] of [[-210, -240], [-10, 10], [190, 220]]) line([[x0, -40], [x1, 150]], BLANKET_D, 10);
+  ell(-110, -82, 46, 12, C.white + '66', -0.15); ell(80, -84, 46, 12, C.white + '66', 0.15);
+  rr(-440, 150, 880, 110, 24); ctx.fillStyle = WOOD_D; ctx.fill(); rr(-440, 150, 880, 90, 24); ctx.fillStyle = WOOD; ctx.fill();
+  for (const sd of [-1, 1]) { rr(sd * 420 - 30, 130, 60, 200, 14); ctx.fillStyle = WOOD_D; ctx.fill(); circle(sd * 420, 128, 34, WOOD_D); circle(sd * 420 - 4, 124, 28, WOOD); }
+  ctx.restore();
+}
+
+/** x-ray overlay for man({ xray: true }): a wide food pipe (cyan rim, navy inside) from under the chin to the stomach,
+ *  yellow acid climbing it to `acid` 0..1 (wobbly top), red burn flicks at the acid top (burn 0..1), the valve ring at the
+ *  bottom (LES). Call right after man() with the SAME o (x, y, s). Returns screen points { top, valve, acidTop } */
+export function hbPipeXray(o, { acid = 0.8, burn = 1, t = 0 } = {}) {
+  const s = o.s || 1, X0 = 0, Y0 = -214, X1 = -4, Y1 = -84;
+  const P = (lx, ly) => [o.x + lx * s, o.y + ly * s];
+  const ay = lerp(Y1, Y0 + 14, clamp(acid)) + Math.sin(t * 7) * 4 * (acid > 0 ? 1 : 0);
+  ctx.save(); ctx.translate(o.x, o.y); ctx.scale(s, s); ctx.lineCap = 'round';
+  line([[X0, Y0], [X1, Y1]], C.cyan, 40); line([[X0, Y0], [X1, Y1]], C.xnavy, 28);
+  if (acid > 0) {
+    line([[X1, Y1], [lerp(X1, X0, (Y1 - ay) / (Y1 - Y0)), ay]], C.yellow, 22);
+    ell(lerp(X1, X0, (Y1 - ay) / (Y1 - Y0)), ay, 13, 9, C.yellow);
+  }
+  if (burn > 0 && acid > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(burn);
+    for (const sd of [-1, 1]) for (let k = 0; k < 2; k++) {
+      const yy = ay + 10 + k * 26, w = 1 + 0.25 * Math.sin(t * 19 + k * 2 + sd);
+      const Q = [[sd * 26, yy], [sd * (36 + 8 * w), yy - 10], [sd * 30, yy - 20], [sd * (42 + 10 * w), yy - 32]];
+      line(Q, C.ink, 11); line(Q, C.red, 6);
+    }
+    ctx.restore();
+  }
+  // valve ring (LES)
+  rr(X1 - 30, Y1 - 6, 60, 20, 10); ctx.fillStyle = C.cyan; ctx.fill(); rr(X1 - 22, Y1 - 1, 44, 10, 5); ctx.fillStyle = C.pinkDark; ctx.fill();
+  ctx.restore();
+  return { top: P(X0, Y0), valve: P(X1, Y1), acidTop: P(X1, ay) };
+}
+
+/** big schematic of the food pipe meeting the stomach (pink organs, flat). Origin = the valve (LES) centre; the pipe runs up
+ *  to y - 760, the stomach sack hangs below-right (~560 px wide). open 0..1 = the valve ring relaxes (closed = pinched shut);
+ *  acid 0..1 = height of the yellow acid pool in the stomach; climb 0..1 = acid creeping up the pipe from the valve; burn 0..1
+ *  = red sore patches on the pipe wall where the acid sits; shield 0..1 = the stomach's pale-green mucus lining; t = film time.
+ *  Returns screen points { valve, pipe (mid pipe), stomach (sack centre), climbTop } */
+export function hbJunction(x, y, s = 1, { open = 0, acid = 0.5, climb = 0, burn = 0, shield = 0, t = 0, len = 760 } = {}) {
+  const o = clamp(open), cl = clamp(climb), P = (lx, ly) => [x + lx * s, y + ly * s];
+  const cTop = -len * cl * 0.92 - 30 * cl;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // stomach sack
+  const sack = (k) => { ctx.beginPath(); ctx.moveTo(-70 * k, 20); ctx.bezierCurveTo(-150 * k, 140, -170 * k, 380 * k, 40, 440 * k);
+    ctx.bezierCurveTo(260, 480 * k, 470 * k, 380 * k, 470 * k, 200 * k); ctx.bezierCurveTo(470 * k, 40, 300, -20, 140 * k, 40); ctx.quadraticCurveTo(90, 50, 70 * k, 20); ctx.closePath(); };
+  sack(1.06); ctx.fillStyle = C.pinkDark; ctx.fill();
+  sack(1); ctx.fillStyle = C.pink; ctx.fill();
+  ctx.save(); sack(0.86); ctx.translate(0, 0); ctx.fillStyle = C.stomachBg; ctx.fill(); ctx.restore();
+  // acid pool inside
+  ctx.save(); sack(0.86); ctx.clip();
+  if (acid > 0) {
+    const ly = lerp(430, 120, clamp(acid));
+    ctx.beginPath(); ctx.moveTo(-300, 600); for (let xx = -300; xx <= 600; xx += 20) ctx.lineTo(xx, ly + Math.sin(xx * 0.03 + t * 4) * 10); ctx.lineTo(600, 600); ctx.closePath();
+    ctx.fillStyle = HB_ACID_D; ctx.fill(); ctx.save(); ctx.translate(0, 12); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore();
+    for (let i = 0; i < 6; i++) { const ph = (t * 0.6 + rnd(i + 40)) % 1; circle(-60 + rnd(i + 20) * 420, lerp(440, ly + 20, ph), 8 + rnd(i) * 6, '#FFE680'); }
+  }
+  ctx.restore();
+  if (shield > 0) { ctx.save(); sack(0.86); ctx.clip(); ctx.globalAlpha = clamp(shield); sack(0.86); ctx.strokeStyle = HB_MUCUS_D; ctx.lineWidth = 64; ctx.stroke(); sack(0.86); ctx.strokeStyle = HB_MUCUS; ctx.lineWidth = 50; ctx.stroke(); ctx.restore(); }
+  ell(330, 120, 60, 22, C.pinkLight, -0.7);
+  // pipe: outer wall, lumen
+  const half = (yy) => 78 - 26 * (1 - o) * Math.exp(-Math.pow((yy - 10) / 40, 2));
+  const tube = (k, y0 = -len, y1 = 60) => { ctx.beginPath(); for (let yy = y0; yy <= y1; yy += 10) ctx.lineTo(-half(yy) * k, yy); for (let yy = y1; yy >= y0; yy -= 10) ctx.lineTo(half(yy) * k, yy); ctx.closePath(); };
+  tube(1.12); ctx.fillStyle = C.pinkDark; ctx.fill(); tube(1); ctx.fillStyle = C.pink; ctx.fill();
+  const lum = (yy) => Math.max(3, 30 * (1 - (1 - o) * Math.exp(-Math.pow((yy - 10) / 40, 2))));
+  const lumen = (y0, y1) => { ctx.beginPath(); for (let yy = y0; yy <= y1; yy += 10) ctx.lineTo(-lum(yy), yy); for (let yy = y1; yy >= y0; yy -= 10) ctx.lineTo(lum(yy), yy); ctx.closePath(); };
+  lumen(-len, 70); ctx.fillStyle = HB_LUMEN; ctx.fill();
+  line([[-48, -len + 20], [-48, -40]], C.pinkLight, 10);
+  // burn patches on the pipe wall
+  if (burn > 0 && cl > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(burn);
+    for (let i = 0; i < 6; i++) { const yy = lerp(-40, cTop + 40, (i + 0.5) / 6), sd = i % 2 ? 1 : -1; if (yy > -10) continue;
+      ell(sd * 52, yy, 22 + 4 * Math.sin(t * 9 + i), 34, C.red); }
+    ctx.restore();
+  }
+  // acid creeping up the lumen
+  if (cl > 0) {
+    ctx.save(); lumen(cTop, 70); ctx.clip(); ctx.fillStyle = C.yellow; ctx.fillRect(-60, cTop, 120, 140 - cTop); ctx.restore();
+    ell(0, cTop + 4 + Math.sin(t * 8) * 4, lum(cTop) + 2, 18, C.yellow);
+  }
+  // valve muscle ring
+  { const hw = half(10) + 46 - 10 * o;
+    rr(-hw, -24, hw * 2, 64, 28); ctx.fillStyle = MUSCLE_D; ctx.fill();
+    rr(-hw + 6, -24, hw * 2 - 12, 54, 24); ctx.fillStyle = C.pinkDark; ctx.fill();
+    for (const k of [-10, 12]) line([[-hw + 22, k], [hw - 22, k]], MUSCLE_D, 6);
+    ell(-hw * 0.45, -14, hw * 0.28, 6, C.pinkLight);
+    if (o < 0.5) { ctx.save(); lumen(-20, 40); ctx.fillStyle = HB_LUMEN; ctx.fill(); ctx.restore(); }
+    if (cl > 0) { ctx.save(); ctx.beginPath(); ctx.rect(-lum(10), -24, lum(10) * 2, 64); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); } }
+  ctx.restore();
+  return { valve: P(0, 8), pipe: P(0, -len * 0.5), stomach: P(180, 260), climbTop: P(0, cTop) };
+}
+
+/** macro lens on a gut wall with acid drops raining down (graphic). shield 0..1 = a thick pale-green mucus layer on top of the
+ *  pink wall: drops land on it and stay put (small yellow beads); without it the drops hit the bare wall and leave red sore
+ *  spots (burn 0..1) with tiny sizzle wisps. t = film time (drops loop), r = lens radius, sc = pop-in. Returns the wall-top y */
+export function hbWallLens(x, y, r, { shield = 0, burn = 0, t = 0, sc = 1, rain = 1 } = {}) {
+  const k = r / 320;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = '#FFF1E0'; ctx.fillRect(-340, -340, 680, 680);
+    const WT = 90, sh = clamp(shield), ST = WT - 90 * sh;
+    // wall
+    ctx.fillStyle = C.pinkDark; ctx.fillRect(-340, WT, 680, 300);
+    ctx.beginPath(); ctx.moveTo(-340, WT + 20); for (let xx = -340; xx <= 340; xx += 40) ctx.quadraticCurveTo(xx + 20, WT - 18, xx + 40, WT + 20); ctx.lineTo(340, 400); ctx.lineTo(-340, 400); ctx.closePath(); ctx.fillStyle = C.pink; ctx.fill();
+    for (let i = -4; i <= 4; i++) ell(i * 80, WT + 120, 30, 16, C.pinkLight, 0.2);
+    for (let i = -4; i <= 4; i++) line([[i * 80 - 30, WT + 220], [i * 80 + 30, WT + 210]], MUSCLE_D, 10);
+    // sore spots on the bare wall
+    if (burn > 0) { ctx.save(); ctx.globalAlpha = clamp(burn); for (const [sx, sr] of [[-200, 46], [-40, 58], [130, 40], [250, 50]]) { ell(sx, WT + 12, sr, 22, C.red); ell(sx - 8, WT + 8, sr * 0.45, 8, '#F07A85'); } ctx.restore(); }
+    // mucus shield
+    if (sh > 0) {
+      ctx.save(); ctx.globalAlpha = Math.min(1, sh * 1.5);
+      ctx.beginPath(); ctx.moveTo(-340, WT + 24); ctx.lineTo(-340, ST); for (let xx = -340; xx <= 340; xx += 60) ctx.quadraticCurveTo(xx + 30, ST - 22, xx + 60, ST); ctx.lineTo(340, WT + 24); ctx.closePath();
+      ctx.fillStyle = HB_MUCUS_D; ctx.fill(); ctx.save(); ctx.translate(0, 10); ctx.fillStyle = HB_MUCUS; ctx.fill(); ctx.restore();
+      for (const [bx, by, br] of [[-230, 50, 14], [-90, 30, 10], [60, 56, 16], [200, 36, 11]]) { circle(bx, lerp(WT, by, sh), br, C.white); }
+      ctx.restore();
+    }
+    // acid drops falling, landing on the top surface
+    const top = sh > 0.3 ? ST - 6 : WT;
+    for (let i = 0; i < 7; i++) {
+      const ph = (t * 0.9 + rnd(i + 3)) % 1, dx = -260 + i * 86 + rnd(i) * 20, f = ph / 0.7;
+      if (f < 1) { ctx.save(); ctx.globalAlpha = rain; drop(dx, lerp(-300, top - 20, f * f), 0.55, 0, 1, [HB_ACID_D, C.yellow]); ctx.restore(); }
+      else { const q = (ph - 0.7) / 0.3; ctx.save(); ctx.globalAlpha = rain * (1 - q);
+        if (sh > 0.3) { ell(dx, top - 6, 26 + 10 * q, 10, C.yellow); }
+        else { ell(dx, top - 4, 28 + 16 * q, 9, C.yellow); for (const sd of [-1, 1]) line([[dx + sd * 14, top - 20 - 30 * q], [dx + sd * 24, top - 44 - 40 * q]], C.gumEdge, 7); }
+        ctx.restore(); }
+    }
+    ctx.restore();
+  }, '#FFF1E0');
+  return y + 90 * k;
+}
+
+/** SIDE-view bed with the hero lying in it (head on the left), flat. Origin = floor under the bed centre; ~820 px wide at
+ *  s = 1, mattress top ≈ y - 230. tilt (rad) raises the head end (pivot = foot leg) and slides books under the head leg;
+ *  stack = pillows under his upper back (his torso bends up to rest on the top one); bend adds extra bend (rad);
+ *  squeeze 0..1 = belly fold creases at the bend; face = heroHead options; t = film time.
+ *  Returns screen points { hip, shoulder, head, belly, books (top of the book stack) } */
+export function hbSideBed(x, y, s = 1, { tilt = 0, stack = 1, bend = 0, squeeze = 0, face = {}, t = 0 } = {}) {
+  const PX = 360, ct = Math.cos(tilt), st = Math.sin(tilt);
+  const R = (lx, ly) => [PX + (lx - PX) * ct - ly * st, (lx - PX) * st + ly * ct];
+  const P = (lx, ly) => { const [a, b] = R(lx, ly); return [x + a * s, y + b * s]; };
+  const MT = -230, hip = [-40, MT - 34];
+  const rise = 92 * (stack - 1) + 40, phi = Math.asin(clamp(rise / 270, 0, 0.95)) + bend;
+  const sh = [hip[0] - 270 * Math.cos(phi), hip[1] - 270 * Math.sin(phi)];
+  const hd = [sh[0] - 108 * Math.cos(phi + 0.08), sh[1] - 108 * Math.sin(phi + 0.08)];
+  const belly = [lerp(hip[0], sh[0], 0.25), lerp(hip[1], sh[1], 0.25) - 50];
+  const lift = -R(-PX, 0)[1];
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // books under the head leg (unrotated, on the floor)
+  if (lift > 4) { const n = Math.max(1, Math.round(lift / 36)); const [bx] = R(-PX, 0); ctx.save(); ctx.translate(bx, -lift); ctx.scale(1, lift / (n * 36)); hbBooks(0, 0, 1, { n }); ctx.restore(); }
+  ctx.save(); ctx.translate(PX, 0); ctx.rotate(tilt); ctx.translate(-PX, 0);
+  for (const lx of [-PX, PX]) { rr(lx - 16, -150, 32, 150, 8); ctx.fillStyle = WOOD_D; ctx.fill(); }
+  rr(-410, -470, 50, 470, 18); ctx.fillStyle = WOOD; ctx.fill(); rr(-410, -470, 18, 470, [18, 0, 0, 18]); ctx.fillStyle = WOOD_D; ctx.fill();
+  rr(-390, -160, 780, 30, 10); ctx.fillStyle = WOOD_D; ctx.fill();
+  rr(-370, MT, 740, 82, 22); ctx.fillStyle = C.white; ctx.fill(); rr(-370, MT + 54, 740, 28, [0, 0, 22, 22]); ctx.fillStyle = C.gumEdge; ctx.fill();
+  // pillows
+  for (let i = 0; i < stack; i++) {
+    const w = 210 - i * 10, py = MT - 46 - i * 92, px = -250 + (i % 2 ? 14 : -6) + i * 6;
+    ctx.save(); ctx.translate(px, py); ctx.rotate(i % 2 ? 0.04 : -0.03);
+    rr(-w / 2, -44, w, 92, 40); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-w / 2, -48, w, 86, 40); ctx.fillStyle = C.white; ctx.fill(); ell(-w * 0.15, -24, w * 0.2, 9, C.gum);
+    ctx.restore();
+  }
+  // body: legs (under the blanket), torso (shirt), neck, head
+  const foot = [330, MT - 40];
+  line([sh, hip], C.shirtShade, 150); line([[sh[0] + 6 * Math.sin(phi), sh[1] - 6], [hip[0], hip[1] - 6]], C.shirt, 130);
+  line([sh, [sh[0] - 60 * Math.cos(phi), sh[1] - 60 * Math.sin(phi)]], C.skin, 60);
+  heroHead(hd[0], hd[1], 0.6, face, -Math.PI / 2 + phi + 0.08);
+  // blanket: from the lower chest over the hip to the feet
+  const ch = [lerp(hip[0], sh[0], 0.42), lerp(hip[1], sh[1], 0.42)];
+  line([ch, hip, foot], BLANKET_D, 128); line([[ch[0], ch[1] - 6], [hip[0], hip[1] - 8], [foot[0], foot[1] - 8]], BLANKET, 112);
+  ell(foot[0] + 20, foot[1] - 30, 40, 52, BLANKET);
+  line([[hip[0] + 60, hip[1] - 40], [foot[0] - 30, foot[1] - 44]], C.white + '66', 12);
+  // belly squeeze creases at the bend
+  if (squeeze > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(squeeze);
+    for (let k = 0; k < 3; k++) { const u = 0.1 + k * 0.1, cx = lerp(hip[0], sh[0], u), cy = lerp(hip[1], sh[1], u);
+      ctx.beginPath(); ctx.arc(cx - 40 * Math.sin(phi), cy - 40, 26 + 6 * squeeze, Math.PI * 0.9, Math.PI * 1.7); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 9; ctx.stroke(); }
+    ctx.restore();
+  }
+  rr(360, -300, 34, 300, 12); ctx.fillStyle = WOOD; ctx.fill(); rr(376, -300, 18, 300, [0, 12, 12, 0]); ctx.fillStyle = WOOD_D; ctx.fill();
+  ctx.restore();
+  ctx.restore();
+  return { hip: P(...hip), shoulder: P(...sh), head: P(...hd), belly: P(...belly), books: [x + R(-PX, 0)[0] * s, y - lift * s] };
+}
+
+/** pee-colour card (graphic): white card, ink rim, four swatches pale → dark yellow (left → right), a small water drop icon
+ *  at the pale end; pick 0..1 = an ink pointer + yellow ring on the darkest swatch. ~560x200 px at s = 1. sc = pop-in */
+export function hbPeeCard(x, y, s = 1, { pick = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-290, -100, 580, 200, 30); ctx.fillStyle = C.ink; ctx.fill(); rr(-278, -88, 556, 176, 22); ctx.fillStyle = C.white; ctx.fill();
+  HB_PEE.forEach((c, i) => { rr(-250 + i * 128, -60, 110, 120, 18); ctx.fillStyle = C.ink; ctx.fill(); rr(-243 + i * 128, -53, 96, 106, 13); ctx.fillStyle = c; ctx.fill(); });
+  const p = clamp(pick);
+  if (p > 0) { ctx.save(); ctx.globalAlpha = p; rr(-250 + 3 * 128 - 12, -72, 134, 144, 26); ctx.lineWidth = 12; ctx.strokeStyle = C.red; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-250 + 3 * 128 + 55, 100 + 40 * (1 - p)); ctx.lineTo(-250 + 3 * 128 + 30, 140 + 40 * (1 - p)); ctx.lineTo(-250 + 3 * 128 + 80, 140 + 40 * (1 - p)); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill(); ctx.restore(); }
+  ctx.restore();
+}
