@@ -67,3 +67,4 @@
 - 2026-11-24 04:04 · 2026-11-24-body-06 added · conf 0.7 · question+dose-guess-number · What happens if you sit all day?
 - 2026-11-24 04:10 · 2026-11-24-body-07 added · conf 0.7 · question+cause-ab-number · What happens to your fingers in the bath?
 - 2026-11-24 04:16 · 2026-11-24-body-08 added · conf 0.7 · question+who-more-number · What happens when you get a stitch in your side?
+- 2026-11-25 03:57 · 2026-11-25-body-01 added · conf 0.7 · question+day-diary-recovery · What happens if you don't brush your teeth for a week?

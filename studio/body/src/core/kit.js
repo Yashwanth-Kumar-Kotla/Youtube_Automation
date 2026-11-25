@@ -393,6 +393,7 @@ function head(o) {
   if (m === 'chew') ell(0, 76, 18, 4 + 8 * (o.chew || 0), C.mouth);
   if (m === 'o') { ell(0, 80, 20, 27, C.mouth); ell(0, 96, 13, 8, C.pink); }
   if (m === 'yawn') { ell(0, 82, 26, 36, C.mouth); ell(0, 104, 16, 10, C.pink); }   // big tall yawn
+  if (m === 'wide') thWideMouth(o);   // brushing set (2026-11-25 "skip brushing"): mouth wide open, teeth showing (o.plaque 0..1 tints them)
   if (m === 'sad') { ctx.beginPath(); ctx.moveTo(-26, 86); ctx.quadraticCurveTo(0, 64, 26, 86); ctx.stroke(); }   // down-turned
   if (m === 'bawl') { ctx.beginPath(); ctx.moveTo(-32, 92); ctx.quadraticCurveTo(0, 50, 32, 92); ctx.quadraticCurveTo(0, 104, -32, 92); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill(); ell(0, 92, 14, 6, C.pink); }   // open wail
   if (o.cry > 0 || o.gush > 0) headTears(o);
@@ -7691,5 +7692,204 @@ export function stToothBadge(x, y, s = 1, sc = 1, t = 0) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
   circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
   stPlaqueTooth(0, 6, 0.62, { plaque: 1, cement: 1, face: 'wow', t });
+  ctx.restore();
+}
+
+
+// ═════════════════════════ BRUSHING SET (2026-11-25 "skip brushing for a week", prefix th) ═════════════════════════
+// Bathroom mirror set (tiles, doorway, sink counter, mirror frame), a cartoon dog (yawns: the next-episode tease), the
+// dusty toothbrush cup, the hero's wide-open mouth (man/heroHead mouth: 'wide'), a front-view open-mouth macro with plaque
+// film / fuzz / tartar / inflamed gums (schematic, no gore), stink lines, a half check, the dog end-card badge.
+const TH_DOG = '#C8734A', TH_DOG_D = '#9A5333', TH_DOG_L = '#F7F4EE', TH_HALL = '#B4C0CB', TH_HALL_D = '#9AA8B5', TH_TILE = '#DCEFF7',
+  TH_THROAT = '#4E1E1E', TH_TOOTH_S = '#EEEAE2', TH_STINK = '#8ED19A', TH_STINK_D = '#5BAE6A', TH_DUST = '#A7AEB8', TH_GLASS = '#DCEFF7', TH_GLASS_D = '#9DCBE0';
+
+/** head-local wide-open mouth (called by head() for mouth: 'wide'): dark oval, upper + lower teeth, pink tongue. o.plaque tints the teeth */
+function thWideMouth(o) {
+  ctx.save();
+  ell(0, 88, 44, 50, C.mouth);
+  ctx.beginPath(); ctx.ellipse(0, 88, 40, 46, 0, 0, TAU); ctx.clip();
+  ell(0, 122, 32, 22, C.pink); ell(-8, 116, 10, 5, C.pinkLight);
+  rr(-40, 40, 80, 22, 6); ctx.fillStyle = C.white; ctx.fill();
+  rr(-40, 116, 80, 22, 6); ctx.fill();
+  for (const tx of [-14, 0, 14]) { line([[tx, 46], [tx, 60]], C.gumEdge, 2.5); line([[tx, 122], [tx, 134]], C.gumEdge, 2.5); }
+  if (o.plaque > 0) { ctx.globalAlpha = 0.6 * clamp(o.plaque); rr(-40, 40, 80, 22, 6); ctx.fillStyle = ST_PLAQUE; ctx.fill(); rr(-40, 116, 80, 22, 6); ctx.fill(); ctx.globalAlpha = 1; }
+  ctx.restore();
+  ctx.beginPath(); ctx.ellipse(0, 88, 44, 50, 0, 0, TAU); ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 7; ctx.stroke();
+}
+
+/** the mirror set's back wall: pale-blue tiles with white grout, filled past the edges (camera zoom) */
+export function thTiles() {
+  ctx.fillStyle = TH_TILE; ctx.fillRect(-300, -300, W + 600, H + 600);
+  ctx.strokeStyle = C.white; ctx.lineWidth = 8;
+  for (let y = -300; y < H + 300; y += 140) { ctx.beginPath(); ctx.moveTo(-300, y); ctx.lineTo(W + 300, y); ctx.stroke(); }
+  for (let x = -300; x < W + 300; x += 140) { ctx.beginPath(); ctx.moveTo(x, -300); ctx.lineTo(x, H + 300); ctx.stroke(); }
+}
+
+/** open doorway into a grey-blue hallway (white frame, floor strip). x0, y0 = top-left of the opening, w x h px */
+export function thDoorway(x0, y0, w, h) {
+  rr(x0 - 26, y0 - 26, w + 52, h + 60, 10); ctx.fillStyle = C.white; ctx.fill();
+  rr(x0 - 26, y0 - 26, 14, h + 60, 6); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.fillStyle = TH_HALL; ctx.fillRect(x0, y0, w, h);
+  ctx.fillStyle = TH_HALL_D; ctx.fillRect(x0, y0, w * 0.22, h);
+  ctx.fillStyle = C.floor; ctx.fillRect(x0, y0 + h * 0.78, w, h * 0.22);
+}
+
+/** cartoon dog sitting, facing us (tan, dark floppy ears, cream muzzle + belly, wagging tail). Origin = chest centre,
+ *  ~300x420 px at s = 1 (head top ≈ -190, paws ≈ +225). yawn 0..1 opens a tall yawn (eyes shut from 0.4), t = film time
+ *  (tail wag), look -1..1 eyes, sc = pop-in */
+export function thDog(x, y, s = 1, { yawn = 0, t = 0, look = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const yw = clamp(yawn);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  const wag = Math.sin(t * 7) * 0.35;
+  ctx.save(); ctx.translate(80, 170); ctx.rotate(-0.6 + wag); line([[0, 0], [70, -40], [110, -110]], TH_DOG_D, 30); line([[0, 0], [70, -40], [110, -110]], TH_DOG, 20); ctx.restore();
+  ell(0, 90, 118, 140, TH_DOG_D); ell(-4, 86, 112, 136, TH_DOG);
+  ell(0, 110, 62, 96, TH_DOG_L);
+  for (const sd of [-1, 1]) { rr(sd * 48 - 22, 120, 44, 96, 20); ctx.fillStyle = TH_DOG; ctx.fill(); ell(sd * 48, 218, 34, 18, TH_DOG_L); }
+  ctx.save(); ctx.translate(0, -84 - yw * 8); ctx.rotate(-0.08 * yw);
+  circle(0, -10, 100, TH_DOG); ell(-30, -60, 30, 14, '#D98C63', -0.4);
+  for (const sd of [-1, 1]) { ell(sd * 98, 14, 32, 82, TH_DOG_D, -sd * 0.16); ell(sd * 92, 30, 16, 50, '#B5653F', -sd * 0.16); }   // floppy ears hang down the sides
+  ell(0, 34, 58, 44 + yw * 26, TH_DOG_L);
+  if (yw > 0.05) { ell(0, 52 + yw * 10, 26 * yw + 4, 40 * yw, C.mouth); ell(0, 70 + yw * 22, 16 * yw, 9 * yw, C.pink); }
+  else { ctx.beginPath(); ctx.moveTo(-22, 50); ctx.quadraticCurveTo(-10, 62, 0, 48); ctx.quadraticCurveTo(10, 62, 22, 50); ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.stroke(); }
+  ell(0, 16, 20, 14, C.ink); ell(-6, 11, 6, 3.5, C.white + 'AA');
+  if (yw > 0.4) { for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 38, -24, 13, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.stroke(); } }
+  else for (const sd of [-1, 1]) { ell(sd * 38 + look * 5, -26, 11, 13, C.ink); circle(sd * 38 + 4 + look * 5, -31, 4, C.white); }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** bathroom counter in front (cream top face + darker front) with a sink basin at basinX. y = top edge. Fills past the frame */
+export function thCounter(y, basinX = 560) {
+  ctx.fillStyle = C.gumEdge; ctx.fillRect(-300, y, W + 600, H + 300 - y);
+  ctx.fillStyle = C.gum; ctx.fillRect(-300, y, W + 600, 64);
+  ell(basinX, y + 34, 190, 22, C.gumEdge); ell(basinX, y + 30, 176, 16, TH_HALL);
+  ctx.fillStyle = C.white; ctx.fillRect(-300, y, W + 600, 10);
+}
+
+/** toothbrush cup on the counter (bottom centre at x, y): pale glass cup, a toothbrush standing in it. dust 0..1 = grey
+ *  dust specks on the bristles + handle, web 0..1 = a tiny cobweb between the bristles and the rim, shine 0..1 = clean
+ *  white sparkle, puff 0..1 = a dust puff blowing off (one-shot), t = film time. ~150x330 px at s = 1 */
+export function thBrushCup(x, y, s = 1, { dust = 0, web = 0, shine = 0, puff = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  ctx.save(); ctx.translate(-14, -150); ctx.rotate(-Math.PI / 2 + 0.22); stToothbrush(0, 0, 0.5); ctx.restore();
+  const hx = -14 + Math.cos(-Math.PI / 2 + 0.22) * 82, hy = -150 + Math.sin(-Math.PI / 2 + 0.22) * 82;   // bristle block centre
+  if (dust > 0) { ctx.save(); ctx.globalAlpha = clamp(dust);
+    for (let i = 0; i < 14; i++) circle(hx - 22 + rnd(i + 2) * 44 - 12, hy - 20 + rnd(i + 5) * 58, 3 + rnd(i + 8) * 3.5, TH_DUST);
+    for (let i = 0; i < 6; i++) circle(-24 + rnd(i + 20) * 20, -90 + rnd(i + 30) * 50, 3, TH_DUST);
+    ctx.restore(); }
+  if (web > 0) { ctx.save(); ctx.globalAlpha = 0.9 * clamp(web); ctx.strokeStyle = ST_CEMENT_D; ctx.lineWidth = 3.5;
+    const ax = hx - 40, ay = hy + 10, bx = 56, by = -128;
+    for (const k of [0, 0.33, 0.66, 1]) { ctx.beginPath(); ctx.moveTo(ax + 18, ay + 6); ctx.lineTo(lerp(ax, bx, k) + 10, lerp(ay + 60, by, k) + 10); ctx.stroke(); }
+    for (const r of [0.4, 0.7]) { ctx.beginPath(); for (const k of [0, 0.33, 0.66, 1]) { const px = lerp(ax + 18, lerp(ax, bx, k) + 10, r), py = lerp(ay + 6, lerp(ay + 60, by, k) + 10, r); k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
+    ctx.restore(); }
+  if (puff > 0 && puff < 1) { ctx.save(); ctx.globalAlpha = 0.8 * (1 - puff); for (let i = 0; i < 5; i++) { const an = -2.4 + i * 0.45, d = 30 + 70 * puff; circle(hx + Math.cos(an) * d, hy + Math.sin(an) * d, 12 + 10 * puff, TH_DUST); } ctx.restore(); }
+  if (shine > 0) { ctx.save(); ctx.globalAlpha = clamp(shine); for (const [dx, dy, r] of [[34, -30, 20], [-40, 10, 14], [10, 46, 11]]) { const k = r * (0.8 + 0.2 * Math.sin(t * 9 + dx)); ctx.beginPath(); ctx.moveTo(hx + dx, hy + dy - k); ctx.quadraticCurveTo(hx + dx, hy + dy, hx + dx + k, hy + dy); ctx.quadraticCurveTo(hx + dx, hy + dy, hx + dx, hy + dy + k); ctx.quadraticCurveTo(hx + dx, hy + dy, hx + dx - k, hy + dy); ctx.quadraticCurveTo(hx + dx, hy + dy, hx + dx, hy + dy - k); ctx.fillStyle = C.white; ctx.fill(); } ctx.restore(); }
+  ctx.beginPath(); ctx.moveTo(-62, -140); ctx.lineTo(62, -140); ctx.lineTo(52, -6); ctx.quadraticCurveTo(50, 0, 42, 0); ctx.lineTo(-42, 0); ctx.quadraticCurveTo(-50, 0, -52, -6); ctx.closePath();
+  ctx.fillStyle = TH_GLASS; ctx.globalAlpha = 0.92; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.beginPath(); ctx.moveTo(30, -140); ctx.lineTo(62, -140); ctx.lineTo(52, -6); ctx.lineTo(24, -2); ctx.closePath(); ctx.fillStyle = TH_GLASS_D; ctx.fill();
+  rr(-66, -148, 132, 14, 7); ctx.fillStyle = TH_GLASS_D; ctx.fill();
+  rr(-40, -120, 12, 90, 6); ctx.fillStyle = C.white; ctx.globalAlpha = 0.7; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+/** steel mirror frame (graphic edge) round x0..x1, y0..y1, with two soft white glints on the glass top-right */
+export function thMirrorFrame(x0, y0, x1, y1) {
+  ctx.save(); ctx.globalAlpha = 0.35; ctx.fillStyle = C.white;
+  for (const [o, w] of [[0, 46], [70, 20]]) { ctx.beginPath(); ctx.moveTo(x1 - 260 + o, y0); ctx.lineTo(x1 - 260 + o + w, y0); ctx.lineTo(x1, y0 + 260 - o - w); ctx.lineTo(x1, y0 + 260 - o); ctx.closePath(); ctx.fill(); }
+  ctx.restore();
+  rr(x0, y0, x1 - x0, y1 - y0, 30); ctx.lineWidth = 34; ctx.strokeStyle = STEEL_D; ctx.stroke();
+  rr(x0 - 4, y0 - 4, x1 - x0 + 8, y1 - y0 + 8, 32); ctx.lineWidth = 16; ctx.strokeStyle = STEEL; ctx.stroke();
+}
+
+/** open mouth macro, front view (schematic, no gore): pink lips, dark mouth, 6 upper + 6 lower teeth in pink gums, tongue.
+ *  o = { film 0..1 (sticky yellow plaque coat), fuzz 0..1 (fuzzy hairs on the coat), germs n (how many bacteria sit on the
+ *  teeth, fractional = popping in), cement 0..1 (grey tartar band at the gum line), inflame 0..1 (gums go red + puffy),
+ *  bleed 0..1 (two small red drops at the gum edge), shine 0..1 (clean sparkles), ring 0..1 (yellow ring on the upper gum),
+ *  t, sc }. ~900x660 px at s = 1, origin = centre */
+const TH_TX = [-275, -165, -55, 55, 165, 275];
+export function thMouthMacro(x, y, s = 1, o = {}) {
+  const sc = o.sc ?? 1; if (sc <= 0) return;
+  const t = o.t || 0, film = clamp(o.film || 0), fuzz = clamp(o.fuzz || 0), cem = clamp(o.cement || 0), inf = clamp(o.inflame || 0);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ell(0, 6, 452, 334, C.pinkDark); ell(0, 0, 440, 322, C.pink); ell(-150, -270, 90, 16, C.pinkLight, -0.12);
+  ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, 392, 270, 0, 0, TAU); ctx.clip();
+  ctx.fillStyle = C.mouth; ctx.fillRect(-400, -280, 800, 560);
+  ell(0, 10, 150, 90, TH_THROAT);
+  ell(0, 190, 320, 150, C.pinkDark); ell(0, 178, 300, 140, C.pink); line([[0, 80], [0, 160]], C.pinkDark, 8); ell(-110, 120, 50, 16, C.pinkLight, -0.2);
+  const gumCol = mixHex(C.pink, C.red, 0.7 * inf), gumDark = mixHex(C.pinkDark, '#A81E2D', 0.7 * inf), sw = inf * 16;
+  for (const up of [1, -1]) {                    // up = 1: upper row (gum on top), -1: lower row
+    const g = up * -175, tip = up * -40;          // gum line y, tooth tip y
+    TH_TX.forEach((cx, i) => {
+      const top = Math.min(g, tip), h = Math.abs(g - tip) + 20;
+      const path = () => rr(cx - 50, up > 0 ? g - 20 : tip, 100, h, up > 0 ? [0, 0, 36, 36] : [36, 36, 0, 0]);
+      path(); ctx.fillStyle = C.white; ctx.fill();
+      rr(cx + 24, top - (up > 0 ? 20 : 0), 26, h, up > 0 ? [0, 0, 30, 0] : [0, 30, 0, 0]); ctx.fillStyle = TH_TOOTH_S; ctx.fill();
+      if (film > 0) {
+        ctx.save(); path(); ctx.clip();
+        ctx.globalAlpha = 0.5 * film; ctx.fillStyle = ST_PLAQUE; ctx.fillRect(cx - 60, top - 30, 120, h + 40);
+        ctx.globalAlpha = 0.9 * film; ctx.beginPath(); const gy = g, d = up * 60 * film;
+        ctx.moveTo(cx - 60, gy); for (let k = 0; k <= 6; k++) ctx.lineTo(cx - 50 + k * 100 / 6, gy - d - up * Math.sin(k * 1.7 + i) * 8 * film); ctx.lineTo(cx + 60, gy); ctx.closePath(); ctx.fillStyle = ST_PLAQUE_D; ctx.fill();
+        ctx.restore();
+      }
+      if (fuzz > 0) { ctx.save(); ctx.globalAlpha = fuzz; for (let k = 0; k < 7; k++) { const fx = cx - 44 + k * 14, fy = g - up * (30 + rnd(i * 7 + k) * 40), wv = Math.sin(t * 9 + k + i) * 4; line([[fx, fy], [fx + wv - 4, fy - up * 16]], ST_PLAQUE_D, 4); } ctx.restore(); }
+      if (cem > 0) { ctx.save(); path(); ctx.clip(); ctx.globalAlpha = cem; ctx.fillStyle = ST_CEMENT; ctx.fillRect(cx - 60, up > 0 ? g - 22 : g - 36 + 22 - 14, 120, 58);
+        for (let k = 0; k < 4; k++) circle(cx - 30 + rnd(i * 5 + k) * 60, g - up * (rnd(i * 3 + k) * 26) , 4, ST_CEMENT_D); ctx.restore(); }
+    });
+    // gum band + papillae between the teeth (swell with inflammation): all dark shapes first, then the light ones (no inner seams)
+    for (const [col, dy] of [[gumDark, 6], [gumCol, 0]]) {
+      ctx.fillStyle = col;
+      if (up > 0) ctx.fillRect(-420, -300, 840, g + sw * 0.4 + dy + 300); else ctx.fillRect(-420, g - dy, 840, 300 - g + dy);
+      for (let k = -1; k < TH_TX.length; k++) { const px = k < 0 ? -330 : TH_TX[k] + 55, r = 26 + sw * 0.9; ell(px, g + up * (2 + sw * 0.6) + up * dy, r + (dy ? 4 : 0), 30 + sw * 1.4, col); }
+      TH_TX.forEach((cx) => ell(cx, g + up * (2 + sw * 0.3) + up * dy, 46 + sw * 0.3, 10 + sw * 0.5, col));
+    }
+    if (inf > 0.2) { ctx.save(); ctx.globalAlpha = clamp((inf - 0.2) / 0.5) * 0.9; for (const cx of TH_TX) ell(cx - 14, g - up * (26 - sw * 0.2), 18, 6, '#F2A0A8', 0); ctx.restore(); }
+  }
+  const n = o.germs || 0;
+  const GP = [[-165, -120, 0.3], [55, -100, -0.2], [275, -110, 0.15], [-275, 100, -0.3], [-55, 110, 0.2], [165, 95, -0.1], [-55, -115, 0.4], [165, -95, -0.4]];
+  for (let k = 0; k < Math.min(GP.length, Math.ceil(n)); k++) bacterium(GP[k][0], GP[k][1] + Math.sin(t * 5 + k) * 3, 0.42, GP[k][2], t + k, clamp(n - k));
+  if (o.bleed > 0) for (const [bx, by] of [[0, -112], [220, 128]]) drop(bx, by, 0.36 * clamp(o.bleed), 0, 1, [RED_D, C.red]);
+  if (o.shine > 0) { ctx.save(); ctx.globalAlpha = clamp(o.shine); for (const [sx2, sy2, r] of [[-165, -110, 24], [165, -100, 18], [-55, 90, 16], [275, 100, 20]]) { const k = r * (0.8 + 0.25 * Math.sin(t * 8 + sx2)); thSparkle(sx2, sy2, k); } ctx.restore(); }
+  ctx.restore();
+  if (o.ring > 0) hiRing(0, -205, 360, 70, o.ring);
+  ctx.restore();
+}
+
+/** four-point white sparkle star of radius r */
+export function thSparkle(x, y, r, col = C.white) {
+  if (r <= 0) return;
+  ctx.beginPath(); ctx.moveTo(x, y - r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.quadraticCurveTo(x, y, x, y + r); ctx.quadraticCurveTo(x, y, x - r, y); ctx.quadraticCurveTo(x, y, x, y - r);
+  ctx.fillStyle = col; ctx.fill();
+}
+
+/** stink lines: three wavy pale-green ribbons rising from (x, y), leaning toward dir (-1 left, 1 right). a = alpha, t = film time */
+export function thStink(x, y, s = 1, a = 1, t = 0, dir = -1) {
+  if (a <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.globalAlpha = clamp(a); ctx.lineCap = 'round';
+  for (const k of [-1, 0, 1]) {
+    const P = []; for (let i = 0; i <= 14; i++) { const u = i / 14; P.push([k * 40 + dir * u * 120 + Math.sin(u * 9 - t * 8 + k) * 16, -u * 220 * clamp(a * 1.5)]); }
+    line(P, TH_STINK_D, 22); line(P, TH_STINK, 12);
+  }
+  ctx.restore();
+}
+
+/** half check: ink ring, disc half green (left) half white, white/ink tick. "partly right". ~120 px at s = 1, sc = pop-in */
+export function thHalfCheck(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 60, C.ink); circle(0, 0, 50, C.white);
+  ctx.beginPath(); ctx.moveTo(0, -50); ctx.arc(0, 0, 50, -Math.PI / 2, Math.PI / 2, true); ctx.closePath(); ctx.fillStyle = GLASS_G; ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.rect(-60, -60, 60, 120); ctx.clip(); line([[-24, 2], [-6, 22], [26, -18]], C.white, 14); ctx.restore();
+  ctx.save(); ctx.beginPath(); ctx.rect(0, -60, 60, 120); ctx.clip(); line([[-24, 2], [-6, 22], [26, -18]], GLASS_G, 14); ctx.restore();
+  ctx.restore();
+}
+
+/** next-episode end-card badge: white disc, ink ring, the dog's head mid-yawn. ~300 px at s = 1 */
+export function thDogBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip(); thDog(0, 110, 0.95, { yawn: 1, t }); ctx.restore();
   ctx.restore();
 }

@@ -1,0 +1,27 @@
+{
+  "title": "What Happens If You Don't Brush Your Teeth for a Week?",
+  "description": "Send this to the friend who 'forgot' their toothbrush on vacation.\nPlaque is a sticky film of bacteria that forms every day, even while you sleep, and if it isn't removed within 24 hours it can harden like cement into tartar, which brushing can't remove (Cleveland Clinic). In a 2017 study, 28 people who stopped brushing had measurably inflamed gums by day 4; two weeks after brushing again, their gums were back to normal. The NHS says to see a dentist if your gums bleed when you brush.\nNext Body File: what happens when you yawn, and why it's contagious.\nFollow Body Files for a new one every day.\n#bodyfiles #teeth #plaque #oralhealth #brushing #science #shorts\n\nSources:\nCleveland Clinic, How To Remove Plaque From Teeth: https://health.clevelandclinic.org/how-to-remove-plaque-from-teeth\nCleveland Clinic, Plaque: https://my.clevelandclinic.org/health/diseases/10953-plaque\nCleveland Clinic, Tartar: https://my.clevelandclinic.org/health/diseases/25102-tartar\nBelstrom et al., Journal of Oral Microbiology 2017: https://pmc.ncbi.nlm.nih.gov/articles/PMC5560406\nNHS, Gum disease: https://www.nhs.uk/conditions/gum-disease/\nCleveland Clinic, Bad Breath: https://my.clevelandclinic.org/health/diseases/17771-bad-breath-halitosis\nJoly-Mascheroni et al., Dogs catch human yawns, Biology Letters 2008 (next video): https://pmc.ncbi.nlm.nih.gov/articles/PMC2610100",
+  "hashtags": ["#bodyfiles", "#teeth", "#plaque", "#oralhealth", "#brushing", "#science", "#shorts"],
+  "pinned_comment": "Be honest: how many times did you brush your teeth yesterday? Give a number. (And your guess before the reveal: after a week off, do your gums A) heal in two weeks or B) need a dentist?)",
+  "series": "Body Files",
+  "topic": "What happens if you don't brush your teeth for a week?",
+  "experiment_arm": "len-33-35 + loop-close",
+  "teases": "What happens when you yawn, and why is it contagious?",
+  "topic_cluster": "teeth",
+  "topic_source": "backlog #1: mandatory, promised by the side-stitch video (2026-11-24-body-08) with 'Next Body File: skip brushing, plaque sets like cement. Still got that stitch?'; 'hardens like cement' is paid off in line 5 (Cleveland Clinic)",
+  "hook_pattern": "question+day-diary-recovery",
+  "format": "day-by-day diary",
+  "first_frame": "object-closeup (bathroom mirror: the hero's open mouth, dusty toothbrush, a '7 DAYS' calendar, A TWO WEEKS / B DENTIST pills)",
+  "structure_note": "A day-by-day diary: a wall calendar flips Day 1 -> Day 4 -> Day 7 while the camera pushes into an x-ray-cyan mouth, then jumps to Day 8 and a fast-forward of the recovery. Different from the side stitch (suspect lineup), bath fingers (clue trail), sitting (dose countdown), doorway (lab yes/no), funny bone (anatomy tour): the calendar is the spine, no lineup or timer.",
+  "safety": "Curious-friend tone, no personal medical advice. The gum timeline is hedged as 'one study' (Belstrom 2017, 28 dental students, 10 days without brushing). 'Hardens like cement' is Cleveland Clinic's own wording (24 hours). 'Only a dental pro' matches Cleveland Clinic ('only a dental professional can remove it'). The NHS 'see a dentist if your gums bleed' line is in the description. Schematic, cartoon mouth only: no gross-out close-ups, no real gum photos.",
+  "engagement": {
+    "guess": "A gums heal in two weeks vs B need a dentist (answer: A, two weeks; Belstrom 2017: gum scores back to baseline 2 weeks after brushing resumed. Twist: the hardened 'cement' (tartar) does need a dental professional, Cleveland Clinic, so B gets a half-check on the cement line)",
+    "relatable": "Ever woken up with fuzzy teeth? That's it.",
+    "rehook_line": 4,
+    "answer_line": 7,
+    "answer_word_position": "90 words by hand count (11+13+8+8+11+7+8 before the answer = 66; then 8+6+10). The answer starts at word 67: 66 words before it = 73.3% of 90. Re-hook starts at word 40 and runs to word 50 (about 44-56%). 2 lines follow the answer (the cement/dental-pro line, the tease). Expect about 34.5-35 s at am_michael 1.15 (87 words = 33.8 s); if it voices over 35 s, cut 'already' (line 5) and 'up' (line 3) first.",
+    "first_frame": "A close-up of the hero in the bathroom mirror, mouth open wide, a dusty toothbrush with a tiny cobweb in its cup and a wall calendar reading '7 DAYS' with no X marks, the pills 'A TWO WEEKS' / 'B DENTIST' already on screen, so the skipped brushing, the number and the guess are visible before the first word.",
+    "rewatch_detail": "A cartoon dog sits in the bathroom doorway behind the hero the whole time and yawns once during the Day 7 line (foreshadows the yawn tease); the calendar in the corner has a tiny 'study: 28 people, 10 days' label (Belstrom 2017).",
+    "loop": "The tease ends on 'Open wide.' as the camera returns to the frame-1 mirror close-up of the hero's wide-open mouth, so the replay's first line answers it: 'Open wide. ... What happens if you don't brush your teeth for a week?'"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "title": "What Happens If You Don't Brush Your Teeth for a Week?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic Health Essentials, 'How To Remove Plaque From Teeth' (RDH Tenika Patterson: plaque is 'soft and sticky at first, but if it's not removed within 24 hours, it hardens like cement. That's what we call tartar.'; 'Once plaque becomes tartar, only a dental professional can remove it'; 'Bacteria cause inflammation under your gum line'): https://health.clevelandclinic.org/how-to-remove-plaque-from-teeth",
+    "Cleveland Clinic, 'Plaque' (dental plaque is 'a sticky, colorless film of bacteria that forms on your teeth'; 'new plaque forms on your teeth every day and even at night while you sleep'; teeth that 'feel fuzzy' probably have plaque; tartar: 'Only a dentist or hygienist can remove it'): https://my.clevelandclinic.org/health/diseases/10953-plaque",
+    "Cleveland Clinic, 'Tartar' (tartar is hardened dental plaque; 'you can't remove tartar with brushing and flossing'; a dentist or dental hygienist must remove it; it can make gums swell and bleed): https://my.clevelandclinic.org/health/diseases/25102-tartar",
+    "Belstrom et al., 'Salivary cytokine levels in early gingival inflammation', Journal of Oral Microbiology 2017;9(1):1364101 (28 participants stopped brushing and interdental cleaning for 10 days: 'PI and GI values increased significantly during the experimental gingivitis period (at days, 4, 7, and 10)'; after resuming hygiene, 'After 2 weeks of resolution (day 24), PI and GI scores were not significantly different from baseline scores'): https://pmc.ncbi.nlm.nih.gov/articles/PMC5560406",
+    "NHS, 'Gum disease' (caused by a build-up of plaque; gums 'swollen, red and sore', bleeding when you brush; 'bad breath and a bad taste in your mouth'; see a dentist if your gums bleed when you brush): https://www.nhs.uk/conditions/gum-disease/",
+    "Cleveland Clinic, 'Bad Breath (Halitosis)' ('The main cause of halitosis is poor oral hygiene'; 'Harmful bacteria invade your mouth and cause bad smells'): https://my.clevelandclinic.org/health/diseases/17771-bad-breath-halitosis",
+    "Tease (next video): Joly-Mascheroni, Senju & Shepherd, 'Dogs catch human yawns', Biology Letters 2008;4(5):446-448 (21 of 29 dogs yawned after watching a human yawn, none at control mouth movements; later studies replicated it only weakly, hence 'might'): https://pmc.ncbi.nlm.nih.gov/articles/PMC2610100"
+  ],
+  "lines": [
+    {
+      "text": "What happens if you don't brush your teeth for a week?",
+      "caps": "WHAT *HAPPENS | IF YOU *DON'T | BRUSH YOUR *TEETH | FOR A *WEEK?"
+    },
+    {
+      "text": "Day eight, brush again. Gums heal in two weeks, or need a dentist?",
+      "caps": "DAY *EIGHT | BRUSH *AGAIN | GUMS *HEAL | IN TWO *WEEKS | OR *NEED | A *DENTIST?"
+    },
+    {
+      "text": "Day one: a sticky bacteria film coats them.",
+      "caps": "DAY *ONE | A *STICKY | BACTERIA *FILM | *COATS THEM"
+    },
+    {
+      "text": "Ever woken up with fuzzy teeth? That's it.",
+      "caps": "EVER *WOKEN UP | WITH *FUZZY TEETH | THAT'S *IT"
+    },
+    {
+      "text": "But here's the twist: after a day, it hardens like cement.",
+      "caps": "BUT *HERE'S | THE *TWIST | AFTER A *DAY | IT *HARDENS | LIKE *CEMENT"
+    },
+    {
+      "text": "Day four: your gums are already inflamed.",
+      "caps": "DAY *FOUR | YOUR *GUMS | ARE ALREADY *INFLAMED"
+    },
+    {
+      "text": "Day seven: puffy gums, maybe bleeding, stinky breath.",
+      "caps": "DAY *SEVEN | *PUFFY GUMS | MAYBE *BLEEDING | *STINKY BREATH"
+    },
+    {
+      "text": "Two weeks! One study: gums back to normal.",
+      "caps": "TWO *WEEKS! | ONE *STUDY | *GUMS BACK | TO *NORMAL"
+    },
+    {
+      "text": "The cement? Only a dental pro.",
+      "caps": "THE *CEMENT? | *ONLY A | DENTAL *PRO"
+    },
+    {
+      "text": "Next Body File: yawns your dog might catch. Open wide.",
+      "caps": "NEXT BODY *FILE | *YAWNS | YOUR *DOG | MIGHT *CATCH | OPEN *WIDE"
+    }
+  ]
+}
