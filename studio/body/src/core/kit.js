@@ -8360,3 +8360,158 @@ export function hbPeeCard(x, y, s = 1, { pick = 0, sc = 1 } = {}) {
     ctx.beginPath(); ctx.moveTo(-250 + 3 * 128 + 55, 100 + 40 * (1 - p)); ctx.lineTo(-250 + 3 * 128 + 30, 140 + 40 * (1 - p)); ctx.lineTo(-250 + 3 * 128 + 80, 140 + 40 * (1 - p)); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill(); ctx.restore(); }
   ctx.restore();
 }
+
+// ═════════════════════════ DEHYDRATION SET (2026-11-25 "not drinking enough water", prefix dh) ═════════════════════════
+const DH_PEE = ['#FFF7CF', '#FBE98E', '#F4D24F', '#E2AE38', '#C68A26'], DH_PEE_D = ['#E8DDA6', '#E3CF6C', '#D8B63A', '#C2922A', '#A3701C'],
+  DH_COFFEE = '#6B4A33', DH_TEA = '#C8834A', DH_PENCIL = '#9A948A', DH_GREY = '#A9A6A0', DH_GREY_D = '#8E8A84', DH_CLOCK = '#D62839', DH_CLOCK_D = '#A81E2D';
+
+/** pee colour at k 0 (pale straw) .. 1 (dark amber): [edge, fill] for drop(..., cols) */
+export const dhPeeCol = (k) => { const u = clamp(k) * 4, i = Math.min(3, Math.floor(u)), f = u - i; return [mixHex(DH_PEE_D[i], DH_PEE_D[i + 1], f), mixHex(DH_PEE[i], DH_PEE[i + 1], f)]; };
+
+/** mini tally icon (~70x90 px at s = 1, origin = centre). kind 'glass' (pale-blue water, f 0..1 = level; f 0 = dashed empty
+ *  outline: a glass still to drink) | 'mug' (blue coffee mug) | 'tea' (white cup, orange tea) | 'milk' (glass of milk).
+ *  pencil 0..1 = drawn only as a faint grey pencil sketch (1) .. solid (0) */
+export function dhMini(kind, x, y, s = 1, { f = 1, pencil = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const gl = () => { ctx.beginPath(); ctx.moveTo(-32, -42); ctx.lineTo(32, -42); ctx.lineTo(25, 40); ctx.quadraticCurveTo(24, 46, 18, 46); ctx.lineTo(-18, 46); ctx.quadraticCurveTo(-24, 46, -25, 40); ctx.closePath(); };
+  const mug = () => { rr(-34, -32, 60, 74, [6, 6, 18, 18]); };
+  const sketch = (path, handle) => {
+    ctx.save(); ctx.globalAlpha = 0.75; ctx.setLineDash([10, 7]); ctx.strokeStyle = DH_PENCIL; ctx.lineWidth = 4; path(); ctx.stroke();
+    if (handle) { ctx.beginPath(); ctx.arc(28, 4, 16, -1.3, 1.3); ctx.stroke(); }
+    ctx.restore();
+  };
+  const solid = 1 - clamp(pencil);
+  if (kind === 'glass' || kind === 'milk') {
+    if (kind === 'glass' && f <= 0) { ctx.save(); ctx.setLineDash([10, 7]); ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.globalAlpha = 0.55; gl(); ctx.stroke(); ctx.restore(); }
+    else {
+      gl(); ctx.fillStyle = C.ink; ctx.save(); ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.restore();
+      gl(); ctx.fillStyle = GLASS; ctx.fill();
+      ctx.save(); gl(); ctx.clip(); const lv = lerp(46, -34, clamp(kind === 'milk' ? 0.8 : f));
+      ctx.beginPath(); ctx.moveTo(-40, 60); for (let xx = -40; xx <= 40; xx += 8) ctx.lineTo(xx, lv + Math.sin(xx * 0.12 + t * 4) * 2.5); ctx.lineTo(40, 60); ctx.closePath();
+      ctx.fillStyle = kind === 'milk' ? C.white : C.sky; ctx.fill(); ctx.restore();
+      rr(-22, -30, 8, 56, 4); ctx.fillStyle = C.white; ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1;
+    }
+  } else if (kind === 'mug') {
+    if (pencil > 0) sketch(mug, true);
+    if (solid > 0) {
+      ctx.save(); ctx.globalAlpha = solid;
+      ctx.beginPath(); ctx.arc(28, 4, 16, -1.3, 1.3); ctx.strokeStyle = C.ink; ctx.lineWidth = 16; ctx.stroke(); ctx.strokeStyle = C.shirtShade; ctx.lineWidth = 8; ctx.stroke();
+      mug(); ctx.lineWidth = 8; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.shirt; ctx.fill();
+      rr(8, -32, 18, 74, [0, 6, 18, 0]); ctx.fillStyle = C.shirtShade; ctx.fill();
+      ell(-4, -30, 26, 6, DH_COFFEE);
+      ctx.restore();
+    }
+  } else if (kind === 'tea') {
+    ctx.beginPath(); ctx.arc(30, -4, 13, -1.3, 1.3); ctx.strokeStyle = C.ink; ctx.lineWidth = 14; ctx.stroke(); ctx.strokeStyle = C.white; ctx.lineWidth = 6; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-36, -24); ctx.lineTo(32, -24); ctx.quadraticCurveTo(30, 30, 0, 32); ctx.quadraticCurveTo(-34, 30, -36, -24); ctx.closePath();
+    ctx.lineWidth = 8; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.white; ctx.fill();
+    ell(-2, -22, 30, 6, DH_TEA); rr(-52, 34, 100, 12, 6); ctx.fillStyle = C.ink; ctx.fill();
+    line([[-12, -24], [-20, 4]], C.ink, 3); rr(-28, 2, 16, 14, 3); ctx.fillStyle = C.yellow; ctx.fill();
+  }
+  ctx.restore();
+}
+
+/** the "6-8 GLASSES" tally card (graphic): white rounded card with an ink rim, an ink title pill on its top edge, and a row of
+ *  8 mini icons. slots = 8 x { k: 'glass'|'mug'|'tea'|'milk', f, pencil, hi 0..1 (yellow glow behind), check 0..1 }.
+ *  ~900x230 px at s = 1, origin = card centre. sc = pop-in */
+export function dhTally(x, y, s = 1, slots = [], { sc = 1, t = 0, title = '6-8 GLASSES A DAY' } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-450, -100, 900, 200, 34); ctx.fillStyle = C.ink; ctx.fill(); rr(-440, -90, 880, 180, 26); ctx.fillStyle = C.white; ctx.fill();
+  slots.forEach((o, i) => {
+    const sx = -385 + i * 110, sy = 18;
+    if (o.hi > 0) { ctx.save(); ctx.globalAlpha = 0.85 * clamp(o.hi); circle(sx, sy, 56, C.yellow); ctx.restore(); }
+    dhMini(o.k || 'glass', sx, sy, 1, { f: o.f ?? 1, pencil: o.pencil || 0, t });
+    if (o.check > 0) checkMark(sx + 34, sy - 44, 0.42, clamp(o.check));
+  });
+  pill(title, 0, -100, 40, C.ink, C.yellow);
+  ctx.restore();
+}
+
+/** pee colour strip (schematic chart): 5 rounded swatches pale straw -> dark amber in an ink frame, an ink marker triangle
+ *  above the swatch at marker 0..1, a small "NHS: AIM PALE" label under the pale end (label 0..1 alpha). w px wide (~90 tall).
+ *  check 0..1 pops a green check over the pale end. origin = strip centre. sc = pop-in */
+export function dhPeeStrip(x, y, w, { marker = 0, label = 1, check = 0, sc = 1, lab = 'NHS: AIM PALE', labSize = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  const h = w * 0.16, cw = (w - 20) / 5;
+  rr(-w / 2 - 10, -h / 2 - 10, w + 20, h + 20, 22); ctx.fillStyle = C.ink; ctx.fill();
+  for (let i = 0; i < 5; i++) { rr(-w / 2 + 4 + i * (cw + 4), -h / 2 + 4, cw - 4, h - 8, 12); ctx.fillStyle = DH_PEE[i]; ctx.fill(); }
+  const mk = clamp(w / 700, 0.55, 1.2), mx = -w / 2 + 4 + (clamp(marker) * 4 + 0.5) * (cw + 4) - 4, my = -h / 2 - 16 * mk;
+  ctx.beginPath(); ctx.moveTo(mx - 24 * mk, my - 32 * mk); ctx.lineTo(mx + 24 * mk, my - 32 * mk); ctx.lineTo(mx, my); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  if (label > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(label); const fs = labSize || Math.max(22, w * 0.045);
+    ctx.font = `900 ${fs}px Inter`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillStyle = C.ink; ctx.fillText(lab, -w / 2 - 6, h / 2 + 18);
+    ctx.restore();
+  }
+  if (check > 0) checkMark(-w / 2 + cw * 0.5 + 4, -h / 2 - 50, w / 900, clamp(check));
+  ctx.restore();
+}
+
+/** twin-bell alarm clock (red body, darker side, white face with ink hands, two bells, a wide snooze bar on top, little feet).
+ *  ring 0..1 shakes it + ink ring lines, press 0..1 pushes the snooze bar down (a yellow flash on it), t = film time.
+ *  ~300x330 px at s = 1, origin = face centre */
+export function dhAlarmClock(x, y, s = 1, { ring = 0, press = 0, t = 0, sc = 1, hour = 7 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(t * 40) * 0.06 * clamp(ring)); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  for (const sd of [-1, 1]) line([[sd * 70, 100], [sd * 100, 150]], C.ink, 18);
+  for (const sd of [-1, 1]) { ctx.save(); ctx.translate(sd * 92, -118); ctx.rotate(sd * 0.55); ell(0, 0, 56, 40, DH_CLOCK_D); ell(-4 * sd, -4, 48, 32, DH_CLOCK); ell(-14 * sd, -14, 16, 8, C.pinkLight, -0.3 * sd); ctx.restore(); }
+  const pb = 14 * clamp(press);
+  rr(-50, -176 + pb, 100, 30, 12); ctx.fillStyle = press > 0.5 ? C.yellow : C.ink; ctx.fill(); rr(-14, -150 + pb, 28, 26, 6); ctx.fillStyle = C.ink; ctx.fill();
+  circle(0, 0, 140, DH_CLOCK_D); circle(-6, -4, 130, DH_CLOCK);
+  circle(0, 0, 104, C.ink); circle(0, 0, 94, C.white);
+  for (let i = 0; i < 12; i++) { const a = i * TAU / 12; line([[Math.cos(a) * 76, Math.sin(a) * 76], [Math.cos(a) * 86, Math.sin(a) * 86]], C.ink, i % 3 ? 5 : 9); }
+  const ha = (hour / 12) * TAU - Math.PI / 2, ma = ((hour % 1) * TAU) - Math.PI / 2;
+  line([[0, 0], [Math.cos(ha) * 48, Math.sin(ha) * 48]], C.ink, 12); line([[0, 0], [Math.cos(ma) * 70, Math.sin(ma) * 70]], C.ink, 8); circle(0, 0, 12, C.red);
+  ell(-70, -60, 22, 10, C.pinkLight, -0.8);
+  ctx.restore();
+  if (ring > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(ring); ctx.strokeStyle = C.ink; ctx.lineWidth = 12 * s; ctx.lineCap = 'round';
+    for (const sd of [-1, 1]) for (const r of [220, 270]) { ctx.beginPath(); ctx.arc(x, y - 60 * s, r * s, sd < 0 ? Math.PI * 1.08 : -Math.PI * 0.4, sd < 0 ? Math.PI * 1.4 : -Math.PI * 0.08); ctx.stroke(); }
+    ctx.restore();
+  }
+}
+
+/** next-episode end-card badge: white disc, ink ring, a small alarm clock with a "z". ~300 px at s = 1 */
+export function dhAlarmBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  dhAlarmClock(-6, 22, 0.56, { t });
+  ctx.font = '900 64px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round'; ctx.lineWidth = 10; ctx.strokeStyle = C.ink;
+  ctx.strokeText('z', 84, -70); ctx.fillStyle = C.white; ctx.fillText('z', 84, -70);
+  ctx.restore();
+}
+
+/** skin swatch (schematic, calm): ink ring, a disc of skin that turns grey with soft blotchy patches as grey 0..1 rises.
+ *  r = radius px. sc = pop-in */
+export function dhSkinSwatch(x, y, r, { grey = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 14, C.ink); circle(0, 0, r, mixHex(C.skin, DH_GREY, grey * 0.8));
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.clip(); ctx.globalAlpha = clamp(grey);
+  for (let i = 0; i < 7; i++) { const a = rnd(i + 3) * TAU, d = rnd(i + 9) * r * 0.7; ell(Math.cos(a) * d, Math.sin(a) * d, r * (0.18 + rnd(i) * 0.16), r * (0.13 + rnd(i + 1) * 0.1), i % 2 ? DH_GREY_D : '#C79CA0', a); }
+  ctx.restore();
+  ell(-r * 0.4, -r * 0.5, r * 0.18, r * 0.08, C.white + '88', -0.7);
+  ctx.restore();
+}
+
+/** guess-panel frame: a rounded white panel with an ink rim, fn() draws its content clipped inside. hi 0..1 yellow tint, dim 0..1 */
+export function dhPanel(x0, y0, w, h, fn, { hi = 0, dim = 0 } = {}) {
+  ctx.save(); rr(x0, y0, w, h, 30); ctx.clip(); ctx.fillStyle = C.white; ctx.fillRect(x0, y0, w, h); fn();
+  if (hi > 0) { ctx.globalAlpha = 0.3 * clamp(hi); ctx.fillStyle = C.yellow; ctx.fillRect(x0, y0, w, h); }
+  if (dim > 0) { ctx.globalAlpha = 0.45 * clamp(dim); ctx.fillStyle = C.bg; ctx.fillRect(x0, y0, w, h); }
+  ctx.restore();
+  rr(x0, y0, w, h, 30); ctx.lineWidth = 12; ctx.strokeStyle = C.ink; ctx.stroke();
+}
+
+/** an EMPTY drinking glass: same outline as outlinedGlass() but a white interior with a light rim + glint (reads as empty
+ *  on any wall). Origin = glass centre, ~190x255 px at s = 1 */
+export function dhEmptyGlass(x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round';
+  const body = (k) => { ctx.beginPath(); ctx.moveTo(-96 * k, -126 * k); ctx.lineTo(96 * k, -126 * k); ctx.lineTo(78 * k, 112 * k); ctx.quadraticCurveTo(76 * k, 128 * k, 58 * k, 128 * k); ctx.lineTo(-58 * k, 128 * k); ctx.quadraticCurveTo(-76 * k, 128 * k, -78 * k, 112 * k); ctx.closePath(); };
+  body(1); ctx.fillStyle = C.ink; ctx.fill(); body(0.9); ctx.fillStyle = C.white; ctx.fill();
+  ctx.save(); body(0.9); ctx.clip(); ctx.fillStyle = C.gum; ctx.fillRect(30, -130, 80, 260); ctx.restore();
+  rr(-60, -96, 16, 170, 8); ctx.fillStyle = C.sky; ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1;
+  ctx.restore();
+}

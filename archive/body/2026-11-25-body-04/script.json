@@ -1,0 +1,61 @@
+{
+  "title": "What Happens When You Don't Drink Enough Water?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "NHS, 'Dehydration' ('Dehydration means your body loses more fluids than you take in'; symptoms: 'feeling thirsty', 'headache and feeling light-headed', 'dark yellow, strong-smelling pee', 'peeing less often than usual', 'feeling tired', 'a dry mouth, lips and tongue', 'sunken eyes'; it happens more easily if you have been in the sun or a hot environment too long, sweat a lot after exercising, or have a high temperature; drink fluids 'so that your pee is a pale colour'; call 999 or go to A&E if someone with signs of dehydration has blue, grey, pale or blotchy skin, lips or tongue, or is confused; voiced as 'Call emergency services' for the US-majority audience): https://www.nhs.uk/conditions/dehydration/",
+    "NHS, 'Water, drinks and your health' ('aim to drink 6 to 8 cups or glasses of fluid a day'; 'Water, lower-fat milk and lower-sugar drinks, including tea and coffee, all count as part of your daily intake'; aim for urine that is 'a clear pale yellow colour'): https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/water-drinks-nutrition/",
+    "NIH NCBI StatPearls, 'Physiology, Antidiuretic Hormone' (ADH is made in the hypothalamus and released from the posterior pituitary; rising blood osmolality or low blood volume triggers it; it makes the kidneys reabsorb water, producing concentrated urine and conserving water during dehydration): https://www.ncbi.nlm.nih.gov/books/NBK526069/",
+    "Tease (next video): Cleveland Clinic, 'Sleep inertia' (the groggy 'transitional state you experience when you aren't asleep … but definitely aren't awake yet either', usually 15 to 60 minutes; 'Resist the urge to hit the snooze button'): https://health.clevelandclinic.org/sleep-inertia"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you don't drink enough water?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *DON'T | DRINK *ENOUGH | *WATER?"
+    },
+    {
+      "text": "Six to eight glasses a day. Does coffee count, or just water?",
+      "caps": "SIX TO *EIGHT | *GLASSES | A *DAY | DOES *COFFEE | *COUNT | OR JUST *WATER?"
+    },
+    {
+      "text": "Fall short, and your brain sends a water-saving hormone.",
+      "caps": "FALL *SHORT | AND YOUR *BRAIN | *SENDS A | WATER-SAVING *HORMONE"
+    },
+    {
+      "text": "Your kidneys pull water back into your blood,",
+      "caps": "YOUR *KIDNEYS | PULL WATER *BACK | INTO YOUR *BLOOD"
+    },
+    {
+      "text": "so your pee turns dark yellow and strong-smelling.",
+      "caps": "SO YOUR *PEE | TURNS *DARK | *YELLOW | AND *STRONG-SMELLING"
+    },
+    {
+      "text": "But here's the sneaky part: sweat, heat or fever drain you faster.",
+      "caps": "BUT *HERE'S | THE SNEAKY *PART | *SWEAT | *HEAT | OR *FEVER | DRAIN YOU *FASTER"
+    },
+    {
+      "text": "Ever get a headache and dry mouth at work?",
+      "caps": "*EVER GET | A *HEADACHE | AND DRY *MOUTH | AT *WORK?"
+    },
+    {
+      "text": "Blotchy, grey skin or confusion? Call emergency services.",
+      "caps": "*BLOTCHY | GREY *SKIN | OR *CONFUSION? | CALL *EMERGENCY | *SERVICES"
+    },
+    {
+      "text": "Answer: coffee counts.",
+      "caps": "*ANSWER | COFFEE *COUNTS"
+    },
+    {
+      "text": "Tea and milk count too. Aim for pale yellow pee.",
+      "caps": "TEA AND *MILK | COUNT *TOO | AIM FOR *PALE | YELLOW *PEE"
+    },
+    {
+      "text": "Next Body File: hitting snooze, and that groggy fog. Thirsty yet?",
+      "caps": "NEXT BODY *FILE | HITTING *SNOOZE | AND THAT *GROGGY | *FOG | *THIRSTY YET?"
+    }
+  ]
+}
