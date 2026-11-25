@@ -7893,3 +7893,204 @@ export function thDogBadge(x, y, s = 1, sc = 1, t = 0) {
   ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip(); thDog(0, 110, 0.95, { yawn: 1, t }); ctx.restore();
   ctx.restore();
 }
+
+// ═════════════════════════ YAWN SET (2026-11-25 "contagious yawn") ═════════════════════════
+// yw* = the yawn video's props: a home room with a "9/day" wall tally, a lying dog that can yawn (+ a small dog-head icon for
+// counts), a friendly schematic ultrasound monitor with a yawning baby, kid icons that yawn, a reading phone, heartburn tease.
+const YW_FUR = '#D9A066', YW_FUR_D = '#B9824C', YW_BED = '#9DCBE0', YW_BED_D = '#7FB3CC', YW_SCAN = '#2B3A55', YW_SCAN_L = '#3E5070';
+const ywK = (t) => clamp(t);
+
+/** home room for the yawn story: wall, window (top right), framed picture (top left), floor from floorY, a small sticky note
+ *  "9/day" on the wall at (tx, ty) (the adult yawn average: rewatch detail). tally = 0 hides it */
+export function ywRoom(floorY = 1120, { tally = 1, tx = 960, ty = 600 } = {}) {
+  fillAll(C.bg);
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, floorY, W + 600, H);
+  ctx.fillStyle = C.gumEdge; ctx.fillRect(-300, floorY - 14, W + 600, 14);
+  rr(640, 170, 330, 300, 22); ctx.fillStyle = C.white; ctx.fill();
+  rr(660, 190, 290, 260, 12); ctx.fillStyle = C.sky; ctx.fill();
+  ell(740, 280, 60, 26, C.white); ell(785, 266, 44, 30, C.white);
+  ctx.fillStyle = C.white; ctx.fillRect(798, 190, 12, 260); ctx.fillRect(660, 314, 290, 12);
+  if (tally > 0) {
+    ctx.save(); ctx.translate(tx, ty); ctx.rotate(0.06); ctx.globalAlpha = clamp(tally);
+    rr(-66, -48, 132, 96, 8); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-66, -52, 132, 96, 8); ctx.fillStyle = '#FFF1B8'; ctx.fill();
+    ctx.fillStyle = C.ink; ctx.font = '900 36px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('9/day', 0, -18);
+    for (let k = 0; k < 4; k++) line([[-40 + k * 14, 14], [-40 + k * 14, 34]], C.ink, 4); line([[-46, 30], [6, 16]], C.ink, 4);
+    for (let k = 0; k < 4; k++) line([[20 + k * 12, 14], [20 + k * 12, 34]], C.ink, 4);
+    ctx.restore();
+  }
+}
+
+/** dog lying on a cushion (side view, facing left). Origin = cushion centre on the floor; ~420x260 px at s = 1.
+ *  yawn 0..1 = head tips up, eyes shut, jaw opens wide; t = film time (slow breathing); sc = pop-in */
+export function ywDog(x, y, s = 1, { yawn = 0, t = 0, sc = 1, bed = true } = {}) {
+  if (sc <= 0) return;
+  const yw = ywK(yawn), br = Math.sin(t * 2.2) * 3;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (bed) { ell(0, -18, 220, 46, YW_BED_D); ell(0, -26, 206, 38, YW_BED); ell(-60, -40, 70, 10, C.white + '88'); }
+  line([[118, -70], [170, -96], [200, -78]], YW_FUR_D, 26);                       // tail
+  ell(10, -82 - br, 128, 58 + br, YW_FUR);                                         // body
+  ell(84, -80, 60, 50, YW_FUR_D); ell(80, -86, 52, 42, YW_FUR);                    // haunch
+  ell(-10, -52, 80, 22, C.gum);                                                    // belly
+  for (const dx of [-150, -110]) { rr(dx - 46, -46, 96, 30, 15); ctx.fillStyle = dx < -120 ? YW_FUR : YW_FUR_D; ctx.fill(); ell(dx - 44, -31, 20, 15, C.gum); }   // front paws
+  ell(-30, -118 - br, 44, 12, '#E8BC86', -0.1);                                    // back highlight
+  // head (pivot at the neck, tips up with the yawn)
+  ctx.save(); ctx.translate(-100, -112); ctx.rotate(-0.35 * yw);
+  ell(16, 2, 46, 44, YW_FUR);
+  circle(-30, -8, 54, YW_FUR);
+  ell(-62, -56, 18, 12, '#E8BC86', -0.4);
+  // snout: upper part, lower jaw drops open
+  const jaw = 0.75 * yw;
+  if (yw > 0.05) {
+    ctx.beginPath(); ctx.moveTo(-50, 16); ctx.lineTo(-118, 16); ctx.quadraticCurveTo(-110, 20 + 70 * Math.sin(jaw), -56 - 62 * Math.cos(jaw), 24 + 62 * Math.sin(jaw)); ctx.closePath(); ctx.fillStyle = C.mouth; ctx.fill();
+    ctx.save(); ctx.globalAlpha = clamp(yw * 2); ell(-82, 22 + 34 * Math.sin(jaw), 20, 9, C.pink, jaw * 0.9); ctx.restore();
+  }
+  ctx.save(); ctx.translate(-50, 20); ctx.rotate(jaw);
+  rr(-72, 0, 74, 22, 11); ctx.fillStyle = C.gum; ctx.fill();
+  ctx.restore();
+  rr(-126, -12, 82, 34, 16); ctx.fillStyle = C.gum; ctx.fill();                     // upper snout
+  ell(-124, -4, 13, 10, C.ink); ell(-128, -8, 4, 3, C.white);                         // nose
+  ell(4, -6, 26, 52, YW_FUR_D, 0.35);                                                // floppy ear
+  if (yw > 0.4) { ctx.beginPath(); ctx.arc(-42, -24, 11, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 6; ctx.stroke(); }
+  else { ell(-42, -24, 9, 11, C.ink); circle(-39, -28, 3.5, C.white); }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** small dog-head icon (front view) for counts. yawn 0..1 = eyes shut + mouth wide; dim 0..1 greys it back. ~150 px at s = 1 */
+export function ywDogHead(x, y, s = 1, { yawn = 0, dim = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  const yw = ywK(yawn);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.globalAlpha = 1 - 0.6 * clamp(dim);
+  ell(-58, -4, 24, 44, YW_FUR_D, 0.3); ell(58, -4, 24, 44, YW_FUR_D, -0.3);
+  circle(0, 0, 58, YW_FUR); ell(-20, -34, 16, 8, '#E8BC86', -0.4);
+  ell(0, 26, 34, 26 + 10 * yw, C.gum);
+  if (yw > 0.4) for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * 22, -12, 9, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.stroke(); }
+  else for (const sd of [-1, 1]) { ell(sd * 22, -10, 7, 9, C.ink); circle(sd * 22 + 2, -13, 2.5, C.white); }
+  ell(0, 14, 11, 8, C.ink);
+  if (yw > 0.05) { ell(0, 38, 14 * yw + 4, 18 * yw + 2, C.mouth); ell(0, 46 + 4 * yw, 8 * yw, 5 * yw, C.pink); }
+  else { ctx.beginPath(); ctx.moveTo(-12, 34); ctx.quadraticCurveTo(0, 42, 12, 34); ctx.strokeStyle = C.ink; ctx.lineWidth = 4; ctx.stroke(); }
+  ctx.restore();
+}
+
+/** friendly schematic ultrasound baby (pale, curled, big head) in local units; yawn 0..1 opens its mouth. ~260x220 at s = 1 */
+function ywFetus(yawn = 0, wig = 0) {
+  const F = C.gum, FD = C.gumEdge;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ell(40, 40, 88, 66, FD); ell(36, 34, 82, 60, F);                                  // curled body
+  line([[90, 70], [120, 96], [80, 104]], F, 30);                                    // knee + foot
+  circle(-58, -18, 82, FD); circle(-62, -24, 78, F);                                // head
+  ell(-90, -62, 22, 12, C.white, -0.5);
+  line([[10, 30], [-12 + wig * 3, 62], [-34, 70]], FD, 22); circle(-36 + wig * 3, 70, 13, FD);   // little arm curled in front
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(-74 + sd * 26, -30, 10, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.watch; ctx.lineWidth = 6; ctx.stroke(); }
+  const y = ywK(yawn);
+  if (y > 0.05) { ell(-74, 14, 12 + 6 * y, 6 + 18 * y, C.watch); }
+  else { ctx.beginPath(); ctx.moveTo(-84, 12); ctx.quadraticCurveTo(-74, 18, -64, 12); ctx.strokeStyle = C.watch; ctx.lineWidth = 5; ctx.stroke(); }
+}
+
+/** ultrasound monitor (graphic, schematic): dark frame, navy screen with a fan-shaped scan and a cartoon baby yawning,
+ *  "24 WKS" corner label (rewatch detail). Origin = screen centre; screen ~400x300 at s = 1. stand = pole + wheels down to floorY.
+ *  yawn 0..1, t = scene clock (scan sweep + tiny wiggle, periodic), sc = pop-in */
+export function ywUltrasound(x, y, s = 1, { yawn = 1, t = 0, sc = 1, stand = null, label = true } = {}) {
+  if (sc <= 0) return;
+  if (stand != null) {
+    rr(x - 14, y + 150 * s, 28, stand - y - 150 * s - 20, 10); ctx.fillStyle = C.watch; ctx.fill();
+    rr(x - 110, stand - 30, 220, 26, 13); ctx.fill(); for (const sd of [-1, 1]) circle(x + sd * 96, stand - 6, 14, C.ink);
+  }
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-230, -180, 460, 360, 34); ctx.fillStyle = C.watch; ctx.fill();
+  rr(-206, -156, 412, 312, 18); ctx.fillStyle = C.navy; ctx.fill();
+  ctx.save(); rr(-206, -156, 412, 312, 18); ctx.clip();
+  ctx.beginPath(); ctx.moveTo(0, -150); ctx.arc(0, -150, 300, Math.PI * 0.27, Math.PI * 0.73); ctx.closePath(); ctx.fillStyle = YW_SCAN; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(0, -150); ctx.arc(0, -150, 270, Math.PI * 0.3, Math.PI * 0.7); ctx.closePath(); ctx.fillStyle = YW_SCAN_L; ctx.fill();
+  const sw = Math.PI * (0.3 + 0.4 * (0.5 - 0.5 * Math.cos(t * 2.4)));
+  ctx.save(); ctx.globalAlpha = 0.35; line([[0, -150], [Math.cos(sw) * 270, -150 + Math.sin(sw) * 270]], C.cyan, 6); ctx.restore();
+  ctx.save(); ctx.translate(6, 14); ctx.scale(0.78, 0.78); ywFetus(yawn, Math.sin(t * 3)); ctx.restore();
+  ctx.restore();
+  if (label) {
+    ctx.fillStyle = C.cyan; ctx.font = '900 30px Inter'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('24 WKS', -188, -128);
+    circle(176, -128, 9, C.red);
+  }
+  ctx.restore();
+}
+
+/** kid / toddler icon (ageIcon) that can yawn: yawn 0..1 shuts the eyes and opens a tall mouth. Same origin + options as
+ *  ageIcon (kid: true). yawn draws over the face, so it follows s and sc exactly */
+export function ywKid(x, y, s = 1, { yawn = 0, sc = 1, shirt = null, t = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ageIcon(x, y, s, { kid: true, sc, shirt, t });
+  const yw = ywK(yawn); if (yw <= 0) return;
+  const hy = -440, hr = 108;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  for (const sd of [-1, 1]) ell(sd * hr * 0.38, hy + 2, 16, 19, C.skin);
+  ell(0, hy + hr * 0.54, 34, 18, C.skin);
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.arc(sd * hr * 0.38, hy - 2, 12, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.stroke(); }
+  ell(0, hy + hr * 0.58, 12 + 8 * yw, 8 + 22 * yw, C.mouth); ell(0, hy + hr * 0.58 + 14 * yw, 8 * yw, 5 * yw, C.pink);
+  ctx.restore();
+}
+
+/** reading phone (screen to camera): ink body, white screen with grey text lines and the word "yawn" a few times;
+ *  hi 0..1 lights those words yellow. ~300x560 px at s = 1, origin = centre */
+export function ywPhone(x, y, s = 1, { hi = 0, rot = 0, sc = 1, scroll = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-150, -280, 300, 560, 44); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-130, -250, 260, 500, 26); ctx.fillStyle = C.white; ctx.fill();
+  rr(-34, -268, 68, 10, 5); ctx.fillStyle = '#3A3A42'; ctx.fill();
+  ctx.save(); rr(-130, -250, 260, 500, 26); ctx.clip();
+  const ROWS = [[0, 0.9], [1, 0.7], [2, 0.85], [3, 0.6], [4, 0.9], [5, 0.75], [6, 0.8], [7, 0.55], [8, 0.9], [9, 0.7], [10, 0.8]];
+  const WORDS = { 1: 0.7, 4: 0.15, 6: 0.55, 9: 0.2 };
+  ctx.font = '900 34px Inter'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  for (const [r, wf] of ROWS) {
+    const ry = -210 + r * 44 - scroll;
+    rr(-108, ry - 8, 216 * wf, 16, 8); ctx.fillStyle = C.gumEdge; ctx.fill();
+    if (WORDS[r] != null) {
+      const wx = -108 + 216 * WORDS[r] * wf - 10, ww = 82;
+      if (hi > 0) { ctx.save(); ctx.globalAlpha = clamp(hi); rr(wx - 6, ry - 22, ww + 12, 44, 10); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); }
+      else { rr(wx - 4, ry - 20, ww + 8, 40, 8); ctx.fillStyle = C.white; ctx.fill(); }
+      ctx.fillStyle = C.ink; ctx.fillText('yawn', wx, ry + 2);
+    }
+  }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** heartburn (next-episode tease): pink stomach with a worried face, the food pipe up from it, yellow acid sloshing in the stomach
+ *  and climbing the pipe (acid 0..1), a flame at the top of the acid (flame 0..1, red/yellow). Origin = stomach centre; ~ 330x620 at s = 1 */
+export function ywHeartburn(x, y, s = 1, { acid = 0, flame = 0, t = 0, sc = 1, face = 'n' } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const top = -440, px = -30, py0 = -110;
+  line([[px, py0 + 10], [px, top]], C.pinkDark, 74); line([[px, py0 + 10], [px, top]], C.pink, 58); line([[px - 14, py0 - 20], [px - 14, top + 20]], C.pinkLight, 12);
+  stomach(0, 0, 1);
+  const a = clamp(acid), ay = lerp(py0 + 20, top + 50, a);
+  ctx.save(); ctx.beginPath(); ctx.rect(-200, 40, 400, 200); ctx.clip(); stomachPath(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 44; ctx.stroke(); ctx.restore();   // acid pool in the bottom
+  if (a > 0) { line([[px, py0 + 10], [px, ay]], C.yellow, 30); circle(px + Math.sin(t * 9) * 4, ay, 15, C.yellow); }
+  for (let i = 0; i < 3; i++) { const ph = (t * 1.3 + i / 3) % 1; ctx.save(); ctx.globalAlpha = 0.8 * (1 - ph); ctx.beginPath(); ctx.arc(px, py0 + 10 - ph * (py0 + 10 - ay) * a, 6, 0, TAU); ctx.strokeStyle = C.white; ctx.lineWidth = 4; ctx.stroke(); ctx.restore(); }
+  const f = clamp(flame);
+  if (f > 0) {
+    const fy = Math.min(ay, py0 - 40), fl = (k, w, h, col) => { ctx.beginPath(); ctx.moveTo(px - w, fy); ctx.quadraticCurveTo(px - w * 1.1, fy - h * 0.5, px + Math.sin(t * 11 + k) * 8, fy - h); ctx.quadraticCurveTo(px + w * 1.1, fy - h * 0.5, px + w, fy); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); };
+    ctx.save(); ctx.translate(px, fy); ctx.scale(f, f); ctx.translate(-px, -fy);
+    fl(0, 46, 150, C.red); fl(1, 30, 100, C.yellow); ctx.restore();
+  }
+  // face on the stomach
+  const FX = -96, FY = 6;   // face on the stomach's big curve (left side)
+  for (const sd of [-1, 1]) {
+    if (face === 'wow') { ell(FX + sd * 20, FY, 9, 12, C.ink); circle(FX + sd * 20 + 3, FY - 4, 3.5, C.white); }
+    else { ell(FX + sd * 18, FY + 2, 7, 9, C.ink); circle(FX + sd * 18 + 3, FY - 1, 3, C.white); }
+  }
+  ctx.strokeStyle = C.mouth; ctx.lineWidth = 6; ctx.beginPath();
+  if (face === 'wow') { ctx.ellipse(FX, FY + 28, 9, 11, 0, 0, TAU); ctx.fillStyle = C.mouth; ctx.fill(); }
+  else { ctx.moveTo(FX - 12, FY + 30); ctx.quadraticCurveTo(FX, FY + 22, FX + 12, FY + 30); ctx.stroke(); }
+  ctx.restore();
+}
+
+/** next-episode badge for the end card: white disc, ink ring, a small heartburn stomach with its flame. ~300 px at s = 1 */
+export function ywHeartburnBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip();
+  ywHeartburn(14, 58, 0.32, { acid: 1, flame: 1, t, face: 'wow' });
+  ctx.restore();
+  ctx.restore();
+}

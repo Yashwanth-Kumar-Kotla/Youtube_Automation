@@ -1,0 +1,61 @@
+{
+  "title": "What Happens When You Yawn, and Why Is It Contagious?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Yawning' ('Yawning is the opening of your airway and mouth to take a long, deep breath of air'; the lower jaw opens in a 'gaping' of the mouth; 'Adults yawn about nine times a day on average'; the old main theory was that yawning brings in more oxygen, abandoned because a controlled lack of oxygen did not produce more yawning; brain-cooling theory: 'brain temperature decreases with yawning'; 'we're much more likely to have contagious yawning when we see or hear a close loved one yawn as opposed to a stranger'; talk to a provider about excessive yawning over a few days): https://my.clevelandclinic.org/health/body/yawning",
+    "Provine, Tate & Geldmacher, 'Yawning: no effect of 3-5% CO2, 100% O2, and exercise', Behavioral and Neural Biology 1987;48:382-393 (no support for yawning as a response to high CO2 or low O2; intro: 'Yawns are easily triggered; even reading about or thinking about yawns stimulates them'): https://pubmed.ncbi.nlm.nih.gov/3120687/",
+    "Gallup & Eldakar, 'Contagious yawning and seasonal climate variation', Frontiers in Evolutionary Neuroscience 2011 and Gallup's brain-cooling work (yawning framed as a brain-cooling HYPOTHESIS, hence 'one theory ... may'): https://www.frontiersin.org/articles/10.3389/fnevo.2011.00007/full",
+    "Reissland, Francis & Mason, 'Development of Fetal Yawn Compared with Non-Yawn Mouth Openings from 24-36 Weeks Gestation', PLOS ONE 2012 (4D scans of 15 fetuses show true yawns in the womb, from 24 weeks): https://pmc.ncbi.nlm.nih.gov/articles/PMC3503956",
+    "Helt, Eigsti, Snyder & Fein, 'Contagious Yawning in Autistic and Typical Development', Child Development 2010, via UConn Today (contagious yawning 'doesn't appear in most typically developing children until they are about four years old'; 'None of the 20 one-year-olds in the study yawned; only one in 20 two-year-olds yawned; and two three-year-olds'): https://today.uconn.edu/2010/09/when-yawning-isnt-contagious",
+    "Joly-Mascheroni, Senju & Shepherd, 'Dogs catch human yawns', Biology Letters 2008;4(5):446-448 ('Twenty-one dogs yawned when they observed a human yawning' out of 29; control mouth movements elicited no yawns; later studies replicated it only weakly, hence 'might'): https://pmc.ncbi.nlm.nih.gov/articles/PMC2610100",
+    "Norscia & Palagi, 'Yawn Contagion and Empathy in Homo sapiens', PLoS ONE 2011 (contagion greatest for kin, then friends, acquaintances, strangers; used for the director's background detail only): https://pmc.ncbi.nlm.nih.gov/articles/PMC3233580",
+    "Tease (next video): NHS, 'Heartburn and acid reflux' ('Heartburn is a burning feeling in the chest caused by stomach acid travelling up towards the throat (acid reflux)'): https://www.nhs.uk/conditions/heartburn-and-acid-reflux/"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you yawn, and why is it contagious?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *YAWN | AND *WHY | IS IT *CONTAGIOUS?"
+    },
+    {
+      "text": "You yawned in the womb, but catching yawns starts at age one, or four?",
+      "caps": "YOU *YAWNED | IN THE *WOMB | BUT *CATCHING | YAWNS *STARTS | AT AGE *ONE | OR *FOUR?"
+    },
+    {
+      "text": "Your jaw drops and you gulp one long, deep breath.",
+      "caps": "YOUR JAW *DROPS | AND YOU *GULP | ONE *LONG | DEEP *BREATH"
+    },
+    {
+      "text": "Not for oxygen; tests ruled that out.",
+      "caps": "NOT FOR *OXYGEN | TESTS *RULED | THAT *OUT"
+    },
+    {
+      "text": "One theory? It may cool your brain.",
+      "caps": "ONE *THEORY? | IT MAY *COOL | YOUR *BRAIN"
+    },
+    {
+      "text": "But here's the weird part: just reading about yawns can trigger one.",
+      "caps": "BUT *HERE'S | THE *WEIRD PART | JUST *READING | ABOUT *YAWNS | CAN *TRIGGER ONE"
+    },
+    {
+      "text": "Feel one coming yet? Thought so.",
+      "caps": "FEEL *ONE | COMING *YET? | THOUGHT *SO"
+    },
+    {
+      "text": "Answer: about age four. Toddlers rarely do.",
+      "caps": "*ANSWER | ABOUT AGE *FOUR | TODDLERS *RARELY DO"
+    },
+    {
+      "text": "Your dog might too. One study: twenty-one of twenty-nine.",
+      "caps": "YOUR *DOG | MIGHT *TOO | ONE *STUDY | *TWENTY-ONE | OF *TWENTY-NINE"
+    },
+    {
+      "text": "Next Body File: heartburn, not your heart. Still yawning?",
+      "caps": "NEXT BODY *FILE | *HEARTBURN | NOT YOUR *HEART | STILL *YAWNING?"
+    }
+  ]
+}
