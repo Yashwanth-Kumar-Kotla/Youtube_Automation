@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27T09:51:00+00:00",
+  "updated": "2026-11-27T10:00:36+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -239,6 +239,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-27-body-02/2026-11-27-body-02.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-27-body-02/2026-11-27-body-02.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-27-body-03",
+      "title": "What Happens When You Get a Paper Cut?",
+      "caption": "What Happens When You Get a Paper Cut? #bodyfiles #papercut #nerves #skin #humanbody",
+      "length": 33.2,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-27-body-03/2026-11-27-body-03.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-27-body-03/2026-11-27-body-03.mp4",
       "approved": false
     }
   ]
