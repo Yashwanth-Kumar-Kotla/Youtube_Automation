@@ -8707,3 +8707,270 @@ export function szHangryBadge(x, y, s = 1, sc = 1, t = 0) {
   szAnger(78, -78, 0.75, 1);
   ctx.restore();
 }
+
+// ═════════════════════════ HANGRY SET (2026-11-26 "getting hangry", hg prefix) ═════════════════════════
+const HG_WOOD = '#B5653F', HG_WOOD_D = '#9A5333', HG_GREY = '#9A9A9F', HG_GREY_L = '#B9B9BE', HG_SCREEN = '#BFE3F2',
+  HG_RED_D = '#A81E2D', HG_LAB = '#FFFFFF', HG_LAB_D = '#E6E9EC', HG_STEEL = '#C9CED4', HG_GLAND = '#FFD43B', HG_GLAND_D = '#E3B92E';
+
+/** plain office desk, front view (wood top + front panel, a drawer handle), no props. Origin = desk-top centre,
+ *  w px wide at s = 1 (default 860), front panel runs 560 px down. Draw after a seated hero so it hides his legs */
+export function hgDesk(x, y, s = 1, w = 860) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-w / 2, 0, w, 44, 10); ctx.fillStyle = HG_WOOD; ctx.fill(); rr(-w / 2, 30, w, 14, [0, 0, 10, 10]); ctx.fillStyle = HG_WOOD_D; ctx.fill();
+  rr(-w / 2 + 20, 44, w - 40, 560, 0); ctx.fillStyle = HG_WOOD_D; ctx.fill(); rr(-w / 2 + 40, 44, w - 80, 560, 0); ctx.fillStyle = HG_WOOD; ctx.fill();
+  rr(-60, 110, 120, 22, 11); ctx.fillStyle = HG_WOOD_D; ctx.fill();
+  ctx.restore();
+}
+
+/** laptop on a desk, turned toward the viewer's left (3/4 view: the screen is visible), screen shows a loading spinner + a
+ *  stuck progress bar. Origin = front-centre of the base, sitting on the desk top. ~330x260 px at s = 1. t = film time */
+export function hgLaptop(x, y, s = 1, { t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  // base (a flat slab in perspective)
+  ctx.beginPath(); ctx.moveTo(-170, 0); ctx.lineTo(150, 0); ctx.lineTo(120, -34); ctx.lineTo(-120, -34); ctx.closePath(); ctx.fillStyle = HG_GREY; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-160, -6); ctx.lineTo(140, -6); ctx.lineTo(116, -30); ctx.lineTo(-114, -30); ctx.closePath(); ctx.fillStyle = HG_GREY_L; ctx.fill();
+  // lid (skewed: the left edge nearer the viewer is taller)
+  ctx.beginPath(); ctx.moveTo(-130, -34); ctx.lineTo(120, -34); ctx.lineTo(130, -240); ctx.lineTo(-150, -262); ctx.closePath(); ctx.fillStyle = HG_GREY; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-116, -48); ctx.lineTo(106, -48); ctx.lineTo(114, -228); ctx.lineTo(-134, -246); ctx.closePath(); ctx.fillStyle = HG_SCREEN; ctx.fill();
+  // spinner (8 dots, one bright, turning)
+  const cx = -8, cy = -158, k = Math.floor(t * 10);
+  for (let i = 0; i < 8; i++) { const a = i / 8 * TAU, on = ((i - k) % 8 + 8) % 8; ctx.globalAlpha = 0.25 + 0.75 * (1 - on / 8); circle(cx + Math.cos(a) * 34, cy + Math.sin(a) * 34, 9, C.ink); }
+  ctx.globalAlpha = 1;
+  rr(-80, -96, 150, 16, 8); ctx.fillStyle = C.white; ctx.fill(); rr(-80, -96, 26, 16, 8); ctx.fillStyle = C.red; ctx.fill();
+  ctx.restore();
+}
+
+/** open, EMPTY red lunchbox (lid tipped back, only a few crumbs inside). Origin = bottom centre (on the desk top).
+ *  ~300x230 px at s = 1. hi 0..1 = little hop */
+export function hgLunchbox(x, y, s = 1, { sc = 1, hop = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y - 30 * Math.sin(Math.PI * clamp(hop)) * s); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  // lid tipped back (behind)
+  ctx.save(); ctx.translate(-150, -120); ctx.rotate(-0.35);
+  rr(0, -110, 300, 110, [24, 24, 6, 6]); ctx.fillStyle = HG_RED_D; ctx.fill(); rr(0, -110, 276, 104, [24, 24, 6, 6]); ctx.fillStyle = C.red; ctx.fill();
+  ctx.restore();
+  // inside (dark), crumbs
+  rr(-140, -134, 280, 36, 12); ctx.fillStyle = '#7A1622'; ctx.fill();
+  for (const [cx, cy] of [[-60, -116], [-20, -112], [40, -118], [80, -110]]) ell(cx, cy, 9, 5, '#E3B92E');
+  // box front
+  rr(-150, -120, 300, 120, 22); ctx.fillStyle = HG_RED_D; ctx.fill(); rr(-150, -120, 276, 116, 22); ctx.fillStyle = C.red; ctx.fill();
+  rr(-24, -96, 48, 22, 7); ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.restore();
+}
+
+/** red anger steam: three round puffs rising and growing from (x, y) (over the hero's head), looping on t.
+ *  a = amount 0..1 (0 = none, 1 = full; > 1 = flare, bigger + faster). ~240 px wide at s = 1 */
+export function hgSteam(x, y, s = 1, t = 0, a = 1) {
+  if (a <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const f = Math.max(1, a);
+  for (const [dx, ph] of [[-70, 0], [0, 0.33], [70, 0.66]]) {
+    const u = ((t * 0.9 * f + ph) % 1 + 1) % 1;                 // 0..1 rise phase
+    const r = (18 + 34 * u) * Math.min(a, 1.4), yy = -u * 150 * Math.min(f, 1.3);
+    const al = Math.min(1, a) * Math.sin(Math.PI * u) * 0.95;
+    ctx.globalAlpha = al;
+    circle(dx + Math.sin(u * 6 + dx) * 10, yy, r + 6, HG_RED_D); circle(dx + Math.sin(u * 6 + dx) * 10, yy - 3, r, C.red);
+    circle(dx + Math.sin(u * 6 + dx) * 10 - r * 0.3, yy - r * 0.35, r * 0.28, '#F0707C');
+  }
+  ctx.restore();
+}
+
+/** phone with a study survey on the screen: two rows HUNGRY / GRUMPY, each a slider (0..1) with a yellow / red fill.
+ *  ~360x700 px at s = 1, origin = centre. ping 0..1 = a little notification bounce */
+export function hgSurveyPhone(x, y, s = 1, { hunger = 0, grump = 0, sc = 1, ping = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y - 20 * Math.sin(Math.PI * clamp(ping))); ctx.scale(s * sc, s * sc);
+  rr(-180, -350, 360, 700, 50); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-156, -320, 312, 640, 30); ctx.fillStyle = C.white; ctx.fill();
+  rr(-50, -340, 100, 14, 7); ctx.fillStyle = '#3A3A44'; ctx.fill();
+  rr(-156, -320, 312, 90, [30, 30, 0, 0]); ctx.fillStyle = C.shirt; ctx.fill();
+  ctx.fillStyle = C.white; ctx.font = '900 34px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('CHECK-IN', 0, -274);
+  const row = (lab, y0, v, col) => {
+    ctx.fillStyle = C.ink; ctx.font = '900 38px Inter'; ctx.textAlign = 'left'; ctx.fillText(lab, -126, y0 - 46);
+    rr(-126, y0, 252, 34, 17); ctx.fillStyle = '#E4DCCB'; ctx.fill();
+    if (v > 0) { rr(-126, y0, 34 + 218 * clamp(v), 34, 17); ctx.fillStyle = col; ctx.fill(); }
+    circle(-109 + 218 * clamp(v), y0 + 17, 26, C.ink); circle(-109 + 218 * clamp(v), y0 + 17, 18, C.white);
+  };
+  row('HUNGRY?', -110, hunger, C.yellow);
+  row('GRUMPY?', 60, grump, C.red);
+  rr(-110, 190, 220, 70, 35); ctx.fillStyle = C.ink; ctx.fill(); ctx.fillStyle = C.white; ctx.font = '900 32px Inter'; ctx.textAlign = 'center'; ctx.fillText('SEND', 0, 226);
+  ctx.restore();
+}
+
+/** donut chart: grey ring with a red slice of frac (0..1) growing clockwise from 12 o'clock. r = outer radius.
+ *  inner() draws in the hole (screen px, origin = (x, y)). sc = pop-in */
+export function hgDonut(x, y, r, frac, { sc = 1, inner = null } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 12, C.ink); circle(0, 0, r, '#D6CCB8');
+  if (frac > 0) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, r, -Math.PI / 2, -Math.PI / 2 + TAU * clamp(frac)); ctx.closePath(); ctx.fillStyle = C.red; ctx.fill(); }
+  circle(0, 0, r * 0.58 + 10, C.ink); circle(0, 0, r * 0.58, C.white);
+  if (inner) inner();
+  ctx.restore();
+}
+
+/** small angry/neutral mood face disc: mood 'bad' = red disc, frowning brows + mouth; 'flat' = grey disc, flat mouth;
+ *  'calm' = yellow disc, small smile. r = radius px. sc = pop-in */
+export function hgMood(x, y, r, mood = 'bad', sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc * r / 60, sc * r / 60);
+  circle(0, 0, 66, C.ink); circle(0, 0, 58, mood === 'bad' ? C.red : mood === 'calm' ? C.yellow : '#B9B2A6');
+  const fg = mood === 'bad' ? C.white : C.ink;
+  circle(-20, -6, 8, fg); circle(20, -6, 8, fg);
+  ctx.strokeStyle = fg; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.beginPath();
+  if (mood === 'bad') { ctx.moveTo(-34, -30); ctx.lineTo(-10, -20); ctx.moveTo(34, -30); ctx.lineTo(10, -20); ctx.moveTo(-20, 30); ctx.quadraticCurveTo(0, 14, 20, 30); }
+  else if (mood === 'calm') { ctx.moveTo(-20, 20); ctx.quadraticCurveTo(0, 34, 20, 20); }
+  else { ctx.moveTo(-20, 24); ctx.lineTo(20, 24); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+/** the study's random symbol: an abstract ink squiggle glyph (always the same shape). ~120 px at s = 1, origin = centre */
+export function hgGlyph(x, y, s = 1, col = C.ink) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = col; ctx.lineWidth = 12;
+  // a closed wobbly loop with a dot inside, plus a little zig-zag tail: abstract, not a letter or character
+  ctx.beginPath(); ctx.ellipse(-12, -6, 40, 30, -0.4, 0, TAU); ctx.stroke();
+  ctx.beginPath(); ctx.arc(-12, -6, 9, 0, TAU); ctx.fillStyle = col; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(18, 22); ctx.lineTo(34, 46); ctx.lineTo(48, 26); ctx.lineTo(62, 50); ctx.stroke();
+  ctx.beginPath(); ctx.arc(46, -44, 8, 0, TAU); ctx.fill();
+  ctx.restore();
+}
+
+/** photo card (white card, ink rim, slight drop) showing kind: 'storm' (a mild grey storm cloud + rain dashes = the
+ *  "nasty" photo, schematic), 'mug' (a plain white mug = the neutral photo) or 'glyph' (the random symbol).
+ *  w x h px at s = 1 = 300 x 240. hi 0..1 = yellow rim flash. sc = pop-in */
+export function hgCard(x, y, s = 1, kind = 'glyph', { sc = 1, hi = 0, rot = 0, t = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  if (hi > 0) { rr(-170, -140, 340, 280, 30); ctx.fillStyle = C.yellow; ctx.globalAlpha = clamp(hi); ctx.fill(); ctx.globalAlpha = 1; }
+  rr(-150, -110, 300, 240, 20); ctx.fillStyle = 'rgba(26,26,30,0.18)'; ctx.fill();
+  rr(-156, -126, 312, 252, 22); ctx.fillStyle = C.ink; ctx.fill(); rr(-146, -116, 292, 232, 16); ctx.fillStyle = kind === 'storm' ? '#DCE3E8' : C.white; ctx.fill();
+  ctx.save(); rr(-146, -116, 292, 232, 16); ctx.clip();
+  if (kind === 'storm') {
+    for (let i = 0; i < 6; i++) line([[-90 + i * 36, 40], [-102 + i * 36, 70]], C.cyan, 7);
+    stormCloud(0, -20, 0.42, t);
+  } else if (kind === 'mug') {
+    rr(-60, -40, 110, 120, [10, 10, 26, 26]); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-60, -40, 86, 120, [10, 0, 0, 26]); ctx.fillStyle = C.white; ctx.fill();
+    ctx.lineWidth = 6; ctx.strokeStyle = C.ink; rr(-60, -40, 110, 120, [10, 10, 26, 26]); ctx.stroke();
+    ctx.beginPath(); ctx.arc(52, 16, 28, -1.3, 1.3); ctx.lineWidth = 14; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 6; ctx.strokeStyle = C.white; ctx.stroke();
+    line([[-120, 84], [120, 84]], '#D6CCB8', 8);
+  } else hgGlyph(0, 0, 1.1);
+  ctx.restore();
+  ctx.restore();
+}
+
+/** BLOOD SUGAR tube: glass tube (ink rim) holding red blood with white sugar cubes; level 0..1 = how full. A dashed
+ *  "normal" line at 0.7. ~160x520 px at s = 1, origin = centre. t = film time (cubes bob) */
+export function hgSugarTube(x, y, s = 1, level = 1, t = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-90, -270, 180, 540, 70); ctx.fillStyle = C.ink; ctx.fill(); rr(-74, -254, 148, 508, 58); ctx.fillStyle = C.white; ctx.fill();
+  const top = lerp(240, -230, clamp(level));
+  ctx.save(); rr(-74, -254, 148, 508, 58); ctx.clip();
+  ctx.fillStyle = HG_RED_D; ctx.fillRect(-74, top, 148, 520); ctx.fillStyle = C.red; ctx.fillRect(-74, top, 110, 520);
+  const N = Math.round(6 * clamp(level));
+  for (let i = 0; i < 6; i++) {
+    const cy = 200 - i * 70 + Math.sin(t * 3 + i) * 6, cx = (i % 2 ? 18 : -18);
+    if (i >= N || cy < top + 22) continue;
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(0.3 * (i % 2 ? 1 : -1)); rr(-22, -22, 44, 44, 6); ctx.fillStyle = C.white; ctx.fill(); rr(-22, 8, 44, 14, [0, 0, 6, 6]); ctx.fillStyle = C.gumEdge; ctx.fill(); ctx.restore();
+  }
+  ctx.restore();
+  ctx.setLineDash([16, 12]); line([[-110, lerp(240, -230, 0.7)], [110, lerp(240, -230, 0.7)]], C.ink, 6); ctx.setLineDash([]);
+  rr(-50, -230, 16, 300, 8); ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.fill();
+  ctx.restore();
+}
+
+/** adrenal gland: a small yellow triangular cap (darker rim) that sits on top of a kidney. glow 0..1 = yellow halo.
+ *  ~120x80 px at s = 1, origin = base centre */
+export function hgAdrenal(x, y, s = 1, glow = 0, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.lineJoin = 'round';
+  if (glow > 0) { ctx.globalAlpha = 0.45 * clamp(glow); ell(0, -34, 100, 70, C.yellow); ctx.globalAlpha = 1; }
+  ctx.beginPath(); ctx.moveTo(-64, 6); ctx.quadraticCurveTo(-20, -80, 10, -78); ctx.quadraticCurveTo(50, -60, 64, 6); ctx.closePath();
+  ctx.lineWidth = 14; ctx.strokeStyle = HG_GLAND_D; ctx.stroke(); ctx.fillStyle = HG_GLAND; ctx.fill();
+  ell(-12, -46, 16, 8, '#FFE680', -0.5);
+  ctx.restore();
+}
+
+/** hormone dart (graphic): red capsule with an ink edge, a pointed nose and two yellow fins, flying along rot (rad, 0 =
+ *  pointing right). ~160x60 px at s = 1. sc = pop-in */
+export function hgDart(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(-50, 0); ctx.lineTo(-80, sd * 34); ctx.lineTo(-40, sd * 12); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.ink; ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(-60, -18); ctx.lineTo(40, -18); ctx.lineTo(80, 0); ctx.lineTo(40, 18); ctx.lineTo(-60, 18); ctx.closePath();
+  ctx.fillStyle = C.red; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = C.ink; ctx.stroke();
+  rr(-46, -11, 70, 7, 3); ctx.fillStyle = '#F0707C'; ctx.fill();
+  ctx.restore();
+}
+
+/** brake pedal (graphic, side view): ink pivot bracket at the top, a grey arm, a black rubber pad. slip 0..1 = the pad
+ *  swings loose and droops (bolt pops out). ~200x300 px at s = 1, origin = pivot */
+export function hgPedal(x, y, s = 1, slip = 0, t = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round';
+  const u = clamp(slip);
+  rr(-50, -40, 100, 60, 14); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); ctx.translate(10 * u, 110 * u); ctx.rotate(0.15 + 0.55 * u + Math.sin(t * 9) * 0.04 * u);
+  line([[0, 0], [10, 200]], C.ink, 34); line([[0, 0], [10, 200]], '#8A95A0', 22);
+  ctx.save(); ctx.translate(10, 220); ctx.rotate(-0.2); rr(-80, -30, 160, 60, 18); ctx.fillStyle = C.ink; ctx.fill();
+  for (let i = -2; i <= 2; i++) line([[i * 26, -16], [i * 26, 16]], '#3A3A44', 8);
+  ctx.restore();
+  ctx.restore();
+  if (u > 0.05) { circle(70 + 30 * u, 40 + 140 * u * u, 14, C.ink); circle(70 + 30 * u, 40 + 140 * u * u, 7, '#8A95A0'); }
+  else circle(0, 0, 14, '#8A95A0');
+  ctx.restore();
+}
+
+/** (L) white lab room background: white wall with pale tiles, a long steel bench at bench y, floor below */
+export function hgLab(bench = 1080) {
+  fillAll(HG_LAB);
+  ctx.strokeStyle = HG_LAB_D; ctx.lineWidth = 5;
+  for (let y = -200; y < bench; y += 120) { ctx.beginPath(); ctx.moveTo(-300, y); ctx.lineTo(W + 300, y); ctx.stroke(); }
+  for (let r = 0, y = -200; y < bench; y += 120, r++) for (let x = -300 + (r % 2) * 60; x < W + 300; x += 120) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 120); ctx.stroke(); }
+  ctx.fillStyle = '#E4DCCB'; ctx.fillRect(-300, bench + 40, W + 600, H);
+  rr(-300, bench, W + 600, 46, 0); ctx.fillStyle = HG_STEEL; ctx.fill(); ctx.fillStyle = '#A9B0B8'; ctx.fillRect(-300, bench + 34, W + 600, 12);
+}
+
+/** big index fingertip pointing up (palm side, skin, nail hidden), with nerve endings inside: small dots that light
+ *  yellow and fire red pain zaps when zap 0..1. ~260x520 px at s = 1, origin = pad centre. t = film time */
+export function hgFingertip(x, y, s = 1, { zap = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  const body = () => { ctx.beginPath(); ctx.moveTo(-120, 420); ctx.lineTo(-120, -40); ctx.arc(0, -40, 120, Math.PI, TAU); ctx.lineTo(120, 420); ctx.closePath(); };
+  body(); ctx.fillStyle = C.skinShade; ctx.fill();
+  ctx.save(); body(); ctx.clip(); rr(-120, -170, 200, 600, 100); ctx.fillStyle = C.skin; ctx.fill();
+  for (const yy of [170, 200]) line([[-90, yy], [70, yy - 6]], C.skinShade, 6);
+  for (let i = 0; i < 16; i++) {
+    const a = rnd(i + 3) * TAU, rr0 = 20 + rnd(i + 9) * 80, dx = Math.cos(a) * rr0, dy = -40 + Math.sin(a) * rr0 * 0.9;
+    const lit = clamp(zap * 2 - rnd(i + 21));
+    circle(dx, dy, 10 + 4 * lit, lit > 0.05 ? C.yellow : C.pinkDark);
+  }
+  ctx.restore();
+  ctx.restore();
+  if (zap > 0) painZap(x, y - 60 * s * sc, 1.1 * s * sc, clamp(zap), t, [-2.6, -2.0, -1.1, -0.5]);
+}
+
+/** a sheet of paper standing on its edge, thin side toward the viewer: white with ink rim, its sharp top edge
+ *  highlighted. ~360x260 px at s = 1, origin = centre */
+export function hgPaper(x, y, s = 1, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  rr(-186, -136, 372, 272, 8); ctx.fillStyle = C.ink; ctx.fill(); rr(-176, -126, 352, 252, 4); ctx.fillStyle = C.white; ctx.fill();
+  for (let i = 0; i < 5; i++) line([[-140, -70 + i * 40], [120 - (i === 4 ? 100 : 0), -70 + i * 40]], '#D6CCB8', 8);
+  line([[-176, -126], [176, -126]], C.cyan, 6);
+  ctx.restore();
+}
+
+/** round badge for the paper-cut tease (white disc, ink ring): a fingertip next to a paper corner + a red pain zap.
+ *  ~260 px at s = 1. sc = pop-in */
+export function hgPaperBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 130, C.ink); circle(0, 0, 118, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 118, 0, TAU); ctx.clip();
+  hgPaper(52, 40, 0.5, -0.4);
+  hgFingertip(-34, 20, 0.42, { zap: 0, t });
+  ctx.restore();
+  painZap(-34, -20, 0.55, 1, t, [-2.6, -1.6, -0.6]);
+  ctx.restore();
+}

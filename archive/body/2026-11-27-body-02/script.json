@@ -1,0 +1,59 @@
+{
+  "title": "What Happens When You Get Hangry?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Anglia Ruskin University, 'Hunger really can make us feel hangry' (2022-07-06), Swami, Hochstöger, Kargl & Stieger, 'Hangry in the field', PLOS ONE 2022, doi 10.1371/journal.pone.0269629 (64 adults in central Europe, 21 days, five smartphone prompts a day; hunger associated with 37% of the variance in irritability, 34% in anger, 38% in pleasure; controlled for age, sex, BMI, dietary behaviour and personality; 'variance explained', not proof of cause; supports line 2 'tracked thirty-seven percent of grumpiness' (grumpiness = irritability, shortened for voice)): https://aru.ac.uk/news/hunger-really-can-make-us-feel-hangry-study",
+    "Cleveland Clinic, 'Is Being Hangry Really a Thing or Just an Excuse?' ('When you haven't eaten for a while, the level of sugar (glucose) in your blood decreases'; when it 'gets too low, it triggers a cascade of hormones, including cortisol (a stress hormone) and adrenaline'; 'low blood sugar may interfere with higher brain functions, such as those that help us control impulses'; supports lines 3-4): https://health.clevelandclinic.org/is-being-hangry-really-a-thing-or-just-an-excuse/",
+    "MacCormack & Lindquist, 'Feeling hangry? When hunger is conceptualized as emotion', Emotion 2018, doi 10.1037/emo0000422, via Neuroscience News / UNC ('hunger alone isn't enough'; 400+ US adults online: hungrier people rated ambiguous Chinese pictographs as more negative only after a negative image, neutral or positive images had no effect = the guess answer 'only bad moments'; lab study, 200+ students, rigged computer crash: hungry participants who reflected on their emotions did not show the rise in stress and hostility = line 9): https://neurosciencenews.com/hunger-angry-hangry-9308/",
+    "The Conversation, Jennifer MacCormack, 'When does hungry become hangry?' (2018-06-11; author's own summary of the same studies: hunger matters mainly in negative situations; hungry people who focused on their feelings were not hangry): https://theconversation.com/when-does-hungry-become-hangry-98065",
+    "NHS, 'Low blood sugar (hypoglycaemia)' (symptoms include hunger, anxiety or irritability, sweating, shaking, confusion; usually affects people with diabetes; see a GP if you don't have diabetes but get shaking, sweating, a fast heartbeat or confusion; used in the description, not voiced): https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/",
+    "Tease (next video): Ohio State Wexner Medical Center, 'Why do paper cuts hurt so much?' (2025-05-09; 'Our face, hands and fingertips are richly innervated', so a cut there hits more pain receptors; paper cuts usually heal in two to three days): https://health.osu.edu/health/general-health/why-do-papercuts-hurt"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get hangry?",
+      "caps": "WHAT *HAPPENS | WHEN *YOU | GET *HANGRY?"
+    },
+    {
+      "text": "One study: hunger tracked thirty-seven percent of grumpiness. Does it sour everything, or only bad moments?",
+      "caps": "ONE *STUDY | *HUNGER TRACKED | *THIRTY-SEVEN | *PERCENT | OF *GRUMPINESS | DOES IT *SOUR | *EVERYTHING | OR ONLY *BAD | *MOMENTS?"
+    },
+    {
+      "text": "Skip a meal, and blood sugar dips,",
+      "caps": "SKIP A *MEAL | AND *BLOOD | SUGAR *DIPS"
+    },
+    {
+      "text": "so stress hormones surge, and impulse control slips.",
+      "caps": "SO STRESS *HORMONES | *SURGE | AND IMPULSE *CONTROL | *SLIPS"
+    },
+    {
+      "text": "Ever snapped, then realized you skipped lunch?",
+      "caps": "EVER *SNAPPED | THEN *REALIZED | YOU SKIPPED *LUNCH?"
+    },
+    {
+      "text": "But here's the twist: hunger alone isn't enough.",
+      "caps": "BUT *HERE'S | THE *TWIST | HUNGER *ALONE | ISN'T *ENOUGH"
+    },
+    {
+      "text": "Hungry people rated symbols after nasty or neutral photos.",
+      "caps": "HUNGRY *PEOPLE | RATED *SYMBOLS | AFTER *NASTY | OR *NEUTRAL | *PHOTOS"
+    },
+    {
+      "text": "Answer: only bad moments, after nasty photos.",
+      "caps": "*ANSWER | ONLY *BAD | *MOMENTS | AFTER NASTY *PHOTOS"
+    },
+    {
+      "text": "People who noticed their feelings didn't get hangry.",
+      "caps": "*PEOPLE | WHO *NOTICED | THEIR *FEELINGS | DIDN'T GET *HANGRY"
+    },
+    {
+      "text": "Next Body File: paper cuts, and screaming fingertips. Still hungry?",
+      "caps": "NEXT BODY *FILE | *PAPER CUTS | AND *SCREAMING | *FINGERTIPS | STILL *HUNGRY?"
+    }
+  ]
+}
