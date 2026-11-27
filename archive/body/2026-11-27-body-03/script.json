@@ -1,0 +1,55 @@
+{
+  "title": "What Happens When You Get a Paper Cut?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Ohio State Wexner Medical Center (Jayesh Vallabh, MD), 'Why do paper cuts hurt so much?' (2025-05-09). Pain depends 'less to do with the size of the cuts themselves, and more to do with the areas of the body'; face, hands and fingertips are 'richly innervated, meaning they're filled with tiny nerves and nerve endings', so 'a paper cut on your finger, lips or tongue is cutting through many more nerve endings' than one on the back (lines 3-4); the pain 'has less to do with the size of the cuts themselves, and more to do with the areas of the body' (line 5); 'Many tiny capillaries stretch underneath the skin of your face, hands and fingers', so the cut can bleed more than one elsewhere (line 6); 'Paper cuts usually heal in two to three days' (line 2); 'The pain from paper cuts is protective': it makes you notice the cut and baby the area for a day or two, lowering the risk of infection; 'if you don't have sensation and don't feel the pain, you're less careful with the cut and it's less likely to heal' (answer, line 8); 'If it doesn't improve, especially if you have diabetes or are immunocompromised, consult your doctor to check for infection' (line 9): https://health.osu.edu/health/general-health/why-do-papercuts-hurt",
+    "Tease (next video): Cleveland Clinic, 'Delayed Onset Muscle Soreness (DOMS)' (DOMS 'sets in one to three days after intense exercise'; caused by tiny tears in muscle fibers; eccentric moves like lowering a weight or running downhill are more likely to cause it; usually lasts a few days, rarely more than five; see a provider if pain lasts more than a week, is sharp and constant, with severe swelling, or dark or bloody pee): https://my.clevelandclinic.org/health/symptoms/delayed-onset-muscle-soreness"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you get a paper cut?",
+      "caps": "WHAT *HAPPENS | WHEN *YOU GET | A *PAPER CUT?"
+    },
+    {
+      "text": "It heals in two to three days. Is that pain a glitch, or a guard?",
+      "caps": "IT *HEALS | IN *TWO | TO *THREE | *DAYS | IS THAT *PAIN | A *GLITCH | OR A *GUARD?"
+    },
+    {
+      "text": "Fingertips scream because they're packed with nerves,",
+      "caps": "*FINGERTIPS | *SCREAM | BECAUSE THEY'RE *PACKED | WITH *NERVES"
+    },
+    {
+      "text": "so one slice hits way more nerve endings than the same cut on your back.",
+      "caps": "SO ONE *SLICE | HITS WAY *MORE | NERVE *ENDINGS | THAN THE *SAME | *CUT ON | YOUR *BACK"
+    },
+    {
+      "text": "It's less about the cut's size, more about the spot.",
+      "caps": "IT'S *LESS ABOUT | THE CUT'S *SIZE | *MORE ABOUT | THE *SPOT"
+    },
+    {
+      "text": "But here's the weird part: tiny vessels crowd under that skin, so it bleeds more.",
+      "caps": "BUT *HERE'S | THE WEIRD *PART | TINY *VESSELS | *CROWD UNDER | THAT *SKIN | SO IT *BLEEDS | *MORE"
+    },
+    {
+      "text": "Ever bled loads from a cut you could barely see?",
+      "caps": "EVER *BLED | *LOADS | FROM A *CUT | YOU COULD *BARELY | *SEE?"
+    },
+    {
+      "text": "Answer: guard. The sting makes you baby it.",
+      "caps": "*ANSWER | *GUARD | THE *STING | MAKES YOU *BABY IT"
+    },
+    {
+      "text": "Won't heal, especially with diabetes? Get it checked.",
+      "caps": "WON'T *HEAL | ESPECIALLY WITH *DIABETES? | GET IT *CHECKED"
+    },
+    {
+      "text": "Next Body File: why soreness waits days to hit.",
+      "caps": "NEXT BODY *FILE | WHY *SORENESS | WAITS *DAYS | TO *HIT"
+    }
+  ]
+}

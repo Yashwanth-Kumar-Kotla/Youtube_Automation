@@ -8974,3 +8974,303 @@ export function hgPaperBadge(x, y, s = 1, sc = 1, t = 0) {
   painZap(-34, -20, 0.55, 1, t, [-2.6, -1.6, -0.6]);
   ctx.restore();
 }
+
+// ═════════════════════════ PAPER-CUT SET (2026-11-26 "what happens when you get a paper cut?", prefix pc) ═════════════════════════
+const PC_RED_D = '#A81E2D';
+
+/** white paper card (graphic-light, no outline) whose top edge (the cutting edge) runs from (x0, yL) to (x1, yR); h px tall.
+ *  Faint sky ruled lines, a grey edge shade. Returns edgeY(x) = the edge height at x */
+export function pcPaper(x0, yL, x1, yR, h = 380) {
+  const ey = (x) => lerp(yL, yR, (x - x0) / (x1 - x0));
+  ctx.beginPath(); ctx.moveTo(x0 + 10, yL + 10); ctx.lineTo(x1 + 10, yR + 10); ctx.lineTo(x1 + 10, yR + h + 10); ctx.lineTo(x0 + 10, yL + h + 10); ctx.closePath();
+  ctx.fillStyle = C.gumEdge; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x0, yL); ctx.lineTo(x1, yR); ctx.lineTo(x1, yR + h); ctx.lineTo(x0, yL + h); ctx.closePath();
+  ctx.fillStyle = C.white; ctx.fill();
+  for (let k = 1; k * 62 < h - 20; k++) line([[x0 + 30, yL + k * 62], [x1 - 30, yR + k * 62]], C.sky, 4);
+  line([[x0, yL + 3], [x1, yR + 3]], C.gumEdge, 6);
+  return ey;
+}
+
+const pcFingerPath = (R, len) => {
+  ctx.beginPath(); ctx.moveTo(0, R); ctx.arc(0, 0, R, Math.PI / 2, Math.PI * 1.5); ctx.lineTo(len, -R * 1.08); ctx.lineTo(len, R * 1.08); ctx.closePath();
+};
+/** endings of the fingertip nerve map, in finger-local coords (tip cap centre = origin, axis +x). Same set every call */
+const pcTipEnds = (R) => {
+  const E = [];
+  for (let i = 0; i < 15; i++) { const a = Math.PI / 2 + Math.PI * (i + 0.5) / 15; E.push([Math.cos(a) * (R - 16), Math.sin(a) * (R - 16)]); }
+  for (let i = 0; i < 9; i++) { const a = Math.PI / 2 + Math.PI * (i + 0.5) / 9; E.push([Math.cos(a) * (R - 46), Math.sin(a) * (R - 46)]); }
+  for (let k = 0; k < 7; k++) for (const sd of [-1, 1]) E.push([22 + k * 44 + (sd > 0 ? 18 : 0), sd * (R - 16 - 8 * rnd(k * 3 + sd))]);
+  return E;
+};
+
+/** big index finger, side view (skin, flat): tip cap centre at (cx, cy), radius 105*s, the finger runs off along ang
+ *  (radians, toward the knuckle; len px local). Local +y side = the pad. o = { nerves 0..1 (cyan nerve map glowing through
+ *  the pad, endings pulse with t), zing 0..1 (the endings flash yellow), cut 0..1 (thin red line growing along the pad just
+ *  above the underside, near the tip), dots 0..3 (schematic red dots along it, one by one), t, len } */
+export function pcFinger(cx, cy, s, ang, { nerves = 0, zing = 0, cut = 0, dots = 0, t = 0, len = 1200 } = {}) {
+  const R = 105;
+  ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang); ctx.scale(s, s);
+  pcFingerPath(R, len); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.save(); pcFingerPath(R, len); ctx.clip();
+  ctx.fillStyle = C.skinShade; ctx.fillRect(-R - 10, R * 0.5, len + 20, R);
+  ell(-R * 0.15, R * 0.62, R * 0.8, R * 0.3, C.skinShade);
+  ctx.restore();
+  // nail (top side, near the tip)
+  ctx.save(); ctx.beginPath(); ctx.ellipse(70, -R + 18, 110, 30, 0, 0, TAU); ctx.fillStyle = C.pinkLight; ctx.globalAlpha = 0.75; ctx.fill(); ctx.restore();
+  line([[-30, -R + 34], [175, -R + 30]], C.skinShade, 6);
+  // knuckle creases
+  for (const kx of [380, 410, 780, 805]) { ctx.beginPath(); ctx.moveTo(kx, -R * 1.02); ctx.quadraticCurveTo(kx - 18, -R * 0.65, kx, -R * 0.35); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.stroke(); }
+  if (nerves > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(nerves); ctx.lineCap = 'round';
+    const cords = [[[520, 38], [260, 40], [80, 26]], [[520, 66], [300, 70], [120, 62]]];
+    for (const P of cords) line(P, C.cyan, 7);
+    const E = pcTipEnds(R);
+    E.forEach(([ex, ey], i) => {
+      const bx = clamp(ex + 70, 60, 300), by = ey > 0 ? 50 : 30;
+      ctx.beginPath(); ctx.moveTo(bx, by); ctx.quadraticCurveTo((bx + ex) / 2, by + (ey - by) * 0.2, ex, ey);
+      ctx.strokeStyle = C.cyan; ctx.lineWidth = 3.5; ctx.stroke();
+    });
+    E.forEach(([ex, ey], i) => {
+      const p = 0.5 + 0.5 * Math.sin(t * 5 + i * 1.7);
+      circle(ex, ey, 6.5 + 2 * p + 4 * zing, zing > 0.5 ? C.yellow : C.cyan);
+    });
+    ctx.restore();
+  }
+  if (cut > 0) {
+    const L = 190 * clamp(cut);
+    const P = []; for (let k = 0; k <= 10; k++) { const u = k / 10, x = -70 + L * u; P.push([x, R * 0.86 - 10 * Math.sin(u * Math.PI) * clamp(cut)]); }
+    line(P, PC_RED_D, 8); line(P, C.red, 4);
+    for (let k = 0; k < 3; k++) if (dots > k) { const a = clamp(dots - k); const q = P[Math.round(2 + k * 3)]; circle(q[0], q[1] + 16 * a, 10 * a, C.red); }
+  }
+  ctx.restore();
+}
+
+/** x-ray finger (whole finger in x-ray mode): navy body, cyan outline, three cyan phalanx bones, two nerve cords running to a
+ *  dense map of branches and endings in the tip. Same local frame as pcFinger (tip cap centre (cx, cy), axis along ang).
+ *  packed 0..1 = how many tip endings show (30% at 0, all at 1), lit 0..1 = endings flash yellow + signals race up the cords,
+ *  t = film time, len = local length */
+export function pcFingerX(cx, cy, s, ang, { packed = 1, lit = 0, t = 0, len = 1200 } = {}) {
+  const R = 105;
+  ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang); ctx.scale(s, s);
+  pcFingerPath(R, len); ctx.fillStyle = C.xnavy; ctx.fill(); ctx.lineWidth = 8; ctx.strokeStyle = C.cyan; ctx.stroke();
+  ctx.save(); pcFingerPath(R, len); ctx.clip();
+  ctx.globalAlpha = 0.32;
+  for (const [a, b, wd] of [[-20, 230, 62], [280, 560, 72], [600, len + 40, 80]]) { rr(a, -wd / 2, b - a, wd, wd / 2); ctx.fillStyle = C.cyan; ctx.fill(); }
+  ctx.globalAlpha = 1;
+  for (const [a, b, wd] of [[-20, 230, 62], [280, 560, 72], [600, len + 40, 80]]) { rr(a, -wd / 2, b - a, wd, wd / 2); ctx.lineWidth = 5; ctx.strokeStyle = C.cyan; ctx.stroke(); }
+  for (const sd of [-1, 1]) line([[len, sd * 72], [400, sd * 70], [120, sd * 58], [40, sd * 40]], C.cyan, 9);
+  const E = pcTipEnds(R), n = Math.round(E.length * lerp(0.3, 1, clamp(packed)));
+  const order = E.map((e, i) => [rnd(i * 7 + 2), i]).sort((a, b) => a[0] - b[0]).map((v) => v[1]);
+  for (let j = 0; j < n; j++) {
+    const i = order[j], [ex, ey] = E[i], sd = ey >= 0 ? 1 : -1, bx = clamp(ex + 80, 60, 360), by = sd * 58;
+    ctx.beginPath(); ctx.moveTo(bx, by); ctx.quadraticCurveTo((bx + ex) / 2 + 10, (by + ey) / 2, ex, ey); ctx.strokeStyle = C.cyan; ctx.lineWidth = 4; ctx.stroke();
+  }
+  for (let j = 0; j < n; j++) {
+    const i = order[j], [ex, ey] = E[i], p = 0.5 + 0.5 * Math.sin(t * 6 + i * 1.3), g = clamp(lit) * (0.6 + 0.4 * p);
+    circle(ex, ey, 8 + 2 * p + 5 * g, g > 0.3 ? C.yellow : C.cyan); circle(ex, ey, 3.5, C.white);
+  }
+  if (lit > 0) for (let k = 0; k < 4; k++) for (const sd of [-1, 1]) {   // signals racing toward the hand
+    const u = ((t * 1.6 + k / 4 + (sd > 0 ? 0.12 : 0)) % 1), x = lerp(60, len, u);
+    ctx.globalAlpha = clamp(lit); circle(x, sd * lerp(45, 72, u), 13, C.yellow); ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** nerve map panel (x-ray look, inside the skin): navy rounded panel with cyan border, wavy cyan nerve trunks and endings
+ *  on a jittered grid of spacing `step` px (small = dense, big = sparse). slice 0..1 draws a yellow slice across the middle
+ *  (fixed length sliceLen, centred), lit 0..1 lights the endings within the slice band yellow. sc = pop-in.
+ *  Returns the number of endings hit by the slice. seed changes the layout */
+export function pcNerveMap(cx, cy, w, h, { step = 70, seed = 1, slice = 0, lit = 0, sliceLen = 300, t = 0, sc = 1 } = {}) {
+  const E = [];
+  const nx = Math.max(1, Math.floor(w / step)), ny = Math.max(1, Math.floor(h / step));
+  for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) {
+    const k = seed * 101 + i * 13 + j * 7;
+    E.push([-w / 2 + (i + 0.5) * w / nx + (rnd(k) - 0.5) * step * 0.55, -h / 2 + (j + 0.5) * h / ny + (rnd(k + 5) - 0.5) * step * 0.55]);
+  }
+  const band = 26, inBand = (e) => Math.abs(e[1]) < band && Math.abs(e[0]) < sliceLen / 2;
+  if (!E.some(inBand)) { let b = 0; E.forEach((e, i) => { if (Math.abs(e[0]) < sliceLen / 2 && Math.abs(e[1]) < Math.abs(E[b][1])) b = i; }); E[b] = [E[b][0], 10]; }
+  const hits = E.filter(inBand).length;
+  if (sc <= 0) return hits;
+  ctx.save(); ctx.translate(cx, cy); ctx.scale(sc, sc);
+  rr(-w / 2, -h / 2, w, h, 36); ctx.fillStyle = C.xnavy; ctx.fill();
+  ctx.save(); rr(-w / 2, -h / 2, w, h, 36); ctx.clip();
+  const nT = Math.max(1, Math.round(h / (step * 2.4))), TY = [];
+  for (let k = 0; k < nT; k++) TY.push(-h / 2 + h * (k + 0.5) / nT + (nT === 1 ? -h * 0.18 : 0));
+  const ty = (k, x) => TY[k] + Math.sin(x / 70 + k * 2 + seed) * 14;
+  ctx.globalAlpha = 0.6;
+  for (let k = 0; k < nT; k++) { const P = []; for (let x = -w / 2 - 10; x <= w / 2 + 10; x += 20) P.push([x, ty(k, x)]); line(P, C.cyan, 7); }
+  ctx.globalAlpha = 1;
+  E.forEach(([ex, ey], i) => {
+    let kb = 0; TY.forEach((y, k) => { if (Math.abs(y - ey) < Math.abs(TY[kb] - ey)) kb = k; });
+    const by = ty(kb, ex - 20);
+    ctx.beginPath(); ctx.moveTo(ex - 20, by); ctx.quadraticCurveTo(ex - 22, (by + ey) / 2, ex, ey); ctx.strokeStyle = C.cyan; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.stroke();
+  });
+  if (slice > 0) {
+    const a = -sliceLen / 2, b = a + sliceLen * clamp(slice);
+    line([[a, 0], [b, 0]], C.ink, 20); line([[a, 0], [b, 0]], C.yellow, 10);
+  }
+  E.forEach((e, i) => {
+    const p = 0.5 + 0.5 * Math.sin(t * 5 + i * 1.9), on = inBand(e) && lit > 0;
+    if (on) circle(e[0], e[1], 22 * clamp(lit), C.ink);
+    circle(e[0], e[1], on ? 16 * clamp(lit, 0.5, 1) : 8 + 2 * p, on ? C.yellow : C.cyan); circle(e[0], e[1], 3.5, C.white);
+  });
+  ctx.restore();
+  rr(-w / 2, -h / 2, w, h, 36); ctx.lineWidth = 8; ctx.strokeStyle = C.cyan; ctx.stroke();
+  ctx.restore();
+  return hits;
+}
+
+/** skin swatch panel (graphic, ink outline): kind 'tip' = fingertip pad with a fingerprint whorl, 'back' = back skin with the
+ *  spine groove and shoulder-blade curves. cut 0..1 draws a thin red slice of sliceLen px across the centre. sc = pop-in */
+export function pcSkinPanel(cx, cy, w, h, kind, { cut = 0, sliceLen = 260, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(cx, cy); ctx.scale(sc, sc);
+  rr(-w / 2 - 8, -h / 2 - 8, w + 16, h + 16, 44); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-w / 2, -h / 2, w, h, 38); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.save(); rr(-w / 2, -h / 2, w, h, 38); ctx.clip(); ctx.lineCap = 'round';
+  if (kind === 'tip') {
+    for (let k = 1; k < 12; k++) { ctx.beginPath(); ctx.ellipse(0, h * 0.06, k * 22, k * 30, 0, Math.PI * 1.05, Math.PI * 1.95 + (k % 3) * 0.3); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 6; ctx.stroke(); }
+    for (let k = 1; k < 7; k++) { ctx.beginPath(); ctx.ellipse(0, h * 0.06, k * 22, k * 26, 0, 0.1, Math.PI - 0.1); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 6; ctx.stroke(); }
+  } else {
+    line([[0, -h / 2 - 10], [0, h / 2 + 10]], C.skinShade, 16);
+    for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * w * 0.18, -h * 0.42); ctx.quadraticCurveTo(sd * w * 0.42, -h * 0.3, sd * w * 0.3, h * 0.02); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 10; ctx.stroke(); }
+  }
+  ctx.restore();
+  if (cut > 0) { const a = -sliceLen / 2, b = a + sliceLen * clamp(cut); line([[a, 0], [b, 0]], PC_RED_D, 10); line([[a, 0], [b, 0]], C.red, 5); }
+  ctx.restore();
+}
+
+/** flat white ruler (ink outline, ink ticks every len/10, long ticks at the ends + middle), centred at (x, y). sc = pop-in */
+export function pcRuler(x, y, len, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  rr(-len / 2 - 30, -38, len + 60, 76, 14); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-len / 2 - 24, -32, len + 48, 64, 10); ctx.fillStyle = C.white; ctx.fill();
+  for (let k = 0; k <= 10; k++) { const xx = -len / 2 + len * k / 10, L = k % 5 === 0 ? 40 : 22; line([[xx, -32], [xx, -32 + L]], C.ink, 5); }
+  ctx.restore();
+}
+
+/** skin cross-section (macro, flat): air on top, skin-tone outer layer with a wavy base, pink dermis below with tiny red
+ *  capillary loops rising into each bump and a deep red vessel. crowd 0..1 adds loops (4 → 15), cut 0..1 pushes a thin ink
+ *  slice down from the surface at cutX (local px from the centre) into the loops, dots 0..3 = schematic red dots on the
+ *  surface beside it, t = film time (cells drift). Centre (cx, cy), w x h px, ink outline. Returns { surf, loops: y of the
+ *  loop tips } (screen px) */
+export function pcSkinSection(cx, cy, w, h, { crowd = 1, cut = 0, cutX = 0, dots = 0, t = 0, sc = 1 } = {}) {
+  const top = -h / 2, surf = top + h * 0.16, base = top + h * 0.42, deep = top + h * 0.8;
+  const out = { surf: cy + surf * sc, loops: cy + (base - 44) * sc };
+  if (sc <= 0) return out;
+  ctx.save(); ctx.translate(cx, cy); ctx.scale(sc, sc);
+  rr(-w / 2 - 10, top - 10, w + 20, h + 20, 46); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); rr(-w / 2, top, w, h, 38); ctx.clip();
+  ctx.fillStyle = C.bg; ctx.fillRect(-w / 2, top, w, h);
+  ctx.fillStyle = C.pinkLight; ctx.fillRect(-w / 2, surf, w, h);
+  ctx.fillStyle = C.pink; ctx.fillRect(-w / 2, deep - 30, w, h);
+  const NB = 15, bw = w / NB;
+  ctx.beginPath(); ctx.moveTo(-w / 2, surf);
+  for (let x = -w / 2; x <= w / 2; x += 8) { const u = (x + w / 2) / bw; ctx.lineTo(x, base - 34 * (0.5 + 0.5 * Math.cos(u * TAU))); }
+  ctx.lineTo(w / 2, surf); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.fillStyle = C.skinShade; ctx.fillRect(-w / 2, surf, w, 16);
+  // deep vessel
+  line([[-w / 2 - 10, deep], [w / 2 + 10, deep]], PC_RED_D, 46); line([[-w / 2 - 10, deep], [w / 2 + 10, deep]], C.red, 34);
+  for (let k = 0; k < 6; k++) { const x = -w / 2 + (((t * 0.15 + k / 6) % 1) * (w + 40)) - 20; ell(x, deep, 16, 9, PC_RED_D); }
+  // capillary loops: one per bump; crowd adds them in a spread-out order
+  const order = [7, 2, 12, 4, 10, 0, 14, 6, 9, 1, 13, 3, 11, 5, 8];
+  const nL = Math.round(lerp(4, 15, clamp(crowd))), grow = (lerp(4, 15, clamp(crowd)) - nL + 1);
+  for (let j = 0; j < Math.min(15, Math.ceil(lerp(4, 15, clamp(crowd)))); j++) {
+    const i = order[j], x = -w / 2 + (i + 0.5) * bw, g = j < nL ? 1 : clamp(grow), tipY = lerp(deep, base - 40, g);
+    if (g <= 0) continue;
+    ctx.beginPath(); ctx.moveTo(x - 11, deep); ctx.lineTo(x - 11, tipY + 11); ctx.arc(x, tipY + 11, 11, Math.PI, 0); ctx.lineTo(x + 11, deep);
+    ctx.strokeStyle = PC_RED_D; ctx.lineWidth = 12; ctx.lineCap = 'round'; ctx.stroke(); ctx.strokeStyle = C.red; ctx.lineWidth = 6; ctx.stroke();
+  }
+  if (cut > 0) {
+    const d = lerp(surf, base - 30, clamp(cut));
+    ctx.beginPath(); ctx.moveTo(cutX - 12, surf - 2); ctx.lineTo(cutX, d); ctx.lineTo(cutX + 12, surf - 2); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  }
+  ctx.restore();
+  for (let k = 0; k < 3; k++) if (dots > k) { const a = clamp(dots - k); circle(cutX - 40 + k * 40, surf - 16, 15 * a, PC_RED_D); circle(cutX - 40 + k * 40, surf - 16, 11 * a, C.red); }
+  ctx.restore();
+  return out;
+}
+
+/** plaster strip (prop, flat): off-white strip with rounded ends, a white pad in the middle and little breathing holes.
+ *  w x h px centred at (x, y), rotated by rot. sc = pop-in */
+export function pcBandage(x, y, w, h, rot = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(sc, sc);
+  rr(-w / 2 - 5, -h / 2 - 5, w + 10, h + 10, Math.min(w, h) / 2 + 5); ctx.fillStyle = C.gumEdge; ctx.fill();
+  rr(-w / 2, -h / 2, w, h, Math.min(w, h) / 2); ctx.fillStyle = C.gum; ctx.fill();
+  const pw = w > h ? w * 0.36 : w * 0.78, ph = w > h ? h * 0.78 : h * 0.36;
+  rr(-pw / 2, -ph / 2, pw, ph, 10); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = C.gumEdge; ctx.stroke();
+  for (const sd of [-1, 1]) for (let k = 0; k < 6; k++) {
+    const u = 0.62 + (k % 3) * 0.12, v = k < 3 ? -0.22 : 0.22;
+    if (w > h) circle(sd * u * w / 2, v * h, 5, C.gumEdge); else circle(v * w, sd * u * h / 2, 5, C.gumEdge);
+  }
+  ctx.restore();
+}
+
+/** guard shield (graphic): ink outline, blue shield with a lighter inner face, optional white label. ~300x330 px at s = 1 */
+export function pcShield(x, y, s = 1, { sc = 1, label = '', rot = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round';
+  const P = (k) => { ctx.beginPath(); ctx.moveTo(0, -150 * k); ctx.quadraticCurveTo(70 * k, -100 * k, 135 * k, -110 * k); ctx.lineTo(135 * k, -10 * k);
+    ctx.bezierCurveTo(135 * k, 90 * k, 60 * k, 140 * k, 0, 165 * k); ctx.bezierCurveTo(-60 * k, 140 * k, -135 * k, 90 * k, -135 * k, -10 * k); ctx.lineTo(-135 * k, -110 * k); ctx.quadraticCurveTo(-70 * k, -100 * k, 0, -150 * k); ctx.closePath(); };
+  P(1); ctx.lineWidth = 22; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.shirtShade; ctx.fill();
+  ctx.save(); ctx.translate(-8, -6); P(0.88); ctx.fillStyle = C.shirt; ctx.fill(); ctx.restore();
+  ell(-62, -80, 26, 12, C.white + '66', -0.5);
+  if (label) { ctx.font = '900 62px Inter'; ctx.fillStyle = C.white; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, -4, 10); }
+  ctx.restore();
+}
+
+/** "glitch" sign (graphic): a red warning triangle cut into horizontal slices that jitter sideways (a broken signal).
+ *  t = film time, sc = pop-in, amt 0..1 = glitch strength. ~330 px at s = 1 */
+export function pcGlitch(x, y, s = 1, { t = 0, sc = 1, amt = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  const cuts = [-160, -70, -20, 40, 85, 140];
+  for (let k = 0; k < cuts.length - 1; k++) {
+    const off = amt * 26 * Math.sin(Math.floor(t * 9) * 1.7 + k * 2.3);
+    ctx.save(); ctx.beginPath(); ctx.rect(-200, cuts[k], 400, cuts[k + 1] - cuts[k]); ctx.clip();
+    ctx.translate(off, 0); warning(0, 0, 1); ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** calm clinic (graphic): white building front with ink outline, a red-cross sign above a blue door, two windows.
+ *  open 0..1 swings the door in (yellow light inside), sc = pop-in. ~460x520 px at s = 1, origin = centre (door base ~ +260) */
+export function pcClinic(x, y, s = 1, { open = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-230, -200, 460, 460, 20); ctx.fillStyle = C.white; ctx.fill(); ctx.lineWidth = 12; ctx.strokeStyle = C.ink; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-260, -190); ctx.lineTo(0, -300); ctx.lineTo(260, -190); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill(); ctx.stroke();
+  circle(0, -110, 62, C.ink); circle(0, -110, 52, C.white); rr(-14, -146, 28, 72, 4); ctx.fillStyle = C.red; ctx.fill(); rr(-36, -124, 72, 28, 4); ctx.fill();
+  for (const sd of [-1, 1]) { rr(sd * 160 - 50, -30, 100, 90, 10); ctx.fillStyle = C.sky; ctx.fill(); ctx.lineWidth = 9; ctx.stroke(); }
+  rr(-75, 40, 150, 220, [14, 14, 0, 0]); ctx.fillStyle = C.yellow; ctx.fill();
+  const dw = 150 * (1 - 0.8 * clamp(open));
+  rr(-75, 40, dw, 220, [14, 14, 0, 0]); ctx.fillStyle = C.shirt; ctx.fill(); ctx.lineWidth = 9; ctx.stroke();
+  circle(-75 + dw - 22, 160, 9, C.yellow);
+  rr(-75, 40, 150, 220, [14, 14, 0, 0]); ctx.lineWidth = 9; ctx.stroke();
+  ctx.restore();
+}
+
+/** next-episode end-card badge for "why soreness waits days to hit": white disc, ink ring, a flexed skin arm with a red
+ *  pain zap on the biceps. ~300 px at s = 1 */
+export function pcSoreBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  pcFlexArm(-10, 30, 0.9, 1);
+  painZap(-30, -20, 0.42, 1, t);
+  ctx.restore();
+}
+
+/** flexed arm (skin, flat): upper arm across, forearm up, fist, biceps bump (pump 0..1 swells it). Origin = elbow-ish centre */
+export function pcFlexArm(x, y, s = 1, pump = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  line([[-120, 40], [40, 40]], C.skin, 70); line([[40, 40], [70, -80]], C.skin, 60);
+  ell(-30, 10 - 6 * pump, 62 + 8 * pump, 38 + 12 * pump, C.skin);
+  ell(-30, 30, 58, 14, C.skinShade);
+  circle(76, -102, 42, C.skin); line([[50, -120], [96, -126]], C.skinShade, 6);
+  line([[-165, 40], [-112, 40]], C.shirt, 84);
+  ctx.restore();
+}
