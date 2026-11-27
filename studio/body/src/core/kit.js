@@ -8515,3 +8515,195 @@ export function dhEmptyGlass(x, y, s = 1) {
   rr(-60, -96, 16, 170, 8); ctx.fillStyle = C.sky; ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1;
   ctx.restore();
 }
+
+
+// ═════════════════════════ SNOOZE SET (2026-11-26 "hit snooze", sz*) ═════════════════════════
+const SZ_SCREEN = '#1B2540', SZ_SCREEN_D = '#141C33', SZ_YEL_D = '#D9A91A', SZ_FOG = '#BDB8B0', SZ_FOG_D = '#A39E96',
+  SZ_DEEP = '#2C3E7A', SZ_LIGHT = '#C9D3E6', SZ_REM = '#8A6BD1', SZ_REM_D = '#6E52B5';
+
+/** small alarm-bell icon (flat, one colour + a darker clapper). ~60 px at s = 1 */
+export function szBell(x, y, s = 1, col = C.ink, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.beginPath(); ctx.moveTo(-26, 16); ctx.quadraticCurveTo(-24, -26, 0, -28); ctx.quadraticCurveTo(24, -26, 26, 16); ctx.lineTo(32, 22); ctx.lineTo(-32, 22); ctx.closePath();
+  ctx.fillStyle = col; ctx.fill(); circle(0, 28, 8, col); circle(0, -30, 6, col);
+  ctx.restore();
+}
+
+/** the snooze phone: ink body, night lock screen (big time, tiny "Snoozed x3" note, the rewatch detail), a big flat yellow
+ *  SNOOZE button with two flat halo bands (glow 0..1), a small STOP pill. press 0..1 pushes the button in (darker),
+ *  ring 0..1 wiggles + ring arcs. note: text of the tiny note (noteSize px, noteHi 0..1 = yellow highlight behind it).
+ *  ~300x560 px at s = 1, origin = phone centre. Returns { btn: [x, y], note: [x, y] } in screen px */
+export function szPhone(x, y, s = 1, { press = 0, glow = 1, ring = 0, t = 0, sc = 1, rot = 0, time = '7:00', note = 'Snoozed x3', noteSize = 24, noteHi = 0 } = {}) {
+  const k = s * sc, wig = rot + Math.sin(t * 38) * 0.06 * clamp(ring);
+  const out = { btn: [x + Math.sin(-wig) * -70 * k, y + 70 * k], note: [x, y - 70 * k] };
+  if (k <= 0) return out;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(wig); ctx.scale(k, k); ctx.lineJoin = 'round';
+  rr(-150, -280, 300, 560, 48); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-128, -252, 256, 504, 30); ctx.fillStyle = SZ_SCREEN; ctx.fill();
+  rr(-128, 150, 256, 102, [0, 0, 30, 30]); ctx.fillStyle = SZ_SCREEN_D; ctx.fill();
+  rr(-36, -268, 72, 10, 5); ctx.fillStyle = '#3A3A42'; ctx.fill();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  szBell(-58, -200, 0.42, C.yellow); ctx.font = '900 26px Inter'; ctx.fillStyle = '#AEB8CC'; ctx.fillText('ALARM', 16, -198);
+  ctx.font = '900 104px Inter'; ctx.fillStyle = C.white; ctx.fillText(time, 0, -128);
+  ctx.font = `900 ${noteSize}px Inter`;
+  if (noteHi > 0) { const tw = ctx.measureText(note).width; ctx.save(); ctx.globalAlpha = clamp(noteHi); rr(-tw / 2 - 12, -70 - noteSize * 0.72, tw + 24, noteSize * 1.44, noteSize * 0.5); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); }
+  ctx.fillStyle = noteHi > 0.5 ? C.ink : '#AEB8CC'; ctx.fillText(note, 0, -68);
+  const g = clamp(glow), p = clamp(press), by = 70 + 8 * p;
+  if (g > 0) { ctx.save(); ctx.globalAlpha = 0.18 * g; rr(-124, by - 70, 248, 140, 70); ctx.fillStyle = C.yellow; ctx.fill(); ctx.globalAlpha = 0.32 * g; rr(-114, by - 60, 228, 120, 60); ctx.fill(); ctx.restore(); }
+  rr(-100, by - 44 + 8, 200, 92, 46); ctx.fillStyle = SZ_YEL_D; ctx.fill();
+  rr(-100, by - 50, 200, 92 - 6 * p, 46); ctx.fillStyle = p > 0.5 ? '#F2C426' : C.yellow; ctx.fill();
+  ctx.font = '900 40px Inter'; ctx.fillStyle = C.ink; ctx.fillText('SNOOZE', 0, by - 2);
+  rr(-62, 182, 124, 46, 23); ctx.fillStyle = '#3A4560'; ctx.fill(); ctx.font = '900 24px Inter'; ctx.fillStyle = C.white; ctx.fillText('STOP', 0, 206);
+  ctx.restore();
+  if (ring > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(ring); ctx.strokeStyle = C.white; ctx.lineWidth = 12 * k; ctx.lineCap = 'round';
+    for (const sd of [-1, 1]) for (const r of [210, 260]) { ctx.beginPath(); ctx.arc(x, y - 120 * k, r * k, sd < 0 ? Math.PI * 1.05 : -Math.PI * 0.35, sd < 0 ? Math.PI * 1.35 : -Math.PI * 0.05); ctx.stroke(); }
+    ctx.restore();
+  }
+  return out;
+}
+
+/** fixed pseudo-random 14 of 25 tiles (56%) for szNightGrid, in reveal order */
+export const SZ_SNOOZE_TILES = [1, 3, 4, 6, 8, 9, 11, 12, 15, 17, 18, 20, 22, 24];
+
+/** sleep-app card: white card, ink rim, ink header "SLEEP APP", a 5x5 grid of night tiles (navy + moon). hi = how many
+ *  of SZ_SNOOZE_TILES are lit (0..14, fractional = the next one popping): lit tiles turn yellow with an ink bell.
+ *  w = card width (height = w * 1.15). sc = pop-in. Returns the tile centre fn (i) => [x, y] */
+export function szNightGrid(x, y, w, { hi = 0, sc = 1, pulse = 0, header = 'SLEEP APP' } = {}) {
+  const h = w * 1.15, cell = (w - 80) / 5, gx0 = x - w / 2 + 40 + cell / 2, gy0 = y - h / 2 + 130 + cell / 2;
+  const at = (i) => [gx0 + (i % 5) * cell, gy0 + Math.floor(i / 5) * cell];
+  if (sc <= 0) return at;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.translate(-x, -y);
+  rr(x - w / 2 - 8, y - h / 2 - 8, w + 16, h + 16, 44); ctx.fillStyle = C.ink; ctx.fill();
+  rr(x - w / 2, y - h / 2, w, h, 38); ctx.fillStyle = C.white; ctx.fill();
+  rr(x - w / 2, y - h / 2, w, 96, [38, 38, 0, 0]); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.font = '900 44px Inter'; ctx.letterSpacing = '3px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.white; ctx.fillText(header, x, y - h / 2 + 50); ctx.letterSpacing = '0px';
+  for (let i = 0; i < 25; i++) {
+    const [cx, cy] = at(i), r = SZ_SNOOZE_TILES.indexOf(i), lit = r < 0 ? 0 : clamp(hi - r), q = lit > 0 ? 1 + 0.25 * Math.sin(Math.PI * clamp(lit * 1.6)) * (lit < 1 ? 1 : 0) : 1;
+    const pz = 1 + 0.06 * pulse, z = cell * 0.42 * q * pz;
+    rr(cx - z, cy - z, z * 2, z * 2, z * 0.35); ctx.fillStyle = lit >= 0.5 ? C.yellow : C.navy; ctx.fill();
+    if (lit >= 0.5) szBell(cx, cy, z / 42, C.ink);
+    else { circle(cx - z * 0.05, cy, z * 0.42, C.gum); circle(cx + z * 0.15, cy - z * 0.13, z * 0.38, C.navy); }
+  }
+  ctx.restore();
+  return at;
+}
+
+/** fog/wake overlay for brain(): call right after brain(x, y, s) with the SAME x, y, s. lit 0..1 = yellow spark stars on the
+ *  front (right) half; fog 0..1 = grey cloud puffs over the back (left) half; all 0..1 spreads the fog over the whole brain */
+export function szBrainFog(x, y, s, { lit = 0, fog = 0, all = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  if (lit > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(lit);
+    for (const [sx, sy, r] of [[130, -120, 34], [200, -20, 26], [90, -40, 22], [170, 70, 20]]) {
+      const k = r * (0.85 + 0.15 * Math.sin(t * 8 + sx));
+      ctx.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr2 = i % 2 ? k * 0.35 : k; i ? ctx.lineTo(sx + Math.cos(a) * rr2, sy + Math.sin(a) * rr2) : ctx.moveTo(sx + rr2, sy); } ctx.closePath();
+      ctx.fillStyle = C.yellow; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.ink; ctx.stroke();
+    }
+    ctx.restore();
+  }
+  const puffs = (list, a) => {
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = 0.92 * clamp(a);
+    for (const [px, py, r] of list) circle(px + Math.sin(t * 1.3 + px) * 6, py + 6, r * clamp(a * 1.4) + 6, SZ_FOG_D);
+    for (const [px, py, r] of list) circle(px + Math.sin(t * 1.3 + px) * 6, py, r * clamp(a * 1.4), SZ_FOG);
+    for (const [px, py, r] of list) ell(px - r * 0.3 + Math.sin(t * 1.3 + px) * 6, py - r * 0.45, r * 0.35 * clamp(a * 1.4), r * 0.12, '#D8D4CD');
+    ctx.restore();
+  };
+  puffs([[-190, -40, 80], [-120, -120, 90], [-40, -150, 80], [-150, 50, 85], [-60, 30, 90], [-20, -70, 70]], fog);
+  puffs([[60, -150, 80], [150, -80, 85], [200, 20, 70], [110, 40, 80], [40, -40, 70], [160, 120, 60]], all);
+  ctx.restore();
+}
+
+/** "fog gauge": a half-dial 0..60 MIN with a grey fog wedge filling up to the needle (mins 0..60). ~560x330 px at s = 1,
+ *  origin = dial hub. hi 0..1 = yellow halo on the 60 end. sc = pop-in */
+export function szFogGauge(x, y, s = 1, { mins = 0, sc = 1, hi = 0 } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.lineCap = 'round';
+  const R = 250, A0 = Math.PI, a = A0 + Math.PI * clamp(mins / 60);
+  ctx.beginPath(); ctx.arc(0, 0, R + 16, Math.PI, TAU); ctx.lineTo(R + 16, 40); ctx.lineTo(-R - 16, 40); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, R, Math.PI, TAU); ctx.lineTo(R, 24); ctx.lineTo(-R, 24); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  if (mins > 0) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, R - 10, A0, a); ctx.closePath(); ctx.fillStyle = SZ_FOG; ctx.fill();
+    for (let i = 0; i < 5; i++) { const aa = A0 + (a - A0) * (i + 0.5) / 5; circle(Math.cos(aa) * (R - 70), Math.sin(aa) * (R - 70), 30, SZ_FOG_D); } }
+  if (hi > 0) { ctx.save(); ctx.globalAlpha = clamp(hi); ctx.beginPath(); ctx.arc(0, 0, R + 34, -0.32, -0.02); ctx.strokeStyle = C.ink; ctx.lineWidth = 30; ctx.stroke(); ctx.strokeStyle = C.yellow; ctx.lineWidth = 18; ctx.stroke(); ctx.restore(); }
+  for (let i = 0; i <= 4; i++) { const aa = A0 + Math.PI * i / 4; line([[Math.cos(aa) * (R - 34), Math.sin(aa) * (R - 34)], [Math.cos(aa) * (R - 6), Math.sin(aa) * (R - 6)]], C.ink, 9); }
+  ctx.font = '900 44px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.ink;
+  ctx.fillText('0', -R + 70, -64); ctx.fillText('60', R - 76, -64); ctx.fillText('30', 0, -R + 70);
+  ctx.save(); ctx.rotate(a); rr(-14, -12, R - 40, 24, 12); ctx.fillStyle = C.ink; ctx.fill(); rr(R - 110, -12, 70, 24, 12); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
+  circle(0, 0, 30, C.ink); circle(0, 0, 14, C.red);
+  ctx.font = '900 40px Inter'; ctx.fillStyle = C.ink; ctx.fillText('MIN', 0, 80);
+  ctx.restore();
+}
+
+/** night sleep strip (schematic hypnogram as bottom-aligned bars): deep = tall navy, light = short pale, REM = purple.
+ *  The last stretch (u 0.72..1, near morning) is one big REM block. chop 0..1 carves 3 pale "snooze" light-sleep bands into it,
+ *  with a bell above each (bells 0..1). x0, y0 = top-left, w x h. Returns { ux: (u) => x, base: y, bands: [x...], rem: [x0, x1, top] } */
+export const SZ_BANDS = [0.8, 0.875, 0.95];
+export function szSleepStrip(x0, y0, w, h, { chop = 0, bells = 0, sc = 1, lightHi = 0, remHi = 0 } = {}) {
+  const ux = (u) => x0 + u * w, base = y0 + h;
+  const out = { ux, base, bands: SZ_BANDS.map(ux), rem: [ux(0.72), ux(1), base - h * 0.78] };
+  if (sc <= 0) return out;
+  ctx.save(); ctx.globalAlpha = clamp(sc);
+  rr(x0 - 20, base, w + 40, 14, 7); ctx.fillStyle = C.ink; ctx.fill();
+  const SEG = [[0, 0.06, 'l'], [0.06, 0.17, 'd'], [0.17, 0.23, 'l'], [0.23, 0.29, 'r'], [0.29, 0.39, 'd'], [0.39, 0.45, 'l'], [0.45, 0.52, 'r'], [0.52, 0.59, 'l'], [0.59, 0.65, 'd'], [0.65, 0.72, 'l'], [0.72, 1, 'r']];
+  const HT = { d: 1, l: 0.42, r: 0.78 }, COL = { d: [SZ_DEEP, '#22326A'], l: [SZ_LIGHT, '#AEBBD3'], r: [SZ_REM, SZ_REM_D] };
+  for (const [a, b, k] of SEG) {
+    const bx = ux(a) + 3, bw = ux(b) - ux(a) - 6, bh = h * HT[k];
+    rr(bx, base - bh, bw, bh, [16, 16, 0, 0]); ctx.fillStyle = COL[k][1]; ctx.fill();
+    rr(bx, base - bh, bw - 10, bh, [16, 16, 0, 0]); ctx.fillStyle = COL[k][0]; ctx.fill();
+    if (k === 'r' && a >= 0.72 && remHi > 0) { ctx.save(); ctx.globalAlpha = clamp(remHi); rr(bx - 8, base - bh - 8, bw + 16, bh + 8, [22, 22, 0, 0]); ctx.lineWidth = 12; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  }
+  if (chop > 0) for (const u of SZ_BANDS) {
+    const bw = w * 0.04 * clamp(chop), cx = ux(u), bh = h * HT.l;
+    ctx.fillStyle = C.bg; ctx.fillRect(cx - bw / 2 - 8 * clamp(chop), base - h, bw + 16 * clamp(chop), h);
+    rr(cx - bw / 2, base - bh, bw, bh, [12, 12, 0, 0]); ctx.fillStyle = SZ_LIGHT; ctx.fill();
+    if (lightHi > 0) { ctx.save(); ctx.globalAlpha = clamp(lightHi); rr(cx - bw / 2 - 6, base - bh - 6, bw + 12, bh + 6, [16, 16, 0, 0]); ctx.lineWidth = 10; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  }
+  ctx.restore();
+  if (bells > 0) for (let i = 0; i < 3; i++) { const b = clamp(bells * 3 - i); if (b > 0) szBell(ux(SZ_BANDS[i]), base - h - 50, 0.9 * (0.6 + 0.4 * b), C.red, b); }
+  return out;
+}
+
+/** lab-test card: white card, ink rim, header "LAB TEST" with a tiny brain, two score bars: NO SNOOZE (grey) and SNOOZE
+ *  (yellow, grows a little with up 0..1, a yellow up arrow on it), fine print "31 REGULAR SNOOZERS · 30 MIN" (rewatch).
+ *  ~560x640 px at s = 1, origin = centre. sc = pop-in */
+export function szLabCard(x, y, s = 1, { up = 0, sc = 1, fine = 1 } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  rr(-288, -328, 576, 656, 40); ctx.fillStyle = C.ink; ctx.fill(); rr(-280, -320, 560, 640, 34); ctx.fillStyle = C.white; ctx.fill();
+  rr(-280, -320, 560, 100, [34, 34, 0, 0]); ctx.fillStyle = C.ink; ctx.fill();
+  brain(-170, -270, 0.17); ctx.font = '900 50px Inter'; ctx.letterSpacing = '3px'; ctx.fillStyle = C.white; ctx.fillText('LAB TEST', 40, -268); ctx.letterSpacing = '0px';
+  const base = 170, H0 = 250, u = clamp(up), h2 = H0 + 70 * u;
+  line([[-230, base], [230, base]], C.ink, 10);
+  rr(-200, base - H0, 150, H0, [18, 18, 0, 0]); ctx.fillStyle = C.gumEdge; ctx.fill(); rr(-200, base - H0, 110, H0, [18, 18, 0, 0]); ctx.fillStyle = '#DCD6CB'; ctx.fill();
+  rr(50, base - h2, 150, h2, [18, 18, 0, 0]); ctx.fillStyle = SZ_YEL_D; ctx.fill(); rr(50, base - h2, 110, h2, [18, 18, 0, 0]); ctx.fillStyle = C.yellow; ctx.fill();
+  if (u > 0) { ctx.save(); ctx.globalAlpha = clamp(u * 2); ctx.translate(125, base - h2 + 70); ctx.beginPath(); ctx.moveTo(0, -38); ctx.lineTo(30, 0); ctx.lineTo(12, 0); ctx.lineTo(12, 34); ctx.lineTo(-12, 34); ctx.lineTo(-12, 0); ctx.lineTo(-30, 0); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore(); }
+  ctx.font = '900 34px Inter'; ctx.fillStyle = C.ink; ctx.fillText('NO', -125, base + 42); ctx.fillText('SNOOZE', -125, base + 78); ctx.fillText('SNOOZE', 125, base + 60);
+  if (fine > 0) { ctx.globalAlpha = clamp(fine); ctx.font = '900 22px Inter'; ctx.fillStyle = '#6E6A63'; ctx.fillText('31 REGULAR SNOOZERS · 30 MIN', 0, 290); ctx.globalAlpha = 1; }
+  ctx.restore();
+}
+
+/** cartoon anger mark (four red curved brackets, ink edge), the "hangry" sign. a = pop-in / alpha */
+export function szAnger(x, y, s = 1, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * clamp(a, 0, 1.3), s * clamp(a, 0, 1.3)); ctx.lineCap = 'round';
+  for (let i = 0; i < 4; i++) {
+    ctx.save(); ctx.rotate(i * Math.PI / 2);
+    ctx.beginPath(); ctx.moveTo(14, -44); ctx.quadraticCurveTo(14, -14, 44, -14);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 22; ctx.stroke(); ctx.strokeStyle = C.red; ctx.lineWidth = 12; ctx.stroke();
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** next-episode end-card badge for "is hangry real?": white disc, ink ring, a small growling stomach + an anger mark.
+ *  ~300 px at s = 1 */
+export function szHangryBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  growlStomach(-6, 0, 0.62, { t, growl: 0.4, rings: false });
+  szAnger(78, -78, 0.75, 1);
+  ctx.restore();
+}

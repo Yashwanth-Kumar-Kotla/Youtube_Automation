@@ -1,5 +1,5 @@
 # STOCK: body (generated from state/stock/body.json; change it with `python -m pipeline.stock`)
-_Updated 2026-11-26 02:28 · ready 21/30 · threshold 0.4 · max age 42 d_
+_Updated 2026-11-27 03:43 · ready 22/30 · threshold 0.4 · max age 42 d_
 
 | id | status | conf | topic | cluster | hook pattern | format | length | made | playbook | research |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -24,5 +24,6 @@ _Updated 2026-11-26 02:28 · ready 21/30 · threshold 0.4 · max age 42 d_
 | 2026-11-25-body-02 | ready | 0.7 | What happens when you yawn, and why is it contagious? | yawn | question+age-guess-number | womb-to-dog life-stage trail | 32.1s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
 | 2026-11-25-body-03 | ready | 0.7 | What happens when you get heartburn? | chest | question+fix-ab-number | two-fixes showdown explainer | 33.5s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
 | 2026-11-25-body-04 | ready | 0.7 | What happens when you don't drink enough water? | water | question+does-it-count-number | signal-chain explainer | 35.7s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
+| 2026-11-27-body-01 | ready | 0.7 | What happens when you hit snooze? | sleep | question+groggy-or-sharp-number | morning-alarm twist explainer | 33.0s | 2026-W48 | pb-a66cc658 | research/2026-W46.md |
 
-Clusters in stock: balance ×1, blood ×1, brain ×1, chest ×1, exercise ×1, eyes ×1, gut ×2, heart ×1, immune ×1, lungs ×1, nerves ×1, nose ×1, sitting ×1, skin ×1, sneeze ×1, sun ×1, teeth ×1, throat ×1, water ×1, yawn ×1
+Clusters in stock: balance ×1, blood ×1, brain ×1, chest ×1, exercise ×1, eyes ×1, gut ×2, heart ×1, immune ×1, lungs ×1, nerves ×1, nose ×1, sitting ×1, skin ×1, sleep ×1, sneeze ×1, sun ×1, teeth ×1, throat ×1, water ×1, yawn ×1

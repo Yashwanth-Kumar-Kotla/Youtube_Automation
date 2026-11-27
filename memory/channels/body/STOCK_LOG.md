@@ -75,3 +75,4 @@
 - 2026-11-25 04:08 · 2026-11-25-body-04 added · conf 0.7 · question+does-it-count-number · What happens when you don't drink enough water?
 - 2026-11-26 02:28 · 2026-11-14-body-03 scheduled → ready · slot on 2026-11-25 missed its window
 - 2026-11-26 02:28 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-26, episode 16, manual upload
+- 2026-11-27 03:43 · 2026-11-27-body-01 added · conf 0.7 · question+groggy-or-sharp-number · What happens when you hit snooze?

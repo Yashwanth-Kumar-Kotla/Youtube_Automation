@@ -1,0 +1,58 @@
+{
+  "title": "What Happens When You Hit Snooze?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Sleep inertia' ('the transitional state you experience when you aren't asleep … but definitely aren't awake yet either'; 'usually lasts anywhere from 15 to 60 minutes'; most likely if you wake abruptly from deep sleep (NREM stage 3); 'Resist the urge to hit the snooze button'; if you hit snooze without realizing it, put the alarm across the room): https://health.clevelandclinic.org/sleep-inertia",
+    "Mass General Brigham via ScienceDaily (2025-05-19), Robbins et al., Scientific Reports 2025, 'Quantifying snooze behavior in a global population of smartphone users' (about 3 million nights from 21,000+ Sleep Cycle app users; about 56% (abstract: 55.6%) of sleep sessions ended in a snooze alarm; about 11 minutes between snooze alarms; the hours before waking are 'rich in rapid eye movement sleep' and snoozing 'will interrupt these critical stages of sleep', giving only light sleep between alarms; advice: 'set your alarm for the latest possible time, then commit to getting out of bed when your first alarm goes off'; study partly supported in kind by Sleep Cycle): https://www.sciencedaily.com/releases/2025/05/250519131537.htm",
+    "Stockholm University, 'You don't lose if you snooze' (2023-10-23), Sundelin, Landry & Axelsson, 'Is snoozing losing?', Journal of Sleep Research 2023, doi 10.1111/jsr.14054 (31 regular snoozers, two lab nights; with a 30-minute snooze they did 'a bit better on cognitive tests right upon waking', with no clear effects on mood, sleepiness or cortisol; most still slept more than 20 minutes of the half hour; results apply to habitual snoozers only): https://www.su.se/english/news/articles/2023-10-23-you-dont-lose-if-you-snooze",
+    "NIH NINDS, 'Brain Basics: Understanding Sleep' ('Most of your dreaming occurs during REM sleep'; supports 'dream-rich sleep'): https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep",
+    "Tease (next video): Swami et al. 2022, 'Hangry in the field', PLOS ONE, via Anglia Ruskin University ('Hunger really can make us feel hangry'; 64 adults; hunger associated with 37% of the variance in irritability, 34% in anger, 38% in pleasure): https://aru.ac.uk/news/hunger-really-can-make-us-feel-hangry-study"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you hit snooze?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *HIT | *SNOOZE?"
+    },
+    {
+      "text": "In one app study, fifty-six percent of nights ended in snooze. Groggier, or sharper?",
+      "caps": "IN ONE *APP | *STUDY | FIFTY-SIX *PERCENT | OF *NIGHTS | ENDED IN *SNOOZE | *GROGGIER | OR *SHARPER?"
+    },
+    {
+      "text": "The alarm hits, but your brain isn't fully awake.",
+      "caps": "THE *ALARM | *HITS | BUT YOUR *BRAIN | ISN'T FULLY *AWAKE"
+    },
+    {
+      "text": "That fog is sleep inertia, and it can last up to an hour.",
+      "caps": "THAT *FOG | IS SLEEP *INERTIA | AND IT CAN *LAST | UP TO AN *HOUR"
+    },
+    {
+      "text": "Ever hit snooze without remembering it?",
+      "caps": "*EVER HIT | *SNOOZE | WITHOUT *REMEMBERING IT?"
+    },
+    {
+      "text": "But here's the twist: snooze sleep is only light sleep,",
+      "caps": "BUT *HERE'S | THE *TWIST | SNOOZE *SLEEP | IS ONLY *LIGHT | *SLEEP"
+    },
+    {
+      "text": "and it breaks up the dream-rich sleep you get near morning.",
+      "caps": "AND IT *BREAKS | UP THE *DREAM-RICH | *SLEEP YOU GET | NEAR *MORNING"
+    },
+    {
+      "text": "Answer: sharper, in a lab test of regular snoozers.",
+      "caps": "*ANSWER | *SHARPER | IN A *LAB | TEST OF *REGULAR | *SNOOZERS"
+    },
+    {
+      "text": "Experts still say: get up on the first alarm.",
+      "caps": "EXPERTS STILL *SAY | GET *UP | ON THE *FIRST | *ALARM"
+    },
+    {
+      "text": "Next Body File: is hangry real? Still in bed?",
+      "caps": "NEXT BODY *FILE | IS *HANGRY | *REAL? | STILL IN *BED?"
+    }
+  ]
+}
