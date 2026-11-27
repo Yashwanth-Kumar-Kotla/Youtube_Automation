@@ -1,0 +1,56 @@
+{
+  "title": "What Happens When Your Muscles Get Sore Days Later?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Cleveland Clinic, 'Delayed Onset Muscle Soreness (DOMS)'. 'Muscle pain sets in one to three days after intense exercise' (line 2); 'When you exercise, you can sometimes cause tiny tears in those fibers' (line 4); 'DOMS builds over several hours' (line 5); 'DOMS usually happens after you try a new activity, kind of training or a workout that's more intense than you're used to' (line 7); 'Some movements are more likely to lead to DOMS': squeezing a muscle while lengthening it, e.g. 'The lowering phase of a bicep curl', 'Walking or running downhill', 'Lunges' (answer, line 8; guess options lifting vs lowering); see a provider if pain lasts more than a week, or if 'Your pee is unusually dark or has blood in it'; 'Go to the emergency room' for rhabdomyolysis symptoms (line 9): https://my.clevelandclinic.org/health/symptoms/delayed-onset-muscle-soreness",
+    "Houston Methodist (Corbin Hedt, physical therapist), 'Is Lactic Acid Buildup Really What Causes Muscle Soreness After a Workout?' (2021-10-19). Soreness 'isn't from lactic acid buildup at all'; lactic acid is 'generally all' gone 'within about an hour afterwards' (line 3); 'tiny microtears, which trigger inflammatory responses' (line 5); 'you don't actually feel sore until about 24 to 72 hours after your workout': https://www.houstonmethodist.org/blog/articles/2021/oct/is-lactic-acid-buildup-really-what-causes-muscle-soreness-after-a-workout/",
+    "Tease (next video): Scientific American, 'Why does my voice sound different?' (2009-01-13), Timothy E. Hullar, otolaryngologist, Washington University School of Medicine: your voice reaches your inner ear through air and through your head's tissues; 'the mechanical properties of your head enhance its deeper, lower-frequency vibrations'; a recording gives 'only the air-conducted component': https://www.scientificamerican.com/article/why-does-my-voice-sound-different/"
+  ],
+  "lines": [
+    {
+      "text": "What happens when your muscles get sore days later?",
+      "caps": "WHAT *HAPPENS | WHEN YOUR *MUSCLES | GET *SORE | DAYS *LATER?"
+    },
+    {
+      "text": "It hits one to three days in. Blame lifting, or lowering?",
+      "caps": "IT *HITS | *ONE TO THREE | DAYS *IN | *BLAME | *LIFTING | OR *LOWERING?"
+    },
+    {
+      "text": "Forget lactic acid. It's gone in about an hour.",
+      "caps": "*FORGET | LACTIC *ACID | IT'S *GONE | IN ABOUT | AN *HOUR"
+    },
+    {
+      "text": "The real culprit? Tiny tears in your muscle fibers.",
+      "caps": "THE REAL *CULPRIT? | *TINY TEARS | IN YOUR *MUSCLE | *FIBERS"
+    },
+    {
+      "text": "Ever needed the handrail after leg day?",
+      "caps": "EVER *NEEDED | THE *HANDRAIL | AFTER *LEG DAY?"
+    },
+    {
+      "text": "But here's the twist: the tears get inflamed, and the ache builds for hours.",
+      "caps": "BUT *HERE'S | THE *TWIST | THE *TEARS | GET *INFLAMED | AND THE *ACHE | *BUILDS | FOR *HOURS"
+    },
+    {
+      "text": "It's usually a new workout, or a harder one.",
+      "caps": "IT'S *USUALLY | A *NEW WORKOUT | OR A *HARDER ONE"
+    },
+    {
+      "text": "Answer: lowering. Lunges and downhill runs too.",
+      "caps": "*ANSWER | *LOWERING | *LUNGES | AND *DOWNHILL | RUNS *TOO"
+    },
+    {
+      "text": "Dark pee, or sore past a week? Get help fast.",
+      "caps": "*DARK PEE? | OR *SORE | PAST A *WEEK? | GET *HELP | *FAST"
+    },
+    {
+      "text": "Next Body File: your recorded voice and your skull's bass.",
+      "caps": "NEXT BODY *FILE | YOUR *RECORDED | *VOICE | AND YOUR *SKULL'S | *BASS"
+    }
+  ]
+}

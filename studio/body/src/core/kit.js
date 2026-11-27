@@ -9274,3 +9274,211 @@ export function pcFlexArm(x, y, s = 1, pump = 1) {
   line([[-165, 40], [-112, 40]], C.shirt, 84);
   ctx.restore();
 }
+
+// ═════════════════════════ SORE MUSCLES SET (2026-11-27 "sore muscles days later", prefix sm) ═════════════════════════
+// Delayed-fuse explainer: dumbbell with a lit fuse, x-ray rope-fibre biceps, schematic fibre nicks (no gore) that get
+// inflamed, lactic-acid bottle, stairs + handrail, lunge / downhill icons, ache meter, voice badge (next topic: recorded voice).
+const SM_STEEL = '#9A9A9F', SM_STEEL_D = '#77777E', SM_PLATE = '#3A3A44', SM_PLATE_L = '#5A6573', SM_PLATE_LH = '#7D8896',
+  SM_CORD = '#8A6A48', SM_CORD_L = '#B08A5E', SM_ROPE = '#16405F', SM_ACID = '#E6D96A', SM_ACID_D = '#CDBF4E', SM_GLASS = '#E8F4F8',
+  SM_GLASS_D = '#C9DDE5', SM_STEP = '#E4DCCB', SM_STEP_D = '#CFC4AE', SM_STEP_E = '#B9AD95', SM_WOOD = '#B5653F', SM_WOOD_D = '#9A5333';
+
+/** hand-held dumbbell (flat steel bar, plates). light = slate plates (readable on the x-ray navy), plates 1 | 2 (2 = an extra,
+ *  bigger plate each side: the heavier load). ~300x130 px at s = 1 (plates: 2 → ~380 wide), origin = grip centre.
+ *  Returns the right outer end [x, y] (fuse anchor) in screen px */
+export function smDumbbell(x, y, s = 1, { rot = 0, sc = 1, plates = 1, light = false, extra = 1 } = {}) {
+  const ex = plates > 1 ? 196 : 168;
+  const out = [x + Math.cos(rot) * ex * s * sc, y + Math.sin(rot) * ex * s * sc];
+  if (sc <= 0) return out;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s * sc, s * sc);
+  const P = light ? SM_PLATE_L : SM_PLATE, PH = light ? SM_PLATE_LH : '#55555F';
+  rr(-120, -14, 240, 28, 14); ctx.fillStyle = SM_STEEL; ctx.fill(); rr(-120, 2, 240, 12, [0, 0, 14, 14]); ctx.fillStyle = SM_STEEL_D; ctx.fill();
+  for (const sd of [-1, 1]) {
+    rr(sd * 110 - 30, -62, 60, 124, 18); ctx.fillStyle = P; ctx.fill(); rr(sd * 110 - 20, -52, 16, 46, 8); ctx.fillStyle = PH; ctx.fill();
+    rr(sd * 150 - 18, -42, 36, 84, 14); ctx.fillStyle = P; ctx.fill();
+    if (plates > 1 && extra > 0) {
+      const k = clamp(extra), ox = sd * 184;
+      ctx.save(); ctx.translate(ox, 0); ctx.scale(1, k);
+      rr(-14, -82, 28, 164, 12); ctx.fillStyle = SM_PLATE; ctx.fill(); rr(-8, -72, 9, 60, 5); ctx.fillStyle = '#55555F'; ctx.fill();
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+  return out;
+}
+
+/** burning fuse: a tan cord along pts (screen px) with dark twist ticks, and a flickering spark at the last point.
+ *  spark 0..1 = spark size (0 = unlit), a = alpha, t = film/scene time (flicker; a pure function of t) */
+export function smFuse(pts, t = 0, { spark = 1, a = 1 } = {}) {
+  if (a <= 0 || pts.length < 2) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  line(pts, SM_CORD, 16); line(pts, SM_CORD_L, 7);
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x0, y0] = pts[i], [x1, y1] = pts[i + 1], L = Math.hypot(x1 - x0, y1 - y0), n = Math.floor(L / 22);
+    for (let k = 1; k < n; k++) { const f = k / n, px = lerp(x0, x1, f), py = lerp(y0, y1, f), nx = -(y1 - y0) / L, ny = (x1 - x0) / L; line([[px - nx * 6 - ny * 3, py - ny * 6 + nx * 3], [px + nx * 6 + ny * 3, py + ny * 6 - nx * 3]], SM_WOOD_D, 3); }
+  }
+  const [sx, sy] = pts[pts.length - 1], sp = clamp(spark);
+  if (sp > 0) {
+    ctx.translate(sx, sy); ctx.scale(sp, sp);
+    for (let k = 0; k < 8; k++) {
+      const an = k * TAU / 8 + 0.2, len = 34 + 18 * Math.abs(Math.sin(t * 23 + k * 1.7));
+      line([[Math.cos(an) * 12, Math.sin(an) * 12], [Math.cos(an) * len, Math.sin(an) * len]], C.ink, 11);
+      line([[Math.cos(an) * 12, Math.sin(an) * 12], [Math.cos(an) * len, Math.sin(an) * len]], C.yellow, 6);
+    }
+    circle(0, 0, 20, C.ink); circle(0, 0, 16, C.yellow); circle(0, 0, 8 + 2 * Math.sin(t * 31), C.red); circle(-4, -4, 3, C.white);
+  }
+  ctx.restore();
+}
+
+/** x-ray biceps of rope-like fibres between (sx, sy) shoulder and (ex, ey) elbow: navy spindle with a cyan rim, 4 cyan rope
+ *  strands (diagonal twist ticks). w = belly width px, bulge 0..1 (curl = fatter). For the x-ray hero (draw after man()) */
+export function smBicep(sx, sy, ex, ey, { w = 70, bulge = 0.6 } = {}) {
+  const L = Math.hypot(ex - sx, ey - sy), ang = Math.atan2(ey - sy, ex - sx), hw = w * (0.8 + 0.35 * clamp(bulge)) / 2;
+  ctx.save(); ctx.translate(sx, sy); ctx.rotate(ang); ctx.lineCap = 'round';
+  const body = () => { ctx.beginPath(); ctx.moveTo(L * 0.06, 0); ctx.bezierCurveTo(L * 0.3, -hw * 1.5, L * 0.7, -hw * 1.5, L * 0.94, 0); ctx.bezierCurveTo(L * 0.7, hw * 1.2, L * 0.3, hw * 1.2, L * 0.06, 0); ctx.closePath(); };
+  body(); ctx.fillStyle = C.cyan; ctx.fill();
+  ctx.save(); ctx.translate(L * 0.5, -hw * 0.08); ctx.scale(0.9, 0.84); ctx.translate(-L * 0.5, hw * 0.08); body(); ctx.fillStyle = C.xnavy; ctx.fill(); ctx.restore();
+  ctx.save(); body(); ctx.clip();
+  for (let r = 0; r < 4; r++) {
+    const oy = lerp(-hw * 0.82, hw * 0.55, r / 3);
+    ctx.beginPath(); ctx.moveTo(L * 0.12, oy * 0.4); ctx.quadraticCurveTo(L * 0.5, oy * 1.15, L * 0.88, oy * 0.4); ctx.strokeStyle = SM_ROPE; ctx.lineWidth = hw * 0.36; ctx.stroke();
+    for (let k = 1; k < 12; k++) { const u = k / 12, px = L * lerp(0.12, 0.88, u), py = lerp(oy * 0.4, oy * 1.15, 1 - Math.pow(2 * u - 1, 2)); line([[px - 7, py + hw * 0.13], [px + 7, py - hw * 0.13]], C.cyan, 4); }
+  }
+  ctx.restore(); ctx.restore();
+}
+
+/** close-up of rope-like muscle fibres (x-ray cyan on navy), horizontal, n strands filling w x h centred at (x, y).
+ *  nicks = [[u 0..1 along, strand index]], tear 0..1 = how open the nicks are (schematic notches + a few frayed threads,
+ *  no gore), inflame 0..1 = flat red/pink swelling blobs around each nick, t = time (slow rope shimmer).
+ *  Returns the nick centres in screen px */
+export function smFibers(x, y, w, h, { n = 5, nicks = [], tear = 1, inflame = 0, t = 0, ring = 0 } = {}) {
+  const gap = h / n, th = gap * 0.78, out = nicks.map(([u, i]) => [x - w / 2 + u * w, y - h / 2 + gap * (i + 0.5) - th * 0.42]);
+  ctx.save(); ctx.lineCap = 'round';
+  const inf = clamp(inflame);
+  if (inf > 0) out.forEach(([px, py], k) => {
+    const r = th * (0.6 + 1.6 * inf) * (1 + 0.04 * Math.sin(t * 5 + k));
+    ctx.save(); ctx.globalAlpha = 0.35 * inf; ell(px, py + th * 0.3, r * 1.5, r, C.red); ctx.globalAlpha = 0.55 * inf; ell(px, py + th * 0.3, r * 0.95, r * 0.62, C.pink); ctx.restore();
+  });
+  for (let i = 0; i < n; i++) {
+    const cy = y - h / 2 + gap * (i + 0.5), x0 = x - w / 2, sw = Math.sin(i * 1.3) * 6;
+    rr(x0, cy - th / 2 + sw, w, th, th / 2); ctx.fillStyle = C.cyan; ctx.fill();
+    rr(x0 + 6, cy - th / 2 + 6 + sw, w - 12, th - 12, th / 2 - 6); ctx.fillStyle = SM_ROPE; ctx.fill();
+    ctx.save(); rr(x0 + 6, cy - th / 2 + 6 + sw, w - 12, th - 12, th / 2 - 6); ctx.clip();
+    const step = th * 0.42;
+    for (let k = -2; k < w / step + 2; k++) { const px = x0 + k * step + ((t * 6) % step); line([[px - th * 0.3, cy + th / 2 + sw], [px + th * 0.3, cy - th / 2 + sw]], C.cyan, Math.max(3, th * 0.07)); }
+    rr(x0, cy - th / 2 + sw, w, th * 0.22, 8); ctx.fillStyle = '#2A6A8E'; ctx.fill();
+    ctx.restore();
+  }
+  const tr = clamp(tear);
+  if (tr > 0) nicks.forEach(([u, i], k) => {
+    const cy = y - h / 2 + gap * (i + 0.5) + Math.sin(i * 1.3) * 6, px = x - w / 2 + u * w, top = cy - th / 2, d = th * 0.48 * tr, hw = th * 0.32 * tr;
+    ctx.beginPath(); ctx.moveTo(px - hw, top - 2); ctx.lineTo(px - hw * 0.25, top + d); ctx.lineTo(px + hw * 0.3, top + d * 0.85); ctx.lineTo(px + hw, top - 2); ctx.closePath(); ctx.fillStyle = C.navy; ctx.fill();
+    for (const [dx, an, l] of [[-0.8, -2.3, 0.5], [-0.3, -1.9, 0.62], [0.35, -1.2, 0.58], [0.85, -0.8, 0.46]]) {
+      const bx = px + dx * hw, by = top + 4, L = th * l * tr;
+      line([[bx, by], [bx + Math.cos(an) * L, by + Math.sin(an) * L]], C.cyan, Math.max(3, th * 0.06));
+    }
+    if (ring > 0) hiRing(px, top + d * 0.4, th * 0.75, th * 0.6, ring);
+    void k;
+  });
+  ctx.restore();
+  return out;
+}
+
+/** lab bottle of lactic acid (flat glass, ink cap, pale-yellow liquid, white label "LACTIC / ACID"). level 0..1 = liquid left
+ *  (drains with a few rising bubbles while 0 < level < 1). ~300x520 px at s = 1, origin = body centre. sc = pop-in */
+export function smAcidBottle(x, y, s = 1, { level = 1, sc = 1, t = 0, label = true } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  const body = () => rr(-150, -170, 300, 400, 60);
+  rr(-62, -262, 124, 110, 18); ctx.fillStyle = SM_GLASS_D; ctx.fill(); rr(-54, -256, 108, 100, 14); ctx.fillStyle = SM_GLASS; ctx.fill();
+  rr(-78, -320, 156, 74, 20); ctx.fillStyle = C.ink; ctx.fill(); rr(-66, -312, 40, 50, 12); ctx.fillStyle = '#3A3A44'; ctx.fill();
+  body(); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-138, -158, 276, 376, 50); ctx.fillStyle = SM_GLASS; ctx.fill();
+  const lv = clamp(level), top = lerp(206, -120, lv);
+  if (lv > 0.005) {
+    ctx.save(); rr(-138, -158, 276, 376, 50); ctx.clip();
+    ctx.beginPath(); ctx.moveTo(-150, top); for (let k = 0; k <= 12; k++) ctx.lineTo(-150 + k * 25, top + Math.sin(k * 0.9 + t * 7) * 5 * (lv < 1 ? 1 : 0.4)); ctx.lineTo(150, 240); ctx.lineTo(-150, 240); ctx.closePath();
+    ctx.fillStyle = SM_ACID; ctx.fill(); ctx.fillRect(70, top + 8, 80, 240); ctx.fillStyle = SM_ACID_D; ctx.fillRect(84, top + 8, 70, 240);
+    if (lv < 1) for (let k = 0; k < 4; k++) { const u = (t * 0.9 + k / 4) % 1, by = lerp(200, top + 10, u); if (by > top + 6) circle(-80 + k * 50, by, 9, C.white + 'AA'); }
+    ctx.restore();
+  }
+  rr(110, -130, 14, 150, 7); ctx.fillStyle = C.white; ctx.fill();
+  if (label) {
+    rr(-118, -60, 236, 150, 16); ctx.fillStyle = C.ink; ctx.fill(); rr(-110, -52, 220, 134, 12); ctx.fillStyle = C.white; ctx.fill();
+    ctx.font = '900 50px Inter'; ctx.letterSpacing = '1px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.ink;
+    ctx.fillText('LACTIC', 0, -18); ctx.fillText('ACID', 0, 42); ctx.letterSpacing = '0px';
+  }
+  ctx.restore();
+}
+
+/** side-view staircase going DOWN to the right: n steps of w x h, the top step's tread at (x0, y0); every column fills down to
+ *  `floor` (keep floor ≤ 1160 above the caption). Handrail: wooden rail on ink posts parallel to the nosings, `railH` px above.
+ *  Returns { step(i) → [x centre, tread y], rail(x) → rail y at x } */
+export function smStairs(x0, y0, w, h, n, floor, { railH = 330, rail = true, hi = 0 } = {}) {
+  const ry = (x) => y0 - railH + (x - x0) * (h / w);
+  for (let i = 0; i < n; i++) {
+    const x = x0 + i * w, y = y0 + i * h;
+    ctx.fillStyle = SM_STEP_D; ctx.fillRect(x, y, w + 1, floor - y);
+    ctx.fillStyle = SM_STEP; ctx.fillRect(x, y, w - 18, floor - y);
+    ctx.fillStyle = SM_STEP_E; ctx.fillRect(x, y, w + 1, 14);
+  }
+  if (rail) {
+    for (let i = 0; i < n; i++) { const px = x0 + i * w + w * 0.5, py = y0 + i * h; rr(px - 8, ry(px), 16, py - ry(px), 6); ctx.fillStyle = '#3A3A44'; ctx.fill(); }
+    const a = [x0 + 20, ry(x0 + 20)], b = [x0 + n * w - 20, ry(x0 + n * w - 20)];
+    if (hi > 0) { ctx.save(); ctx.globalAlpha = clamp(hi); line([a, b], C.yellow, 52); ctx.restore(); }
+    line([a, b], SM_WOOD_D, 30); line([[a[0], a[1] - 5], [b[0], b[1] - 5]], SM_WOOD, 18);
+  }
+  return { step: (i) => [x0 + i * w + w / 2, y0 + i * h], rail: ry };
+}
+
+/** lunge icon (flat person: navy legs, blue body, front knee bent, back knee low) facing right. ~300x330 px at s = 1,
+ *  origin = floor point under the hips. dip 0..1 lowers into the lunge. sc = pop-in */
+export function smLungeIcon(x, y, s = 1, { dip = 1, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const d = clamp(dip), hy = lerp(-190, -140, d);
+  line([[0, hy], [lerp(70, 100, d), lerp(-95, -80, d)], [lerp(80, 110, d), -14]], C.pants, 40);          // front leg
+  line([[0, hy], [lerp(-60, -80, d), lerp(-90, -36, d)], [-150, -14]], C.pantsShade, 40);              // back leg
+  ell(lerp(92, 122, d), -10, 34, 15, BOOT); ell(-160, -10, 26, 14, BOOT);
+  rr(-42, hy - 150, 84, 160, [40, 40, 16, 16]); ctx.fillStyle = C.shirt; ctx.fill();
+  line([[0, hy - 120], [30, hy - 50]], C.skin, 26);
+  circle(6, hy - 200, 48, C.skin); ctx.beginPath(); ctx.arc(6, hy - 210, 48, Math.PI * 1.05, Math.PI * 1.95); ctx.lineTo(6, hy - 210); ctx.closePath(); ctx.fillStyle = C.hair; ctx.fill();
+  ctx.restore();
+}
+
+/** downhill runner icon: a green slope falling to the right with an athleteIcon leaning back as it runs down it.
+ *  ~420x330 px at s = 1, origin = slope centre. t = time (bob), sc = pop-in */
+export function smDownhill(x, y, s = 1, { t = 0, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  ctx.beginPath(); ctx.moveTo(-210, -40); ctx.lineTo(210, 90); ctx.lineTo(210, 140); ctx.lineTo(-210, 140); ctx.closePath(); ctx.fillStyle = C.leaf; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-210, -40); ctx.lineTo(210, 90); ctx.lineTo(210, 110); ctx.lineTo(-210, -20); ctx.closePath(); ctx.fillStyle = '#4A9659'; ctx.fill();
+  const b = Math.abs(Math.sin(t * 9)) * 12;
+  ctx.save(); ctx.translate(-10, -150 - b); ctx.rotate(-0.1); athleteIcon(0, 0, 0.95); ctx.restore();
+  ctx.restore();
+}
+
+/** ache meter (graphic): ink-rimmed white bar, red fill to level 0..1 with tick marks, "ACHE" ink pill on its left end.
+ *  w = bar width px (origin = bar centre). sc = pop-in */
+export function smAcheMeter(x, y, w, level = 0, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  rr(-w / 2 - 10, -46, w + 20, 92, 46); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-w / 2, -36, w, 72, 36); ctx.fillStyle = C.white; ctx.fill();
+  const lv = clamp(level);
+  if (lv > 0.01) { ctx.save(); rr(-w / 2, -36, w, 72, 36); ctx.clip(); ctx.fillStyle = C.red; ctx.fillRect(-w / 2, -36, w * lv, 72); ctx.fillStyle = '#B01F2F'; ctx.fillRect(-w / 2, 12, w * lv, 24); ctx.restore(); }
+  for (let k = 1; k < 5; k++) line([[-w / 2 + w * k / 5, -36], [-w / 2 + w * k / 5, -18]], C.ink, 5);
+  ctx.restore();
+  pill('ACHE', x - w / 2 - 95, y, 40, C.ink, C.white, sc);
+}
+
+/** next-topic badge (recorded voice): white disc, ink ring, an ink microphone with two yellow sound arcs. sc = pop-in */
+export function smVoiceBadge(x, y, s = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white); ctx.translate(-22, 0);
+  rr(-34, -90, 68, 120, 34); ctx.fillStyle = C.ink; ctx.fill(); rr(-20, -78, 18, 60, 9); ctx.fillStyle = '#55555F'; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, -10, 56, 0.1 * Math.PI, 0.9 * Math.PI); ctx.strokeStyle = C.ink; ctx.lineWidth = 12; ctx.stroke();
+  line([[0, 46], [0, 84]], C.ink, 12); line([[-36, 86], [36, 86]], C.ink, 12);
+  for (const r of [64, 88]) { ctx.beginPath(); ctx.arc(14, -24, r, -0.5, 0.4); ctx.strokeStyle = C.yellow; ctx.lineWidth = 12; ctx.stroke(); }
+  ctx.restore();
+}
