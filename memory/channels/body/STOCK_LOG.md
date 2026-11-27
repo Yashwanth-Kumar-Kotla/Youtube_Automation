@@ -76,3 +76,5 @@
 - 2026-11-26 02:28 · 2026-11-14-body-03 scheduled → ready · slot on 2026-11-25 missed its window
 - 2026-11-26 02:28 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-26, episode 16, manual upload
 - 2026-11-27 03:43 · 2026-11-27-body-01 added · conf 0.7 · question+groggy-or-sharp-number · What happens when you hit snooze?
+- 2026-11-27 03:44 · 2026-11-14-body-03 scheduled → ready · slot on 2026-11-26 missed its window
+- 2026-11-27 03:44 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-27, episode 16, manual upload
