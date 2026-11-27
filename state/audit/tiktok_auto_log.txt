@@ -12,8 +12,9 @@ skip 2026-11-24-body-06: already in the TikTok inbox
 skip 2026-11-24-body-07: already in the TikTok inbox
 skip 2026-11-24-body-08: already in the TikTok inbox
 skip 2026-11-25-body-01: already in the TikTok inbox
-draft sent 2026-11-25-body-02 -> v_inbox_file~v2.7712784753287596046  (What Happens When You Yawn, and Why Is It Contagious?)
-draft sent 2026-11-25-body-03 -> v_inbox_file~v2.7712784785038641166  (What Happens When You Get Heartburn?)
-draft sent 2026-11-25-body-04 -> v_inbox_file~v2.7712784786254972941  (What Happens When You Don't Drink Enough Water?)
-draft sent 2026-11-27-body-01 -> v_inbox_file~v2.7712784961060767758  (What Happens When You Hit Snooze?)
-27 drafts recorded in state/tiktok_drafts.json
+skip 2026-11-25-body-02: already in the TikTok inbox
+skip 2026-11-25-body-03: already in the TikTok inbox
+skip 2026-11-25-body-04: already in the TikTok inbox
+skip 2026-11-27-body-01: already in the TikTok inbox
+draft sent 2026-11-27-body-02 -> v_inbox_file~v2.7712786462604937230  (What Happens When You Get Hangry?)
+28 drafts recorded in state/tiktok_drafts.json
