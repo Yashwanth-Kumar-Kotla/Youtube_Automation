@@ -9947,3 +9947,223 @@ export function dvTimer(x, y, s, ang, { few = 0, fewA = 1.1, over = 0 } = {}) {
   circle(0, 0, 24, C.watch);
   ctx.restore();
 }
+
+// ═════════════════════════ SWEAT SET (2026-11-28 "what happens when you sweat", prefix sw) ═════════════════════════
+// Macro skin lens with one fresh sweat drop + faint bacteria specks (the hook / guess / answer / loop picture), a sniffing
+// side-on nose, an x-ray skin cross-section (eccrine coil gland + duct, or the bigger apocrine gland opening into a hair
+// follicle in the armpit), a thick sticky stress-sweat drop, gland dots for the body map, breath fog, the runny-nose
+// end-card badge. Flat fills, one darker shade, one light highlight.
+const swEo = (t) => 1 - Math.pow(1 - t, 3), swEob = (t) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+const SW_PORE = '#C98E72', SW_STICKY = '#F3E2A6', SW_STICKY_D = '#D9C27A', SW_STICKY_L = '#FFF6D6', SW_FOG = '#FFFFFF', SW_SNOW = '#E6F2F8';
+
+/** macro skin surface for lens interiors (lens-local coords, radius r): skin fill, soft shade blobs, pores, a few fine hairs */
+export function swSkinMacro(r, { flush = 0 } = {}) {
+  ctx.fillStyle = flush > 0 ? mixHex(C.skin, BURN_SK, 0.35 * clamp(flush)) : C.skin; ctx.fillRect(-r - 20, -r - 20, 2 * r + 40, 2 * r + 40);
+  for (let i = 0; i < 6; i++) ell((rnd(i + 3) - 0.5) * 1.6 * r, (rnd(i + 9) - 0.5) * 1.6 * r, r * (0.25 + 0.2 * rnd(i + 5)), r * (0.14 + 0.1 * rnd(i + 7)), C.skinShade + '55', rnd(i) * 3);
+  for (let i = 0; i < 26; i++) {
+    const px = (rnd(i + 31) - 0.5) * 1.9 * r, py = (rnd(i + 57) - 0.5) * 1.9 * r;
+    if (Math.hypot(px, py) > r - 10) continue;
+    ell(px, py, r * 0.018, r * 0.012, SW_PORE);
+    if (i % 4 === 0) line([[px, py], [px + r * 0.09, py - r * 0.05]], C.hair, Math.max(3, r * 0.01));
+  }
+}
+
+/** faint bacteria specks (tiny pale-green capsules) scattered round a point. a 0..1 = how visible; grow 0..1 turns them
+ *  into full bacterium() characters closing in on (x, y); t = scene clock (they wiggle, periodic) */
+export const SW_SPECKS = [[-150, -95, 0.4], [160, -60, 2.2], [-175, 70, -0.7], [130, 120, 1.3], [-40, 175, 2.9], [30, -170, -1.9]];
+export function swSpecks(x, y, k, a = 1, t = 0, grow = 0, close = 0) {
+  if (a <= 0) return;
+  const g = clamp(grow), c = clamp(close);
+  SW_SPECKS.forEach(([sx, sy, rot], i) => {
+    const px = x + sx * k * (1 - 0.45 * c) + Math.sin(t * 2.2 + i) * 4 * k, py = y + sy * k * (1 - 0.45 * c) + Math.cos(t * 1.9 + i) * 4 * k;
+    const face = Math.atan2(y - py, x - px);
+    if (g > 0.05) bacterium(px, py, lerp(0.12, 0.42, g) * k, face, t, 1);
+    else { ctx.save(); ctx.globalAlpha = 0.45 * clamp(a); ctx.translate(px, py); ctx.rotate(rot); rr(-9 * k, -4 * k, 18 * k, 8 * k, 4 * k); ctx.fillStyle = GERM_D; ctx.fill(); ctx.restore(); }
+  });
+}
+
+/** inhale / sniff lines: three short curved dashes flowing from (x0, y0) toward (x1, y1) (the nostrils). t = scene clock, a = alpha */
+export function swSniff(x0, y0, x1, y1, t, a = 1, col = C.ink) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.lineCap = 'round';
+  for (let k = 0; k < 3; k++) {
+    const u = ((t * 0.9 + k / 3) % 1), off = (k - 1) * 34;
+    const P = []; for (let j = 0; j <= 6; j++) { const v = clamp(u * 0.75 + j * 0.04); P.push([lerp(x0, x1, v) + Math.sin(v * 8 + k) * 10, lerp(y0, y1, v) + off * (1 - v)]); }
+    ctx.globalAlpha = clamp(a) * Math.sin(u * Math.PI); line(P, col, 9);
+  }
+  ctx.restore();
+}
+
+/** side-on cartoon nose (cartoonNose turned so the nostrils face `ang`, default left). wrinkle 0..1 = a scrunch (stink) */
+export function swNose(x, y, s = 1, { ang = Math.PI, wrinkle = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(ang - Math.PI / 2);
+  cartoonNose(0, 0, s, { sc, squeeze: 0.6 * clamp(wrinkle), t });
+  if (wrinkle > 0) { ctx.save(); ctx.globalAlpha = clamp(wrinkle); ctx.scale(s * sc, s * sc); for (const dy of [-120, -96, -72]) line([[-26, dy], [26, dy]], C.skinShade, 7); ctx.restore(); }
+  ctx.restore();
+}
+
+/** a sweat bead sitting on a surface (dome, side view): base at (x, y), w px wide. amt 0..1 shrinks it (evaporating) */
+export function swBead(x, y, w, amt = 1, col = [WATER_D, C.sky]) {
+  const a = clamp(amt); if (a <= 0.01) return;
+  const rw = w / 2 * (0.4 + 0.6 * a), rh = w * 0.42 * a;
+  ctx.beginPath(); ctx.ellipse(x, y, rw + 6, rh + 6, 0, Math.PI, TAU); ctx.closePath(); ctx.fillStyle = col[0]; ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x, y, rw, rh, 0, Math.PI, TAU); ctx.closePath(); ctx.fillStyle = col[1]; ctx.fill();
+  ell(x - rw * 0.4, y - rh * 0.55, rw * 0.16, rh * 0.18, C.white, -0.5);
+}
+
+/** thick sticky stress-sweat drop (creamy pale yellow, darker edge, glint) hanging at (x, y), tip up like drop().
+ *  stretch 0..1 pulls sticky strings below it; bite 0..1 takes bites out of it (bacteria munching) */
+export function swStickyDrop(x, y, s = 1, { stretch = 0, bite = 0, a = 1, bg = C.skin } = {}) {
+  if (a <= 0 || s <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.scale(s, s);
+  const st = clamp(stretch);
+  if (st > 0) for (const sx of [-14, 12]) { line([[sx, 30], [sx * 0.6, 40 + 70 * st]], SW_STICKY_D, 12); line([[sx, 30], [sx * 0.6, 40 + 70 * st]], SW_STICKY, 6); circle(sx * 0.6, 42 + 70 * st, 9, SW_STICKY_D); circle(sx * 0.6, 42 + 70 * st, 6, SW_STICKY); }
+  const p = (k) => { ctx.beginPath(); ctx.moveTo(0, -46 * k); ctx.bezierCurveTo(18 * k, -22 * k, 34 * k, 0, 34 * k, 16 * k); ctx.arc(0, 16 * k, 34 * k, 0, Math.PI); ctx.bezierCurveTo(-34 * k, 0, -18 * k, -22 * k, 0, -46 * k); };
+  p(1.12); ctx.fillStyle = SW_STICKY_D; ctx.fill(); p(1); ctx.fillStyle = SW_STICKY; ctx.fill();
+  ell(-12, 10, 8, 13, SW_STICKY_L, 0.3); circle(14, 28, 6, SW_STICKY_L);
+  const b = clamp(bite);
+  if (b > 0) {   // bites: scalloped notches in the bg colour round the right + left edges
+    for (const [bx, by, br, k] of [[34, 4, 16, 0], [-34, 26, 15, 0.3], [24, 44, 14, 0.6], [-8, -34, 12, 0.8]]) if (b > k) circle(bx, by, br * clamp((b - k) * 4), bg);
+  }
+  ctx.restore();
+}
+
+/** X-RAY skin cross-section lens (sweat glands). (x, y, r) = lens; surface line at lens-local y = -0.36 r: cream air above,
+ *  a skin band, then navy x-ray dermis with cyan outlines. kind 'eccrine': a coiled cyan gland deep down, its duct runs
+ *  straight up to a pore; rise 0..1 sends a pale-blue sweat drop up the duct and out into a bead on the surface; salt 0..1
+ *  pops tiny white salt grains in it; evap 0..1 shrinks the bead with vapour wisps. kind 'apocrine': a big pink lobed gland
+ *  (bigger, deeper) whose duct opens into a hair follicle (hair shaft out of the skin); wake 0..1 opens its eyes + swells it;
+ *  ooze 0..1 pushes a thick creamy drop out next to the hair. pump 0..1 squeezes the gland. t = film time. sc = pop-in.
+ *  Returns canvas points: { pore, bead } */
+export function swSection(x, y, r, { kind = 'eccrine', rise = 0, salt = 0, evap = 0, wake = 0, ooze = 0, stretch = 0, pump = 0, t = 0, sc = 1 } = {}) {
+  const k = r / 400, SY = -144, out = { pore: [x + (kind === 'eccrine' ? 0 : 60) * k * sc, y + SY * k * sc], bead: [x, y + (SY - 40) * k * sc] };
+  if (sc <= 0) return out;
+  lens(x, y, r, sc, () => {
+    ctx.save(); ctx.scale(k, k);
+    ctx.fillStyle = C.bg; ctx.fillRect(-420, -420, 840, 420 + SY);
+    ctx.fillStyle = C.xnavy; ctx.fillRect(-420, SY, 840, 840);
+    // skin band (epidermis) with a soft wavy lower edge
+    ctx.beginPath(); ctx.moveTo(-420, SY); ctx.lineTo(420, SY); ctx.lineTo(420, SY + 56);
+    for (let i = 20; i >= 0; i--) { const px = -420 + i * 42; ctx.lineTo(px, SY + 56 + Math.sin(i * 1.3) * 10); }
+    ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+    ctx.fillStyle = C.skinShade; ctx.fillRect(-420, SY + 34, 840, 8);
+    for (let i = 0; i < 7; i++) { const px = -360 + i * 120 + (i % 2) * 30, py = SY + 150 + (i % 3) * 60; ctx.save(); ctx.globalAlpha = 0.5; line([[px - 40, py], [px + 40, py + 8]], C.cyan, 4); ctx.restore(); }
+    const pp = clamp(pump), squ = 1 - 0.07 * Math.sin(pp * Math.PI * 4) * pp;
+    if (kind === 'eccrine') {
+      // duct: two cyan walls from the coil to the pore
+      const DX = 0, CY = 200;
+      for (const sd of [-1, 1]) line([[DX + sd * 14, SY + 4], [DX + sd * 14, CY - 40]], C.cyan, 7);
+      // coil: overlapping loops
+      ctx.save(); ctx.translate(DX, CY); ctx.scale(squ, 1 / squ);
+      for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.ellipse(-50 + i * 25, (i % 2) * 18, 46, 34, 0.4 * (i % 2 ? 1 : -1), 0, TAU); ctx.fillStyle = C.xnavy; ctx.fill(); ctx.lineWidth = 9; ctx.strokeStyle = C.cyan; ctx.stroke(); }
+      ctx.restore();
+      // the travelling drop + the bead
+      const rs = clamp(rise);
+      if (rs > 0 && rs < 0.7) { const u = rs / 0.7; drop(DX, lerp(CY - 30, SY + 30, u), 0.42, 0, 1); }
+      if (rs >= 0.6) {
+        const g = clamp((rs - 0.6) / 0.4), ev = clamp(evap);
+        swBead(DX, SY, 150 * g, 1 - ev);
+        const sa = clamp(salt) * (1 - ev);
+        if (sa > 0) for (const [gx, gy, rot] of [[-22, -22, 0.3], [18, -34, -0.4], [8, -12, 0.8]]) saltGrain(DX + gx, SY + gy, 0.7 * sa, rot, 1);
+        if (ev > 0) for (let i = 0; i < 3; i++) {
+          const u = (t * 0.7 + i / 3) % 1, wx = DX - 50 + i * 50;
+          const P = []; for (let j = 0; j <= 10; j++) P.push([wx + Math.sin(j * 0.8 + t * 6 + i) * 12, SY - 70 - u * 140 - j * 9]);
+          ctx.save(); ctx.globalAlpha = ev * Math.sin(u * Math.PI); line(P, WATER_D, 12); line(P, C.sky, 6); ctx.restore();
+        }
+      }
+    } else {
+      // hair follicle + shaft
+      const FX = 60, FB = 170;
+      ctx.beginPath(); ctx.moveTo(FX - 30, SY + 10); ctx.quadraticCurveTo(FX - 40, FB - 20, FX - 10, FB + 20); ctx.lineTo(FX + 30, FB + 20); ctx.quadraticCurveTo(FX + 50, FB - 20, FX + 30, SY + 10); ctx.closePath();
+      ctx.fillStyle = C.xnavy; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = C.cyan; ctx.stroke();
+      line([[FX + 8, FB], [FX + 6, SY], [FX + 40, SY - 190]], C.hair, 16); line([[FX + 4, FB - 10], [FX + 3, SY - 4]], C.hairHi, 5);
+      // duct from the gland into the follicle
+      const GX = -120, GY = 250, wk = clamp(wake);
+      line([[GX + 60, GY - 50], [FX - 30, FB - 50]], C.cyan, 20); line([[GX + 60, GY - 50], [FX - 30, FB - 50]], C.xnavy, 8);
+      ctx.save(); ctx.translate(GX, GY); ctx.scale(squ * (1 + 0.12 * wk), (1 + 0.12 * wk) / squ);
+      swGland(0, 0, 1.35, wk);
+      ctx.restore();
+      const oz = clamp(ooze);
+      if (oz > 0) swStickyDrop(FX - 50, SY - 70 * oz, 2.0 * swEo(Math.min(1, oz * 1.4)), { stretch, bg: C.bg });
+    }
+    ctx.restore();
+  }, C.xnavy);
+  return out;
+}
+
+/** the armpit (apocrine) gland as a character: glandIcon (pink lobes, no dashed ring) with eyes. wake 0..1: asleep (closed
+ *  lines) → eyes pop open. ~320x200 px at s = 1.35 */
+export function swGland(x, y, s = 1, wake = 0, a = 1) {
+  if (a <= 0 || s <= 0) return;
+  glandIcon(x, y, s, 0, a, false);
+  ctx.save(); ctx.globalAlpha = clamp(a); ctx.translate(x, y); ctx.scale(s / 1.35, s / 1.35);
+  const wk = clamp(wake);
+  for (const ex of [-30, 30]) {
+    if (wk < 0.5) line([[ex - 12, -4], [ex + 12, -4]], C.ink, 7);
+    else { circle(ex, -4, 14 * swEob(clamp((wk - 0.5) * 2)), C.white); circle(ex + 2, -2, 7 * clamp((wk - 0.5) * 2), C.ink); }
+  }
+  ctx.restore();
+}
+
+/** gland dots for the hero body map: dots in the hero's local frame (front view, man() origin = chest centre).
+ *  n 0..1 = how many of the spread dots show; palms / soles 0..1 = dense clusters on the hands + feet. s = hero scale */
+export function swGlandDots(x, y, s, { n = 1, palms = 0, soles = 0, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const dot = (px, py, r, a) => { if (a <= 0) return; ctx.save(); ctx.globalAlpha = clamp(a); circle(px, py, r + 4, C.ink); circle(px, py, r, C.yellow); ctx.restore(); };
+  const N = 70, shown = Math.floor(N * clamp(n));
+  for (let i = 0; i < shown; i++) {
+    const zone = i % 5; let px, py;
+    if (zone === 0) { px = (rnd(i + 1) - 0.5) * 60; py = -240 + rnd(i + 2) * 40; }                       // neck
+    else if (zone <= 2) { px = (rnd(i + 3) - 0.5) * 280; py = -190 + rnd(i + 4) * 390; }                 // chest / back
+    else if (zone === 3) { const sd = rnd(i + 5) > 0.5 ? 1 : -1, u = rnd(i + 6); px = sd * lerp(150, 176, u); py = lerp(-150, 110, u); }   // arms
+    else { const sd = rnd(i + 7) > 0.5 ? 1 : -1; px = sd * (67 + (rnd(i + 8) - 0.5) * 80); py = 240 + rnd(i + 9) * 320; }    // legs
+    dot(px, py, 9, 1);
+  }
+  const pa = clamp(palms), so = clamp(soles);
+  for (const sd of [-1, 1]) for (let i = 0; i < 12; i++) {
+    const an = rnd(i + 20) * TAU, rr2 = rnd(i + 21) * 30;
+    dot(sd * 176 + Math.cos(an) * rr2, 140 + Math.sin(an) * rr2 * 0.8, 8, pa * 1.5 - i * 0.04);
+    dot(sd * 67 + Math.cos(an) * rr2 * 1.6, 600 + Math.sin(an) * rr2 * 0.4, 8, so * 1.5 - i * 0.04);
+  }
+  ctx.restore();
+}
+
+/** breath fog: three soft white puffs drifting out from (x, y) to the side dir (1 = right). t = film time, a = alpha */
+export function swFog(x, y, s = 1, t = 0, a = 1, dir = 1) {
+  if (a <= 0) return;
+  for (let i = 0; i < 3; i++) {
+    const u = (t * 0.6 + i / 3) % 1, px = x + dir * u * 220 * s, py = y - u * 40 * s, r = (24 + u * 50) * s;
+    ctx.save(); ctx.globalAlpha = clamp(a) * 0.85 * Math.sin(u * Math.PI);
+    circle(px, py, r, SW_FOG); circle(px + dir * r * 0.6, py - r * 0.3, r * 0.7, SW_FOG); circle(px - dir * r * 0.5, py + r * 0.2, r * 0.6, SW_FOG);
+    ctx.restore();
+  }
+}
+
+/** cold outdoor backdrop: pale sky, snow ground from y = ground (snow lip), falling snowflakes (periodic). snow 0..1 = how many */
+export function swColdBg(t, ground = 1120, snow = 1) {
+  fillAll(C.sky);
+  ctx.fillStyle = SW_SNOW; ctx.fillRect(-300, ground, W + 600, H);
+  ctx.beginPath(); ctx.moveTo(-300, ground); for (let i = 0; i <= 14; i++) ctx.lineTo(-300 + i * 120, ground - 18 - Math.sin(i * 1.7) * 14); ctx.lineTo(W + 300, ground + 20); ctx.lineTo(-300, ground + 20); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  const n = Math.round(16 * clamp(snow));
+  for (let i = 0; i < n; i++) {
+    const px = 60 + rnd(i + 70) * 960 + Math.sin(t * 1.3 + i) * 20, py = ((rnd(i + 80) * 1100 + t * (60 + rnd(i) * 40)) % 1100) + 40;
+    snowflake(px, py, 14 + rnd(i + 90) * 10, C.white, 6, t * 0.5 + i);
+  }
+}
+
+/** next-episode badge for the end card: white disc, ink ring, a cartoon nose with a pale-blue drip and a tiny radiator
+ *  heater tucked under it ("a built-in heater"). ~300 px at s = 1. sc = pop-in, t = film time */
+export function swNoseBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.sky);
+  for (let i = 0; i < 4; i++) snowflake(-90 + i * 58, -92 + (i % 2) * 40, 12, C.white, 5, i);
+  cartoonNose(-8, 20, 0.55);
+  drop(-30, 76, 0.42, 0, 1);
+  heater(66, 66, 0.36, { heat: 1, t, edge: true });
+  ctx.restore();
+}
+
+/** palms-up pose (hands raised in front of the chest, looking at them): for arm and armL */
+ARM.swPalms = { e: [200, 10], h: [120, -110] };

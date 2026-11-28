@@ -1967,6 +1967,51 @@
    "branch": "stock/body/2026-11-28-body-02",
    "history": [],
    "description": "Send this to the friend who always says 'I've been here before.'\nAn estimated 97% of people have had déjà vu (Cleveland Clinic). In a small St Andrews brain-scan study, the memory parts weren't the ones that lit up: frontal decision-making areas did, which researchers read as your brain fact-checking a false sense of familiarity (ScienceAlert; Memory, 2018; BBC Science Focus). In healthy people it usually happens a couple of times a year; seizures limited to the temporal lobe can also cause the feeling, so if it lasts longer than a few seconds or comes with confusion, loss of awareness or shaking, talk to a doctor (Cleveland Clinic).\nNext Body File: sweat, up to four million glands.\nFollow Body Files for a new one every day.\n#bodyfiles #dejavu #brain #memory #humanbody #science #shorts\n\nSources:\nCleveland Clinic, Deja Vu: What It Is and When It May Be Cause for Concern: https://health.clevelandclinic.org/deja-vu-what-it-is-and-when-it-may-be-cause-for-concern\nScienceAlert, This new study might actually explain the weirdness that is deja vu: https://www.sciencealert.com/this-new-study-might-actually-explain-the-weirdness-that-is-deja-vu\nUrquhart et al. 2018, Memory, fMRI evidence supporting the role of memory conflict in the deja vu experience: https://research-portal.st-andrews.ac.uk/en/publications/fmri-evidence-supporting-the-role-of-memory-conflict-in-the-d%C3%A9j%C3%A0-/\nBBC Science Focus, What deja vu says about your brain health: https://www.sciencefocus.com/the-human-body/deja-vu\nCleveland Clinic, Eccrine Glands (next video): https://my.clevelandclinic.org/health/body/eccrine-glands"
+  },
+  "2026-11-28-body-03": {
+   "title": "What Happens When You Sweat?",
+   "hashtags": [
+    "#bodyfiles",
+    "#sweat",
+    "#bodyodor",
+    "#humanbody",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "Be honest: how many times a day do you sniff-check your armpit? Give a number. And your guess before the reveal: does fresh sweat A) stink or B) smell like nothing?",
+   "series": "Body Files",
+   "topic": "What happens when you sweat?",
+   "experiment_arm": "len-33-35 + loop-close",
+   "teases": "What happens when your nose runs in the cold?",
+   "topic_cluster": "sweat",
+   "topic_source": "backlog #1: mandatory, promised by the déjà vu video (work/2026-11-28-body-2) with 'Next Body File: sweat, up to four million glands.'; 'four million glands' is paid off word for word in line 2 (Cleveland Clinic Eccrine Glands: 2 to 4 million). Cluster sweat had 0 in stock",
+   "hook_pattern": "question+stink-or-nothing-number",
+   "format": "sniff-test reveal",
+   "first_frame": "object-closeup",
+   "structure_note": "Sniff-test reveal: one sweat drop followed from gland to smell. Beat 1: extreme close-up of a single fresh sweat drop on the hero's forearm mid-workout, a cartoon nose hovering over it, pills 'A STINKS' / 'B SMELLS OF NOTHING' and a tiny tag 'UP TO 4 MILLION GLANDS'. Beat 2: x-ray cyan skin cross-section, coiled glands pumping salty water up a duct; the drop evaporates into wavy heat lines (cooling). Beat 3: heat-map of the body, palms and soles glowing densest. Relatable: hero at a job-interview desk, palms shining. Re-hook: hard cut and zoom into the armpit, a second, bigger gland type wakes up and oozes a thicker, stickier drop. Then bacteria characters swarm and munch the drop; green stink lines appear only after they bite. Reveal: pill B gets the check. Safety: calm card, a thermometer and dry skin icon, phone icon. Tease: hero outside in cold air, breath fog, a drip at the nose tip, then cut back to frame 1's sweat drop close-up. Distinct from the last videos: no doorway, no scan, no diary, no lineup, no showdown, no nerve map.",
+   "safety": "Curious-friend tone, no personal medical advice, no deodorant or product advice. Voiced safety line uses NHS heatstroke signs ('hot skin that's not sweating', 'confused' -> 'Call 999') phrased as 'Call emergency services' for the US audience. Cleveland Clinic 'sudden change in body odor or sweating' pointer is in the description only. Dropped or not voiced: '4 liters of sweat per hour' (true per Cleveland Clinic Eccrine Glands but an extreme-sounding number that invites challenge framing), specific bacteria species (not on Cleveland Clinic pages), fruity-odor/diabetes link (cut for length and scare risk).",
+   "engagement": {
+    "guess": "A stinks vs B smells like nothing: does fresh sweat smell? (answer: B, smells like nothing; Cleveland Clinic Sweat: 'sweat itself doesn't stink. It actually doesn't even have a smell'; Cleveland Clinic Body Odor: 'Sweat itself is odorless'. Option A is what most viewers expect from gym clothes)",
+    "relatable": "Ever had sweaty palms before a big moment?",
+    "rehook_line": 6,
+    "answer_line": 9,
+    "answer_word_position": "101 words by whitespace: 5+15+7+7+7+8+9+9+6 = 73 before the answer, then 10+8+10. The answer starts at word 74 = 72.3% (73/101 spoken before it). If the counter splits 'built-in': 73/102 = 71.6%. Relatable starts at word 41 (40%), re-hook at word 50 (48.5%). Two lines follow the answer line (safety, tease). Short words throughout (paper-cut video: ~3.1 words/s; recorded-voice video: 104 short words = 34.6 s), so expect ~33.5-35 s. If it voices over 35.5 s, cut 'up' (line 6) and 'start' (line 8) first; if under 33 s, add 'right' before 'before a big moment' (line 5).",
+    "first_frame": "An extreme close-up of one fresh sweat drop on the hero's forearm mid-workout with a cartoon nose sniffing it, the pills 'A STINKS' and 'B SMELLS OF NOTHING' and a tiny 'UP TO 4 MILLION GLANDS' tag already on screen, so the sweat, the number and the guess all show before the first word.",
+    "rewatch_detail": "In the skin cross-section, the drop leaving the duct carries a tiny label '99% WATER' (Cleveland Clinic Sweat), and in frame 1 the bacteria are already there as faint specks around the drop, too small to notice until they swarm in line 8.",
+    "loop": "The tease ends on 'a built-in heater' with the hero's cold-air breath fog, then the camera snaps back to the exact frame-1 close-up of the single sweat drop on his forearm with the sniffing nose, so the replay opening 'What happens when you sweat?' lands on the same image."
+   },
+   "id": "2026-11-28-body-03",
+   "channel": "body",
+   "made_at": "2026-11-28T04:13-06:00",
+   "made_week": "2026-W48",
+   "playbook_version": "pb-a66cc658",
+   "research_file": "research/2026-W46.md",
+   "length": 35.7,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-28-body-03",
+   "history": [],
+   "description": "Send this to the friend who sniff-checks their armpit after the gym.\nYou have 2 to 4 million eccrine sweat glands, packed tightest on your palms and soles, and their sweat is about 99% water with a little salt that cools you as it evaporates. Fresh sweat itself has no smell: the odor starts when bacteria on your skin break it down, mostly the thicker 'stress sweat' from apocrine glands in your armpits (Cleveland Clinic). A sudden change in body odor or sweating is worth a talk with a doctor (Cleveland Clinic); hot skin that has stopped sweating plus confusion can mean heatstroke, an emergency (NHS).\nNext Body File: why your nose runs in the cold.\nFollow Body Files for a new one every day.\n#bodyfiles #sweat #bodyodor #humanbody #science #shorts\n\nSources:\nCleveland Clinic, Eccrine Glands: https://my.clevelandclinic.org/health/body/eccrine-glands\nCleveland Clinic, What Is Sweat & Why Do We Sweat?: https://my.clevelandclinic.org/health/body/sweat\nCleveland Clinic, Body Odor: https://my.clevelandclinic.org/health/diseases/17865-body-odor\nCleveland Clinic, Hyperhidrosis: https://my.clevelandclinic.org/health/diseases/17113-hyperhidrosis\nNHS, Heat exhaustion and heatstroke: https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/\nHarvard Health, Why does your nose run in cold weather? (next video): https://www.harvardhealth.org/staying-healthy/you-dont-say-why-does-your-nose-run-in-cold-weather"
   }
  }
 }

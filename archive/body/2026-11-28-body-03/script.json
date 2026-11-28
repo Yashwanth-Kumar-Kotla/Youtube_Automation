@@ -1,0 +1,67 @@
+{
+ "title": "What Happens When You Sweat?",
+ "voice": "am_michael",
+ "speed": 1.15,
+ "lead": 0.4,
+ "outro": 0.9,
+ "gap": 0.24,
+ "music": "bed",
+ "sources": [
+  "Cleveland Clinic, 'Eccrine Glands' (checked 2026-11-28): 'You have anywhere from 2 million to 4 million eccrine sweat glands' (line 2: 'Up to four million sweat glands'); 'They're most tightly packed together on the palms of your hands and the soles of your feet' (line 5); sweat is 'made up mostly of water and electrolytes' (line 3); 'the sweat evaporates ... This process cools your body' (line 4): https://my.clevelandclinic.org/health/body/eccrine-glands",
+  "Cleveland Clinic, 'What Is Sweat & Why Do We Sweat?' (checked 2026-11-28): eccrine sweat is 'about 99% water', with sodium and chloride ('the two components of table salt') making up most of the rest (line 3: 'salty water'); apocrine glands make 'stress sweat' that's 'thicker and stickier, typically in moments when you're anxious or nervous', mostly in the armpits and groin (lines 6-7); emotional sweating's most common areas include the palms (line 5 relatable); 'sweat itself doesn't stink. It actually doesn't even have a smell. The odor is produced when bacteria that naturally live on your skin start breaking down the sweat' (lines 8-9, the answer): https://my.clevelandclinic.org/health/body/sweat",
+  "Cleveland Clinic, 'Body Odor' (medically reviewed 2022-03-04, checked 2026-11-28): 'Sweat itself is odorless'; 'Body odor happens when bacteria on your skin come in contact with sweat'; 'You can find apocrine glands in your groin and armpits'; 'Stress can cause your apocrine glands to activate' (lines 6, 9); see a provider for 'a sudden change in body odor or increase in sweating' (description): https://my.clevelandclinic.org/health/diseases/17865-body-odor",
+  "Cleveland Clinic, 'Hyperhidrosis' (checked 2026-11-28): eccrine sweating 'activates when you exercise or if you're nervous'; triggers include 'stress, anxiety, fear or nervousness' (line 5 relatable: sweaty palms before a big moment): https://my.clevelandclinic.org/health/diseases/17113-hyperhidrosis",
+  "NHS, 'Heat exhaustion and heatstroke' (checked 2026-11-28): heatstroke signs include 'hot skin that's not sweating', and 'Call 999 now if' they are 'confused' (line 10: 'Hot, dry skin and confused? Call emergency services'): https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/",
+  "Tease (next video): Harvard Health, 'You don't say? Why does your nose run in cold weather?' (2021-12-01): a runny nose in the cold is 'a sign that the nose is doing its job to heat up and moisturize air before it enters the lungs' (line 11: 'a built-in heater'): https://www.harvardhealth.org/staying-healthy/you-dont-say-why-does-your-nose-run-in-cold-weather"
+ ],
+ "lines": [
+  {
+   "text": "What happens when you sweat?",
+   "caps": "WHAT *HAPPENS | WHEN YOU *SWEAT?"
+  },
+  {
+   "text": "Up to four million sweat glands. Fresh sweat: does it stink, or smell like nothing?",
+   "caps": "*UP TO | *FOUR MILLION | SWEAT *GLANDS | *FRESH SWEAT | DOES IT *STINK | OR *SMELL | LIKE *NOTHING?"
+  },
+  {
+   "text": "Most of them pour out salty water.",
+   "caps": "*MOST OF THEM | *POUR OUT | *SALTY WATER"
+  },
+  {
+   "text": "It evaporates, and that cools you down.",
+   "caps": "IT *EVAPORATES | AND THAT *COOLS | YOU *DOWN"
+  },
+  {
+   "text": "They're packed tightest on palms and feet.",
+   "caps": "THEY'RE *PACKED | *TIGHTEST ON | *PALMS | AND *FEET"
+  },
+  {
+   "text": "Ever had sweaty palms before a big moment?",
+   "caps": "EVER *HAD | *SWEATY PALMS | BEFORE A *BIG | *MOMENT?"
+  },
+  {
+   "text": "But here's the twist: stress wakes other glands.",
+   "caps": "BUT *HERE'S | THE *TWIST | *STRESS WAKES | OTHER *GLANDS"
+  },
+  {
+   "text": "In your armpits, they make thicker, stickier stress sweat.",
+   "caps": "IN YOUR *ARMPITS | THEY MAKE *THICKER | *STICKIER | STRESS *SWEAT"
+  },
+  {
+   "text": "Skin bacteria break it down.",
+   "caps": "SKIN *BACTERIA | *BREAK IT | *DOWN"
+  },
+  {
+   "text": "Answer: fresh sweat smells like nothing. Bacteria make the stink.",
+   "caps": "*ANSWER | FRESH *SWEAT | SMELLS LIKE *NOTHING | *BACTERIA | MAKE THE *STINK"
+  },
+  {
+   "text": "Hot, dry skin and confused? Call emergency services.",
+   "caps": "HOT, *DRY SKIN | AND *CONFUSED? | CALL *EMERGENCY | *SERVICES"
+  },
+  {
+   "text": "Next Body File: cold air, runny nose, a built-in heater.",
+   "caps": "NEXT BODY *FILE | *COLD AIR | *RUNNY NOSE | A *BUILT-IN | *HEATER"
+  }
+ ]
+}

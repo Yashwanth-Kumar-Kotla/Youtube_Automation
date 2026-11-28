@@ -85,3 +85,4 @@
 - 2026-11-28 03:57 · 2026-11-14-body-03 scheduled → ready · slot on 2026-11-27 missed its window
 - 2026-11-28 03:57 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-28, episode 16, manual upload
 - 2026-11-28 04:10 · 2026-11-28-body-02 added · conf 0.7 · question+memory-or-decider-number · What happens when you get déjà vu?
+- 2026-11-28 04:13 · 2026-11-28-body-03 added · conf 0.7 · question+stink-or-nothing-number · What happens when you sweat?
