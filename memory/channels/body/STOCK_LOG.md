@@ -82,3 +82,5 @@
 - 2026-11-27 04:00 · 2026-11-27-body-03 added · conf 0.7 · question+glitch-or-guard-number · What happens when you get a paper cut?
 - 2026-11-27 04:04 · 2026-11-27-body-04 added · conf 0.7 · question+up-or-down-number · What happens when your muscles get sore days after a workout?
 - 2026-11-28 03:56 · 2026-11-28-body-01 added · conf 0.7 · question+blind-test-better-or-worse-number · What happens when you hear your own voice on a recording?
+- 2026-11-28 03:57 · 2026-11-14-body-03 scheduled → ready · slot on 2026-11-27 missed its window
+- 2026-11-28 03:57 · 2026-11-14-body-03 ready → scheduled · slot 0 on 2026-11-28, episode 16, manual upload
