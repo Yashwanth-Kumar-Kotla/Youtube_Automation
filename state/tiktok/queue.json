@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-28T10:10:57+00:00",
+  "updated": "2026-11-28T10:13:43+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -279,6 +279,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-02/2026-11-28-body-02.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-02/2026-11-28-body-02.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-28-body-03",
+      "title": "What Happens When You Sweat?",
+      "caption": "What Happens When You Sweat? #bodyfiles #sweat #bodyodor #humanbody #science",
+      "length": 35.7,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-03/2026-11-28-body-03.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-03/2026-11-28-body-03.mp4",
       "approved": false
     }
   ]
