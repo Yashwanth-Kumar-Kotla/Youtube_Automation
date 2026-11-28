@@ -1865,6 +1865,52 @@
    "branch": "stock/body/2026-11-27-body-04",
    "history": [],
    "description": "Send this to the friend who walks down stairs sideways after leg day.\nMuscle soreness after a workout usually sets in one to three days later. It isn't lactic acid (that's mostly gone within about an hour, Houston Methodist); it comes from tiny tears in your muscle fibers, and the ache builds over hours. Moves where a muscle works while it lengthens, like lowering a weight, lunges or running downhill, are the likeliest to cause it (Cleveland Clinic). Cleveland Clinic says see a provider if the pain lasts more than a week or feels sharp and constant, and get urgent help if your pee is unusually dark or bloody.\nNext Body File: why your recorded voice sounds wrong.\nFollow Body Files for a new one every day.\n#bodyfiles #soremuscles #legday #workout #humanbody #science #shorts\n\nSources:\nCleveland Clinic, Delayed Onset Muscle Soreness (DOMS): https://my.clevelandclinic.org/health/symptoms/delayed-onset-muscle-soreness\nHouston Methodist, Is Lactic Acid Buildup Really What Causes Muscle Soreness After a Workout?: https://www.houstonmethodist.org/blog/articles/2021/oct/is-lactic-acid-buildup-really-what-causes-muscle-soreness-after-a-workout/\nScientific American, Why does my voice sound different? (next video): https://www.scientificamerican.com/article/why-does-my-voice-sound-different/"
+  },
+  "2026-11-28-body-01": {
+   "title": "What Happens When You Hear Your Recorded Voice?",
+   "hashtags": [
+    "#bodyfiles",
+    "#voice",
+    "#voicenote",
+    "#hearing",
+    "#humanbody",
+    "#science",
+    "#shorts"
+   ],
+   "pinned_comment": "Be honest: out of 10, how hard do you cringe at your own voice notes? Give a number. And your guess before the reveal: did the 80 people rate their own secret voice clips A) better or B) worse than strangers did?",
+   "series": "Body Files",
+   "topic": "What happens when you hear your own voice on a recording?",
+   "experiment_arm": "len-33-35 + loop-close",
+   "teases": "What happens when you get déjà vu?",
+   "topic_cluster": "ears",
+   "topic_source": "backlog #1: mandatory, promised by the sore-muscles video (2026-11-27-body-04) with 'Next Body File: your recorded voice and your skull's bass.'; 'recorded voice' is line 1 and 'skull's bass' is paid off in lines 3-4 ('Your skull boosts the deep notes, like bass', Scientific American + UW Medicine). Cluster ears has 0 in stock",
+   "hook_pattern": "question+blind-test-better-or-worse-number",
+   "format": "two-paths explainer + blind-test reveal",
+   "first_frame": "object-closeup",
+   "structure_note": "Two-paths explainer wrapped in a blind test, no diary, lineup, showdown, fuse or nerve map. Beat 1: close-up of a phone playing a voice note, the hero's face behind it mid-cringe, pills 'A BETTER' / 'B WORSE' up; Beat 2: a row of 80 tiny anonymous voice-clip cards with three of them secretly the hero's (a hidden '?' tag). Beat 3: x-ray cyan head, the voice splits into two arrows: one out of the mouth through the air into the ear, one straight through the skull to the inner ear; the skull path glows with a thick bass-speaker wobble. Relatable: the hero diving to stop a voice note playing out loud. Re-hook: hard cut to a microphone that only catches the air arrow; the skull arrow bounces off it; the waveform on the phone goes thin and spiky. Then a friend silhouette hearing the same thin waveform. Reveal: the score cards flip, pill A BETTER gets the check, the hero's three hidden cards light up. Then the '?' tag on them stays: most didn't know. Tease, then cut back to frame 1.",
+   "safety": "Not a health-risk topic: no medical advice voiced or written. Curious-friend tone. Claims kept to the sources: 'that may be how others hear you' keeps Bhatt's hedge 'we may actually sound more like our recorded voice to others'; 'most likely never knew it was them' keeps ScienceDaily's 'researchers believe most participants did not recognize their own voices'. Blog claims (denser bones, phone mics boost highs) dropped as unsourced.",
+   "engagement": {
+    "guess": "A better vs B worse: did the 80 people rate secret clips of their own voice better or worse than strangers rated them? (answer: A, better; Albright College / Hughes & Harrison 2013 Perception via ScienceDaily: participants rated their own voices as sounding more attractive than other raters did, without knowing their clips were included. Option B is what most viewers expect because they cringe at recordings)",
+    "relatable": "Ever cringed at your own voice note?",
+    "rehook_line": 5,
+    "answer_line": 8,
+    "answer_word_position": "104 words: 8+14+12+8+7+10+9+7 = 75 before the answer, then 10+8+11. The answer starts at word 76 = 72.1% (75/104 spoken before it). Relatable starts at word 43 (41%), re-hook at word 50 (47%). 2 lines follow the answer line (extra fact, tease). Mostly short words, expect ~33-34 s. If over 35 s, cut 'secret' (line 2) and 'And' (line 10): 102 words, answer at 74/102 = 72.5%. If under 33 s, add 'straight' to line 3 ('and straight through your skull'): 105 words, answer at 76/105 = 72.4%.",
+    "first_frame": "A close-up of a phone playing the hero's voice note with a thin spiky waveform, the hero's face behind it mid-cringe, and the pills 'A BETTER' / 'B WORSE' already on screen, so the recording, the cringe and the guess all show before the first word.",
+    "rewatch_detail": "The tiny clip cards in the blind-test scene are labeled with counting digits '1 ... 10' (the study's recordings were people counting from one to ten), and three of the 80 cards carry a faint hero-colored edge from the first moment, long before the reveal lights them up.",
+    "loop": "The tease ends on 'nearly everyone gets' as the camera cuts back to the frame-1 shot: same phone, same thin waveform, same cringe, so the replay starting with 'What happens when you hear your recorded voice?' literally feels like déjà vu, the topic just teased."
+   },
+   "id": "2026-11-28-body-01",
+   "channel": "body",
+   "made_at": "2026-11-28T03:56-06:00",
+   "made_week": "2026-W48",
+   "playbook_version": "pb-a66cc658",
+   "research_file": "research/2026-W46.md",
+   "length": 34.6,
+   "confidence": 0.7,
+   "status": "ready",
+   "branch": "stock/body/2026-11-28-body-01",
+   "history": [],
+   "description": "Send this to the friend who won't send voice notes.\nYour voice reaches your inner ear two ways: through the air and through your skull, and your head boosts the deeper notes (Scientific American; UW Medicine otolaryngologist Neel Bhatt). A recording only catches the air part, so it sounds thinner and higher, and that may be closer to how others hear you. In a 2013 study, 80 people rated secret clips of their own voice as more attractive than strangers did (Albright College).\nNext Body File: déjà vu, a brain glitch nearly everyone gets.\nFollow Body Files for a new one every day.\n#bodyfiles #voice #voicenote #hearing #humanbody #science #shorts\n\nSources:\nScientific American, Why does my voice sound different?: https://www.scientificamerican.com/article/why-does-my-voice-sound-different/\nThe Conversation (Neel Bhatt, UW Medicine), Why do we hate the sound of our own voices?: https://theconversation.com/why-do-we-hate-the-sound-of-our-own-voices-158376\nScienceDaily / Albright College, Hate the sound of your voice? Not really: https://www.sciencedaily.com/releases/2013/09/130912112733.htm\nCleveland Clinic, Deja Vu (next video): https://health.clevelandclinic.org/deja-vu-what-it-is-and-when-it-may-be-cause-for-concern"
   }
  }
 }

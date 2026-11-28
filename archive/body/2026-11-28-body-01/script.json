@@ -1,0 +1,61 @@
+{
+  "title": "What Happens When You Hear Your Recorded Voice?",
+  "voice": "am_michael",
+  "speed": 1.15,
+  "lead": 0.4,
+  "outro": 0.9,
+  "gap": 0.24,
+  "music": "bed",
+  "sources": [
+    "Scientific American, 'Why does my voice sound different?' (2009-01-13), Timothy E. Hullar, otolaryngologist, Washington University School of Medicine. 'Sound can reach the inner ear by way of two separate paths' (line 3: air and the head's tissues); 'the mechanical properties of your head enhance its deeper, lower-frequency vibrations' (line 4, the 'skull's bass' promised by the previous video); a recording gives 'only the air-conducted component in unfamiliar isolation' (lines 6-7): https://www.scientificamerican.com/article/why-does-my-voice-sound-different/",
+    "The Conversation (2021-05-17), Neel Bhatt, Assistant Professor of Otolaryngology, UW Medicine, University of Washington, 'Why do we hate the sound of our own voices?'. 'much of the sound is internally conducted directly through your skull bones'; 'internal bone conduction appears to boost the lower frequencies' (line 4, second source); 'The recorded voice, in comparison, can sound thinner and higher pitched' (line 7); 'we may actually sound more like our recorded voice to others' (line 8, hedged 'may'): https://theconversation.com/why-do-we-hate-the-sound-of-our-own-voices-158376",
+    "Albright College via ScienceDaily (2013-09-12), on Hughes & Harrison 2013, Perception, 'I like my voice better: self-enhancement bias in perceptions of voice attractiveness'. 80 men and women (line 2: 'Eighty people') rated recordings of people counting from one to ten; three samples were their own, which they didn't know were included (line 2: 'secret clips'); participants rated their own voices as 'sounding more attractive' than other raters did, and more favorably than other people's voices (answer, line 9: 'better'); researchers believe most did not recognize their own voices (line 10, hedged 'most likely'): https://www.sciencedaily.com/releases/2013/09/130912112733.htm",
+    "Tease (next video): Cleveland Clinic Health Essentials, 'Deja Vu: What It Is and When It May Be Cause for Concern'. 'An estimated 97% of people have experienced déjà vu at least once in their lives' ('nearly everyone'); 'caused by dysfunctional connections between the parts of your brain' ('brain glitch'): https://health.clevelandclinic.org/deja-vu-what-it-is-and-when-it-may-be-cause-for-concern"
+  ],
+  "lines": [
+    {
+      "text": "What happens when you hear your recorded voice?",
+      "caps": "WHAT *HAPPENS | WHEN YOU *HEAR | YOUR *RECORDED | *VOICE?"
+    },
+    {
+      "text": "Eighty people rated secret clips of their own voice. Better than strangers, or worse?",
+      "caps": "*EIGHTY PEOPLE | *RATED | *SECRET CLIPS | OF THEIR *OWN | *VOICE | *BETTER | THAN *STRANGERS | OR *WORSE?"
+    },
+    {
+      "text": "Your voice hits your ears two ways: through air, and your skull.",
+      "caps": "YOUR *VOICE | HITS YOUR *EARS | *TWO WAYS | THROUGH *AIR | AND YOUR *SKULL"
+    },
+    {
+      "text": "Your skull boosts the deep notes, like bass.",
+      "caps": "YOUR SKULL *BOOSTS | THE *DEEP NOTES | LIKE *BASS"
+    },
+    {
+      "text": "Ever cringed at your own voice note?",
+      "caps": "EVER *CRINGED | AT YOUR *OWN | VOICE *NOTE?"
+    },
+    {
+      "text": "But here's the catch: a mic only hears the air.",
+      "caps": "BUT *HERE'S | THE *CATCH | A *MIC | ONLY *HEARS | THE *AIR"
+    },
+    {
+      "text": "No skull, no bass. You sound thin and high.",
+      "caps": "NO *SKULL | NO *BASS | YOU SOUND *THIN | AND *HIGH"
+    },
+    {
+      "text": "That may be how others hear you.",
+      "caps": "THAT *MAY BE | HOW *OTHERS | *HEAR YOU"
+    },
+    {
+      "text": "Answer: better. They found it more attractive than strangers did.",
+      "caps": "*ANSWER | *BETTER | THEY *FOUND IT | MORE *ATTRACTIVE | THAN *STRANGERS DID"
+    },
+    {
+      "text": "And most likely never knew it was them.",
+      "caps": "AND *MOST | *LIKELY | NEVER *KNEW | IT WAS *THEM"
+    },
+    {
+      "text": "Next Body File: déjà vu, a brain glitch nearly everyone gets.",
+      "caps": "NEXT BODY *FILE | *DÉJÀ VU | A BRAIN *GLITCH | NEARLY *EVERYONE | *GETS"
+    }
+  ]
+}

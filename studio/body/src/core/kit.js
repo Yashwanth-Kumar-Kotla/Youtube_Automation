@@ -9482,3 +9482,215 @@ export function smVoiceBadge(x, y, s = 1, sc = 1) {
   for (const r of [64, 88]) { ctx.beginPath(); ctx.arc(14, -24, r, -0.5, 0.4); ctx.strokeStyle = C.yellow; ctx.lineWidth = 12; ctx.stroke(); }
   ctx.restore();
 }
+
+
+// ═════════════════════════ RECORDED VOICE SET (2026-11-28-body-1 "hear your recorded voice", rv prefix) ═════════════════════════
+const RV_GREY = '#C9C2B5', RV_BUBBLE = '#DCEFF7', RV_SLATE = '#2B3A55', RV_METAL = '#9A9488', RV_METAL_D = '#7E786E';
+
+/** bar heights of a voice-note waveform, i = bar index. thin 0..1: 0 = full deep voice (tall rounded rolling bars),
+ *  1 = thin high voice (short bars with sharp lone spikes). t = film time (the bars jitter while it plays) */
+const rvBarH = (i, thin, t) => {
+  const deep = 20 + 44 * Math.abs(Math.sin(i * 0.55 + 1.2)) * (0.65 + 0.35 * Math.sin(i * 0.23 + 0.4));
+  const sp = rnd(i * 3 + 1), hi = 5 + 7 * rnd(i + 11) + (sp > 0.62 ? 26 + 18 * sp : 0);
+  return lerp(deep, hi, clamp(thin)) * (0.86 + 0.14 * Math.sin(t * lerp(7, 19, clamp(thin)) + i * 1.9));
+};
+
+/** voice-note chat bubble (graphic): pale blue rounded bubble, blue play disc on the left, N waveform bars, the played part
+ *  blue, the rest grey. thin 0..1 (deep -> thin spiky), prog 0..1 playhead, hi 0..1 flashes the bars yellow. ~380x130 px at
+ *  s = 1, origin = centre. sc = pop-in */
+export function rvWaveBubble(x, y, s = 1, { thin = 0, prog = 0.4, t = 0, hi = 0, sc = 1, tail = true } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  rr(-196, -71, 392, 142, 60); ctx.fillStyle = C.ink; ctx.fill();
+  if (tail) { ctx.beginPath(); ctx.moveTo(-150, 40); ctx.lineTo(-196, 88); ctx.lineTo(-100, 58); ctx.closePath(); ctx.fill(); }
+  rr(-188, -63, 376, 126, 54); ctx.fillStyle = RV_BUBBLE; ctx.fill();
+  if (tail) { ctx.beginPath(); ctx.moveTo(-148, 44); ctx.lineTo(-182, 76); ctx.lineTo(-108, 52); ctx.closePath(); ctx.fill(); }
+  circle(-128, 0, 44, C.shirt); circle(-128, 4, 44, C.shirt);
+  ctx.beginPath(); ctx.moveTo(-142, -20); ctx.lineTo(-108, 0); ctx.lineTo(-142, 20); ctx.closePath(); ctx.fillStyle = C.white; ctx.fill();
+  const N = 18, x0 = -66, x1 = 160, bw = lerp(10, 5, clamp(thin));
+  for (let i = 0; i < N; i++) {
+    const bx = lerp(x0, x1, i / (N - 1)), h = rvBarH(i, thin, t);
+    const played = i / (N - 1) <= prog;
+    line([[bx, -h / 2], [bx, h / 2]], played ? C.shirt : RV_GREY, bw);
+    if (hi > 0) { ctx.save(); ctx.globalAlpha = clamp(hi); line([[bx, -h / 2], [bx, h / 2]], C.yellow, bw); ctx.restore(); }
+  }
+  ctx.restore();
+}
+
+/** phone playing a voice note (screen to camera): ink body, white chat screen with two grey message lines above, the
+ *  voice-note bubble (rvWaveBubble) mid-screen, a grey input bar at the bottom. o = { thin, t, prog (default: loops with t),
+ *  hi, rot, sc, shake 0..1 }. ~300x560 px at s = 1, origin = centre. Returns the speaker point (top edge) in screen px */
+export function rvVoicePhone(x, y, s = 1, { thin = 1, t = 0, prog = null, hi = 0, rot = 0, sc = 1, shake = 0 } = {}) {
+  const k = s * sc, r = rot + Math.sin(t * 40) * 0.05 * clamp(shake);
+  const spk = [x + Math.sin(r) * 262 * k, y - Math.cos(r) * 262 * k];
+  if (k <= 0) return spk;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(r); ctx.scale(k, k);
+  rr(-150, -280, 300, 560, 48); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-128, -252, 256, 504, 30); ctx.fillStyle = C.white; ctx.fill();
+  rr(-36, -268, 72, 10, 5); ctx.fillStyle = '#3A3A42'; ctx.fill();
+  rr(-108, -200, 150, 40, 20); ctx.fillStyle = '#EDE8DE'; ctx.fill();
+  rr(-108, -146, 110, 40, 20); ctx.fill();
+  rr(-108, 176, 216, 46, 23); ctx.fillStyle = '#EDE8DE'; ctx.fill();
+  const p = prog == null ? (t * 0.3) % 1 : prog;
+  rvWaveBubble(4, 10, 0.6, { thin, prog: p, t, hi, tail: true });
+  ctx.restore();
+  return spk;
+}
+
+/** studio microphone on a stand (prop, flat): grey mesh capsule with an ink rim + darker mesh lines, ink band and handle,
+ *  thin ink stand down to a round base. glow 0..1 = yellow ring round the capsule (it's "listening"), beat 0..1 bounces it.
+ *  Origin = capsule centre; capsule ~190x300, base at y +540 (s = 1). sc = pop-in */
+export function rvMic(x, y, s = 1, { glow = 0, beat = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc * (1 + 0.04 * beat)); ctx.lineCap = 'round';
+  line([[0, 200], [0, 520]], C.ink, 22); ell(0, 540, 140, 28, C.ink); ell(-30, 532, 50, 8, '#3A3A42');
+  rr(-46, 120, 92, 120, 22); ctx.fillStyle = C.ink; ctx.fill();
+  if (glow > 0) { ctx.save(); ctx.globalAlpha = clamp(glow); rr(-122, -182, 244, 346, 120); ctx.lineWidth = 26; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 14; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  rr(-100, -160, 200, 300, 96); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-88, -148, 176, 276, 86); ctx.fillStyle = RV_METAL; ctx.fill();
+  ctx.save(); rr(-88, -148, 176, 276, 86); ctx.clip();
+  rr(20, -148, 68, 276, 0); ctx.fillStyle = RV_METAL_D; ctx.fill();
+  ctx.strokeStyle = RV_METAL_D; ctx.lineWidth = 6;
+  for (let yy = -120; yy <= 110; yy += 30) { ctx.beginPath(); ctx.moveTo(-90, yy); ctx.lineTo(90, yy); ctx.stroke(); }
+  ell(-44, -96, 22, 40, '#C9C2B5', -0.3);
+  ctx.restore();
+  rr(-104, 40, 208, 34, 12); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.restore();
+}
+
+/** tiny voice-clip card (graphic): white rounded card, ink rim, ink play triangle + five mini wave bars. o = { hero 0..1
+ *  (rim turns hero-shirt blue: one of the hero's own clips, the rewatch detail), lit 0..1 (yellow fill), q 0..1 (small ink
+ *  "?" badge on the top-right corner: a secret clip), face 0..1 (card flips round to show the hero's face), sc }.
+ *  ~100x70 px at s = 1, origin = centre */
+export function rvClipCard(x, y, s = 1, { hero = 0, lit = 0, q = 0, face = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const f = clamp(face), sx = Math.abs(Math.cos(f * Math.PI)), back = f > 0.5;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc * Math.max(0.04, sx), s * sc); ctx.lineCap = 'round';
+  rr(-50, -35, 100, 70, 14); ctx.fillStyle = hero > 0.5 ? C.shirt : C.ink; ctx.fill();
+  rr(-43, -28, 86, 56, 9); ctx.fillStyle = lit > 0.5 ? C.yellow : C.white; ctx.fill();
+  if (lit > 0 && lit <= 0.5) { ctx.save(); ctx.globalAlpha = lit * 2; rr(-43, -28, 86, 56, 9); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore(); }
+  if (!back) {
+    ctx.beginPath(); ctx.moveTo(-32, -13); ctx.lineTo(-12, 0); ctx.lineTo(-32, 13); ctx.closePath(); ctx.fillStyle = C.ink; ctx.fill();
+    [10, 22, 14, 26, 12].forEach((h, i) => line([[2 + i * 9, -h / 2], [2 + i * 9, h / 2]], C.ink, 5));
+  } else heroHead(0, 6, 0.2, { eyes: 'n', mouth: 'smile' });
+  ctx.restore();
+  if (q > 0) {
+    const k = s * clamp(q) * (sc > 0 ? sc : 0);
+    ctx.save(); ctx.translate(x + 46 * s, y - 32 * s); ctx.scale(k, k);
+    circle(0, 0, 20, C.ink); ctx.font = '900 28px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = C.yellow; ctx.fillText('?', 0, 2);
+    ctx.restore();
+  }
+}
+
+/** points of rvXrayHead in local coords (skull space, face on the LEFT): mouth, outer ear, inner ear (cochlea) and the two
+ *  sound paths: AIR (out of the mouth, round under the jaw, into the ear) and BONE (straight through the skull to the inner ear) */
+export const RV_HEAD = {
+  mouth: [-345, 322], ear: [178, 52], coch: [96, 44],
+  air: [[-372, 330], [-452, 452], [-300, 540], [-40, 548], [190, 470], [262, 260], [218, 98]],
+  bone: [[-262, 322], [-170, 300], [-60, 236], [30, 140], [96, 44]],
+};
+const rvPolyAt = (P, u) => {
+  const L = []; let tot = 0; for (let i = 1; i < P.length; i++) { const l = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); L.push(l); tot += l; }
+  let d = clamp(u) * tot; for (let i = 0; i < L.length; i++) { if (d <= L[i] || i === L.length - 1) { const f = clamp(d / L[i]); return [lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f), Math.atan2(P[i + 1][1] - P[i][1], P[i + 1][0] - P[i][0])]; } d -= L[i]; }
+  return [...P[P.length - 1], 0];
+};
+/** a path drawn up to u (0..1), as a smooth polyline sampled every ~12 px; wob = sideways sine wobble px (phase t) */
+const rvPath = (P, u, wob = 0, t = 0) => {
+  const out = [], n = 60;
+  for (let i = 0; i <= n; i++) { const v = (i / n) * u; const [px, py, a] = rvPolyAt(P, v); const o = wob * Math.sin(v * 26 - t * 9); out.push([px - Math.sin(a) * o, py + Math.cos(a) * o]); }
+  return out;
+};
+
+/** x-ray head (side view, face LEFT, on the x-ray film): kit skull() + a faint cyan outer ear + a cyan inner-ear spiral, and
+ *  the two ways your voice reaches the inner ear. o = { air 0..1 (yellow dashed AIR path drawn out from the mouth, arrowhead
+ *  at the ear; travelling dots while 1), bone 0..1 (cyan BONE path through the skull), bass 0..1 (bone path thickens and
+ *  wobbles + deep rings off it), ear 0..1 (yellow ring on the inner ear), voice 0..1 (sound arcs out of the mouth), mic 0..1
+ *  (grey out the bone path: "a mic only hears the air"), t }. ~900x900 px at s = 1. Returns screen points { mouth, ear, coch,
+ *  airMid, boneMid } */
+export function rvXrayHead(x, y, s = 1, o = {}) {
+  const { air = 0, bone = 0, bass = 0, ear = 0, voice = 0, t = 0 } = o;
+  const P = (p) => [x + p[0] * s, y + p[1] * s];
+  const out = { mouth: P(RV_HEAD.mouth), ear: P(RV_HEAD.ear), coch: P(RV_HEAD.coch), airMid: P(rvPolyAt(RV_HEAD.air, 0.5)), boneMid: P(rvPolyAt(RV_HEAD.bone, 0.5)) };
+  skull(x, y, s);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // outer ear (soft tissue: faint cyan) + inner-ear spiral
+  ctx.save(); ctx.globalAlpha = 0.55; ctx.beginPath(); ctx.ellipse(RV_HEAD.ear[0] + 14, RV_HEAD.ear[1], 54, 92, 0.15, 0, TAU); ctx.strokeStyle = C.cyan; ctx.lineWidth = 14; ctx.stroke(); ctx.restore();
+  line([[RV_HEAD.ear[0], RV_HEAD.ear[1]], [RV_HEAD.coch[0] + 22, RV_HEAD.coch[1]]], C.cyan, 12);
+  const [cx, cy] = RV_HEAD.coch, sp = [];
+  for (let i = 0; i <= 40; i++) { const a = i / 40 * TAU * 2.2, r = 34 - i * 0.7; sp.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.9]); }
+  line(sp, C.cyan, 9);
+  // bone path (cyan through the skull)
+  const b = clamp(bone), bs = clamp(bass);
+  if (b > 0) {
+    const pts = rvPath(RV_HEAD.bone, b, 16 * bs, t);
+    line(pts, C.xnavy, 46 + 26 * bs); line(pts, C.cyan, 26 + 22 * bs); line(pts, C.white, 8 + 6 * bs);
+    if (bs > 0) for (let k = 0; k < 3; k++) {
+      const u = (t * 0.7 + k / 3) % 1, [mx, my] = rvPolyAt(RV_HEAD.bone, 0.5);
+      ctx.save(); ctx.globalAlpha = 0.55 * bs * (1 - u) * Math.min(1, u * 5); ctx.beginPath(); ctx.ellipse(mx, my, 60 + u * 200, 50 + u * 160, -0.7, 0, TAU); ctx.strokeStyle = C.cyan; ctx.lineWidth = 14; ctx.stroke(); ctx.restore();
+    }
+  }
+  // air path (yellow dashed, outside the head)
+  const a = clamp(air);
+  if (a > 0) {
+    const pts = rvPath(RV_HEAD.air, a);
+    ctx.save(); ctx.setLineDash([34, 22]); ctx.lineDashOffset = -t * 120; line(pts, C.ink, 30); line(pts, C.yellow, 16); ctx.restore();
+    const [hx, hy, ha] = rvPolyAt(RV_HEAD.air, a);
+    ctx.save(); ctx.translate(hx, hy); ctx.rotate(ha); ctx.beginPath(); ctx.moveTo(34, 0); ctx.lineTo(-22, -30); ctx.lineTo(-22, 30); ctx.closePath();
+    ctx.lineWidth = 10; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.fillStyle = C.yellow; ctx.fill(); ctx.restore();
+  }
+  if (ear > 0) { ctx.save(); ctx.globalAlpha = clamp(ear); ctx.beginPath(); ctx.arc(cx, cy, 62, 0, TAU); ctx.lineWidth = 24; ctx.strokeStyle = C.ink; ctx.stroke(); ctx.lineWidth = 13; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  ctx.restore();
+  if (voice > 0) soundWaves(out.mouth[0] - 20 * s, out.mouth[1], Math.PI, t, voice, 0, 0.55 * s);
+  return out;
+}
+
+/** score bar (graphic): ink-rimmed rounded column rising from a base line at (x, base), w wide, h tall, col fill with a
+ *  darker right strip. Returns the top centre [x, y] */
+export function rvBar(x, base, w, h, col = C.shirt, shade = C.shirtShade) {
+  if (h > 4) {
+    rr(x - w / 2 - 8, base - h - 8, w + 16, h + 8, [24, 24, 0, 0]); ctx.fillStyle = C.ink; ctx.fill();
+    rr(x - w / 2, base - h, w, h, [18, 18, 0, 0]); ctx.fillStyle = col; ctx.fill();
+    rr(x + w / 2 - 34, base - h, 34, h, [0, 18, 0, 0]); ctx.fillStyle = shade; ctx.fill();
+  }
+  return [x, base - h];
+}
+
+/** a stranger (head-and-shoulders, slate silhouette: "someone else", not the hero). ~240x300 px at s = 1, origin = head centre */
+export function rvStranger(x, y, s = 1, sc = 1) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  rr(-120, 92, 240, 170, [90, 90, 20, 20]); ctx.fillStyle = RV_SLATE; ctx.fill();
+  rr(-30, 60, 60, 50, 14); ctx.fill();
+  ell(0, 0, 92, 100, RV_SLATE); ell(-34, -46, 26, 14, '#3D4F6E', -0.5);
+  for (const sd of [-1, 1]) ell(sd * 92, 8, 18, 26, RV_SLATE);
+  ctx.restore();
+}
+
+/** next-topic badge (deja vu): white disc, ink ring, a pink brain with a faint doubled copy behind it (the "seen it before"
+ *  echo) + a small red glitch bar. t = film time (the echo drifts a little). sc = pop-in */
+export function rvDejaBadge(x, y, s = 1, sc = 1, t = 0) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip();
+  ctx.save(); ctx.globalAlpha = 0.35; brain(-6 + 8 * Math.sin(t * 2), -12, 0.4, { t }); ctx.restore();
+  brain(12, 6, 0.4, { t });
+  rr(-80, 58, 70, 14, 7); ctx.fillStyle = C.red; ctx.fill(); rr(-30, 80, 96, 14, 7); ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+
+/** deja vu brain (tease): big flat brain with an "echo" copy that slides out of it and back (echo 0..1 = offset + alpha),
+ *  horizontal glitch slices jittering (glitch 0..1). t = film time. Brain ~620x480 px at s = 1, origin = centre */
+export function rvEchoBrain(x, y, s = 1, { echo = 0, glitch = 0, t = 0, sc = 1 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  const e = clamp(echo), g = clamp(glitch);
+  if (e > 0) { ctx.save(); ctx.globalAlpha = 0.38 * e; brain(x - 70 * s * e, y - 40 * s * e, s * sc, { t }); ctx.restore(); }
+  if (g <= 0) { brain(x, y, s * sc, { t }); return; }
+  const cuts = [-260, -120, -40, 50, 140, 280];
+  for (let k = 0; k < cuts.length - 1; k++) {
+    const off = g * 34 * s * Math.sin(Math.floor(t * 9) * 1.7 + k * 2.3);
+    ctx.save(); ctx.beginPath(); ctx.rect(x - 500 * s, y + cuts[k] * s, 1000 * s, (cuts[k + 1] - cuts[k]) * s); ctx.clip();
+    brain(x + off, y, s * sc, { t }); ctx.restore();
+  }
+}

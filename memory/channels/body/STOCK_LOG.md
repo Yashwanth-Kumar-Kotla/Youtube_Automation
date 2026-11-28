@@ -81,3 +81,4 @@
 - 2026-11-27 03:50 · 2026-11-27-body-02 added · conf 0.7 · question+everything-or-trigger-number · What happens when you get hangry?
 - 2026-11-27 04:00 · 2026-11-27-body-03 added · conf 0.7 · question+glitch-or-guard-number · What happens when you get a paper cut?
 - 2026-11-27 04:04 · 2026-11-27-body-04 added · conf 0.7 · question+up-or-down-number · What happens when your muscles get sore days after a workout?
+- 2026-11-28 03:56 · 2026-11-28-body-01 added · conf 0.7 · question+blind-test-better-or-worse-number · What happens when you hear your own voice on a recording?
