@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-28T03:19:37+00:00",
+  "updated": "2026-11-28T09:56:54+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -259,6 +259,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-27-body-04/2026-11-27-body-04.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-27-body-04/2026-11-27-body-04.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-28-body-01",
+      "title": "What Happens When You Hear Your Recorded Voice?",
+      "caption": "What Happens When You Hear Your Recorded Voice? #bodyfiles #voice #voicenote #hearing #humanbody",
+      "length": 34.6,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-01/2026-11-28-body-01.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-01/2026-11-28-body-01.mp4",
       "approved": false
     }
   ]
