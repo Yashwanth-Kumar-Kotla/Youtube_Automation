@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-28T10:13:43+00:00",
+  "updated": "2026-11-28T10:21:13+00:00",
   "videos": [
     {
       "id": "2026-11-14-body-03",
@@ -289,6 +289,16 @@
       "status": "ready",
       "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-03/2026-11-28-body-03.jpg",
       "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-03/2026-11-28-body-03.mp4",
+      "approved": false
+    },
+    {
+      "id": "2026-11-28-body-04",
+      "title": "What Happens When Your Nose Runs in the Cold?",
+      "caption": "What Happens When Your Nose Runs in the Cold? #bodyfiles #runnynose #winter #humanbody #science",
+      "length": 31.5,
+      "status": "ready",
+      "cover": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-04/2026-11-28-body-04.jpg",
+      "video": "https://raw.githubusercontent.com/Yashwanth-Kumar-Kotla/Youtube_Automation/stock/body/2026-11-28-body-04/2026-11-28-body-04.mp4",
       "approved": false
     }
   ]
