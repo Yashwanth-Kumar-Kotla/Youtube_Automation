@@ -10167,3 +10167,387 @@ export function swNoseBadge(x, y, s = 1, sc = 1, t = 0) {
 
 /** palms-up pose (hands raised in front of the chest, looking at them): for arm and armL */
 ARM.swPalms = { e: [200, 10], h: [120, -110] };
+
+// ═════════════════════════ RUNNY NOSE SET (2026-11-28-body-4 "runny nose in the cold", rn prefix) ═════════════════════════
+const RN_SNOW_D = '#D5E6EF', RN_HILL = '#E6F2F8', RN_AIR = '#EAF5FA', RN_SCARF = '#3D4F6E', RN_SCARF_D = '#2B3A55', RN_FLUSH = '#E0646F',
+  RN_NERVE = '#FFF1E0', RN_CRUST = '#E3A857', RN_CRUST_D = '#C4843E', RN_CHEESE = '#F6D77A', RN_CHEESE_D = '#E8BE55', RN_PEP = '#C9566E',
+  RN_BUD_OFF = '#F7D5DA';
+
+/** winter outdoors: sky + one soft far hill + white snow ground from y = ground (ground > H = no ground, only hills) */
+export function rnWinterBg(ground = 1100, hill = 1) {
+  fillAll(C.sky);
+  if (hill > 0) {
+    ctx.fillStyle = RN_HILL; ctx.beginPath(); ctx.moveTo(-300, ground - 50);
+    ctx.quadraticCurveTo(260, ground - 230, 640, ground - 110); ctx.quadraticCurveTo(940, ground - 20, W + 300, ground - 150);
+    ctx.lineTo(W + 300, H + 300); ctx.lineTo(-300, H + 300); ctx.closePath(); ctx.fill();
+  }
+  if (ground < H) { ctx.fillStyle = C.white; ctx.fillRect(-300, ground, W + 600, H + 300); ctx.fillStyle = RN_SNOW_D; ctx.fillRect(-300, ground, W + 600, 10); }
+}
+
+/** falling snow (pure function of t): n flakes (white dots, every 4th a small snowflake) drifting down + swaying.
+ *  skip = [[x0, y0, x1, y1], ...] screen rects kept clear (end-card badge spots); y1 = lowest y drawn; a = alpha; gust = sideways speed */
+export function rnSnow(t, { n = 46, skip = [], y1 = 1180, a = 1, gust = 0, s = 1 } = {}) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(a);
+  const span = y1 + 120;
+  for (let i = 0; i < n; i++) {
+    const v = 70 + rnd(i + 11) * 90, y = ((rnd(i + 3) * span + t * v) % span) - 60;
+    const x = ((rnd(i + 7) * (W + 120) + Math.sin(t * 1.3 + i) * 22 + t * gust * (0.6 + rnd(i))) % (W + 120) + (W + 120)) % (W + 120) - 60;
+    if (skip.some(([a0, b0, a1, b1]) => x > a0 - 26 && x < a1 + 26 && y > b0 - 26 && y < b1 + 26)) continue;
+    const r = (7 + rnd(i + 19) * 9) * s;
+    if (i % 4 === 0) { snowflake(x, y, r * 1.9, RN_SNOW_D, 7 * s, t * 0.6 + i); snowflake(x, y, r * 1.9, C.white, 4 * s, t * 0.6 + i); }
+    else { circle(x, y, r + 2.5 * s, RN_SNOW_D); circle(x, y, r, C.white); }
+  }
+  ctx.restore();
+}
+
+/** COLD FACE close-up (front): the hero's face filling the frame in a blue beanie + slate scarf, cold-flushed cheeks and a
+ *  big red-tipped nose with one clear drip hanging from the left nostril. Origin = face centre, head radius 300 at s = 1.
+ *  o: drip 0..1 (length of the hanging drip; 0 = none), fall 0..1 (a drop breaks off and falls), red 0..1 nose-tip flush,
+ *  eyes 'n'|'wide'|'closed', brow 0..1, mouth 'flat'|'o'|'smile'|'shiver', shake px, t = film time.
+ *  Returns { nostril: [x, y] (left), nose: [x, y] (tip), mouth: [x, y] } in canvas px */
+export function rnColdFace(x, y, s = 1, { drip = 1, fall = -1, red = 1, eyes = 'n', brow = 0.3, mouth = 'flat', t = 0, shake = 0 } = {}) {
+  const P = (px, py) => [x + px * s, y + py * s];
+  ctx.save(); ctx.translate(x + shake, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // scarf behind the chin, ears, head
+  rr(-330, 250, 660, 120, 54); ctx.fillStyle = RN_SCARF_D; ctx.fill(); rr(-330, 250, 660, 106, 50); ctx.fillStyle = RN_SCARF; ctx.fill();
+  for (const sx of [-220, -100, 20, 140]) { rr(sx, 262, 36, 86, 12); ctx.fillStyle = RN_SCARF_D; ctx.fill(); }
+  for (const sd of [-1, 1]) { ell(sd * 292, 30, 46, 64, C.skinShade); ell(sd * 288, 30, 34, 50, C.skin); }
+  ell(6, 8, 300, 312, C.skinShade); ell(0, 0, 292, 306, C.skin);
+  // hair peeking out under the beanie
+  ell(-150, -205, 120, 50, C.hair, 0.2); ell(140, -210, 110, 44, C.hair, -0.2);
+  // beanie: dome + cuff + pom
+  ctx.save(); ctx.beginPath(); ctx.rect(-400, -700, 800, 520); ctx.clip();
+  ell(0, -196, 316, 190, C.shirtShade); ell(-8, -200, 304, 180, C.shirt); ctx.restore();
+  for (const kx of [-180, -90, 0, 90, 180]) line([[kx, -320 + Math.abs(kx) * 0.45], [kx, -250]], C.shirtShade, 10);
+  rr(-322, -250, 644, 96, 46); ctx.fillStyle = C.shirtShade; ctx.fill(); rr(-322, -250, 644, 80, 40); ctx.fillStyle = '#4A8BE0'; ctx.fill();
+  circle(0, -392, 52, RN_SNOW_D); circle(-6, -398, 46, C.white);
+  // brows + eyes
+  const bl = -118 - 26 * clamp(brow);
+  for (const sd of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sd * 150, bl + 8); ctx.quadraticCurveTo(sd * 110, bl - 12, sd * 64, bl + 2); ctx.strokeStyle = C.hair; ctx.lineWidth = 18; ctx.stroke(); }
+  for (const sd of [-1, 1]) {
+    if (eyes === 'closed') { ctx.beginPath(); ctx.moveTo(sd * 132, -54); ctx.quadraticCurveTo(sd * 106, -38, sd * 80, -54); ctx.strokeStyle = C.ink; ctx.lineWidth = 12; ctx.stroke(); }
+    else { const k = eyes === 'wide' ? 1.3 : 1; ell(sd * 106, -56, 22 * k, 28 * k, C.ink); circle(sd * 106 + 8 * k, -66 * 1, 8 * k, C.white); }
+  }
+  // cold-flushed cheeks
+  ctx.save(); ctx.globalAlpha = 0.42; ell(-180, 70, 66, 42, RN_FLUSH); ell(180, 70, 66, 42, RN_FLUSH); ctx.restore();
+  // nose: bridge, wings, red tip, nostrils
+  ctx.beginPath(); ctx.moveTo(-26, -70); ctx.quadraticCurveTo(-40, 10, -58, 70); ctx.lineTo(58, 70); ctx.quadraticCurveTo(40, 10, 26, -70); ctx.closePath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(14, -70); ctx.quadraticCurveTo(30, 10, 48, 66); ctx.lineTo(58, 70); ctx.quadraticCurveTo(40, 10, 26, -70); ctx.closePath(); ctx.fillStyle = C.skinShade; ctx.fill();
+  for (const sd of [-1, 1]) { ell(sd * 66, 118, 46, 40, C.skinShade); ell(sd * 62, 114, 40, 34, C.skin); }
+  ell(0, 96, 70, 64, C.skinShade); ell(-4, 90, 64, 58, C.skin);
+  const rf = clamp(red); if (rf > 0) { ctx.save(); ctx.globalAlpha = rf; ell(-2, 100, 56, 46, RN_FLUSH); ell(-2, 96, 46, 36, '#EB7F88'); ctx.restore(); }
+  ell(-24, 70, 18, 10, '#F6C9B4', -0.5);
+  for (const sd of [-1, 1]) ell(sd * 34, 142, 18, 10, C.mouth, sd * 0.35);
+  // the drip: clear drop hanging from the left nostril (stretches with drip), optional falling drop
+  const dr = clamp(drip);
+  if (dr > 0) {
+    const wob = Math.sin(t * 3.2) * 0.04, len = 30 + 70 * dr;
+    ctx.save(); ctx.translate(-36, 146); ctx.scale(1 - wob, 1 + wob + 0.4 * dr);
+    ctx.beginPath(); ctx.moveTo(-15, 0); ctx.quadraticCurveTo(-6, len * 0.3, -9, len * 0.6); ctx.lineTo(9, len * 0.6); ctx.quadraticCurveTo(6, len * 0.3, 15, 0); ctx.closePath(); ctx.fillStyle = WATER_D; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-10, 0); ctx.quadraticCurveTo(-3, len * 0.3, -5, len * 0.6); ctx.lineTo(5, len * 0.6); ctx.quadraticCurveTo(3, len * 0.3, 10, 0); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill();
+    ctx.restore();
+    drop(-36, 146 + len * (1 + 0.4 * dr) * 0.62, 0.62 + 0.2 * dr, 0, 1);
+  }
+  if (fall >= 0 && fall <= 1) drop(-36, 250 + 260 * fall * fall, 0.55, 0, 1 - fall * 0.6);
+  // mouth (a little right of centre, clear of the drip)
+  const mx = 60, my = 232;
+  if (mouth === 'o') { ell(mx, my, 26, 30, C.mouth); ell(mx, my + 12, 14, 9, C.pink); }
+  else if (mouth === 'smile') { ctx.beginPath(); ctx.moveTo(mx - 44, my - 6); ctx.quadraticCurveTo(mx, my + 26, mx + 44, my - 6); ctx.strokeStyle = C.mouth; ctx.lineWidth = 14; ctx.stroke(); }
+  else if (mouth === 'shiver') { const P2 = []; for (let i = 0; i <= 8; i++) P2.push([mx - 48 + i * 12, my + (i % 2 ? -8 : 8)]); line(P2, C.mouth, 12); }
+  else line([[mx - 36, my], [mx + 36, my - 4]], C.mouth, 14);
+  ctx.restore();
+  return { nostril: P(-36 + shake / s, 146), nose: P(shake / s, 96), mouth: P(mx + shake / s, my) };
+}
+
+/** breath fog: soft white puffs leaving (x, y) toward ang (rad), growing and fading (loops on t, period ~1.7 s). len px travel.
+ *  back 0..1 = the rewatch detail: tiny clear droplets in the fog drifting BACK toward (x, y). a = alpha */
+export function rnFog(x, y, s = 1, t = 0, { ang = 0, len = 300, a = 1, back = 0 } = {}) {
+  if (a <= 0) return;
+  ctx.save(); ctx.globalAlpha = 1;
+  const cx = Math.cos(ang), sy = Math.sin(ang);
+  for (let k = 0; k < 4; k++) {
+    const u = (t / 1.7 + k / 4) % 1, d = u * len, wob = Math.sin(u * 5 + k) * 18 * s;
+    const px = x + cx * d - sy * wob, py = y + sy * d + cx * wob - u * 40 * s, r = (22 + u * 62) * s, al = a * 0.85 * Math.sin(Math.PI * Math.min(1, u * 1.15));
+    if (al <= 0) continue;
+    ctx.globalAlpha = al; circle(px, py, r, C.white); circle(px + r * 0.6, py + r * 0.2, r * 0.7, C.white); circle(px - r * 0.5, py + r * 0.3, r * 0.6, C.white);
+  }
+  ctx.globalAlpha = 1;
+  if (back > 0) for (let k = 0; k < 3; k++) {
+    const u = (t / 2.3 + k / 3) % 1, d = (0.75 - u * 0.6) * len, px = x + cx * d, py = y + sy * d - 30 * s + Math.sin(u * 6 + k) * 10 * s;
+    drop(px, py, 0.26 * s, -ang - Math.PI / 2 + Math.PI, clamp(back) * Math.sin(Math.PI * u));
+  }
+  ctx.restore();
+}
+
+/** stat card: ink rounded card, big yellow number over a small white word ("96%" / "DRIPPED"). ~220x170 px at s = 1. sc = pop-in */
+export function rnStatCard(x, y, s = 1, big = '96%', small = 'DRIPPED', sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  ctx.font = '900 40px Inter'; ctx.letterSpacing = '2px'; const w2 = ctx.measureText(small).width;
+  const w = Math.max(200, w2 + 44);
+  rr(-w / 2, -82, w, 164, 30); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.fillStyle = C.white; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(small, 0, 46);
+  ctx.letterSpacing = '0px'; ctx.font = '900 86px Inter'; ctx.fillStyle = C.yellow; ctx.fillText(big, 0, -18);
+  ctx.restore();
+}
+
+/** mini skier (crowd icon): head with dot eyes, blue beanie + pom, slate jacket shoulders. drip 0..1 = a small clear drop
+ *  under the nose; dry = no drop and a yellow ring later (the 1 in 25). ~150x210 px at s = 1, origin = face centre. sc = pop-in */
+export function rnMiniSkier(x, y, s = 1, { drip = 0, sc = 1, col = RN_SCARF, colD = RN_SCARF_D, bob = 0 } = {}) {
+  if (sc <= 0 || s <= 0) return;
+  ctx.save(); ctx.translate(x, y - bob); ctx.scale(s * sc, s * sc);
+  rr(-74, 58, 148, 110, [56, 56, 18, 18]); ctx.fillStyle = colD; ctx.fill(); rr(-74, 58, 136, 110, [56, 56, 18, 18]); ctx.fillStyle = col; ctx.fill();
+  ell(2, 2, 62, 66, C.skinShade); ell(0, 0, 58, 62, C.skin);
+  ctx.save(); ctx.beginPath(); ctx.rect(-80, -120, 160, 96); ctx.clip(); ell(0, -24, 64, 64, C.shirtShade); ell(-3, -27, 60, 60, C.shirt); ctx.restore();
+  rr(-64, -36, 128, 24, 12); ctx.fillStyle = C.shirtShade; ctx.fill();
+  circle(0, -88, 15, C.white);
+  for (const sd of [-1, 1]) { ell(sd * 22, 4, 7, 9, C.ink); circle(sd * 22 + 2, 1, 2.5, C.white); }
+  ctx.save(); ctx.globalAlpha = 0.4; ell(-36, 22, 13, 8, RN_FLUSH); ell(36, 22, 13, 8, RN_FLUSH); ctx.restore();
+  ell(0, 20, 12, 10, RN_FLUSH);
+  line([[-12, 42], [12, 41]], C.mouth, 6);
+  const d = clamp(drip); if (d > 0) drop(-6, 30 + 14 * d, 0.24 * (0.5 + 0.5 * d), 0, Math.min(1, d * 3));
+  ctx.restore();
+}
+
+// side profile (facing right), head centre origin, s = 1: ~620 px from crown to neck. Shared by rnProfile + rnNoseXray
+const RN_PRO = { nostril: [292, 110], tip: [338, 84], eye: [150, -40], mouth: [246, 182], throat: [40, 330] };
+function rnProPath() {
+  ctx.beginPath(); ctx.moveTo(-60, -310);
+  ctx.bezierCurveTo(100, -320, 210, -240, 215, -120); ctx.quadraticCurveTo(222, -80, 212, -60);
+  ctx.bezierCurveTo(250, -10, 320, 50, 338, 84); ctx.quadraticCurveTo(348, 116, 300, 122); ctx.quadraticCurveTo(262, 124, 246, 140);
+  ctx.quadraticCurveTo(264, 162, 250, 180); ctx.quadraticCurveTo(264, 202, 246, 222); ctx.quadraticCurveTo(252, 292, 190, 312);
+  ctx.quadraticCurveTo(110, 332, 72, 332); ctx.lineTo(72, 470); ctx.lineTo(-170, 470); ctx.lineTo(-170, 282);
+  ctx.bezierCurveTo(-290, 222, -312, 40, -282, -100); ctx.bezierCurveTo(-252, -240, -170, -302, -60, -310); ctx.closePath();
+}
+// nasal cavity (inside the profile): nostril → three radiator-fin turbinates → back of the nose → throat
+const RN_CAV = [[300, 118], [250, 96], [200, 40], [120, 10], [50, 30], [20, 110], [10, 230], [0, 470]];
+export const RN_FINS = [[150, 18], [150, 58], [150, 98]];
+const rnAt = (P, u) => {
+  const L = []; let tot = 0; for (let i = 1; i < P.length; i++) { const d = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); L.push(d); tot += d; }
+  let k = clamp(u) * tot; for (let i = 0; i < L.length; i++) { if (k <= L[i]) { const f = k / L[i]; return [lerp(P[i][0], P[i + 1][0], f), lerp(P[i][1], P[i + 1][1], f)]; } k -= L[i]; }
+  return P[P.length - 1].slice();
+};
+export const rnCavAt = (x, y, s, u) => { const p = rnAt(RN_CAV, u); return [x + p[0] * s, y + p[1] * s]; };
+
+/** SIDE PROFILE close-up of the hero facing right (blue beanie, slate scarf, red-tipped nose). Origin = head centre.
+ *  o: eyes 'n'|'wide'|'closed', mouth 'flat'|'o'|'smile', red 0..1, drip 0..1 (clear drop under the nostril), ring 0..1 (yellow
+ *  ring round the nose). Returns { nostril, tip, mouth } in canvas px */
+export function rnProfile(x, y, s = 1, { eyes = 'n', mouth = 'flat', red = 1, drip = 0, ring = 0, t = 0 } = {}) {
+  const P = (p) => [x + p[0] * s, y + p[1] * s];
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rnProPath(); ctx.fillStyle = C.skin; ctx.fill();
+  ctx.save(); rnProPath(); ctx.clip();
+  ell(-150, 360, 230, 120, C.skinShade);                                    // neck shade
+  ell(-90, -330, 260, 150, C.hair, 0.15);                                    // hair under the beanie
+  ctx.restore();
+  // ear
+  ell(-70, 30, 50, 74, C.skinShade, 0.1); ell(-66, 28, 36, 58, C.skin, 0.1); ell(-60, 30, 14, 30, C.skinShade, 0.1);
+  // nose tip flush + nostril
+  const rf = clamp(red); if (rf > 0) { ctx.save(); ctx.globalAlpha = rf; ell(312, 92, 34, 30, RN_FLUSH, -0.4); ctx.restore(); }
+  ctx.beginPath(); ctx.arc(268, 96, 34, -0.3 * Math.PI, 0.7 * Math.PI); ctx.strokeStyle = C.skinShade; ctx.lineWidth = 10; ctx.stroke();
+  ell(292, 116, 22, 7, C.mouth, -0.15);
+  ctx.save(); ctx.globalAlpha = 0.42; ell(150, 80, 54, 30, RN_FLUSH); ctx.restore();
+  // eye + brow
+  if (eyes === 'closed') line([[132, -40], [170, -36]], C.ink, 10);
+  else { const k = eyes === 'wide' ? 1.3 : 1; ell(152, -40, 13 * k, 18 * k, C.ink); circle(157, -46, 5 * k, C.white); }
+  ctx.beginPath(); ctx.moveTo(112, -96); ctx.quadraticCurveTo(150, -112, 192, -98); ctx.strokeStyle = C.hair; ctx.lineWidth = 13; ctx.stroke();
+  // mouth
+  if (mouth === 'o') ell(250, 182, 12, 16, C.mouth); else if (mouth === 'smile') { ctx.beginPath(); ctx.moveTo(214, 176); ctx.quadraticCurveTo(232, 192, 252, 180); ctx.strokeStyle = C.mouth; ctx.lineWidth = 9; ctx.stroke(); }
+  else line([[218, 182], [250, 182]], C.mouth, 9);
+  // scarf + beanie
+  rr(-220, 330, 330, 140, 50); ctx.fillStyle = RN_SCARF_D; ctx.fill(); rr(-220, 330, 330, 124, 46); ctx.fillStyle = RN_SCARF; ctx.fill();
+  for (const sx of [-170, -80, 10]) { rr(sx, 342, 30, 100, 10); ctx.fillStyle = RN_SCARF_D; ctx.fill(); }
+  ctx.save(); ctx.beginPath(); ctx.rect(-400, -700, 800, 540); ctx.rotate(0.12); ctx.clip();
+  ell(-40, -196, 290, 206, C.shirtShade, 0.12); ell(-46, -202, 280, 196, C.shirt, 0.12); ctx.restore();
+  ctx.save(); ctx.rotate(0.12); rr(-330, -198, 560, 82, 40); ctx.fillStyle = C.shirtShade; ctx.fill(); rr(-330, -198, 560, 68, 34); ctx.fillStyle = '#4A8BE0'; ctx.fill(); ctx.restore();
+  circle(-120, -420, 52, RN_SNOW_D); circle(-125, -425, 46, C.white);
+  const d = clamp(drip); if (d > 0) drop(290, 136 + 22 * d, 0.4 + 0.14 * d, 0, Math.min(1, d * 3));
+  ctx.restore();
+  if (ring > 0) hiRing(x + 300 * s, y + 96 * s, 90 * s, 70 * s, ring);
+  return { nostril: P(RN_PRO.nostril), tip: P(RN_PRO.tip), mouth: P(RN_PRO.mouth) };
+}
+
+/** X-RAY of the profile (on the xray() film): cyan head outline + skull line, the pink nasal cavity with three radiator-fin
+ *  turbinates. heat 0..1 = fins glow yellow + heat waves; fins 0..1 = fins pop in (scale); ring 0..1 = yellow ring round the
+ *  cavity; flow = film-time phase of breath dots running in at the nostril (cold: white snowflakes) → past the fins (turn
+ *  yellow = warmed) → down the throat (-1 = none); n dots. Head origin like rnProfile */
+export function rnNoseXray(x, y, s = 1, { heat = 0, fins = 1, ring = 0, flow = -1, n = 7, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rnProPath(); ctx.fillStyle = 'rgba(79,209,232,0.10)'; ctx.fill(); ctx.lineWidth = 12; ctx.strokeStyle = C.cyan; ctx.stroke();
+  // skull: crown arc, eye socket, jaw (thin cyan)
+  ctx.globalAlpha = 0.8; ctx.lineWidth = 8; ctx.strokeStyle = C.cyan;
+  ctx.beginPath(); ctx.moveTo(-230, 120); ctx.bezierCurveTo(-270, -60, -200, -250, -40, -268); ctx.bezierCurveTo(100, -272, 182, -190, 180, -80); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(130, -36, 46, 40, 0, 0, TAU); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-40, 210); ctx.quadraticCurveTo(60, 300, 200, 270); ctx.lineTo(214, 220); ctx.stroke();
+  for (let k = 0; k < 4; k++) { rr(-150, 330 + k * 34, 70, 24, 8); ctx.stroke(); }   // neck vertebrae
+  ctx.globalAlpha = 1;
+  // cavity tube
+  line(RN_CAV, C.pinkDark, 74); line(RN_CAV, C.pink, 58); line(RN_CAV.slice(0, 6), '#F7C9D0', 34);
+  // fins (radiator turbinates)
+  const f = clamp(fins), h = clamp(heat);
+  if (f > 0) RN_FINS.forEach(([fx, fy], i) => {
+    ctx.save(); ctx.translate(fx, fy); ctx.scale(f, f);
+    rr(-70, -11, 140, 22, 11); ctx.fillStyle = C.pinkDark; ctx.fill(); rr(-66, -9, 132, 16, 8); ctx.fillStyle = h > 0 ? lerpHexRN(C.pinkLight, C.yellow, h) : C.pinkLight; ctx.fill();
+    ctx.restore();
+  });
+  if (h > 0) for (let k = 0; k < 3; k++) {
+    const u = (t * 0.9 + k / 3) % 1; ctx.save(); ctx.globalAlpha = h * Math.sin(u * Math.PI); ctx.beginPath();
+    for (let j = 0; j <= 10; j++) { const py = -20 - u * 60 - j * 7, px = 90 + k * 40 + Math.sin(j * 0.9 + t * 7 + k) * 8; j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.strokeStyle = C.yellow; ctx.lineWidth = 8; ctx.stroke(); ctx.restore();
+  }
+  if (ring > 0) hiRing(160, 60, 150, 100, ring);
+  ctx.restore();
+  // breath dots: outside the nostril → cavity → throat
+  if (flow >= 0) for (let k = 0; k < n; k++) {
+    const u = ((flow + k / n) % 1), pre = 0.22;
+    let px, py;
+    if (u < pre) { const q = u / pre; px = x + lerp(560, 300, q) * s; py = y + lerp(150, 118, q) * s; }
+    else { [px, py] = rnCavAt(x, y, s, (u - pre) / (1 - pre)); }
+    const warm = clamp(((u - pre) / (1 - pre) - 0.3) / 0.15);
+    const al = Math.min(1, u * 8, (1 - u) * 8);
+    ctx.save(); ctx.globalAlpha = clamp(al);
+    if (warm < 1) { ctx.globalAlpha = clamp(al) * (1 - warm); snowflake(px, py, 20 * s, C.white, 6 * s, t * 2 + k); }
+    if (warm > 0) { ctx.globalAlpha = clamp(al) * warm; circle(px, py, 15 * s, C.ink); circle(px, py, 11 * s, C.yellow); }
+    ctx.restore();
+  }
+}
+function lerpHexRN(a, b, k) {
+  const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16), m = (sh) => Math.round(lerp((pa >> sh) & 255, (pb >> sh) & 255, clamp(k)));
+  return '#' + ((1 << 24) + (m(16) << 16) + (m(8) << 8) + m(0)).toString(16).slice(1);
+}
+
+/** LINING MACRO (full frame, inside the nose): pale airway on top, the moist pink lining surface (wavy, RN_LIN.surf(x)),
+ *  pink tissue below with three glands (pale lobed clusters + ducts up to the surface) and a cream NERVE cord with two
+ *  branches ending just under the surface. o: cold 0..1 (snowflake cold air streaming right through the airway), spark 0..1
+ *  (yellow sparks at the nerve endings: the tripwire), sig = film-time phase of yellow blips racing left along the nerve
+ *  (-1 = none), glands 0..1 = yellow rings on the glands, pump 0..1 (glands pulse, clear drops rise up the ducts), mucus 0..1
+ *  (clear drops beaded along the surface + a thin clear layer), exhale 0..1 (warm moist puffs drifting LEFT along the airway),
+ *  bead 0..1 (drops condensing on the surface where the exhale touches it: the water won back), t = film time */
+export const RN_LIN = { surf: (x) => 650 + Math.sin(x * 0.011 + 0.6) * 16, glands: [[230, 880], [540, 900], [850, 880]], ends: [[400, 700], [700, 702]], nerveY: 1040 };
+const RN_NERVE_P = (() => { const P = []; for (let x = -60; x <= 1140; x += 30) P.push([x, RN_LIN.nerveY + Math.sin(x * 0.008) * 24]); return P; })();
+const RN_BRANCH = [[[380, 1042], [392, 900], [400, 700]], [[720, 1018], [708, 880], [700, 702]]];
+const RN_BEADS = [90, 200, 320, 450, 600, 740, 880, 990];
+export function rnLining(t, { cold = 0, spark = 0, sig = -1, glands = 0, pump = 0, mucus = 0, exhale = 0, bead = 0 } = {}) {
+  fillAll(RN_AIR);
+  const S = RN_LIN.surf;
+  const surfPath = (off = 0) => { ctx.beginPath(); ctx.moveTo(-300, H + 300); for (let x = -300; x <= W + 300; x += 20) ctx.lineTo(x, S(x) + off); ctx.lineTo(W + 300, H + 300); ctx.closePath(); };
+  surfPath(); ctx.fillStyle = C.pink; ctx.fill();
+  surfPath(520); ctx.fillStyle = '#D4637C'; ctx.fill();
+  // soft folds in the tissue
+  for (const [fx, fy] of [[120, 780], [640, 790], [980, 1010], [300, 1110]]) { ell(fx, fy, 90, 22, C.pinkLight, -0.06); }
+  // nerve + branches
+  const nv = (P, w) => { line(P, C.pinkDark, w + 12); line(P, RN_NERVE, w); };
+  nv(RN_NERVE_P, 24); RN_BRANCH.forEach((P) => nv(P, 14));
+  for (const [ex, ey] of RN_LIN.ends) for (const a of [-0.6, 0, 0.6]) line([[ex, ey], [ex + Math.sin(a) * 30, ey - Math.cos(a) * 30]], RN_NERVE, 8);
+  if (sig >= 0) for (let k = 0; k < 3; k++) {
+    const u = (sig + k / 3) % 1, px = lerp(1140, -60, u), py = RN_LIN.nerveY + Math.sin(px * 0.008) * 24;
+    circle(px, py, 20, C.ink); circle(px, py, 14, C.yellow);
+  }
+  // glands + ducts
+  const pm = clamp(pump);
+  RN_LIN.glands.forEach(([gx, gy], i) => {
+    const sy = S(gx) + 10, pul = 1 + 0.08 * pm * Math.sin(t * 12 + i);
+    line([[gx, gy - 40], [gx, sy]], C.pinkDark, 18); line([[gx, gy - 40], [gx, sy]], C.pinkLight, 8);
+    ctx.save(); ctx.translate(gx, gy); ctx.scale(pul, pul);
+    for (const [cx, cy, r] of [[-46, 8, 40], [0, -14, 46], [46, 8, 40], [-22, 36, 36], [24, 36, 36]]) circle(cx, cy, r + 6, C.pinkDark);
+    for (const [cx, cy, r] of [[-46, 8, 40], [0, -14, 46], [46, 8, 40], [-22, 36, 36], [24, 36, 36]]) circle(cx, cy, r, C.pinkLight);
+    for (const [cx, cy] of [[-50, 0], [-4, -24], [42, 0]]) ell(cx, cy, 12, 7, C.white, -0.4);
+    ctx.restore();
+    if (pm > 0) for (let k = 0; k < 3; k++) { const u = (t * 1.6 + k / 3 + i * 0.2) % 1; circle(gx, lerp(gy - 50, sy, u), 9, WATER_D); circle(gx, lerp(gy - 50, sy, u), 6, C.sky); }
+    if (glands > 0) hiRing(gx, gy + 6, 112, 84, glands);
+  });
+  // the moist surface line + shine
+  ctx.beginPath(); for (let x = -300; x <= W + 300; x += 20) x === -300 ? ctx.moveTo(x, S(x)) : ctx.lineTo(x, S(x));
+  ctx.lineWidth = 26; ctx.strokeStyle = C.pinkLight; ctx.stroke();
+  for (const sx of [60, 300, 560, 820]) line([[sx, S(sx) - 6], [sx + 60, S(sx + 60) - 6]], C.white, 7);
+  // mucus: thin clear layer + beads (clear drops sitting on the surface)
+  const mu = clamp(mucus);
+  if (mu > 0) {
+    ctx.save(); ctx.globalAlpha = 0.55 * mu; ctx.beginPath(); for (let x = -300; x <= W + 300; x += 20) x === -300 ? ctx.moveTo(x, S(x) - 16) : ctx.lineTo(x, S(x) - 16);
+    ctx.lineWidth = 16; ctx.strokeStyle = C.sky; ctx.stroke(); ctx.restore();
+    RN_BEADS.forEach((bx, i) => { const k = clamp(mu * 1.6 - i * 0.08); if (k > 0) drop(bx, S(bx) - 36 - 4 * Math.sin(t * 3 + i), 0.5 * k, 0, 1); });
+  }
+  // cold air: snowflakes streaming right through the airway
+  const cd = clamp(cold);
+  if (cd > 0) for (let i = 0; i < 12; i++) {
+    const x = ((rnd(i + 31) * 1400 + t * 520) % 1400) - 160, y = 250 + rnd(i + 41) * 320 + Math.sin(t * 3 + i) * 14;
+    ctx.save(); ctx.globalAlpha = cd; snowflake(x, y, 22, RN_SNOW_D, 9, t * 2 + i); snowflake(x, y, 22, C.white, 5, t * 2 + i); ctx.restore();
+    line([[x - 40, y], [x - 110, y]], C.white, 6);
+  }
+  // exhale: warm moist puffs drifting left
+  const ex = clamp(exhale);
+  if (ex > 0) for (let k = 0; k < 5; k++) {
+    const u = (t * 0.45 + k / 5) % 1, x = lerp(1180, -120, u), y = 500 + Math.sin(u * 7 + k) * 30 + (k % 2) * 30, r = 42 + 12 * Math.sin(k * 2.1);
+    ctx.save(); ctx.globalAlpha = ex * 0.9 * Math.sin(Math.PI * u); circle(x, y, r, C.white); circle(x + r * 0.7, y + 10, r * 0.7, C.white); circle(x - r * 0.6, y + 14, r * 0.6, C.white); ctx.restore();
+    for (let j = 0; j < 3; j++) { const dx = x + (j - 1) * 34, dy = y + r * 0.9 + 18 + j % 2 * 10; ctx.save(); ctx.globalAlpha = ex * Math.sin(Math.PI * u); circle(dx, dy, 6, WATER_D); circle(dx, dy, 4, C.sky); ctx.restore(); }
+  }
+  const bd = clamp(bead);
+  if (bd > 0) RN_BEADS.forEach((bx, i) => { const k = clamp(bd * 2 - (i % 4) * 0.2); if (k > 0) drop(bx + 40, S(bx + 40) - 38, 0.62 * eoRN(k), 0, 1); });
+}
+const eoRN = (k) => 1 - Math.pow(1 - clamp(k), 3);
+
+/** "up to a third" gauge: white disc, ink ring, a water-blue wedge filling to fill * 1/3 of the circle (three ink ticks mark the
+ *  thirds). r px, sc = pop-in */
+export function rnThirdGauge(x, y, r = 90, fill = 1, sc = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  circle(0, 0, r + 12, C.ink); circle(0, 0, r, C.white);
+  const f = clamp(fill);
+  if (f > 0) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, r - 8, -Math.PI / 2, -Math.PI / 2 + f * TAU / 3); ctx.closePath(); ctx.fillStyle = C.sky; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = WATER_D; ctx.stroke(); }
+  for (let k = 0; k < 3; k++) { const a = -Math.PI / 2 + k * TAU / 3; line([[0, 0], [Math.cos(a) * r, Math.sin(a) * r]], C.ink, 8); }
+  circle(0, 0, 12, C.ink);
+  ctx.restore();
+}
+
+/** pizza slice (tease prop): point down, crust on top, pale cheese, pink pepperoni, white steam curls rising (steam 0..1,
+ *  t = film time). ~360x420 px at s = 1, origin = slice centre. sc = pop-in */
+export function rnPizza(x, y, s = 1, { steam = 1, t = 0, sc = 1, rot = -0.15 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.save(); ctx.rotate(rot);
+  ctx.beginPath(); ctx.moveTo(-170, -150); ctx.lineTo(170, -150); ctx.lineTo(0, 230); ctx.closePath(); ctx.fillStyle = RN_CHEESE_D; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-156, -146); ctx.lineTo(156, -146); ctx.lineTo(0, 206); ctx.closePath(); ctx.fillStyle = RN_CHEESE; ctx.fill();
+  for (const [px, py] of [[-70, -80], [60, -70], [0, 10], [-20, 110], [80, -120]]) { circle(px, py, 30, '#A84458'); circle(px - 2, py - 2, 25, RN_PEP); }
+  rr(-190, -200, 380, 70, 35); ctx.fillStyle = RN_CRUST_D; ctx.fill(); rr(-190, -200, 380, 58, 29); ctx.fillStyle = RN_CRUST; ctx.fill();
+  ctx.restore();
+  const st = clamp(steam);
+  if (st > 0) for (let k = 0; k < 3; k++) {
+    const u = (t * 0.7 + k / 3) % 1; ctx.save(); ctx.globalAlpha = st * Math.sin(u * Math.PI); ctx.beginPath();
+    for (let j = 0; j <= 12; j++) { const py = -230 - u * 110 - j * 10, px = -90 + k * 90 + Math.sin(j * 0.8 + t * 5 + k) * 16; j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.strokeStyle = C.white; ctx.lineWidth = 16; ctx.stroke(); ctx.restore();
+  }
+  ctx.restore();
+}
+
+/** tongue (tease): pink rounded tongue, centre groove, taste-bud bumps. burn 0..1 turns the front buds pale (flattened);
+ *  grow 0..1 pops them back (regrow, little yellow sparkles); glow 0..1 = yellow rim on all buds. ~300x360 px at s = 1,
+ *  origin = tongue centre. sc = pop-in */
+const RN_BUDS = (() => { const B = []; for (let r = 0; r < 5; r++) for (let c = -2; c <= 2; c++) { if (r === 4 && Math.abs(c) === 2) continue; B.push([c * 46 + (r % 2) * 18 - 9, -100 + r * 54]); } return B; })();
+export function rnTongue(x, y, s = 1, { burn = 0, grow = 0, glow = 0, sc = 1, t = 0 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc); ctx.lineCap = 'round';
+  const shape = (k) => { ctx.beginPath(); ctx.moveTo(-150 * k, -170); ctx.lineTo(150 * k, -170); ctx.lineTo(150 * k, 40); ctx.bezierCurveTo(150 * k, 200 * k, -150 * k, 200 * k, -150 * k, 40); ctx.closePath(); };
+  shape(1.04); ctx.fillStyle = C.pinkDark; ctx.fill(); shape(1); ctx.fillStyle = C.pink; ctx.fill();
+  line([[0, -150], [0, 80]], C.pinkDark, 10);
+  const bu = clamp(burn), gr = clamp(grow), gl = clamp(glow);
+  RN_BUDS.forEach(([bx, by], i) => {
+    const front = by > 0, off = front ? bu * (1 - gr) : 0, pop = front && gr > 0 ? 1 + 0.35 * Math.sin(Math.PI * clamp(gr * 1.4 - (i % 5) * 0.08)) : 1;
+    if (gl > 0) { ctx.save(); ctx.globalAlpha = gl; circle(bx, by, 22 * pop, C.yellow); ctx.restore(); }
+    circle(bx, by, 15 * pop, off > 0.5 ? RN_BUD_OFF : C.pinkLight); circle(bx - 4, by - 4, 5 * pop, C.white);
+  });
+  if (gr > 0 && gr < 1) for (const [sx, sy] of [[-120, 60], [120, 40], [0, 150]]) sparkle4(sx, sy, 18, Math.sin(Math.PI * gr));
+  ctx.restore();
+}
+
+/** next-topic badge (burned tongue): white disc, ink ring, a small tongue with buds + a pizza tip and steam. sc = pop-in */
+export function rnTongueBadge(x, y, s = 1, sc = 1, t = 0, grow = 1) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * sc, s * sc);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, 134, 0, TAU); ctx.clip();
+  rnTongue(-34, 30, 0.46, { burn: 1, grow, t });
+  rnPizza(72, -20, 0.26, { steam: 1, t, rot: 0.5 });
+  ctx.restore();
+  ctx.restore();
+}

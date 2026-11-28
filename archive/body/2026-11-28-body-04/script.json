@@ -1,0 +1,60 @@
+{
+ "title": "What Happens When Your Nose Runs in the Cold?",
+ "voice": "am_michael",
+ "speed": 1.15,
+ "lead": 0.4,
+ "outro": 0.9,
+ "gap": 0.24,
+ "music": "bed",
+ "sources": [
+  "Northwestern Medicine HealthBeat, 'Why Does the Cold Weather Make My Nose Run?' (updated December 2025, checked 2026-11-28): 'a study of 90 people visiting a ski-resort clinic found that 96% who were exposed to the cold had some degree of rhinorrhea' (line 2: 'In one ski study, ninety-six percent dripped'); 'When we breathe in, our noses warm the air and add moisture as the air travels down into our lungs' (line 3); 'Cold, dry air irritates your nasal lining, and as a result, your nasal glands produce excess mucus' (line 7): https://www.nm.org/healthbeat/healthy-tips/why-does-the-cold-weather-make-my-nose-run",
+  "Harvard Health Publishing, 'You don't say? Why does your nose run in cold weather?' (2021-12-01, checked 2026-11-28): a runny nose in the cold is 'a sign that the nose is doing its job to heat up and moisturize air before it enters the lungs' (line 3: 'a built-in heater for every breath', paying off the previous video's tease): https://www.harvardhealth.org/staying-healthy/you-dont-say-why-does-your-nose-run-in-cold-weather",
+  "Smithsonian Magazine, 'Ask Smithsonian: Why Does My Nose Run When It's Cold?' (Alicia Ault, 2016-03-21, quoting allergist-immunologist Mitchell Grayson, Medical College of Wisconsin; checked 2026-11-28): 'Heating the air and mucous production are among the nose's primary activities' (line 3); the drip is 'essentially a nervous system response, mediated by chemical neurotransmitters that control the glands' (line 5: 'a nerve reflex'); 'It's the same system that causes the mouth to water in anticipation of a meal' (line 6); condensation 'joins with the mucous and adds to the outward flow' (director visual only): https://www.smithsonianmag.com/smithsonian-institution/ask-smithsonian-why-does-my-nose-run-when-its-cold-180958383/",
+  "Cleveland Clinic, 'Runny Nose' (checked 2026-11-28): 'Cold, dry air irritates your nasal lining. In defense, your nasal glands produce excess mucus to keep the lining moist, resulting in a runny nose' (lines 5, 7); see a provider if 'Your runny nose or congestion lasts more than three weeks or occurs with a fever' (line 9): https://my.clevelandclinic.org/health/symptoms/17660-runny-nose",
+  "Baraniuk JN, 'Neural Regulation of Mucosal Function', Pulmonary Pharmacology & Therapeutics 2008 (NIH PMC2796429, checked 2026-11-28): 'exhaled air saturated with water vapor at body temperature passes of the relatively cooler nasal surface', condensing on it; this 'countercurrent recycling mechanism may recover as much at [sic] a third of the water and energy expended in conditioning inhaled ambient air' (line 8, the answer: 'it wins back up to a third'): https://pmc.ncbi.nlm.nih.gov/articles/PMC2796429/",
+  "Baraniuk JN & Merck SJ, 'New Concepts of Neural Regulation in Human Nasal Mucosa', Acta Clinica Croatica 2009 (NIH PMC4209304, checked 2026-11-28): 'Countercurrent condensation of water from exhaled air may recover 30% of the water' used to humidify inhaled air (line 8, second source for the answer): https://pmc.ncbi.nlm.nih.gov/articles/PMC4209304/",
+  "Tease (next video): Cleveland Clinic, '7 Remedies To Heal a Burnt Tongue' (2023-08-01, checked 2026-11-28): 'Taste buds regenerate approximately every two weeks' (line 10: 'taste buds that regrow'): https://health.clevelandclinic.org/how-to-heal-a-burnt-tongue/"
+ ],
+ "lines": [
+  {
+   "text": "What happens when your nose runs in the cold?",
+   "caps": "WHAT *HAPPENS | WHEN YOUR NOSE *RUNS | IN THE *COLD?"
+  },
+  {
+   "text": "In one ski study, ninety-six percent dripped. Breathing out, does your nose win water back, or lose it?",
+   "caps": "IN ONE *SKI | *STUDY | *NINETY-SIX | PERCENT *DRIPPED | *BREATHING OUT | DOES YOUR *NOSE | WIN WATER *BACK | OR *LOSE IT?"
+  },
+  {
+   "text": "Your nose is a built-in heater for every breath.",
+   "caps": "YOUR *NOSE | IS A BUILT-IN *HEATER | FOR EVERY *BREATH"
+  },
+  {
+   "text": "Ever stepped outside and felt that first drip?",
+   "caps": "EVER *STEPPED | *OUTSIDE | AND *FELT | THAT FIRST *DRIP?"
+  },
+  {
+   "text": "But here's the twist: cold air trips a nerve reflex.",
+   "caps": "BUT *HERE'S | THE *TWIST | *COLD AIR | TRIPS A *NERVE | *REFLEX"
+  },
+  {
+   "text": "Same one that waters your mouth before a meal.",
+   "caps": "*SAME ONE | THAT *WATERS | YOUR *MOUTH | BEFORE A *MEAL"
+  },
+  {
+   "text": "Glands pour out extra mucus.",
+   "caps": "*GLANDS | *POUR OUT | EXTRA *MUCUS"
+  },
+  {
+   "text": "Answer: it wins back up to a third.",
+   "caps": "*ANSWER | IT *WINS BACK | UP TO A *THIRD"
+  },
+  {
+   "text": "Over three weeks, or a fever? See a doctor.",
+   "caps": "OVER THREE *WEEKS | OR A *FEVER? | SEE A *DOCTOR"
+  },
+  {
+   "text": "Next Body File: burned tongue, taste buds that regrow.",
+   "caps": "NEXT BODY *FILE | *BURNED TONGUE | *TASTE BUDS | THAT *REGROW"
+  }
+ ]
+}
