@@ -20,5 +20,6 @@ skip 2026-11-27-body-02: already in the TikTok inbox
 skip 2026-11-27-body-03: already in the TikTok inbox
 skip 2026-11-27-body-04: already in the TikTok inbox
 skip 2026-11-28-body-01: already in the TikTok inbox
-draft sent 2026-11-28-body-02 -> v_inbox_file~v2.7713162753522878477  (What Happens When You Get Déjà Vu?)
-32 drafts recorded in state/tiktok_drafts.json
+skip 2026-11-28-body-02: already in the TikTok inbox
+draft sent 2026-11-28-body-03 -> v_inbox_file~v2.7713163324275492878  (What Happens When You Sweat?)
+33 drafts recorded in state/tiktok_drafts.json
