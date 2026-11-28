@@ -17,7 +17,8 @@ skip 2026-11-25-body-03: already in the TikTok inbox
 skip 2026-11-25-body-04: already in the TikTok inbox
 skip 2026-11-27-body-01: already in the TikTok inbox
 skip 2026-11-27-body-02: already in the TikTok inbox
-draft sent 2026-11-27-body-03 -> v_inbox_file~v2.7713159000888952846  (What Happens When You Get a Paper Cut?)
-draft sent 2026-11-27-body-04 -> v_inbox_file~v2.7713159063722559502  (What Happens When Your Muscles Get Sore Days Later?)
-draft sent 2026-11-28-body-01 -> v_inbox_file~v2.7713159104910510093  (What Happens When You Hear Your Recorded Voice?)
-31 drafts recorded in state/tiktok_drafts.json
+skip 2026-11-27-body-03: already in the TikTok inbox
+skip 2026-11-27-body-04: already in the TikTok inbox
+skip 2026-11-28-body-01: already in the TikTok inbox
+draft sent 2026-11-28-body-02 -> v_inbox_file~v2.7713162753522878477  (What Happens When You Get Déjà Vu?)
+32 drafts recorded in state/tiktok_drafts.json
