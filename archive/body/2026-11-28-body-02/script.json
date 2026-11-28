@@ -1,0 +1,58 @@
+{
+ "title": "What Happens When You Get Déjà Vu?",
+ "voice": "am_michael",
+ "speed": 1.15,
+ "lead": 0.4,
+ "outro": 0.9,
+ "gap": 0.24,
+ "music": "bed",
+ "sources": [
+  "Cleveland Clinic Health Essentials, 'Deja Vu: What It Is and When It May Be Cause for Concern' (checked 2026-11-28). 'An estimated 97% of people have experienced déjà vu at least once in their lives' (line 2: 'Ninety-seven percent of people have had it'); 'Déjà vu is caused by dysfunctional connections between the parts of your brain', the one responsible for memories (temporal lobe) and the one responsible for taking in new information (hippocampus) (lines 3-4: memory wiring and new-info wiring cross); it is 'fleeting'; get checked if it 'lasts longer than a few seconds' or comes with confusion, loss of awareness or shaking (line 9); seizures restricted to the temporal lobe can cause the feeling (description only, calm wording): https://health.clevelandclinic.org/deja-vu-what-it-is-and-when-it-may-be-cause-for-concern",
+  "ScienceAlert (Bec Crew, 2016-08-17), 'This new study might actually explain the weirdness that is déjà vu', on Akira O'Connor's St Andrews study (21 participants): a list of related words 'such as bed, pillow, night, and dream' without the linking word sleep (line 7); 'frontal areas of the brain associated with decision-making were activated' and 'the parts of the brain related to memory weren't the ones that lit up in the fMRI scans' (guess + answer, lines 2 and 8). The article notes the study was small and not yet peer-reviewed at the time: https://www.sciencealert.com/this-new-study-might-actually-explain-the-weirdness-that-is-deja-vu",
+  "Urquhart, Sivakumaran, Macfarlane & O'Connor, 'fMRI evidence supporting the role of memory conflict in the déjà vu experience', Memory (2018, DOI 10.1080/09658211.2018.1524496), the peer-reviewed version: 21 participants, 16 reported déjà vu (line 7: 'sixteen of twenty-one felt it'), generated with a modified DRM word-list procedure (line 6: 'triggered it on purpose'); conflict-related regions including anterior cingulate and medial prefrontal cortex: https://research-portal.st-andrews.ac.uk/en/publications/fmri-evidence-supporting-the-role-of-memory-conflict-in-the-d%C3%A9j%C3%A0-/",
+  "BBC Science Focus (Thomas Ling), 'Here's what déjà vu (or the lack of it) says about your brain health': O'Connor, 'the frontal decision-making areas of the brain effectively check' the signal; 'It's a sign that the fact-checking brain regions are working well' (line 8: 'fact-checking the memory'): https://www.sciencefocus.com/the-human-body/deja-vu",
+  "Tease (next video): Cleveland Clinic, 'Eccrine Glands': 'You have anywhere from 2 million to 4 million eccrine sweat glands' (line 10: 'up to four million glands'): https://my.clevelandclinic.org/health/body/eccrine-glands"
+ ],
+ "lines": [
+  {
+   "text": "What happens when you get déjà vu?",
+   "caps": "WHAT *HAPPENS | WHEN YOU *GET | *DEJA VU?"
+  },
+  {
+   "text": "Ninety-seven percent of people have had it. In a scanner, what lights up: your memory, or your decision-maker?",
+   "caps": "*NINETY-SEVEN PERCENT | OF *PEOPLE | HAVE *HAD IT | IN A *SCANNER | WHAT *LIGHTS UP | YOUR *MEMORY | OR YOUR *DECISION-MAKER?"
+  },
+  {
+   "text": "Your memory wiring and your new-info wiring cross.",
+   "caps": "YOUR *MEMORY WIRING | AND YOUR *NEW-INFO | WIRING *CROSS"
+  },
+  {
+   "text": "So now feels like a rerun.",
+   "caps": "SO *NOW | FEELS *LIKE | A *RERUN"
+  },
+  {
+   "text": "Ever walked somewhere new and thought, I've been here?",
+   "caps": "EVER *WALKED | SOMEWHERE *NEW | AND *THOUGHT | I'VE *BEEN | *HERE?"
+  },
+  {
+   "text": "But here's the twist: scientists triggered it on purpose.",
+   "caps": "BUT *HERE'S | THE *TWIST | SCIENTISTS *TRIGGERED IT | ON *PURPOSE"
+  },
+  {
+   "text": "With words like bed, pillow and dream, sixteen of twenty-one felt it.",
+   "caps": "WITH *WORDS LIKE | BED *PILLOW | AND *DREAM | *SIXTEEN | OF *TWENTY-ONE | *FELT IT"
+  },
+  {
+   "text": "Answer: your decision-maker, fact-checking the memory.",
+   "caps": "*ANSWER | YOUR *DECISION-MAKER | *FACT-CHECKING | THE *MEMORY"
+  },
+  {
+   "text": "Lasts over a few seconds, or brings confusion? See a doctor.",
+   "caps": "LASTS *OVER | A *FEW | *SECONDS | OR *BRINGS | *CONFUSION? | SEE A *DOCTOR"
+  },
+  {
+   "text": "Next Body File: sweat, up to four million glands.",
+   "caps": "NEXT BODY *FILE | SWEAT *UP TO | *FOUR MILLION | *GLANDS"
+  }
+ ]
+}

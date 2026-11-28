@@ -9694,3 +9694,256 @@ export function rvEchoBrain(x, y, s = 1, { echo = 0, glitch = 0, t = 0, sc = 1 }
     brain(x + off, y, s * sc, { t }); ctx.restore();
   }
 }
+
+// ═════════════════════════ DÉJÀ VU SET (2026-11-28 "what happens when you get déjà vu", prefix dv) ═════════════════════════
+const DV_WALL = '#C8734A', DV_WALL_D = '#B5653F', DV_IN = '#F6E3BE', DV_IN_FLOOR = '#D9B38C', DV_WOOD = '#9A5333', DV_WOOD_L = '#B5653F';
+const DV_STEEL = '#B9C2CC', DV_STEEL_D = '#8E99A6', DV_SHELL_D = '#DCD6CB', DV_DERMIS = '#F2CDB8';
+
+/** café front (real world, canvas coords, fills the whole frame): terracotta wall with faint brick courses, a white-cased
+ *  doorway (opening x0..x0+w, top..floor) into a warm café (counter, hanging lamp, two cups on a shelf), a pink/white striped
+ *  awning over it, a round hanging sign with a mug, a potted plant, a pale sidewalk from floor down. Returns the opening box */
+export function dvCafeFront({ x0 = 190, w = 280, top = 410, floor = 960, t = 0 } = {}) {
+  fillAll(DV_WALL);
+  ctx.fillStyle = DV_WALL_D;
+  for (let r = 0, y = -260; y < floor; y += 70, r++) for (let x = -300 + (r % 2) * 90; x < W + 300; x += 180) { if (rnd(r * 31 + x) > 0.72) ctx.fillRect(x, y, 120, 12); }
+  ctx.fillStyle = C.floor; ctx.fillRect(-300, floor, W + 600, H); ctx.fillStyle = '#D6CCB8'; ctx.fillRect(-300, floor, W + 600, 16);
+  // inside the café
+  ctx.fillStyle = DV_IN; ctx.fillRect(x0, top, w, floor - top); ctx.fillStyle = DV_IN_FLOOR; ctx.fillRect(x0, floor - 110, w, 110);
+  rr(x0 + 30, top + 120, w - 60, 16, 4); ctx.fillStyle = DV_WOOD; ctx.fill();
+  for (const k of [0, 1]) { const cx = x0 + 70 + k * 70; rr(cx - 18, top + 84, 36, 36, [4, 4, 12, 12]); ctx.fillStyle = C.white; ctx.fill(); }
+  line([[x0 + w * 0.62, top], [x0 + w * 0.62, top + 60]], C.ink, 5);
+  ctx.beginPath(); ctx.moveTo(x0 + w * 0.62 - 40, top + 96); ctx.lineTo(x0 + w * 0.62 + 40, top + 96); ctx.lineTo(x0 + w * 0.62 + 22, top + 58); ctx.lineTo(x0 + w * 0.62 - 22, top + 58); ctx.closePath(); ctx.fillStyle = C.yellow; ctx.fill();
+  rr(x0 + 10, floor - 250, w - 20, 150, 8); ctx.fillStyle = DV_WOOD; ctx.fill(); rr(x0 + 10, floor - 250, w - 20, 26, [8, 8, 0, 0]); ctx.fillStyle = DV_WOOD_L; ctx.fill();
+  // door casing
+  ctx.fillStyle = C.white; ctx.fillRect(x0 - 26, top - 26, 26, floor - top + 26); ctx.fillRect(x0 + w, top - 26, 26, floor - top + 26); ctx.fillRect(x0 - 26, top - 26, w + 52, 26);
+  ctx.fillStyle = DV_SHELL_D; ctx.fillRect(x0 + w + 14, top - 26, 12, floor - top + 26);
+  // awning (pink / white stripes, scalloped edge)
+  const a0 = x0 - 50, a1 = x0 + w + 50, ay = top - 92, n = 6, sw = (a1 - a0) / n;
+  for (let i = 0; i < n; i++) {
+    ctx.beginPath(); ctx.moveTo(a0 + i * sw + 10, ay); ctx.lineTo(a0 + (i + 1) * sw + 10, ay); ctx.lineTo(a0 + (i + 1) * sw, ay + 56); ctx.arc(a0 + (i + 0.5) * sw, ay + 56, sw / 2, 0, Math.PI); ctx.closePath();
+    ctx.fillStyle = i % 2 ? C.white : C.pink; ctx.fill();
+  }
+  ctx.fillStyle = C.pinkDark; ctx.fillRect(a0 + 10, ay - 14, a1 - a0, 16);
+  // hanging sign with a mug (no lettering)
+  const sx = x0 - 90, sy = top + 150; line([[x0 - 26, top + 40], [sx, top + 40]], C.ink, 8); line([[sx, top + 40], [sx, sy - 56]], C.ink, 5);
+  circle(sx, sy, 62, C.ink); circle(sx, sy, 52, C.white); dwMug(sx - 6, sy + 6, 0.42, t);
+  // potted plant right of the door
+  const px = x0 + w + 90;
+  for (const [dx, dy, r] of [[-30, -120, 34], [26, -132, 38], [0, -170, 36], [-10, -100, 30]]) circle(px + dx, floor + dy, r, C.leaf);
+  rr(px - 46, floor - 92, 92, 92, [6, 6, 16, 16]); ctx.fillStyle = DV_WOOD; ctx.fill(); rr(px - 54, floor - 100, 108, 22, 6); ctx.fillStyle = DV_WOOD_L; ctx.fill();
+  return { x0, w, top, floor };
+}
+
+/** "rerun" film strip (graphic): an ink band from y0 (height h) with white sprocket holes, scrolling left with t; every frame
+ *  calls mini(fx, fy, fw, fh) clipped to it (draw a tiny copy of the scene there). flash 0..1 = yellow frame rims */
+export function dvRerunStrip(y0, h, t, mini, { pitch = 150, fw = 124, speed = 0.35, flash = 0 } = {}) {
+  ctx.fillStyle = C.ink; ctx.fillRect(-300, y0, W + 600, h);
+  const off = ((t * speed * pitch) % pitch + pitch) % pitch;
+  for (let x = -300 - off; x < W + 300; x += 50) { for (const yy of [y0 + 8, y0 + h - 22]) { rr(x, yy, 26, 14, 4); ctx.fillStyle = C.white; ctx.fill(); } }
+  const fy = y0 + 30, fh = h - 60;
+  for (let x = -pitch - off; x < W + pitch; x += pitch) {
+    ctx.save(); rr(x, fy, fw, fh, 8); ctx.clip(); if (mini) mini(x, fy, fw, fh); ctx.restore();
+    if (flash > 0) { ctx.save(); ctx.globalAlpha = clamp(flash); rr(x, fy, fw, fh, 8); ctx.lineWidth = 8; ctx.strokeStyle = C.yellow; ctx.stroke(); ctx.restore(); }
+  }
+}
+
+/** schematic x-ray brain, side view facing RIGHT (front = +x): navy lobes with a cyan rim and fold lines, cerebellum + stem.
+ *  ~600x430 px at s = 1, origin = centre. o = { front 0..1 (yellow glow on the frontal "decision-maker" area),
+ *  mem 0..1 (yellow glow on the memory area), zones 0..1 (dashed cyan outlines of both areas = the two suspects),
+ *  mag 0..1 (the tiny magnifier at the front lights up: ink rim, white glass), magAt [lx, ly] (move it, local coords),
+ *  magA (dim magnifier alpha, default 0.45), t } . Local points: DVB */
+export const DVB = { front: [170, -50], mem: [-20, 75], mag: [262, -150], cross: [50, -30], eye: [330, 10] };
+export const dvBPt = (x, y, s, k) => { const p = typeof k === 'string' ? DVB[k] : k; return [x + p[0] * s, y + p[1] * s]; };
+export function dvXBrain(x, y, s = 1, { front = 0, mem = 0, zones = 0, mag = 0, magAt = null, magA = 0.45, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rr(56, 70, 56, 170, 26); ctx.fillStyle = C.cyan; ctx.fill(); rr(64, 70, 40, 162, 20); ctx.fillStyle = C.xnavy; ctx.fill();
+  ell(-150, 120, 98, 66, C.cyan); ell(-150, 120, 88, 56, C.xnavy);
+  for (let k = 0; k < 3; k++) line([[-180 + k * 26, 92], [-180 + k * 26, 150]], C.cyan, 4);
+  const B = [[170, -10, 110], [90, -110, 120], [-40, -130, 125], [-160, -50, 115], [-120, 50, 105], [0, 40, 120], [130, 60, 100]];
+  for (const [bx, by, r] of B) circle(bx, by, r + 9, C.cyan);
+  for (const [bx, by, r] of B) circle(bx, by, r, C.xnavy);
+  // lit areas (flat yellow blobs) under the fold lines
+  const blob = (cx, cy, rx, ry, a, rot) => { if (a <= 0) return; ctx.save(); ctx.globalAlpha = clamp(a); ell(cx, cy, rx + 16, ry + 16, '#B8962A', rot); ell(cx, cy, rx, ry, C.yellow, rot); ell(cx - rx * 0.3, cy - ry * 0.35, rx * 0.32, ry * 0.18, C.white, rot); ctx.restore(); };
+  blob(DVB.front[0], DVB.front[1], 92, 70, front, -0.3);
+  blob(DVB.mem[0], DVB.mem[1], 78, 44, mem, 0.15);
+  ctx.globalAlpha = 0.85; ctx.strokeStyle = C.cyan; ctx.lineWidth = 7;
+  const sq = (p) => { ctx.beginPath(); ctx.moveTo(p[0], p[1]); for (let i = 2; i < p.length; i += 4) ctx.quadraticCurveTo(p[i], p[i + 1], p[i + 2], p[i + 3]); ctx.stroke(); };
+  sq([200, -20, 170, -70, 120, -40, 80, -10, 40, -60]);
+  sq([90, -170, 60, -120, 20, -150, -20, -180, -60, -130]);
+  sq([-60, -70, -110, -40, -150, -90, -190, -130, -220, -60]);
+  sq([150, 60, 110, 20, 60, 70, 20, 110, -30, 60]);
+  sq([-60, 20, -100, 60, -150, 20, -180, 0, -200, 40]);
+  ctx.globalAlpha = 1;
+  if (zones > 0) {
+    ctx.save(); ctx.globalAlpha = clamp(zones); ctx.setLineDash([16, 12]); ctx.lineWidth = 6; ctx.strokeStyle = C.white;
+    ctx.beginPath(); ctx.ellipse(DVB.front[0], DVB.front[1], 104, 82, -0.3, 0, TAU); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(DVB.mem[0], DVB.mem[1], 90, 56, 0.15, 0, TAU); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+  }
+  // the tiny fact-checker magnifier (dim cyan outline until mag lights it)
+  const [mx, my] = magAt || DVB.mag;
+  ctx.save(); ctx.translate(mx, my);
+  if (mag < 1) { ctx.globalAlpha = magA * (1 - clamp(mag)); ctx.beginPath(); ctx.arc(0, 0, 26, 0, TAU); ctx.strokeStyle = C.cyan; ctx.lineWidth = 6; ctx.stroke(); line([[18, 18], [40, 40]], C.cyan, 8); ctx.globalAlpha = 1; }
+  if (mag > 0) {
+    const k = 0.7 + 0.3 * clamp(mag); ctx.scale(k, k); ctx.globalAlpha = clamp(mag);
+    line([[20, 20], [52, 52]], C.ink, 22); line([[22, 22], [50, 50]], C.yellow, 12);
+    circle(0, 0, 38, C.ink); circle(0, 0, 27, C.white); ell(-9, -10, 9, 5, C.sky, -0.6);
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** a wire inside the x-ray brain: thick dark line with a coloured core along pts (canvas coords), drawn to fraction p 0..1,
+ *  with a small bright blip at its tip while drawing. col = core colour. Returns the tip point */
+export function dvWire(pts, p = 1, col = C.pink, w = 16) {
+  if (p <= 0 || pts.length < 2) return null;
+  const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const L = cum[cum.length - 1] * clamp(p), part = [pts[0]];
+  for (let i = 1; i < pts.length; i++) { if (cum[i] <= L) part.push(pts[i]); else { const f = (L - cum[i - 1]) / (cum[i] - cum[i - 1]); part.push([lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)]); break; } }
+  line(part, C.ink, w + 12); line(part, col, w);
+  const tip = part[part.length - 1];
+  if (p < 1) { circle(tip[0], tip[1], w * 0.9 + 6, C.ink); circle(tip[0], tip[1], w * 0.9, C.white); }
+  return tip;
+}
+
+/** scan monitor (graphic): ink bezel, navy screen with a faint cyan grid, a small stand. Screen w x h px (origin = screen
+ *  centre). inner() draws in screen-local coords (clipped). scan 0..1 = a cyan scan bar sweeping down (outside 0..1 = none).
+ *  sc = pop-in */
+export function dvMonitor(x, y, w, h, { inner = null, scan = -1, sc = 1 } = {}) {
+  if (sc <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc);
+  rr(-40, h / 2 + 10, 80, 70, 8); ctx.fillStyle = C.ink; ctx.fill(); rr(-130, h / 2 + 70, 260, 30, 14); ctx.fill();
+  rr(-w / 2 - 26, -h / 2 - 26, w + 52, h + 52, 34); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); rr(-w / 2, -h / 2, w, h, 14); ctx.clip(); ctx.fillStyle = C.navy; ctx.fillRect(-w / 2, -h / 2, w, h);
+  ctx.globalAlpha = 0.1; ctx.strokeStyle = C.cyan; ctx.lineWidth = 2;
+  for (let gx = -w / 2; gx < w / 2; gx += 60) { ctx.beginPath(); ctx.moveTo(gx, -h / 2); ctx.lineTo(gx, h / 2); ctx.stroke(); }
+  for (let gy = -h / 2; gy < h / 2; gy += 60) { ctx.beginPath(); ctx.moveTo(-w / 2, gy); ctx.lineTo(w / 2, gy); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  if (inner) inner();
+  if (scan >= 0 && scan <= 1) { const sy = lerp(-h / 2, h / 2, scan); ctx.globalAlpha = 0.18; ctx.fillStyle = C.cyan; ctx.fillRect(-w / 2, sy - 60, w, 60); ctx.globalAlpha = 0.7; ctx.fillRect(-w / 2, sy - 4, w, 8); ctx.globalAlpha = 1; }
+  ctx.restore();
+  ctx.restore();
+}
+
+/** brain scanner, SIDE view (real world, flat): white rounded housing with a darker side, the bore shown as a navy cutaway
+ *  tunnel (so the head inside stays visible), a steel bed on a pedestal sliding out to the left, the hero lying on it under a
+ *  pale-pink blanket with his head in the bore. Origin = housing centre; housing 520x600, bed to x -640 at s = 1; floor at
+ *  +300. glow 0..1 = pale-blue light strips along the bore; face = heroHead options; t = film time */
+export function dvScanner(x, y, s = 1, { glow = 0, face = {}, t = 0 } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rr(-560, 120, 200, 180, 14); ctx.fillStyle = DV_STEEL_D; ctx.fill();
+  rr(-260, -300, 520, 600, 90); ctx.fillStyle = C.white; ctx.fill();
+  rr(150, -300, 110, 600, [0, 90, 90, 0]); ctx.fillStyle = DV_SHELL_D; ctx.fill();
+  rr(-262, -112, 30, 224, 14); ctx.fillStyle = DV_SHELL_D; ctx.fill();
+  rr(-236, -100, 472, 200, 90); ctx.fillStyle = C.navy; ctx.fill();
+  if (glow > 0) { ctx.save(); ctx.globalAlpha = clamp(glow); for (const yy of [-84, 74]) { rr(-200, yy, 400, 10, 5); ctx.fillStyle = C.sky; ctx.fill(); } ctx.restore(); }
+  rr(-660, 62, 860, 36, 14); ctx.fillStyle = DV_STEEL; ctx.fill(); rr(-660, 86, 860, 12, 6); ctx.fillStyle = DV_STEEL_D; ctx.fill();
+  // blanket body (feet bump at the left) + head in the bore (top of the head toward the right)
+  ctx.beginPath(); ctx.moveTo(-630, 62); ctx.quadraticCurveTo(-640, -20, -590, -26); ctx.quadraticCurveTo(-560, -10, -520, 8);
+  ctx.lineTo(-120, 0); ctx.quadraticCurveTo(-40, -6, -30, 62); ctx.closePath(); ctx.fillStyle = C.pinkLight; ctx.fill();
+  ctx.fillStyle = C.pink; ctx.fillRect(-520, 40, 490, 22);
+  heroHead(60, 0, 0.5, { eyes: 'n', mouth: 'flat', ...face }, Math.PI / 2);
+  ctx.restore();
+}
+
+/** word card (graphic): white card, ink rim, ink word. slot = an empty dashed outline (where a card will land), faint 0..1 =
+ *  the word drawn very faint (the hidden word). ~260x130 px at s = 1, origin = centre. sc = pop-in, hi 0..1 = yellow card */
+export function dvWordCard(text, x, y, s = 1, { sc = 1, rot = 0, slot = false, faint = 0, hi = 0 } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(k, k);
+  if (slot) { ctx.setLineDash([18, 14]); rr(-130, -65, 260, 130, 20); ctx.lineWidth = 7; ctx.strokeStyle = C.ink; ctx.globalAlpha = 0.45; ctx.stroke(); ctx.setLineDash([]); ctx.restore(); return; }
+  rr(-138, -73, 276, 146, 26); ctx.fillStyle = C.ink; ctx.fill();
+  rr(-130, -65, 260, 130, 20); ctx.fillStyle = hi > 0 ? C.yellow : C.white; ctx.fill();
+  ctx.font = '900 54px Inter'; ctx.letterSpacing = '2px'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  if (faint > 0) { ctx.globalAlpha = 0.16 * clamp(faint); ctx.fillStyle = C.ink; ctx.fillText(text, 0, 4); ctx.globalAlpha = 1; }
+  else if (text) { ctx.fillStyle = C.ink; ctx.fillText(text, 0, 4); }
+  ctx.letterSpacing = '0px'; ctx.restore();
+}
+
+/** "rerun" icon (graphic): two yellow circular arrows with ink rims chasing each other. ~140 px at s = 1. rot spins it */
+export function dvRerunIcon(x, y, s = 1, sc = 1, rot = 0) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(k, k); ctx.lineCap = 'round';
+  for (const [w, col] of [[30, C.ink], [16, C.yellow]]) for (const a0 of [0, Math.PI]) {
+    ctx.beginPath(); ctx.arc(0, 0, 56, a0 + 0.35, a0 + Math.PI - 0.35); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke();
+  }
+  for (const a0 of [0, Math.PI]) {
+    const a = a0 + Math.PI - 0.35, hx = Math.cos(a) * 56, hy = Math.sin(a) * 56, tg = a + Math.PI / 2;
+    for (const [g, col] of [[10, C.ink], [0, C.yellow]]) {
+      ctx.beginPath(); ctx.moveTo(hx + Math.cos(tg) * (30 + g), hy + Math.sin(tg) * (30 + g));
+      ctx.lineTo(hx + Math.cos(tg + 2.3) * (26 + g), hy + Math.sin(tg + 2.3) * (26 + g)); ctx.lineTo(hx + Math.cos(tg - 2.3) * (26 + g), hy + Math.sin(tg - 2.3) * (26 + g));
+      ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+/** skin cross-section with sweat glands (graphic panel, the sweat tease): ink-rimmed rounded panel, skin-coloured top layer,
+ *  pale dermis, three pink coiled glands deep down with ducts winding up to pores. bead 0..1 = sweat drops bead out of the
+ *  pores and swell; glow 0..1 = yellow rims on the coils; t = film time. ~820x520 px at s = 1, origin = centre. sc = pop-in */
+export const DV_GLANDS = [[-250, 150], [0, 170], [250, 150]];
+export function dvSweatSkin(x, y, s = 1, { bead = 0, glow = 0, t = 0, sc = 1 } = {}) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  rr(-418, -268, 836, 536, 44); ctx.fillStyle = C.ink; ctx.fill();
+  ctx.save(); rr(-410, -260, 820, 520, 38); ctx.clip();
+  ctx.fillStyle = C.sky; ctx.fillRect(-420, -270, 840, 120);
+  ctx.fillStyle = DV_DERMIS; ctx.fillRect(-420, -150, 840, 420);
+  ctx.fillStyle = C.skin; ctx.fillRect(-420, -170, 840, 70); ctx.fillStyle = C.skinShade; ctx.fillRect(-420, -112, 840, 12);
+  DV_GLANDS.forEach(([gx, gy], i) => {
+    const duct = []; for (let j = 0; j <= 16; j++) { const u = j / 16; duct.push([gx + Math.sin(u * 9 + i) * 14 * (1 - u), lerp(gy - 40, -170, u)]); }
+    line(duct, C.pinkDark, 16); line(duct, C.pink, 9);
+    const coil = []; for (let j = 0; j <= 60; j++) { const u = j / 60, a = u * TAU * 3.2; coil.push([gx + Math.cos(a) * (40 + 18 * Math.sin(u * 7)) , gy + Math.sin(a) * 26 + (u - 0.5) * 30]); }
+    if (glow > 0) { ctx.save(); ctx.globalAlpha = clamp(glow); line(coil, C.ink, 40); line(coil, C.yellow, 30); ctx.restore(); }
+    line(coil, C.pinkDark, 22); line(coil, C.pink, 13);
+    ell(gx, -170, 16, 8, C.skinShade);
+  });
+  ctx.restore();
+  DV_GLANDS.forEach(([gx], i) => {
+    const b = clamp(bead * 1.25 - i * 0.12); if (b <= 0) return;
+    drop(gx + 4, -170 - 34 * b - Math.sin(t * 3 + i) * 2 * b, 0.45 + 0.75 * b, 0, 1);
+  });
+  ctx.restore();
+}
+
+/** next-topic badge (sweat): white disc, ink ring, a big pale-blue sweat drop. ~300 px at s = 1. sc = pop-in */
+export function dvDropBadge(x, y, s = 1, sc = 1) {
+  const k = s * sc; if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+  circle(0, 0, 150, C.ink); circle(0, 0, 134, C.white);
+  drop(0, 0, 2.5, 0, 1);
+  ctx.restore();
+}
+
+/** a new place for the relatable beat (real world, fills the frame): pale sky, a hedge line, a lawn, a beige path from
+ *  ground - 100 down, two round trees and a park bench. ground = where feet stand (canvas y) */
+export function dvPark({ ground = 1100, t = 0 } = {}) {
+  fillAll(C.sky);
+  const hz = ground - 300;
+  for (let i = 0; i < 9; i++) circle(-40 + i * 145, hz + 10, 90, '#4A9A5A');
+  ctx.fillStyle = '#8CCB86'; ctx.fillRect(-300, hz, W + 600, H); ctx.fillStyle = C.floor; ctx.fillRect(-300, ground - 100, W + 600, H);
+  ctx.fillStyle = '#D6CCB8'; ctx.fillRect(-300, ground - 100, W + 600, 14);
+  for (const [tx, s] of [[150, 1], [930, 0.85]]) {
+    rr(tx - 22 * s, hz - 160 * s, 44 * s, 260 * s, 12); ctx.fillStyle = DV_WOOD; ctx.fill();
+    for (const [dx, dy, r] of [[-60, -230, 110], [60, -240, 105], [0, -320, 120]]) circle(tx + dx * s, hz + dy * s, r * s, C.leaf);
+    ell(tx - 40 * s, hz - 360 * s, 40 * s, 20 * s, '#7CC48A', -0.4);
+  }
+  const bx = 760, by = hz + 60;
+  rr(bx - 120, by - 70, 240, 22, 8); ctx.fillStyle = DV_WOOD_L; ctx.fill(); rr(bx - 120, by - 30, 240, 24, 8); ctx.fill();
+  for (const dx of [-100, 90]) { rr(bx + dx, by - 10, 14, 60, 4); ctx.fillStyle = C.ink; ctx.fill(); }
+  void t;
+}
+
+/** stopwatch with a "few seconds" wedge: stopwatch() + a yellow sector from 12 o'clock to fewA (rad, alpha few 0..1) and a
+ *  red sector from fewA to the hand when the hand has gone past it (alpha over 0..1). ang = hand angle (rad, 0 = up) */
+export function dvTimer(x, y, s, ang, { few = 0, fewA = 1.1, over = 0 } = {}) {
+  stopwatch(x, y, s, ang);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const sector = (a0, a1, col, a) => { if (a <= 0 || a1 <= a0) return; ctx.save(); ctx.globalAlpha = clamp(a); ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, 196, a0 - Math.PI / 2, a1 - Math.PI / 2); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); ctx.restore(); };
+  sector(0, fewA, C.yellow, few * 0.9);
+  sector(fewA, ang, C.red, over * 0.75);
+  ctx.save(); ctx.rotate(ang); rr(-9, -200, 18, 220, 9); ctx.fillStyle = C.red; ctx.fill(); ctx.restore();
+  if (few > 0) { ctx.save(); ctx.globalAlpha = clamp(few); ctx.rotate(fewA); rr(-6, -238, 12, 60, 6); ctx.fillStyle = C.ink; ctx.fill(); ctx.restore(); }
+  circle(0, 0, 24, C.watch);
+  ctx.restore();
+}
