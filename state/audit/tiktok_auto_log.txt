@@ -17,12 +17,7 @@ skip 2026-11-25-body-03: already in the TikTok inbox
 skip 2026-11-25-body-04: already in the TikTok inbox
 skip 2026-11-27-body-01: already in the TikTok inbox
 skip 2026-11-27-body-02: already in the TikTok inbox
-Traceback (most recent call last):
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok_bulk.py", line 60, in main
-    pid = tiktok.upload(ch, os.path.join(tmp, f"{vid}.mp4"), cap, mode, privacy)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/Youtube_Automation/Youtube_Automation/pipeline/tiktok.py", line 85, in upload
-    raise RuntimeError(f"TikTok init failed: {j}")
-RuntimeError: TikTok init failed: {'error': {'code': 'spam_risk_too_many_pending_share', 'message': 'spam_risk_too_many_pending_share', 'log_id': '20261127100510437F3FF80AED91042522'}}
-stopped at 2026-11-27-body-03; the rest can be sent by re-running
-28 drafts recorded in state/tiktok_drafts.json
+draft sent 2026-11-27-body-03 -> v_inbox_file~v2.7713159000888952846  (What Happens When You Get a Paper Cut?)
+draft sent 2026-11-27-body-04 -> v_inbox_file~v2.7713159063722559502  (What Happens When Your Muscles Get Sore Days Later?)
+draft sent 2026-11-28-body-01 -> v_inbox_file~v2.7713159104910510093  (What Happens When You Hear Your Recorded Voice?)
+31 drafts recorded in state/tiktok_drafts.json
